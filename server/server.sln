@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers", "Infrastructure\H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataDbAccess", "Core\MetadataDbAccess\MetadataDbAccess.csproj", "{D670C74F-5159-49F0-9903-A35E50E83514}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metadata", "Core\Metadata\Metadata.csproj", "{242F1DF0-F351-40B2-B143-7310665E6B5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{D670C74F-5159-49F0-9903-A35E50E83514}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D670C74F-5159-49F0-9903-A35E50E83514}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D670C74F-5159-49F0-9903-A35E50E83514}.Release|Any CPU.Build.0 = Release|Any CPU
+		{242F1DF0-F351-40B2-B143-7310665E6B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{242F1DF0-F351-40B2-B143-7310665E6B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{242F1DF0-F351-40B2-B143-7310665E6B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{242F1DF0-F351-40B2-B143-7310665E6B5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +53,7 @@ Global
 		{845264E7-D74C-4042-BB78-9B8BD086A203} = {63D3069E-C884-4A16-B748-35515165E76A}
 		{036AE449-79EB-4A47-89D5-D66E82CE8DA6} = {63D3069E-C884-4A16-B748-35515165E76A}
 		{D670C74F-5159-49F0-9903-A35E50E83514} = {9D54A2B9-5294-488F-B565-9E1D9738E09D}
+		{242F1DF0-F351-40B2-B143-7310665E6B5B} = {9D54A2B9-5294-488F-B565-9E1D9738E09D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80FA172E-CD42-4E4F-A1D2-AC3D48E03B87}
