@@ -8,9 +8,9 @@ namespace Brainvest.Dscribe.Abstractions
 	public interface IImplementationsContainer
 	{
 		IInstanceInfo InstanceInfo { get; }
-		IMetadataModel SemanticModel { get; }
+		IMetadataModel MetadataModel { get; }
 		IBusinessReflector Reflector { get; }
-		IMetadataCache Semantic { get; }
+		IMetadataCache Metadata { get; }
 		Func<object> RepositoryFactory { get; }
 		bool MigrationsExecuted { get; set; }
 	}

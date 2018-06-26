@@ -16,7 +16,7 @@ namespace Brainvest.Dscribe.Helpers
 
 		public void CopyPropertyValues<TEntity>(TEntity source, TEntity dest)
 		{
-			var properties = _implementationsContainer.Semantic[source.GetType().Name]
+			var properties = _implementationsContainer.Metadata[source.GetType().Name]
 				.GetAllProperties();
 			foreach (var property in properties)
 			{
@@ -36,7 +36,7 @@ namespace Brainvest.Dscribe.Helpers
 		public object GetPrimaryKey<TEntity>(TEntity entity)
 		{
 			//TODO: this is not fast (or is it?) and does not handle composite PKs
-			var pkName = _implementationsContainer.Semantic[typeof(TEntity).Name].GetPrimaryKey().Name;
+			var pkName = _implementationsContainer.Metadata[typeof(TEntity).Name].GetPrimaryKey().Name;
 			return entity.GetType().GetTypeInfo().GetProperty(pkName).GetValue(entity);
 		}
 	}

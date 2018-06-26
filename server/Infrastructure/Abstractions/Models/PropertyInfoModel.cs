@@ -9,7 +9,7 @@ namespace Brainvest.Dscribe.Abstractions.Models
 {
 	public class PropertyInfoModel
 	{
-		public int? SemanticPropertyId { get; set; }
+		public int? MetadataPropertyId { get; set; }
 		public string Name { get; set; }
 		public string Expression { get; set; }
 		public LambdaExpression LambdaExpression { get; set; }
