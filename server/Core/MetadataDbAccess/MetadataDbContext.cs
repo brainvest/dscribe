@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Brainvest.Dscribe.MetadataDbAccess
 {
-	public class EngineDbContext : DbContext
+	public class MetadataDbContext : DbContext
 	{
-		public EngineDbContext(DbContextOptions<EngineDbContext> options)
+		public MetadataDbContext(DbContextOptions<MetadataDbContext> options)
 			: base(options)
 		{
 

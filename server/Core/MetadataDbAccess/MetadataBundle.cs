@@ -12,7 +12,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 	{
 		private MetadataBundle() { }
 
-		public static async Task<MetadataBundle> FromDbWithoutNavigations(EngineDbContext dbContext, int appTypeId, int appInstanceId)
+		public static async Task<MetadataBundle> FromDbWithoutNavigations(MetadataDbContext dbContext, int appTypeId, int appInstanceId)
 		{
 			var dataTypes = await dbContext.DataTypes.AsNoTracking().ToListAsync();
 			var entities = await dbContext.Entities.AsNoTracking().Where(x => x.AppTypeId == appTypeId).ToListAsync();
