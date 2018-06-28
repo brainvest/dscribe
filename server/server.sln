@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EF", "EF", "{1AD5DB26-5349-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfCodeGenerator", "EfCodeGenerator\EfCodeGenerator.csproj", "{E4EADFAD-36A3-4DF7-A69F-B5BE906215AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFBusinessDataAccess", "EFBusinessDataAccess\EFBusinessDataAccess.csproj", "{0E9C88FD-1659-436D-8DBB-554728269F5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{E4EADFAD-36A3-4DF7-A69F-B5BE906215AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4EADFAD-36A3-4DF7-A69F-B5BE906215AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4EADFAD-36A3-4DF7-A69F-B5BE906215AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E9C88FD-1659-436D-8DBB-554728269F5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E9C88FD-1659-436D-8DBB-554728269F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E9C88FD-1659-436D-8DBB-554728269F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E9C88FD-1659-436D-8DBB-554728269F5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{92DCBC44-EB67-41DD-B629-4F427852005B} = {9D54A2B9-5294-488F-B565-9E1D9738E09D}
 		{1AD5DB26-5349-4153-B38E-5292C1A392B9} = {CDA7BCBC-3744-4101-8E8D-034C76E2FBEF}
 		{E4EADFAD-36A3-4DF7-A69F-B5BE906215AD} = {1AD5DB26-5349-4153-B38E-5292C1A392B9}
+		{0E9C88FD-1659-436D-8DBB-554728269F5C} = {1AD5DB26-5349-4153-B38E-5292C1A392B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80FA172E-CD42-4E4F-A1D2-AC3D48E03B87}
