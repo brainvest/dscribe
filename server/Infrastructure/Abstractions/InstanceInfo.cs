@@ -8,7 +8,6 @@ namespace Brainvest.Dscribe.Abstractions
 	{
 		public int AppInstanceId { get; set; }
 		public int AppTypeId { get; set; }
-		public string CompositionDirectory { get; set; }
 		public string InstanceName { get; set; }
 		public string ConnectionString { get; set; }
 		public bool MigrateDatabase { get; set; }

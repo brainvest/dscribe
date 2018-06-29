@@ -33,13 +33,15 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		IBusinessCodeGenerator _codeGenerator;
 		IBusinessCompiler _compiler;
 		IImplementationsContainer _implementationContainer;
+		IGlobalConfiguration _globalConfiguration;
 
 		public ReleaseMetadataController(
 			IHostingEnvironment hostingEnvironment,
 			MetadataDbContext dbContext,
 			IBusinessCodeGenerator codeGenerator,
 			IBusinessCompiler compiler,
-			IImplementationsContainer implementationContainer
+			IImplementationsContainer implementationContainer,
+			IGlobalConfiguration globalConfiguration
 			)
 		{
 			_hostingEnvironment = hostingEnvironment;
@@ -47,6 +49,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			_codeGenerator = codeGenerator;
 			_compiler = compiler;
 			_implementationContainer = implementationContainer;
+			_globalConfiguration = globalConfiguration;
 		}
 
 		[HttpPost]
@@ -93,12 +96,13 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			//return ienumerable
 
 			var compileUnit = (_codeGenerator as EFCodeGenerator).CreateCode(metadataCache, _implementationContainer.InstanceInfo);
-			EnsurePath(_implementationContainer.InstanceInfo.CompositionDirectory);
+			var compositionDirectory = Path.Combine(_globalConfiguration.ImplementationsDirectory, _implementationContainer.InstanceInfo.InstanceName);
+			EnsurePath(compositionDirectory);
 			(_codeGenerator as EFCodeGenerator).GenerateSourceCode(compileUnit,
-				Path.Combine(_implementationContainer.InstanceInfo.CompositionDirectory, "source.cs"));
+				Path.Combine(compositionDirectory, "source.cs"));
 			var assembliesPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); //TODO: This is hardcoded
 			if (!(_compiler as EFCompiler).GenerateAssembly(compileUnit, Path.Combine(
-				_implementationContainer.InstanceInfo.CompositionDirectory, _implementationContainer.InstanceInfo.InstanceName + ".dll")
+				compositionDirectory, _implementationContainer.InstanceInfo.InstanceName + ".dll")
 				, assembliesPath, out var errors))
 			{
 				result.Errors.AddRange(errors);
