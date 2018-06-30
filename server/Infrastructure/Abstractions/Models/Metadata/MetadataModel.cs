@@ -8,6 +8,6 @@ namespace Brainvest.Dscribe.Abstractions.Models.Metadata
 	public class MetadataModel
 	{
 		public Dictionary<string, IPropertyGeneralUsageCategory> PropertyDefaults { get; set; }
-		public Dictionary<string, IEntityMetadataModel> Types { get; set; }
+		public Dictionary<string, IEntityMetadataModel> Entities { get; set; }
 	}
 }

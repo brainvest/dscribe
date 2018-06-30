@@ -7,8 +7,8 @@ namespace Brainvest.Dscribe.Abstractions.Metadata
 {
 	public interface IMetadataCache : IEnumerable<IEntityMetadata>
 	{
-		IEntityMetadata this[string typeName] { get; }
-		IEntityMetadata TryGetEntity(string typeName);
+		IEntityMetadata this[string entityTypeName] { get; }
+		IEntityMetadata TryGetEntity(string entityTypeName);
 		LambdaExpression GetExpression(string definitionIdentifier, IBusinessReflector reflector);
 	}
 }

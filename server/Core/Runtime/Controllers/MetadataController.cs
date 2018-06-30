@@ -39,7 +39,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var result = new MetadataModel
 			{
 				PropertyDefaults = _implementationsContainer.MetadataModel.PropertyDefaults,
-				Types = _implementationsContainer.MetadataModel.Entities.ToDictionary(x => x.Key, x => x.Value as IEntityMetadataModel)
+				Entities = _implementationsContainer.MetadataModel.Entities.ToDictionary(x => x.Key, x => x.Value as IEntityMetadataModel)
 			};
 			return result;
 		}
