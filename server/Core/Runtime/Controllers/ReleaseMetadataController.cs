@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,6 @@ using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Runtime.Controllers
 {
-	[Authorize]
 	[Produces("application/json")]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
@@ -41,7 +41,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			IBusinessCodeGenerator codeGenerator,
 			IBusinessCompiler compiler,
 			IImplementationsContainer implementationContainer,
-			IGlobalConfiguration globalConfiguration
+			IOptions<GlobalConfiguration> globalConfiguration
 			)
 		{
 			_hostingEnvironment = hostingEnvironment;
@@ -49,7 +49,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			_codeGenerator = codeGenerator;
 			_compiler = compiler;
 			_implementationContainer = implementationContainer;
-			_globalConfiguration = globalConfiguration;
+			_globalConfiguration = globalConfiguration.Value;
 		}
 
 		[HttpPost]
@@ -98,14 +98,15 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var compileUnit = (_codeGenerator as EFCodeGenerator).CreateCode(metadataCache, _implementationContainer.InstanceInfo);
 			var compositionDirectory = Path.Combine(_globalConfiguration.ImplementationsDirectory, _implementationContainer.InstanceInfo.InstanceName);
 			EnsurePath(compositionDirectory);
-			(_codeGenerator as EFCodeGenerator).GenerateSourceCode(compileUnit,
-				Path.Combine(compositionDirectory, "source.cs"));
+			var sourceCodeFilePath = Path.Combine(compositionDirectory, "source.cs");
+			(_codeGenerator as EFCodeGenerator).GenerateSourceCode(compileUnit, sourceCodeFilePath);
 			var assembliesPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); //TODO: This is hardcoded
-			if (!(_compiler as EFCompiler).GenerateAssembly(compileUnit, Path.Combine(
+			var (succeeded, diagnostics) = await (_compiler as EFCompiler).GenerateAssembly(sourceCodeFilePath, Path.Combine(
 				compositionDirectory, _implementationContainer.InstanceInfo.InstanceName + ".dll")
-				, assembliesPath, out var errors))
+				, assembliesPath);
+			if (!succeeded)
 			{
-				result.Errors.AddRange(errors);
+				result.Errors.AddRange(diagnostics.Select(x => x.GetMessage()));
 				result.Success = false;
 				return result;
 			}

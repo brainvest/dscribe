@@ -5,8 +5,10 @@ using Brainvest.Dscribe.MetadataDbAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +17,7 @@ namespace Brainvest.Dscribe.Runtime
 	public class ImplementationContainer : IImplementationsContainer
 	{
 		private ImplementationContainer() { }
+		private DbContextOptions _dbContextOptions;
 
 		public static async Task<ImplementationContainer> Create(IServiceScope scope, MetadataDbContext dbContext, int appInstanceId)
 		{
@@ -30,8 +33,8 @@ namespace Brainvest.Dscribe.Runtime
 			var appType = await dbContext.AppTypes.FirstOrDefaultAsync(x => x.Id == instance.AppTypeId);
 			var bundle = await MetadataBundle.FromDbWithoutNavigations(dbContext, instance.AppTypeId, instance.Id);
 			bundle.FixupRelationships();
-			var semanticCache = new MetadataCache(bundle);
-			var semanticModel = new MetadataModel(bundle);
+			var metadataCache = new MetadataCache(bundle);
+			var metadataModel = new MetadataModel(bundle);
 			var instanceInfo = new InstanceInfo
 			{
 				AppInstanceId = appInstanceId,
@@ -40,25 +43,34 @@ namespace Brainvest.Dscribe.Runtime
 				ConnectionString = instance.DataConnectionString,
 				MigrateDatabase = instance.MigrateDatabase
 			};
-			var bridge = new BusinessAssemblyBridge(instanceInfo, scope.ServiceProvider.GetService<IGlobalConfiguration>(), scope.ServiceProvider.GetService<ILogger>());
-			var reflector = new BusinessReflector(semanticCache);
+
+			var bridge = new BusinessAssemblyBridge(
+				instanceInfo,
+				scope.ServiceProvider.GetRequiredService<IOptions<GlobalConfiguration>>().Value,
+				scope.ServiceProvider.GetRequiredService<ILogger<BusinessAssemblyBridge>>());
+			var reflector = new BusinessReflector(metadataCache);
+
+			var implementationsContainer = new ImplementationContainer
+			{
+				Metadata = metadataCache,
+				MetadataModel = metadataModel,
+				BusinessAssemblyBridge = bridge,
+				Reflector = reflector,
+				InstanceInfo = instanceInfo
+			};
+
 			if (bridge.BusinessDbContextFactory == null)
 			{
 				scope.ServiceProvider.GetRequiredService<ILogger<ImplementationContainer>>().LogError($"Business assembly not loaded");
 			}
 			else
 			{
-				reflector.RegisterAssembly(bridge.BusinessDbContextFactory.GetDbContext(instance.DataConnectionString).GetType().Assembly);
+				var dbContextType = bridge.BusinessDbContextFactory.GetType().Assembly.GetTypes().Single(x => x.IsSubclassOf(typeof(DbContext)));
+				reflector.RegisterAssembly(dbContextType.GetType().Assembly);
+				var dbContextOptionsBuilder = Activator.CreateInstance(typeof(DbContextOptionsBuilder<>).MakeGenericType(dbContextType)) as DbContextOptionsBuilder;
+				implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.ConnectionString).Options;
 			}
-
-			return new ImplementationContainer
-			{
-				Metadata = semanticCache,
-				MetadataModel = semanticModel,
-				BusinessAssemblyBridge = bridge,
-				Reflector = reflector,
-				InstanceInfo = instanceInfo
-			};
+			return implementationsContainer;
 		}
 
 		public IMetadataCache Metadata { get; private set; }
@@ -70,7 +82,7 @@ namespace Brainvest.Dscribe.Runtime
 		{
 			get
 			{
-				return () => BusinessAssemblyBridge.BusinessDbContextFactory.GetDbContext(InstanceInfo.ConnectionString);
+				return () => BusinessAssemblyBridge.BusinessDbContextFactory.GetDbContext(_dbContextOptions);
 			}
 		}
 

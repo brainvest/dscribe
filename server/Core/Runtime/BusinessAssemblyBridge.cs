@@ -6,6 +6,7 @@ using System.Composition.Hosting;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Loader;
 using System.Text;
 
@@ -14,9 +15,19 @@ namespace Brainvest.Dscribe.Runtime
 	[DebuggerNonUserCode]
 	public class BusinessAssemblyBridge : IDisposable
 	{
-		private ILogger _logger;
+		private readonly ILogger _logger;
 		private CompositionHost _container;
-		public IBusinessRepositoryFactory BusinessDbContextFactory { get { return _container.GetExport<IBusinessRepositoryFactory>(); } }
+		public IBusinessRepositoryFactory BusinessDbContextFactory
+		{
+			get
+			{
+				if (_container == null)
+				{
+					return null;
+				}
+				return _container.GetExport<IBusinessRepositoryFactory>();
+			}
+		}
 
 		public BusinessAssemblyBridge(InstanceInfo instanceInfo, IGlobalConfiguration configuration, ILogger logger)
 		{
@@ -49,14 +60,14 @@ namespace Brainvest.Dscribe.Runtime
 				try
 				{
 					File.Copy(fileName, targetFilePath);
+					containerConfiguration.WithAssembly(Assembly.LoadFrom(targetFilePath));
+					_container = containerConfiguration.CreateContainer();
 				}
 				catch
 				{
 					logger.LogError($"Could not copy {fileName} to {Path.Combine(tempPath, instanceName + ".dll")}");
 				}
 			}
-			containerConfiguration.WithAssembly(AssemblyLoadContext.Default.LoadFromAssemblyPath(targetFilePath));
-			_container = containerConfiguration.CreateContainer();
 		}
 
 		public void Dispose()

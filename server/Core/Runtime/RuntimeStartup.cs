@@ -25,7 +25,7 @@ namespace Brainvest.Dscribe.Runtime
 			services.AddTransient<IBusinessCodeGenerator, EFCodeGenerator>();
 			services.AddTransient<IBusinessCompiler, EFCompiler>();
 			services.AddScoped<EntityHelper, EntityHelper>();
-			services.Configure<IGlobalConfiguration>(configuration.GetSection(nameof(GlobalConfiguration)));
+			services.Configure<GlobalConfiguration>(configuration.GetSection(nameof(GlobalConfiguration)));
 		}
 
 		public static void Configure(IApplicationBuilder app, IHostingEnvironment env)

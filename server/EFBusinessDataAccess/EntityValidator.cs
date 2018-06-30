@@ -20,9 +20,9 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		//TODO: This should get a Model or a dynamic type instead of the Entity. In the current state, validation ignores required non nullable value types.
 		public ModelStateDictionary Validate<TEntity>(TEntity entity, EntityActionType actionType)
 		{
-			var typeSemantics = _implementationsContainer.Metadata[typeof(TEntity).Name];
+			var entityMetadata = _implementationsContainer.Metadata[typeof(TEntity).Name];
 			Dictionary<string, IEnumerable<string>> propertyValidationErrors = null;
-			foreach (var property in typeSemantics.GetAllProperties())
+			foreach (var property in entityMetadata.GetAllProperties())
 			{
 				if (property.IsExpression)
 				{

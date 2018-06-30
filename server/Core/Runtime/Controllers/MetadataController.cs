@@ -14,11 +14,11 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	[Produces("application/json")]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class SemanticsController : ControllerBase
+	public class MetadataController : ControllerBase
 	{
 		IImplementationsContainer _implementationsContainer;
 
-		public SemanticsController(IImplementationsContainer implementationsContainer)
+		public MetadataController(IImplementationsContainer implementationsContainer)
 		{
 			_implementationsContainer = implementationsContainer;
 		}
@@ -47,8 +47,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public void ClearCache()
 		{
-			//SemanticsCache.Clear();
-			//SemanticModel.Clear();
+			//MetadataCache.Clear();
+			//MetadataModel.Clear();
 		}
 	}
 }

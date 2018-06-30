@@ -174,15 +174,15 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 
 		private void PrepareExpressions(string typeName, IEnumerable<PropertyInfoModel> properties)
 		{
-			var typeSemantic = _implementationsContainer.Metadata[typeName];
+			var entityMetadata = _implementationsContainer.Metadata[typeName];
 			foreach (var property in properties)
 			{
-				var semanticProperty = typeSemantic.GetProperty(property.Name);
-				if (semanticProperty == null)
+				var propertyMetadata = entityMetadata.GetProperty(property.Name);
+				if (propertyMetadata == null)
 				{
 					continue;
 				}
-				property.LambdaExpression = semanticProperty.GetDefiningExpression(_implementationsContainer.Reflector);
+				property.LambdaExpression = propertyMetadata.GetDefiningExpression(_implementationsContainer.Reflector);
 			}
 		}
 

@@ -25,7 +25,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.CodeGenerator
 		public CodeDomBusinessCode CreateCode(IMetadataCache cache, IInstanceInfo instanceInfo)
 		{
 			var compileUnit = new CodeCompileUnit();
-			var codeNamespace = new CodeNamespace("GlobalE.Busingess." + instanceInfo.InstanceName);
+			var codeNamespace = new CodeNamespace($"Brainvest.Dscribe{instanceInfo.InstanceName}.Business");
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IDisposable).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(DbContext).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IBusinessRepositoryFactory).Namespace));
@@ -93,8 +93,8 @@ namespace Brainvest.Dscribe.Implementations.Ef.CodeGenerator
 				codeNamespace.Types.Add(codeType);
 			}
 			var factoryCode = new CodeTypeDeclaration("DbContextFactory");
-			factoryCode.BaseTypes.Add(typeof(IBusinessRepositoryFactory));
-			factoryCode.Members.Add(new CodeSnippetTypeMember("		public IDisposable GetDbContext(string connectionString){ return new BusinessDbContext(connectionString); }"));
+			factoryCode.BaseTypes.Add($"IBusinessRepositoryFactory");
+			factoryCode.Members.Add(new CodeSnippetTypeMember("		public IDisposable GetDbContext(DbContextOptions options){ return new BusinessDbContext(options); }"));
 			factoryCode.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(ExportAttribute)),
 				new CodeAttributeArgument(new CodeSnippetExpression("typeof(IBusinessRepositoryFactory)"))));
 			codeNamespace.Types.Add(factoryCode);
@@ -106,7 +106,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.CodeGenerator
 		{
 			var snippet = new CodeSnippetTypeMember
 			{
-				Text = $"		public IDbSet<{type.Name}> {type.Name} {{ get; set; }}" //Todo: Make it plural!
+				Text = $"		public DbSet<{type.Name}> {type.Name} {{ get; set; }}" //Todo: Make it plural!
 			};
 			codeDbContext.Members.Add(snippet);
 		}
@@ -119,7 +119,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.CodeGenerator
 			{
 				Attributes = MemberAttributes.Public
 			};
-			var optionsParameter = new CodeParameterDeclarationExpression($"DbContextOptions<{codeDbContext.Name}>", "options");
+			var optionsParameter = new CodeParameterDeclarationExpression("DbContextOptions", "options");
 			constructor.Parameters.Add(optionsParameter);
 			constructor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression("options"));
 			codeDbContext.Members.Add(constructor);

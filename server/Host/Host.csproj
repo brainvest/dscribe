@@ -5,6 +5,7 @@
     <AssemblyName>Brainvest.Dscribe.Host</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.Host</RootNamespace>
     <Version>0.1.0</Version>
+    <UserSecretsId>2a8a1ba1-bde9-4c00-846d-723874ad9d1c</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

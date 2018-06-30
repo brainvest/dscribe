@@ -64,7 +64,7 @@ namespace Brainvest.Dscribe.Runtime
 		}
 	}
 
-	public class SemanticsModelResolver : ITenantResolver<IMetadataModel>
+	public class MetadataModelResolver : ITenantResolver<IMetadataModel>
 	{
 		public async Task<TenantContext<IMetadataModel>> ResolveAsync(HttpContext context)
 		{
