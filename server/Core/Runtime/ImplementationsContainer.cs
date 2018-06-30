@@ -66,7 +66,7 @@ namespace Brainvest.Dscribe.Runtime
 			else
 			{
 				var dbContextType = bridge.BusinessDbContextFactory.GetType().Assembly.GetTypes().Single(x => x.IsSubclassOf(typeof(DbContext)));
-				reflector.RegisterAssembly(dbContextType.GetType().Assembly);
+				reflector.RegisterAssembly(dbContextType.Assembly);
 				var dbContextOptionsBuilder = Activator.CreateInstance(typeof(DbContextOptionsBuilder<>).MakeGenericType(dbContextType)) as DbContextOptionsBuilder;
 				implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.ConnectionString).Options;
 			}

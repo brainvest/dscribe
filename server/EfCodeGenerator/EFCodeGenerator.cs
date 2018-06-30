@@ -106,7 +106,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.CodeGenerator
 		{
 			var snippet = new CodeSnippetTypeMember
 			{
-				Text = $"		public DbSet<{type.Name}> {type.Name} {{ get; set; }}" //Todo: Make it plural!
+				Text = $"		public DbSet<{type.Name}> {type.TableName ?? type.Name.Pluralize()} {{ get; set; }}"
 			};
 			codeDbContext.Members.Add(snippet);
 		}

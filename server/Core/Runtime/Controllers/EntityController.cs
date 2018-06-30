@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Runtime.Controllers
 {
-	[Authorize]
 	[Produces("application/json")]
 	[Route("api/[controller]/[action]")]
 	[ApiController]

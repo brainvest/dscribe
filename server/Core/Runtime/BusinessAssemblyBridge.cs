@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Brainvest.Dscribe.Runtime
 {
-	[DebuggerNonUserCode]
+	//[DebuggerNonUserCode]
 	public class BusinessAssemblyBridge : IDisposable
 	{
 		private readonly ILogger _logger;
@@ -60,13 +60,20 @@ namespace Brainvest.Dscribe.Runtime
 				try
 				{
 					File.Copy(fileName, targetFilePath);
-					containerConfiguration.WithAssembly(Assembly.LoadFrom(targetFilePath));
-					_container = containerConfiguration.CreateContainer();
 				}
 				catch
 				{
-					logger.LogError($"Could not copy {fileName} to {Path.Combine(tempPath, instanceName + ".dll")}");
+					logger.LogError($"Could not copy {fileName} to {Path.Combine(tempPath, targetFileName)}");
 				}
+			}
+			try
+			{
+				containerConfiguration.WithAssembly(Assembly.LoadFrom(targetFilePath));
+				_container = containerConfiguration.CreateContainer();
+			}
+			catch
+			{
+				logger.LogError($"Could not compose assembly:{targetFileName}");
 			}
 		}
 
