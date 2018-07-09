@@ -7,6 +7,8 @@ import {catchError, map, startWith, switchMap} from 'rxjs/operators';
 import {merge, of} from 'rxjs';
 import {EntityListRequest} from '../../common/models/entity-list-request';
 import {SortItem} from '../../common/models/sort-item';
+import {ListColumn} from '../models/list-column';
+import {KnownFacets} from '../../metadata/facets/known-facet';
 
 @Component({
 	selector: 'lib-list',
@@ -16,7 +18,8 @@ import {SortItem} from '../../common/models/sort-item';
 export class ListComponent implements OnInit, OnChanges {
 
 	@Input() entity: EntityMetadata;
-	displayedColumns = ['id'];
+	displayedColumns = [];
+	columns: ListColumn[] = [];
 	data = [];
 	totalCount = 0;
 	private displayedEntityType: string;
@@ -34,6 +37,7 @@ export class ListComponent implements OnInit, OnChanges {
 			.subscribe(entity => {
 				this.entity = entity;
 				this.applyFilter();
+				this.createColumns(this.entity);
 			});
 	}
 
@@ -48,7 +52,29 @@ export class ListComponent implements OnInit, OnChanges {
 			}
 			this.displayedEntityType = this.entity.name;
 			this.applyFilter();
-			// this.setGrid(this.entity);
+			this.createColumns(this.entity);
+		}
+	}
+
+	createColumns(entity: EntityMetadata) {
+		this.columns = [];
+		this.displayedColumns = [];
+		for (const propertyName in entity.properties) {
+			if (!entity.properties.hasOwnProperty(propertyName)) {
+				continue;
+			}
+			const prop = entity.properties[propertyName];
+			if (prop.dataType === 'NavigationList') {
+			}
+			this.columns.push(new ListColumn(
+				prop.name,
+				prop.title,
+				prop.jsName
+			));
+			if (prop && prop.facetValues && prop.facetValues[KnownFacets.HideInList]) {
+				continue;
+			}
+			this.displayedColumns.push(prop.name);
 		}
 	}
 
