@@ -50,7 +50,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "dscribe-host:build"
+            "browserTarget": "dscribe-host:build",
+						"proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
             "production": {

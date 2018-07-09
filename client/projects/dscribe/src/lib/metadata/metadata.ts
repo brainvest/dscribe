@@ -1,9 +1,10 @@
 import {Observable, ReplaySubject} from 'rxjs';
 import {EntityMetadata} from './entity-metadata';
-import {ApiClientService} from '../common/services/api-client.service';
 import {PropertyResponse, TypeResponse} from './response-models';
 import {PropertyMetadata} from './property-metadata';
 import {CompleteMetadataModel} from './complete-metadata-model';
+import {HttpClient} from '@angular/common/http';
+import {map} from 'rxjs/operators';
 
 export type FacetValue = [boolean, number, string];
 
@@ -22,14 +23,14 @@ export class Metadata {
 	private typesObservable: ReplaySubject<EntityMetadata[]> = new ReplaySubject<EntityMetadata[]>(1);
 	private currentTypes: EntityMetadata[];
 
-	constructor(private http: ApiClientService) {
+	constructor(private http: HttpClient) {
 		this.getComplete();
 	}
 
 	getComplete(): void {
-		this.http.get<CompleteMetadataModel>('api/semantics/getComplete')
+		this.http.get<CompleteMetadataModel>('api/metadata/getComplete')
 			.subscribe(x => {
-				this.currentTypes = this.extractTypeSemantics(x.data.types, x.data.propertyDefaults);
+				this.currentTypes = this.extractTypeSemantics(x.entities, x.propertyDefaults);
 				this.fixUpRelationships();
 				this.typesObservable.next(this.currentTypes);
 			});
@@ -40,7 +41,7 @@ export class Metadata {
 	}
 
 	getTypeByName(typeName: string): Observable<EntityMetadata> {
-		return this.typesObservable.map(types => types.find(x => x.name === typeName));
+		return this.typesObservable.pipe(map(types => types.find(x => x.name === typeName)));
 	}
 
 	private extractTypeSemantics(types: TypeResponse[], allDefaultFacets): EntityMetadata[] {

@@ -1,6 +1,6 @@
 import {DigestEntityInfo} from './digest-entity-info';
 import {PropertyMetadata} from './property-metadata';
-import {SelectionContainer} from '../common/selection-container';
+import {SelectionContainer} from '../common/models/selection-container';
 
 export class EntityMetadata extends DigestEntityInfo {
 	properties: { [name: string]: PropertyMetadata };
