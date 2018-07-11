@@ -32,6 +32,15 @@ import {TextEditorComponent} from './property-editors/text-editor.component';
 import {NumberEditorComponent} from './property-editors/number-editor.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ListDeleteDialogComponent} from './list/list-delete-dialog/list-delete-dialog.component';
+import {FilterNodeComponent} from './filtering/components/filter-node/filter-node.component';
+import {ArithmeticFilterNodeComponent} from './filtering/components/arithmetic-filter-node/arithmetic-filter-node.component';
+import {ComparisonFilterNodeComponent} from './filtering/components/comparison-filter-node/comparison-filter-node.component';
+import {ConstantFilterNodeComponent} from './filtering/components/constant-filter-node/constant-filter-node.component';
+import {LambdaFilterNodeComponent} from './filtering/components/lambda-filter-node/lambda-filter-node.component';
+import {LogicalFilterNodeComponent} from './filtering/components/logical-filter-node/logical-filter-node.component';
+import {NavigationListFilterNodeComponent} from './filtering/components/navigation-list-filter-node/navigation-list-filter-node.component';
+import {PropertyFilterNodeComponent} from './filtering/components/property-filter-node/property-filter-node.component';
+import {FilterTreeManipulator} from './filtering/models/filter-tree-manipulator';
 
 @NgModule({
 	imports: [
@@ -53,10 +62,11 @@ import {ListDeleteDialogComponent} from './list/list-delete-dialog/list-delete-d
 		ReactiveFormsModule],
 	declarations: [
 		DscribeComponent,
+		AddNEditComponent,
 		ListContainerComponent,
 		ListComponent,
-		AddNEditComponent,
 		ListAddNEditDialogComponent,
+		ListDeleteDialogComponent,
 		PropertyEditorComponent,
 		BoolEditorComponent,
 		DateEditorComponent,
@@ -66,11 +76,19 @@ import {ListDeleteDialogComponent} from './list/list-delete-dialog/list-delete-d
 		EntitySelectComponent,
 		NumberEditorComponent,
 		TextEditorComponent,
-		ListDeleteDialogComponent
+		FilterNodeComponent,
+		ArithmeticFilterNodeComponent,
+		ComparisonFilterNodeComponent,
+		ConstantFilterNodeComponent,
+		LambdaFilterNodeComponent,
+		LogicalFilterNodeComponent,
+		NavigationListFilterNodeComponent,
+		PropertyFilterNodeComponent
 	],
 	exports: [DscribeComponent, ListComponent],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: DscribeInterceptor, multi: true},
+		FilterTreeManipulator
 	],
 	entryComponents: [
 		ListAddNEditDialogComponent,

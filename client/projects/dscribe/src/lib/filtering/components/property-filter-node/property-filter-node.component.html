@@ -1,0 +1,14 @@
+<div class="filter-node-container">
+	<div class="node-action-btns" *ngIf="node?.parent?.nodeType !== nodeTypes.Property">
+		<mat-icon (click)="manipulator.addSibling(node)" title="move under calculation">rewind</mat-icon>
+		<mat-icon (click)="manipulator.delete(node)" title="remove">trash</mat-icon>
+		<mat-icon (click)="manipulator.toggleType(node)" title="convert to constant">refresh</mat-icon>
+	</div>
+	<select class="filter-option" [class.noOptionSelected]="!node.property" [(ngModel)]="node.property">
+		<option [ngValue]="undefined" selected invalid>properties of {{node.inputType.entityType.singularTitle}}</option>
+		<option *ngFor="let p of node.properties" [ngValue]="p">{{p?.title}}</option>
+	</select>
+	<ng-container *ngIf="node.child">
+		<dscribe-filter-node [node]="node.child"></dscribe-filter-node>
+	</ng-container>
+</div>

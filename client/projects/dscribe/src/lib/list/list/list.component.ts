@@ -13,6 +13,11 @@ import {MasterReference} from '../models/master-reference';
 import {HasId} from '../../common/models/has-id';
 import {ListAddNEditDialogComponent} from '../list-add-n-edit-dialog/list-add-n-edit-dialog.component';
 import {ListDeleteDialogComponent} from '../list-delete-dialog/list-delete-dialog.component';
+import {LambdaFilterNode} from '../../filtering/models/filter-nodes/lambda-filter-node';
+import {StorageFilterNode} from '../../filtering/models/storage-filter-node';
+import {LambdaHelper} from '../../helpers/lambda-helper';
+import {FilterNode} from '../../filtering/models/filter-nodes/filter-node';
+import {FilterNodeFactory} from '../../filtering/models/filter-node-factory';
 
 @Component({
 	selector: 'dscribe-list',
@@ -34,6 +39,8 @@ export class ListComponent implements OnInit, OnChanges {
 	userRefresh: EventEmitter<null> = new EventEmitter<null>();
 	pageSize = 10;
 	selectedRow: any = null;
+	filterLambda: LambdaFilterNode;
+	userDefinedFilter: StorageFilterNode;
 
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	@ViewChild(MatSort) sort: MatSort;
@@ -51,6 +58,7 @@ export class ListComponent implements OnInit, OnChanges {
 
 	ngOnInit() {
 		this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+		FilterNode.factory = new FilterNodeFactory();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -86,13 +94,34 @@ export class ListComponent implements OnInit, OnChanges {
 		}
 	}
 
+	applyFilter() {
+		if (this.filterLambda) {
+			this.userDefinedFilter = this.filterLambda.getStorageNode();
+		} else {
+			this.userDefinedFilter = null;
+		}
+		this.refreshData();
+	}
+
+	getCurrentFilters(): StorageFilterNode[] {
+		const filters: StorageFilterNode[] = [];
+		const masterDetail = LambdaHelper.getMasterDetailFilter(this.master, this.entity);
+		if (masterDetail) {
+			filters.push(masterDetail.getStorageNode());
+		}
+		if (this.userDefinedFilter) {
+			filters.push(this.userDefinedFilter);
+		}
+		return filters;
+	}
+
 	refreshData() {
 		this.selectedRow = null;
 		this.isLoadingResults = true;
 		this.paginator.pageIndex = 0;
 		this.data = [];
 		this.connectData();
-		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, [])).subscribe((data) => {
+		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters())).subscribe((data) => {
 			this.totalCount = data;
 			this.userRefresh.emit();
 		});
@@ -112,7 +141,7 @@ export class ListComponent implements OnInit, OnChanges {
 					if (this.sort.active) {
 						sort.push(new SortItem(this.sort.active, this.sort.direction === 'desc'));
 					}
-					return this.dataHandler.getByFilter(new EntityListRequest(this.entity.name, [],
+					return this.dataHandler.getByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters(),
 						this.paginator.pageIndex * this.pageSize, this.pageSize, sort));
 				}),
 				map(data => {
@@ -192,6 +221,14 @@ export class ListComponent implements OnInit, OnChanges {
 				}
 			}
 		);
+	}
+
+	toggleFilter() {
+		if (this.filterLambda) {
+			this.filterLambda = null;
+		} else {
+			this.filterLambda = new LambdaFilterNode(null, this.entity, false);
+		}
 	}
 
 }

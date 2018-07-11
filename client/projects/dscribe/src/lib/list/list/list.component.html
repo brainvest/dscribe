@@ -1,8 +1,16 @@
 <mat-card>
-	<button mat-button (click)="refreshData()">Refresh</button>
+	<button mat-button (click)="toggleFilter()">{{filterLambda ? 'Hide' : 'Show'}} Filter</button>
+	<button mat-button (click)="applyFilter()">ApplyFilter</button>
 	<button mat-button (click)="addNew()">Add</button>
 	<button mat-button [disabled]="!selectedRow" (click)="editSelected()">Edit</button>
 	<button mat-button [disabled]="!selectedRow" (click)="deleteSelected()">Delete</button>
+</mat-card>
+
+<mat-card class="manipulation-section filtering" *ngIf="filterLambda" style="margin-bottom: 0px;">
+	<legend class="p4">Filter</legend>
+	<div class="manipulation-section__content">
+		<dscribe-filter-node [node]="filterLambda"></dscribe-filter-node>
+	</div>
 </mat-card>
 
 <table mat-table [dataSource]="data" matSort>

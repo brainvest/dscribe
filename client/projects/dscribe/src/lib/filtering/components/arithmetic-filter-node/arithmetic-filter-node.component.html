@@ -1,0 +1,19 @@
+<div *ngFor="let child of node.children; let ind = index">
+	<div class="filter-node-container" *ngIf="ind == (node.operator?.minOperandCount == 2 ? 1 : 0)">
+		<div class="node-action-btns">
+			<mat-icon class="add-sibling-btn" (click)="manipulator.addSibling(node)"
+								*ngIf="node?.parent?.canReplaceChild()" title="add calculations before this one">rewind</mat-icon>
+			<mat-icon class="add-sibling-btn" (click)="node.addChild(true)" title="add operands">plus</mat-icon>
+			<mat-icon class="add-sibling-btn" (click)="manipulator.delete(node)"
+								*ngIf="node?.parent?.canReplaceChild()" title="delete this operation (and all operands)">trash</mat-icon>
+		</div>
+		<select class="filter-option" [(ngModel)]="node.operator">
+			<option value="" disabled selected>Math Operators</option>
+			<option *ngFor="let o of node.operators" [ngValue]="o">{{o?.title}}</option>
+		</select>
+	</div>
+	<span *ngIf="ind != (node.operator?.minOperandCount == 2 ? 1 : 0)" class="filter-option">
+		{{ind > (node.operator?.minOperandCount == 2 ? 1 : 0) ? node.operator?.title : ''}}
+	</span>
+	<dscribe-filter-node [node]="child"></dscribe-filter-node>
+</div>

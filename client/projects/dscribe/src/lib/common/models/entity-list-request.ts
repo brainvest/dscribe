@@ -1,15 +1,15 @@
-import {LambdaFilterNode} from '../../filtering/models/filter-nodes/lambda-filter-node';
 import {SortItem} from './sort-item';
+import {StorageFilterNode} from '../../filtering/models/storage-filter-node';
 
 export class EntityListRequest {
-	constructor(public entityTypeName: string, public filters: LambdaFilterNode[],
+	constructor(public entityTypeName: string, public filters: StorageFilterNode[],
 							public startIndex?: number, public count?: number, public order?: SortItem[]) {
 	}
 
 	public getRequestObject(): any {
 		return {
 			entityTypeName: this.entityTypeName,
-			filters: this.filters.map(x => x.getStorageNode()).filter(x => x),
+			filters: this.filters,
 			order: this.order,
 			startIndex: this.startIndex,
 			count: this.count

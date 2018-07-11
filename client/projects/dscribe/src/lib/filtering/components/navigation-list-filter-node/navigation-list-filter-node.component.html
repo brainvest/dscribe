@@ -1,0 +1,13 @@
+<div style="border: 1px solid navy;">
+	<select class="filter-option" [class.noOptionSelected]="!node.operator" [(ngModel)]="node.operator">
+		<option [ngValue]="undefined" disabled invalid>عملگر</option>
+		<option *ngFor="let o of node.operators" [ngValue]="o">{{o.title}}</option>
+	</select>
+	<ng-container *ngIf="node.hasAggregationSelection">
+		<dscribe-filter-node [node]="node.aggregationSelection"></dscribe-filter-node>
+	</ng-container>
+	<ng-container *ngIf="node.hasFiltering">
+		<br>
+		<dscribe-filter-node [node]="node.filterSubNode"></dscribe-filter-node>
+	</ng-container>
+</div>

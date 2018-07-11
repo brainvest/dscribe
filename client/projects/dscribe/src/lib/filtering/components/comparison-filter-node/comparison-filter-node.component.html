@@ -1,0 +1,18 @@
+<ng-container *ngFor="let child of node.children; let ind = index">
+	<ng-container *ngIf="ind > 1">
+		{{node.operator?.title}}
+	</ng-container>
+	<dscribe-filter-node [node]="child"></dscribe-filter-node>
+	<div class="filter-node-container" *ngIf="ind == 0">
+		<div class="node-action-btns">
+			<mat-icon class="add-sibling-btn" (click)="manipulator.addSibling(node)"
+								*ngIf="node?.parent?.canReplaceChild()" title="Combine logically with another condition">rewind</mat-icon>
+			<mat-icon class="add-sibling-btn" (click)="manipulator.delete(node)"
+								*ngIf="node?.parent?.canReplaceChild()" title="remove this condition">trash</mat-icon>
+		</div>
+		<select class="filter-option" [class.noOptionSelected]="!node.operator" [(ngModel)]="node.operator">
+			<option [ngValue]="undefined" selected invalid>شرط</option>
+			<option *ngFor="let o of node.operators" [ngValue]="o">{{o?.title}}</option>
+		</select>
+	</div>
+</ng-container>
