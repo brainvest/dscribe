@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort} from '@angular/material';
+import {MatDialog, MatDialogConfig, MatPaginator, MatSort} from '@angular/material';
 import {MetadataService} from '../../common/services/metadata.service';
 import {DataHandlerService} from '../../common/services/data-handler.service';
 import {EntityMetadata} from '../../metadata/entity-metadata';
@@ -9,15 +9,20 @@ import {EntityListRequest} from '../../common/models/entity-list-request';
 import {SortItem} from '../../common/models/sort-item';
 import {ListColumn} from '../models/list-column';
 import {KnownFacets} from '../../metadata/facets/known-facet';
+import {MasterReference} from '../models/master-reference';
+import {HasId} from '../../common/models/has-id';
+import {ListAddNEditDialogComponent} from '../list-add-n-edit-dialog/list-add-n-edit-dialog.component';
 
 @Component({
-	selector: 'lib-list',
+	selector: 'dscribe-list',
 	templateUrl: './list.component.html',
 	styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit, OnChanges {
 
 	@Input() entity: EntityMetadata;
+	@Input() master: MasterReference;
+
 	displayedColumns = [];
 	columns: ListColumn[] = [];
 	data = [];
@@ -32,11 +37,12 @@ export class ListComponent implements OnInit, OnChanges {
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(private metadataService: MetadataService,
-							private dataHandler: DataHandlerService) {
+							private dataHandler: DataHandlerService,
+							private dialog: MatDialog) {
 		this.metadataService.getMetadata().getTypeByName('Organization')
 			.subscribe(entity => {
 				this.entity = entity;
-				this.applyFilter();
+				this.refreshData();
 				this.createColumns(this.entity);
 			});
 	}
@@ -51,7 +57,7 @@ export class ListComponent implements OnInit, OnChanges {
 				return;
 			}
 			this.displayedEntityType = this.entity.name;
-			this.applyFilter();
+			this.refreshData();
 			this.createColumns(this.entity);
 		}
 	}
@@ -78,7 +84,7 @@ export class ListComponent implements OnInit, OnChanges {
 		}
 	}
 
-	applyFilter() {
+	refreshData() {
 		this.isLoadingResults = true;
 		this.paginator.pageIndex = 0;
 		this.data = [];
@@ -115,6 +121,45 @@ export class ListComponent implements OnInit, OnChanges {
 					return of([]);
 				})
 			).subscribe(data => this.data = data);
+	}
+
+	onMasterChanged() {
+		this.refreshData();
+	}
+
+	addNew() {
+		const newEntity = {};
+		if (this.master
+			&& this.master.master
+			&& this.master.masterProperty
+			&& this.master.masterProperty.inverseProperty
+			&& this.master.masterProperty.inverseProperty.foreignKeyName) {
+			newEntity[this.master.masterProperty.inverseProperty.foreignKeyName] = (this.master.master as HasId).id;
+		}
+		this.openAddNEditDialog(newEntity, true);
+	}
+
+	editSelected() {
+	}
+
+	openAddNEditDialog(instance: any, isNew: boolean) {
+		const dialogRef = this.dialog.open(ListAddNEditDialogComponent, {
+			width: '800px',
+			data: {
+				entity: instance,
+				action: isNew ? 'add' : 'edit',
+				entityType: this.entity.name,
+				title: this.entity.singularTitle,
+				master: this.master
+			}
+		});
+		dialogRef.afterClosed().subscribe(
+			result => {
+				if (result !== undefined) {
+					this.refreshData();
+				}
+			}
+		);
 	}
 
 }

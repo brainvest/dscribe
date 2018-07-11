@@ -4,13 +4,13 @@
         "directive-selector": [
             true,
             "attribute",
-            "app",
+            "dscribe-host",
             "camelCase"
         ],
         "component-selector": [
             true,
             "element",
-            "app",
+            "dscribe-host",
             "kebab-case"
         ]
     }

@@ -1,0 +1,70 @@
+<ng-container [ngSwitch]="inputType">
+	<dscribe-text-editor *ngSwitchCase="'Text'" [property]="property" [entity]="entity"
+							 [overridePropertyName]="overridePropertyName">
+	</dscribe-text-editor>
+
+	<dscribe-number-editor *ngSwitchCase="'Number'" [property]="property" [entity]="entity"
+								 [overridePropertyName]="overridePropertyName">
+	</dscribe-number-editor>
+
+	<dscribe-entity-auto-complete-component *ngSwitchCase="'entitySelector'"
+																		 [property]="property"
+																		 [entity]="entity"
+																		 [overridePropertyName]="overridePropertyName">
+	</dscribe-entity-auto-complete-component>
+
+
+	<dscribe-entity-list-editor *ngSwitchCase="'entityListEditor'" [property]="property" [entity]="entity"
+											[overridePropertyName]="overridePropertyName">
+	</dscribe-entity-list-editor>
+
+	<dscribe-bool-editor *ngSwitchCase="'checkbox'" [property]="property" [entity]="entity"
+							 [overridePropertyName]="overridePropertyName">
+	</dscribe-bool-editor>
+
+	<dscribe-date-editor *ngSwitchCase="'date'" [property]="property" [entity]="entity"
+							 [overridePropertyName]="overridePropertyName">
+	</dscribe-date-editor>
+
+	<dscribe-datetime-editor *ngSwitchCase="'datetime'" [property]="property" [entity]="entity"
+									 [overridePropertyName]="overridePropertyName">
+	</dscribe-datetime-editor>
+
+	<dscribe-entity-select *ngSwitchCase="'typeCategory' " [property]="property" [entity]="entity"
+								 [list]="selectionList" [overridePropertyName]="overridePropertyName">
+	</dscribe-entity-select>
+
+	<dscribe-entity-select *ngSwitchCase="'propertyCategory'" [property]="property" [entity]="entity"
+								 [list]="selectionList" [overridePropertyName]="overridePropertyName">
+	</dscribe-entity-select>
+
+	<dscribe-entity-select *ngSwitchCase="'propertyDataType'" [property]="property" [entity]="entity"
+								 [list]="selectionList" [overridePropertyName]="overridePropertyName">
+	</dscribe-entity-select>
+
+	<ng-container *ngIf="dataType == 'ForeignKey'">
+		<dscribe-entity-select *ngSwitchCase="'dataTypeSemantic'" [property]="property" [entity]="entity"
+									 [list]="selectionList" [overridePropertyName]="overridePropertyName">
+		</dscribe-entity-select>
+	</ng-container>
+
+	<ng-container *ngIf="dataType == 'NavigationEntity'">
+		<dscribe-entity-select *ngSwitchCase="'dataTypeSemantic'" [property]="property" [entity]="entity"
+									 [list]="selectionList" [overridePropertyName]="overridePropertyName">
+		</dscribe-entity-select>
+
+		<dscribe-entity-select *ngSwitchCase="'foreignKeyProperty'" [property]="property" [entity]="entity"
+									 [list]="selectionList" [overridePropertyName]="overridePropertyName">
+		</dscribe-entity-select>
+	</ng-container>
+
+	<ng-container *ngIf="dataType == 'NavigationList'">
+		<dscribe-entity-select *ngSwitchCase="'dataTypeSemantic'" [property]="property" [entity]="entity"
+									 [list]="selectionList" [overridePropertyName]="overridePropertyName">
+		</dscribe-entity-select>
+
+		<dscribe-entity-select *ngSwitchCase="'inverseProperty'" [property]="property" [entity]="entity"
+									 [list]="selectionList" [overridePropertyName]="overridePropertyName">
+		</dscribe-entity-select>
+	</ng-container>
+</ng-container>

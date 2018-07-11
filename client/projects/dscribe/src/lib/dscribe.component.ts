@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-	selector: 'lib-dscribe',
+	selector: 'dscribe-dscribe',
 	template: `
 		<p>
 			dscribe works!

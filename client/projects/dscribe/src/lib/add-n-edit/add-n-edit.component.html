@@ -1,0 +1,12 @@
+<form class="form-horizontal">
+	<div *ngIf="entityMetadata">
+		<dscribe-property-editor *ngFor="let property of properties"
+										 [property]="property"
+										 [entity]="entity">
+		</dscribe-property-editor>
+	</div>
+
+	<button mat-raised-button type="submit" (click)="saveEntity()">
+		ذخیره
+	</button>
+</form>

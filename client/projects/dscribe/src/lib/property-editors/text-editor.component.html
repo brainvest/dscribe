@@ -1,0 +1,7 @@
+<input type="text" [(ngModel)]="entity[overridePropertyName || property.jsName]">
+
+<div *ngIf="property?.validationErrors">
+	<p *ngFor="let validationError of property.validationErrors" class="error-message">
+		{{validationError.errorMessage}}
+	</p>
+</div>

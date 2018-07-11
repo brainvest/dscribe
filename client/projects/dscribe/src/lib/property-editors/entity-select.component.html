@@ -1,0 +1,6 @@
+<select [attr.id]="property.name" [(ngModel)]="entity[overridePropertyName || property.jsName]"
+				[ngStyle]="{width: width}">
+	<option *ngFor="let item of list" [ngValue]="item.id">
+		{{ item.displayName ? item.displayName : item.name }}
+	</option>
+</select>

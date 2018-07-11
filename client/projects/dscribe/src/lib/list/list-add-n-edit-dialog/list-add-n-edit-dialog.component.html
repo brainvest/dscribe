@@ -1,0 +1,15 @@
+<div mat-dialog-title>{{data.action}} {{data.title}}
+	<button mat-icon-button (click)="dialogRef.close()">
+		<mat-icon>close</mat-icon>
+	</button>
+</div>
+
+<mat-dialog-content>
+	<dscribe-add-n-edit
+		[entityType]="data?.entityType"
+		[action]="data?.action"
+		[entity]="data?.entity"
+		[master]="data?.master"
+		(EntitySaved)="afterEntitySaved()">
+	</dscribe-add-n-edit>
+</mat-dialog-content>

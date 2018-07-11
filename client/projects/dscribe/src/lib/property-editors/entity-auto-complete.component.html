@@ -1,0 +1,11 @@
+<mat-form-field *ngIf="listRefresher">
+	<input matInput [attr.id]="property.name" [attr.aria-label]="property.name" [formControl]="inputCtrl"
+				 [matAutocomplete]="auto">
+	<i *ngIf="loading" class="fa fa-spinner" matSuffix></i>
+	<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+		<mat-option *ngFor="let item of filteredOptions | async" [value]="item.id"
+								(onSelectionChange)="selectionChange(item)">
+			{{ item.displayName ? item.displayName : '' }}
+		</mat-option>
+	</mat-autocomplete>
+</mat-form-field>

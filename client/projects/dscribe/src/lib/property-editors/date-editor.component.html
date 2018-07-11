@@ -1,0 +1,12 @@
+<mat-form-field>
+	<input matInput [attr.id]="property.name" [matDatepicker]="picker"
+		   [ngModel]="entity[overridePropertyName || property.jsName]"
+		   (ngModelChange)="onModelChange($event)">
+	<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+	<mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+<div *ngIf="property.validationErrors">
+	<p *ngFor="let validationError of property.validationErrors" class="error-message">
+		{{validationError.errorMessage}}</p>
+</div>

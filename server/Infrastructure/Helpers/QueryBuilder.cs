@@ -193,7 +193,7 @@ namespace Brainvest.Dscribe.Helpers
 		public static Expression<Func<TEntity, bool>> FilterByDisplayName<TEntity>(string start, string displayNameProperty)
 		{
 			var param = Expression.Parameter(typeof(TEntity), "x");
-			var startsWithMethod = typeof(string).GetMethods().Single(x => x.Name == nameof(String.StartsWith) && x.GetParameters().Length == 1);
+			var startsWithMethod = typeof(string).GetMethods().Single(x => x.Name == nameof(String.StartsWith) && x.GetParameters().Length == 1 && x.GetParameters().Single().ParameterType == typeof(string));
 			Expression path = param;
 			foreach (var part in displayNameProperty.Split('.'))
 			{

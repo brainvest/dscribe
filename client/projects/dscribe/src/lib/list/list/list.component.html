@@ -1,3 +1,7 @@
+<mat-card>
+	<button mat-button (click)="addNew()">Add</button>
+</mat-card>
+
 <table mat-table [dataSource]="data" matSort>
 	<ng-container *ngFor="let col of columns" [matColumnDef]="col.name">
 		<th mat-header-cell *matHeaderCellDef mat-sort-header>{{col.title}}</th>
