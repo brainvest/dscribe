@@ -2,6 +2,7 @@
 	<button mat-button (click)="refreshData()">Refresh</button>
 	<button mat-button (click)="addNew()">Add</button>
 	<button mat-button [disabled]="!selectedRow" (click)="editSelected()">Edit</button>
+	<button mat-button [disabled]="!selectedRow" (click)="deleteSelected()">Delete</button>
 </mat-card>
 
 <table mat-table [dataSource]="data" matSort>

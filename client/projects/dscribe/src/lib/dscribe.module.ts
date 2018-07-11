@@ -11,7 +11,8 @@ import {
 	MatDatepickerModule,
 	MatDialogModule,
 	MatFormFieldModule,
-	MatIconModule, MatInputModule,
+	MatIconModule,
+	MatInputModule,
 	MatPaginatorModule,
 	MatSortModule,
 	MatTableModule
@@ -30,6 +31,7 @@ import {EntitySelectComponent} from './property-editors/entity-select.component'
 import {TextEditorComponent} from './property-editors/text-editor.component';
 import {NumberEditorComponent} from './property-editors/number-editor.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ListDeleteDialogComponent} from './list/list-delete-dialog/list-delete-dialog.component';
 
 @NgModule({
 	imports: [
@@ -63,14 +65,16 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 		EntityListEditorComponent,
 		EntitySelectComponent,
 		NumberEditorComponent,
-		TextEditorComponent
+		TextEditorComponent,
+		ListDeleteDialogComponent
 	],
 	exports: [DscribeComponent, ListComponent],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: DscribeInterceptor, multi: true},
 	],
 	entryComponents: [
-		ListAddNEditDialogComponent
+		ListAddNEditDialogComponent,
+		ListDeleteDialogComponent
 	]
 })
 export class DscribeModule {

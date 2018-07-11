@@ -12,6 +12,7 @@ import {KnownFacets} from '../../metadata/facets/known-facet';
 import {MasterReference} from '../models/master-reference';
 import {HasId} from '../../common/models/has-id';
 import {ListAddNEditDialogComponent} from '../list-add-n-edit-dialog/list-add-n-edit-dialog.component';
+import {ListDeleteDialogComponent} from '../list-delete-dialog/list-delete-dialog.component';
 
 @Component({
 	selector: 'dscribe-list',
@@ -166,6 +167,27 @@ export class ListComponent implements OnInit, OnChanges {
 		dialogRef.afterClosed().subscribe(
 			result => {
 				if (result !== undefined) {
+					this.refreshData();
+				}
+			}
+		);
+	}
+
+	deleteSelected() {
+		if (!this.selectedRow) {
+			return;
+		}
+		const deleteDialogRef = this.dialog.open(ListDeleteDialogComponent, {
+			width: '300px'
+		});
+		deleteDialogRef.componentInstance.inputs = {
+			entityType: this.entity.name,
+			title: this.entity.singularTitle,
+			selectedRow: this.selectedRow
+		};
+
+		deleteDialogRef.afterClosed().subscribe((result) => {
+				if (result === 'deleted') {
 					this.refreshData();
 				}
 			}
