@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {MatDialog, MatDialogConfig, MatPaginator, MatSort} from '@angular/material';
+import {MatDialog, MatPaginator, MatSort} from '@angular/material';
 import {MetadataService} from '../../common/services/metadata.service';
 import {DataHandlerService} from '../../common/services/data-handler.service';
 import {EntityMetadata} from '../../metadata/entity-metadata';
@@ -32,6 +32,7 @@ export class ListComponent implements OnInit, OnChanges {
 	isDataConnected = false;
 	userRefresh: EventEmitter<null> = new EventEmitter<null>();
 	pageSize = 10;
+	selectedRow: any = null;
 
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	@ViewChild(MatSort) sort: MatSort;
@@ -85,6 +86,7 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	refreshData() {
+		this.selectedRow = null;
 		this.isLoadingResults = true;
 		this.paginator.pageIndex = 0;
 		this.data = [];
@@ -139,7 +141,15 @@ export class ListComponent implements OnInit, OnChanges {
 		this.openAddNEditDialog(newEntity, true);
 	}
 
+	selectRow(row: any) {
+		this.selectedRow = row;
+	}
+
 	editSelected() {
+		if (!this.selectedRow) {
+			return;
+		}
+		this.openAddNEditDialog(this.selectedRow, false);
 	}
 
 	openAddNEditDialog(instance: any, isNew: boolean) {
