@@ -7,7 +7,7 @@ import {DscribeInterceptor} from './common/dscribe-interceptor';
 import {
 	MatAutocompleteModule,
 	MatButtonModule,
-	MatCardModule,
+	MatCardModule, MatCheckboxModule,
 	MatDatepickerModule,
 	MatDialogModule,
 	MatFormFieldModule,
@@ -59,7 +59,9 @@ import {FilterTreeManipulator} from './filtering/models/filter-tree-manipulator'
 		MatPaginatorModule,
 		MatSortModule,
 		MatTableModule,
-		ReactiveFormsModule],
+		MatCheckboxModule,
+		ReactiveFormsModule
+	],
 	declarations: [
 		DscribeComponent,
 		AddNEditComponent,

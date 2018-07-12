@@ -1,5 +1,54 @@
+.flex-spacer {
+	flex: 1;
+}
+
+.page-header {
+	display: flex;
+	padding: 16px 8px;
+}
+
+.page-title {
+	margin: 0;
+}
+
 table {
 	width: 100%;
+	border: 1px solid #d1d8dd;
+	border-bottom: none;
+}
+
+.mat-header-row {
+	background-color: #F7FAFC;
+}
+
+.mat-row {
+	cursor: pointer;
+}
+
+.mat-row:hover {
+	background-color: #F7FAFC;
+}
+
+.filter {
+	border: 1px solid #d1d8dd;
+	border-bottom: none;
+}
+
+.filter__summary, .filter__content {
+	padding: 16px 8px;
+}
+
+.filter__summary {
+	display: flex;
+}
+
+.filter__content {
+	border-top: 1px solid #d1d8dd;;
+}
+
+.list-paginator {
+	border: 1px solid #d1d8dd;
+	border-top: none;
 }
 
 tr.highlight {

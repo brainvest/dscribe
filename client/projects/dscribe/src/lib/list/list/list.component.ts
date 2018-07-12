@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatPaginator, MatSort} from '@angular/material';
 import {MetadataService} from '../../common/services/metadata.service';
 import {DataHandlerService} from '../../common/services/data-handler.service';
@@ -18,18 +18,23 @@ import {StorageFilterNode} from '../../filtering/models/storage-filter-node';
 import {LambdaHelper} from '../../helpers/lambda-helper';
 import {FilterNode} from '../../filtering/models/filter-nodes/filter-node';
 import {FilterNodeFactory} from '../../filtering/models/filter-node-factory';
+import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
 	selector: 'dscribe-list',
 	templateUrl: './list.component.html',
-	styleUrls: ['./list.component.css']
+	styleUrls: ['./list.component.css'],
+	encapsulation: ViewEncapsulation.None
 })
 export class ListComponent implements OnInit, OnChanges {
+	initialSelection = [];
+	allowMultiSelect = false;
+	selection = new SelectionModel<any>(this.allowMultiSelect, this.initialSelection);
 
 	@Input() entity: EntityMetadata;
 	@Input() master: MasterReference;
 
-	displayedColumns = [];
+	displayedColumns = ['select'];
 	columns: ListColumn[] = [];
 	data = [];
 	totalCount = 0;
@@ -74,7 +79,7 @@ export class ListComponent implements OnInit, OnChanges {
 
 	createColumns(entity: EntityMetadata) {
 		this.columns = [];
-		this.displayedColumns = [];
+		this.displayedColumns = ['select'];
 		for (const propertyName in entity.properties) {
 			if (!entity.properties.hasOwnProperty(propertyName)) {
 				continue;
@@ -171,15 +176,25 @@ export class ListComponent implements OnInit, OnChanges {
 		this.openAddNEditDialog(newEntity, true);
 	}
 
+	isAllSelected() {
+		const numSelected = this.selection.selected.length;
+		const numRows = this.data.length;
+		return numSelected === numRows;
+	}
+
+	/** Selects all rows if they are not all selected; otherwise clear selection. */
+	masterToggle() {
+		this.isAllSelected() ?
+			this.selection.clear() :
+			this.data.forEach(row => this.selection.select(row));
+	}
+
 	selectRow(row: any) {
 		this.selectedRow = row;
 	}
 
-	editSelected() {
-		if (!this.selectedRow) {
-			return;
-		}
-		this.openAddNEditDialog(this.selectedRow, false);
+	editRow(row: any) {
+		this.openAddNEditDialog(row, false);
 	}
 
 	openAddNEditDialog(instance: any, isNew: boolean) {
@@ -203,16 +218,13 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	deleteSelected() {
-		if (!this.selectedRow) {
-			return;
-		}
 		const deleteDialogRef = this.dialog.open(ListDeleteDialogComponent, {
 			width: '300px'
 		});
 		deleteDialogRef.componentInstance.inputs = {
 			entityType: this.entity.name,
 			title: this.entity.singularTitle,
-			selectedRow: this.selectedRow
+			selectedRow: this.selection.selected[0]
 		};
 
 		deleteDialogRef.afterClosed().subscribe((result) => {
