@@ -8,6 +8,7 @@ import {
 	MatAutocompleteModule,
 	MatButtonModule,
 	MatCardModule,
+	MatCheckboxModule,
 	MatDatepickerModule,
 	MatDialogModule,
 	MatFormFieldModule,
@@ -47,8 +48,8 @@ import {HomePageComponent} from './home-page/home-page.component';
 import {MetadataManagementComponent} from './Administration/metadata-management/metadata-management.component';
 import {RouterModule} from '@angular/router';
 import {DSCRIBE_ROUTES} from './dscribe-routes';
-import { EntityGeneralUsageNamePipe } from './Administration/helpers/entity-general-usage-name.pipe';
-import { AddNEditEntityComponent } from './Administration/add-n-edit-entity/add-n-edit-entity.component';
+import {EntityGeneralUsageNamePipe} from './Administration/helpers/entity-general-usage-name.pipe';
+import {AddNEditEntityComponent} from './Administration/add-n-edit-entity/add-n-edit-entity.component';
 
 @NgModule({
 	imports: [
@@ -68,6 +69,8 @@ import { AddNEditEntityComponent } from './Administration/add-n-edit-entity/add-
 		MatPaginatorModule,
 		MatSortModule,
 		MatTableModule,
+		MatCheckboxModule,
+		ReactiveFormsModule,
 		ReactiveFormsModule,
 		RouterModule.forRoot(DSCRIBE_ROUTES)
 	],
