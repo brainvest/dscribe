@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-	selector: 'dscribe-dscribe',
+	selector: 'dscribe-root',
 	template: `
-		<p>
-			dscribe works!
-		</p>
+		<router-outlet></router-outlet>
 	`,
 	styles: []
 })

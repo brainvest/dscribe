@@ -13,6 +13,7 @@ import {
 	MatFormFieldModule,
 	MatIconModule,
 	MatInputModule,
+	MatMenuModule,
 	MatPaginatorModule,
 	MatSortModule,
 	MatTableModule
@@ -41,6 +42,11 @@ import {LogicalFilterNodeComponent} from './filtering/components/logical-filter-
 import {NavigationListFilterNodeComponent} from './filtering/components/navigation-list-filter-node/navigation-list-filter-node.component';
 import {PropertyFilterNodeComponent} from './filtering/components/property-filter-node/property-filter-node.component';
 import {FilterTreeManipulator} from './filtering/models/filter-tree-manipulator';
+import {NavigationComponent} from './navigation/navigation.component';
+import {HomePageComponent} from './home-page/home-page.component';
+import {MetadataManagementComponent} from './Administration/metadata-management/metadata-management.component';
+import {RouterModule} from '@angular/router';
+import {DSCRIBE_ROUTES} from './dscribe-routes';
 
 @NgModule({
 	imports: [
@@ -56,10 +62,13 @@ import {FilterTreeManipulator} from './filtering/models/filter-tree-manipulator'
 		MatIconModule,
 		MatInputModule,
 		MatFormFieldModule,
+		MatMenuModule,
 		MatPaginatorModule,
 		MatSortModule,
 		MatTableModule,
-		ReactiveFormsModule],
+		ReactiveFormsModule,
+		RouterModule.forRoot(DSCRIBE_ROUTES)
+	],
 	declarations: [
 		DscribeComponent,
 		AddNEditComponent,
@@ -83,7 +92,10 @@ import {FilterTreeManipulator} from './filtering/models/filter-tree-manipulator'
 		LambdaFilterNodeComponent,
 		LogicalFilterNodeComponent,
 		NavigationListFilterNodeComponent,
-		PropertyFilterNodeComponent
+		PropertyFilterNodeComponent,
+		NavigationComponent,
+		HomePageComponent,
+		MetadataManagementComponent
 	],
 	exports: [DscribeComponent, ListComponent],
 	providers: [

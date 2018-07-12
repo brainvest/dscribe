@@ -1,0 +1,9 @@
+<mat-menu #appMenu="matMenu">
+	<button mat-menu-item *ngFor="let entity of entities" routerLink="/entity/{{entity.name}}">{{entity.pluralTitle}}</button>
+</mat-menu>
+
+<button mat-icon-button [matMenuTriggerFor]="appMenu">
+	<mat-icon>more_vert</mat-icon>
+</button>
+
+<router-outlet></router-outlet>
