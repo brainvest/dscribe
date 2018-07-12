@@ -7,6 +7,7 @@
 		"@angular/animations": "^6.0.7",
 		"@angular/cdk": "^6.3.1",
 		"@angular/compiler": "^6.0.3",
-		"@angular/material": "^6.3.1"
+		"@angular/material": "^6.3.1",
+		"@angular/router": "^6.0.7"
 	}
 }
