@@ -48,6 +48,7 @@ import {MetadataManagementComponent} from './Administration/metadata-management/
 import {RouterModule} from '@angular/router';
 import {DSCRIBE_ROUTES} from './dscribe-routes';
 import { EntityGeneralUsageNamePipe } from './Administration/helpers/entity-general-usage-name.pipe';
+import { AddNEditEntityComponent } from './Administration/add-n-edit-entity/add-n-edit-entity.component';
 
 @NgModule({
 	imports: [
@@ -97,7 +98,8 @@ import { EntityGeneralUsageNamePipe } from './Administration/helpers/entity-gene
 		NavigationComponent,
 		HomePageComponent,
 		MetadataManagementComponent,
-		EntityGeneralUsageNamePipe
+		EntityGeneralUsageNamePipe,
+		AddNEditEntityComponent
 	],
 	exports: [DscribeComponent, ListComponent],
 	providers: [

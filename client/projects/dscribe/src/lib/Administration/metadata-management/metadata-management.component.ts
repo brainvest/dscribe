@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ListColumn} from '../../list/models/list-column';
 import {MetadataManagementApiClient} from '../metadata-management-api-client';
 import {MetadataBasicInfoModel} from '../../metadata/metadata-basic-info-model';
 import {TypeBase} from '../../metadata/entity-base';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import {PropertyBase} from '../../metadata/property-base';
+import {IdAndName} from '../../common/models/id-and-name';
+import {HasIdName} from '../../common/models/has-id-name';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -20,31 +21,13 @@ export class MetadataManagementComponent implements OnInit {
 	entitiesAreLoading = false;
 
 	properties: PropertyBase[];
+	allPropertyNames: HasIdName[];
 	propertiesDataSource = new MatTableDataSource<PropertyBase>();
 	selectedProperty: PropertyBase;
 	propertiesAreLoading = false;
 
 	displayedEntityColumns = ['name', 'usage', 'singular', 'plural', 'code', 'displayName'];
-	entityColumns = [
-		new ListColumn('name', 'Name', 'name'),
-		new ListColumn('usage', 'Usage', 'entityGeneralUsageCategoryId'),
-		new ListColumn('singular', 'Singular', 'singularTitle'),
-		new ListColumn('plural', 'Plural', 'pluralTitle'),
-		new ListColumn('code', 'Code', 'codePath'),
-		new ListColumn('displayName', 'Display Name', 'displayNamePath')
-	];
-
 	displayedPropertyColumns = ['name', 'title', 'dataType', 'nullable', 'dataTypeEntity', 'usage', 'foreignKey', 'inverse'];
-	propertyColumns = [
-		new ListColumn('name', 'Name', 'name'),
-		new ListColumn('title', 'Title', 'title'),
-		new ListColumn('dataType', 'Data Type', 'dataTypeId'),
-		new ListColumn('nullable', 'Nullable', 'isNullable'),
-		new ListColumn('dataTypeEntity', 'Data Type Entity', 'dataTypeEntityId'),
-		new ListColumn('usage', 'Usage', 'propertyGeneralUsageCategoryId'),
-		new ListColumn('foreignKey', 'Foreign Key', 'foreignKeyPropertyId'),
-		new ListColumn('inverse', 'Inverse', 'inversePropertyId')
-	];
 
 	@ViewChild(MatPaginator) entitiesPaginator: MatPaginator;
 	@ViewChild(MatPaginator) propertiesPaginator: MatPaginator;
@@ -75,6 +58,8 @@ export class MetadataManagementComponent implements OnInit {
 		this.selectedEntity = entity;
 		if (entity) {
 			this.propertiesAreLoading = true;
+			this.apiClient.getAllPropertyNames()
+				.subscribe(names => this.allPropertyNames = names);
 			this.apiClient.getProperties(entity.id)
 				.subscribe(props => {
 					this.propertiesDataSource.data = this.properties = props;
@@ -83,5 +68,35 @@ export class MetadataManagementComponent implements OnInit {
 		}
 	}
 
+	getEntityUsageName(id: number) {
+		return this.basicInfo.entityGeneralUsageCategories.find(x => x.id === id)!.name;
+	}
 
+	getPropertyUsageName(id: number) {
+		return this.basicInfo.propertyGeneralUsageCategories.find(x => x.id === id)!.name;
+	}
+
+	getDataTypeName(id: number) {
+		return this.basicInfo.dataTypes.find(x => x.id === id)!.name;
+	}
+
+	getEntityName(id: number) {
+		if (!id) {
+			return null;
+		}
+		return this.entities.find(x => x.id === id)!.name;
+	}
+
+	getPropertyName(id: number) {
+		if (!id) {
+			return;
+		}
+		const prop = this.properties.find(x => x.id === id);
+		if (prop) {
+			return prop.name;
+		}
+		return this.allPropertyNames.find(x => x.id === id).displayName;
+	}
 }
+
+

@@ -342,6 +342,19 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			return Ok();
 		}
 
+		[HttpPost]
+		public async Task<ActionResult<IEnumerable<PropertyNameModel>>> GetAllPropertyNames()
+		{
+			var appTypeId = _implementations.InstanceInfo.AppTypeId;
+			var names = await _dbContext.Properties.Where(x => x.Entity.AppTypeId == appTypeId)
+				.Select(x => new PropertyNameModel
+				{
+					Id = x.Id,
+					Name = x.Name
+				}).ToListAsync();
+			return names;
+		}
+
 		private string AddTypeValidation(EntityMetadataModel model)
 		{
 			string error = null;

@@ -94,4 +94,10 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string Identifier { get; set; }
 		public string Name { get; set; }
 	}
+
+	public class PropertyNameModel
+	{
+		public int Id { get; set; }
+		public string Name { get; set; }
+	}
 }

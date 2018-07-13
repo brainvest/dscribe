@@ -5,6 +5,7 @@ import {PropertyBase} from '../metadata/property-base';
 import {LocalFacetsModel} from '../metadata/facets/local-facet-model';
 import {TypeBase} from '../metadata/entity-base';
 import {MetadataBasicInfoModel} from '../metadata/metadata-basic-info-model';
+import {HasIdName} from '../common/models/has-id-name';
 
 @Injectable({
 	providedIn: 'root'
@@ -17,6 +18,7 @@ export class MetadataManagementApiClient {
 	private getBasicInfoAPI = this.managementAPI + 'getBasicInfo';
 	private getTypeFacetsAPI = this.managementAPI + 'getTypeFacets';
 	private getPropertyFacetsAPI = this.managementAPI + 'getPropertyFacets';
+	private getAllPropertyNamesAPI = this.managementAPI + 'getAllPropertyNames';
 
 	constructor(private http: HttpClient) {
 	}
@@ -55,5 +57,9 @@ export class MetadataManagementApiClient {
 
 	getPropertyFacets(typeName: string): Observable<LocalFacetsModel> {
 		return this.http.post<LocalFacetsModel>(this.getPropertyFacetsAPI, {typeName: typeName});
+	}
+
+	getAllPropertyNames(): Observable<HasIdName[]> {
+		return this.http.post<HasIdName[]>(this.getAllPropertyNamesAPI, {});
 	}
 }
