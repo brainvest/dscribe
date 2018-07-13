@@ -72,8 +72,6 @@ import {AddNEditEntityComponent} from './Administration/add-n-edit-entity/add-n-
 		MatTableModule,
 		MatCheckboxModule,
 		MatProgressSpinnerModule,
-		ReactiveFormsModule
-		ReactiveFormsModule,
 		ReactiveFormsModule,
 		RouterModule.forRoot(DSCRIBE_ROUTES)
 	],

@@ -235,7 +235,7 @@ namespace Brainvest.Dscribe.Helpers.FilterNodeConverter
 		private static Expression MakeStringContainment(FilterOperator filterOperator, IList<Expression> children)
 		{
 			var methodName = filterOperator.ToString();
-			var method = typeof(string).GetMethods().Single(x => x.Name == methodName && x.GetParameters().Length == 1);
+			var method = typeof(string).GetMethods().Single(x => x.Name == methodName && x.GetParameters().Length == 1 && x.GetParameters().Single().ParameterType == typeof(string));
 			if (children[1].Type == children[0].Type)
 			{
 				return Expression.Call(children[0], method, children[1]);

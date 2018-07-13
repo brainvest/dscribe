@@ -6,8 +6,8 @@ export class LogicalOperator {
 	}
 
 	static logicalOperators: LogicalOperator[] = [
-		new LogicalOperator('And', 'و', 2, null),
-		new LogicalOperator('Or', 'یا', 2, null),
-		new LogicalOperator('Not', 'نهی', 1, 1)
+		new LogicalOperator('And', 'And', 2, null),
+		new LogicalOperator('Or', 'Or', 2, null),
+		new LogicalOperator('Not', 'Not', 1, 1)
 	];
 }

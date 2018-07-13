@@ -1,6 +1,6 @@
 <div class="filter-node-container">
 	<div class="node-action-btns" *ngIf="node?.parent?.nodeType !== nodeTypes.Property">
-		<mat-icon (click)="manipulator.addSibling(node)" title="move under calculation">fast_rewind</mat-icon>
+		<mat-icon (click)="manipulator.addSibling(node)" title="move under calculation">fast_forward</mat-icon>
 		<mat-icon (click)="manipulator.delete(node)" title="remove">delete</mat-icon>
 		<mat-icon (click)="manipulator.toggleType(node)" title="convert to constant">refresh</mat-icon>
 	</div>

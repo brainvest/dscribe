@@ -9,7 +9,6 @@
 
 .noOptionSelected {
 	color: gray;
-	font-size: x-small;
 }
 
 .node-action-btns {
@@ -31,6 +30,7 @@
 		margin: 0;
 		border: none;
 		color: purple;
+		cursor: default;
 		&:hover {
 			background-color: rgba(255, 150, 255, 0.4);
 		}

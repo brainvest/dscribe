@@ -12,17 +12,17 @@ export class ComparisonOperator {
 	}
 
 	static Operators = [
-		new ComparisonOperator('Equal', 'برابر', 2, 2, true),
-		new ComparisonOperator('NotEqual', 'نابرابر', 2, 2, true),
-		new ComparisonOperator('IsNull', 'خالی', 1, 1, false, p => p.isNullable),
-		new ComparisonOperator('IsNotNull', 'خالی نیست', 1, 1, false, p => p.isNullable),
-		new ComparisonOperator('LessThan', 'کمتر از', 2, 2, false),
-		new ComparisonOperator('GreaterThan', 'بیشتر از', 2, 2, false),
-		new ComparisonOperator('LessThanOrEqual', 'کمتر مساوی', 2, 2, false),
-		new ComparisonOperator('GreaterThanOrEqual', 'بیشتر مساوی', 2, 2, false),
-		new ComparisonOperator('Between', 'بین', 3, 3, false),
-		new ComparisonOperator('Contains', 'شامل', 2, 2, true, null, [DataTypes.string]),
-		new ComparisonOperator('StartsWith', 'شروع با', 2, 2, true, null, [DataTypes.string]),
-		new ComparisonOperator('EndsWith', 'پایان با', 2, 2, true, null, [DataTypes.string])
+		new ComparisonOperator('Equal', 'Equals', 2, 2, true),
+		new ComparisonOperator('NotEqual', 'Not Equals', 2, 2, true),
+		new ComparisonOperator('IsNull', 'Is Null', 1, 1, false, p => p.isNullable),
+		new ComparisonOperator('IsNotNull', 'Is Not Null', 1, 1, false, p => p.isNullable),
+		new ComparisonOperator('LessThan', 'Less than', 2, 2, false),
+		new ComparisonOperator('GreaterThan', 'Greater than', 2, 2, false),
+		new ComparisonOperator('LessThanOrEqual', 'Less than or equal', 2, 2, false),
+		new ComparisonOperator('GreaterThanOrEqual', 'Greater than or equal', 2, 2, false),
+		new ComparisonOperator('Between', 'Between', 3, 3, false),
+		new ComparisonOperator('Contains', 'Contains', 2, 2, true, null, [DataTypes.string]),
+		new ComparisonOperator('StartsWith', 'Starts with', 2, 2, true, null, [DataTypes.string]),
+		new ComparisonOperator('EndsWith', 'Ends with', 2, 2, true, null, [DataTypes.string])
 	];
 }

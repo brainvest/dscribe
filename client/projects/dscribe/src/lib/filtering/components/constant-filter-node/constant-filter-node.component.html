@@ -1,6 +1,6 @@
 <div *ngFor="let value of node.values; let i = index" class="filter-node-container">
 	<div class="node-action-btns" *ngIf="node.allowMultipleValues">
-		<mat-icon (click)="manipulator.addSibling(node)" title="move under calculation">fast_rewind</mat-icon>
+		<mat-icon (click)="manipulator.addSibling(node)" title="move under calculation">fast_forward</mat-icon>
 		<mat-icon (click)="manipulator.toggleType(node)" title="convert to dependent value">refresh</mat-icon>
 		<mat-icon (click)="node.removeValueAt(i)"
 							*ngIf="node.values.length > 1" title="remove">delete</mat-icon>

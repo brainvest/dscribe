@@ -8,13 +8,13 @@ export class AggregationOperator {
 	}
 
 	public static Operators = [
-		new AggregationOperator('IsEmpty', 'خالی', false, true, false),
-		new AggregationOperator('IsNotEmpty', 'خالی نیست', false, true, false),
-		new AggregationOperator('Any', 'حداقل‌یکی', true, true, false),
-		new AggregationOperator('All', 'همه', true, true, false),
-		new AggregationOperator('None', 'هیچ‌کدام', true, true, false),
-		new AggregationOperator('Count', 'تعداد', true, false, false, {'_': 'int'}),
-		new AggregationOperator('Sum', 'جمع', true, false, true, {
+		new AggregationOperator('IsEmpty', 'Is Empty', false, true, false),
+		new AggregationOperator('IsNotEmpty', 'Is Not Empty', false, true, false),
+		new AggregationOperator('Any', 'Any', true, true, false),
+		new AggregationOperator('All', 'All', true, true, false),
+		new AggregationOperator('None', 'None', true, true, false),
+		new AggregationOperator('Count', 'Count', true, false, false, {'_': 'int'}),
+		new AggregationOperator('Sum', 'Sum', true, false, true, {
 			'int': 'int',
 			'long': 'long',
 			'decimal': 'decimal'

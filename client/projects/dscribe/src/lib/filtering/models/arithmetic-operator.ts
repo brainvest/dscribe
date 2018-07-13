@@ -9,13 +9,13 @@ export class ArithmeticOperator {
 	private static toDecimal: (input: string) => string = (x) => DataTypes.int;
 
 	static Operators = [
-		new ArithmeticOperator('Add', 'به‌علاوه', 2, null, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Subtract', 'منهای', 2, 2, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Multiply', 'ضربدر', 2, null, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Divide', 'تقسیم‌بر', 2, 2, false, ArithmeticOperator.toDecimal, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Log', 'لگاریتم', 1, 1, false, ArithmeticOperator.toDecimal, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Power', 'به‌توان', 2, 2, false, ArithmeticOperator.toDecimal, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Abs', 'قدر مطلق', 1, 1, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers)
+		new ArithmeticOperator('Add', 'Plus', 2, null, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Subtract', 'Minus', 2, 2, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Multiply', 'Times', 2, null, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Divide', 'Over', 2, 2, false, ArithmeticOperator.toDecimal, null, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Log', 'Log', 1, 1, false, ArithmeticOperator.toDecimal, null, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Power', 'To Power', 2, 2, false, ArithmeticOperator.toDecimal, null, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Abs', 'Abs', 1, 1, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers)
 	];
 
 	constructor(public name: string,
