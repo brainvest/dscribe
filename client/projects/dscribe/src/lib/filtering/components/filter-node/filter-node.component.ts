@@ -18,5 +18,5 @@ export class FilterNodeComponent {
 	constructor(public manipulator: FilterTreeManipulator) {
 
 	}
-
+ 
 }

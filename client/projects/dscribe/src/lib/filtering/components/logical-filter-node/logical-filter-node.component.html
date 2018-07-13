@@ -1,10 +1,10 @@
 <div class="filter-node-container">
 	<div class="node-action-btns">
 		<mat-icon (click)="manipulator.addSibling(node)"
-							title="combine logically with another condition">rewind
+							title="combine logically with another condition">fast_rewind
 		</mat-icon>
-		<mat-icon (click)="node.addChild(true)" title="add child">plus</mat-icon>
-		<mat-icon (click)="manipulator.delete(node)" title="remove">trash</mat-icon>
+		<mat-icon (click)="node.addChild(true)" title="add child">add</mat-icon>
+		<mat-icon (click)="manipulator.delete(node)" title="remove">delete</mat-icon>
 	</div>
 	<div *ngFor="let child of node.children; let i = index">
 		<select class="filter-option" [(ngModel)]="node.operator" *ngIf="i == 1 || node.children.length == 1">

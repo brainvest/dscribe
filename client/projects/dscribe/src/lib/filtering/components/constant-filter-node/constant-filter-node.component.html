@@ -1,11 +1,11 @@
 <div *ngFor="let value of node.values; let i = index" class="filter-node-container">
 	<div class="node-action-btns" *ngIf="node.allowMultipleValues">
-		<mat-icon (click)="manipulator.addSibling(node)" title="move under calculation">rewind</mat-icon>
+		<mat-icon (click)="manipulator.addSibling(node)" title="move under calculation">fast_rewind</mat-icon>
 		<mat-icon (click)="manipulator.toggleType(node)" title="convert to dependent value">refresh</mat-icon>
 		<mat-icon (click)="node.removeValueAt(i)"
-							*ngIf="node.values.length > 1" title="remove">trash</mat-icon>
+							*ngIf="node.values.length > 1" title="remove">delete</mat-icon>
 		<mat-icon class="add-value-btn" *ngIf="node.allowMultipleValues && i == node.values.length - 1"
-							(click)="node.addValue()" title="add">plus</mat-icon>
+							(click)="node.addValue()" title="add">add</mat-icon>
 	</div>
 	<dscribe-property-editor class="filter-option" [property]="node.dataType" [overridePropertyName]="'value'" [entity]="value">
 	</dscribe-property-editor>
