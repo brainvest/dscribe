@@ -1,7 +1,3 @@
-.flex-spacer {
-	flex: 1;
-}
-
 .page-header {
 	display: flex;
 	padding: 16px 8px;
@@ -11,27 +7,29 @@
 	margin: 0;
 }
 
-table {
-	width: 100%;
+.list-container {
+	position: relative;
+}
+
+.list-table-container {
+	position: relative;
+	height: 536px;
+	overflow: auto;
 	border: 1px solid #d1d8dd;
 	border-bottom: none;
+	border-top: none;
 }
 
-.mat-header-row {
-	background-color: #F7FAFC;
+table {
+	width: 100%;
 }
 
-.mat-row {
-	cursor: pointer;
-}
-
-.mat-row:hover {
-	background-color: #F7FAFC;
+.mat-column-select {
+	max-width: 32px;
 }
 
 .filter {
 	border: 1px solid #d1d8dd;
-	border-bottom: none;
 }
 
 .filter__summary, .filter__content {
@@ -49,8 +47,4 @@ table {
 .list-paginator {
 	border: 1px solid #d1d8dd;
 	border-top: none;
-}
-
-tr.highlight {
-	background-color: aqua;
 }
