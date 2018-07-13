@@ -6,9 +6,9 @@
 	<div class="filter-node-container" *ngIf="ind == 0">
 		<div class="node-action-btns">
 			<mat-icon class="add-sibling-btn" (click)="manipulator.addSibling(node)"
-								*ngIf="node?.parent?.canReplaceChild()" title="Combine logically with another condition">rewind</mat-icon>
+								*ngIf="node?.parent?.canReplaceChild()" title="Combine logically with another condition">fast_rewind</mat-icon>
 			<mat-icon class="add-sibling-btn" (click)="manipulator.delete(node)"
-								*ngIf="node?.parent?.canReplaceChild()" title="remove this condition">trash</mat-icon>
+								*ngIf="node?.parent?.canReplaceChild()" title="remove this condition">delete</mat-icon>
 		</div>
 		<select class="filter-option" [class.noOptionSelected]="!node.operator" [(ngModel)]="node.operator">
 			<option [ngValue]="undefined" selected invalid>شرط</option>
