@@ -29,7 +29,7 @@ export class ListComponent implements OnInit, OnChanges {
 	@Input() entity: EntityMetadata;
 	@Input() master: MasterReference;
 
-	displayedColumns = [];
+	displayedColumns: string[] = [];
 	columns: ListColumn[] = [];
 	data = [];
 	totalCount = 0;
