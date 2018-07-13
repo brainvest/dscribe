@@ -13,7 +13,7 @@ import {
 	MatFormFieldModule,
 	MatIconModule,
 	MatInputModule,
-	MatPaginatorModule,
+	MatPaginatorModule, MatProgressSpinnerModule,
 	MatSortModule,
 	MatTableModule
 } from '@angular/material';
@@ -60,6 +60,7 @@ import {FilterTreeManipulator} from './filtering/models/filter-tree-manipulator'
 		MatSortModule,
 		MatTableModule,
 		MatCheckboxModule,
+		MatProgressSpinnerModule,
 		ReactiveFormsModule
 	],
 	declarations: [

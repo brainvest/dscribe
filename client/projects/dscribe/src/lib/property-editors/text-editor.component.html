@@ -1,4 +1,8 @@
-<input type="text" [(ngModel)]="entity[overridePropertyName || property.jsName]">
+<mat-form-field class="full-width">
+	<input matInput type="text" [placeholder]="property.title"
+				 [(ngModel)]="entity[overridePropertyName || property.jsName]">
+</mat-form-field>
+
 
 <div *ngIf="property?.validationErrors">
 	<p *ngFor="let validationError of property.validationErrors" class="error-message">

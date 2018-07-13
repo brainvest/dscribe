@@ -1,5 +1,5 @@
-<mat-form-field *ngIf="listRefresher">
-	<input matInput [attr.id]="property.name" [attr.aria-label]="property.name" [formControl]="inputCtrl"
+<mat-form-field class="full-width" *ngIf="listRefresher">
+	<input matInput [placeholder]="property.title" [attr.id]="property.name" [attr.aria-label]="property.name" [formControl]="inputCtrl"
 				 [matAutocomplete]="auto">
 	<i *ngIf="loading" class="fa fa-spinner" matSuffix></i>
 	<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">

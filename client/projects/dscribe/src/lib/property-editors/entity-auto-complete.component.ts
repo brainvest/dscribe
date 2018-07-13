@@ -25,7 +25,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 	selection: { displayName: string, id: number };
 	loading = false;
 
-	constructor(public dialog: MatDialog, private dataHandler: DataHandlerService) {
+	constructor(private dataHandler: DataHandlerService) {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
