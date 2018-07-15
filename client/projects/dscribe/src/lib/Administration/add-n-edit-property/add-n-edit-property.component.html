@@ -1,0 +1,103 @@
+<h1 mat-dialog-title>{{data.action}} Property</h1>
+
+<mat-dialog-content>
+	<form #entityForm="ngForm">
+
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>Name</mat-label>
+			<input matInput type="text" placeholder="Name" name="name"
+						 [(ngModel)]="property.name">
+		</mat-form-field>
+
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>Title</mat-label>
+			<input matInput type="text" placeholder="Title" name="title"
+						 [(ngModel)]="property.title">
+		</mat-form-field>
+
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>Data Type</mat-label>
+			<mat-select name="dataType" placeholder="Data Type"
+									[(ngModel)]="property.dataTypeId">
+				<mat-option *ngFor="let dataType of data.basicInfo.dataTypes" [value]="dataType.id">
+					{{dataType.name}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<mat-form-field class="full-width" *ngIf="isNavigation" appearance="outline">
+			<mat-label>Data Type Entity</mat-label>
+			<mat-select name="dataTypeEntity" placeholder="Data Type Entity"
+									[(ngModel)]="property.dataTypeEntityId">
+				<mat-option *ngFor="let entity of entities" [value]="entity.id">
+					{{entity.name}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<mat-form-field *ngIf="isNavigationProperty" class="full-width" appearance="outline">
+
+			<mat-label>Foreign Key Action</mat-label>
+			<mat-select name="foreignKeyAction" placeholder="Foreign Key Action"
+									[(ngModel)]="property.foreignKeyAction">
+				<mat-option *ngFor="let action of actions | keys" [value]="entity.id">
+					{{entity.name}}
+				</mat-option>
+			</mat-select>
+
+			<mat-label>Foreign Key Name</mat-label>
+			<input matInput type="text" placeholder="Foreign Key Name" name="foreignKeyName"
+						 [(ngModel)]="property.newForeignKeyName">
+
+			<mat-label>Foreign Key</mat-label>
+			<mat-select name="foreignKeyId" placeholder="Choose Foreign Key"
+									[(ngModel)]="property.newForeignKeyId">
+				<mat-option *ngFor="let prop of compatibleForeignKeys" [value]="prop.id">
+					{{prop.name}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<mat-form-field *ngIf="isNavigationProperty" class="full-width" appearance="outline">
+
+			<mat-label>Inverse Property Action</mat-label>
+			<mat-select name="inversePropertyAction" placeholder="Inverse Property Action"
+									[(ngModel)]="property.inversePropertyAction">
+				<mat-option *ngFor="let action of actions | keys" [value]="entity.id">
+					{{entity.name}}
+				</mat-option>
+			</mat-select>
+
+			<mat-label>Inverse Property Name</mat-label>
+			<input matInput type="text" placeholder="Onverse Property Name" name="inversePropertyName"
+						 [(ngModel)]="property.newInversePropertyName">
+
+			<mat-label>Inverse Property</mat-label>
+			<mat-select name="inversePropertyId" placeholder="Choose Inverse Property"
+									[(ngModel)]="property.newInversePropertyId">
+				<mat-option *ngFor="let prop of compatibleInverseProperties" [value]="prop.id">
+					{{prop.name}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>General Usage Category</mat-label>
+			<mat-select name="usage" placeholder="General Usage Category"
+									[(ngModel)]="property.entityGeneralUsageCategoryId">
+				<mat-option *ngFor="let category of data.basicInfo.propertyGeneralUsageCategories" [value]="category.id">
+					{{category.name}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<mat-checkbox formControlName="isNullable" [(ngModel)]="property.isNullable">Is Nullable</mat-checkbox>
+
+	</form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<button mat-button (click)="save()">Save</button>
+	<button mat-button (click)="cancel()">Cancel</button>
+</mat-dialog-actions>

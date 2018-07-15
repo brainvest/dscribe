@@ -49,7 +49,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> AddType([FromBody]EntityMetadataModel model)
+		public async Task<ActionResult> AddEntity([FromBody]EntityMetadataModel model)
 		{
 			var error = AddTypeValidation(model);
 			if (error != null)

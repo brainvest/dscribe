@@ -29,6 +29,25 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public int EntityId { get; set; }
 	}
 
+	public class AddNEditPropertyMetadataModel : PropertyMetadataModel
+	{
+		public RelatedPropertyAction ForeignKeyAction { get; set; }
+		public string ForeignKeyName { get; set; }
+		public int? OldForegnKeyId { get; set; }
+
+		public RelatedPropertyAction InversePropertyAction { get; set; }
+		public string InversePropertyName { get; set; }
+		public int? OldInversePropertyId { get; set; }
+	}
+
+	public enum RelatedPropertyAction
+	{
+		DontChange = 0,
+		ChooseExistingById,
+		CreateNewByName,
+		RenameExisting
+	}
+
 	public class PropertyMetadataRequestModel
 	{
 		public int EntityId { get; set; }

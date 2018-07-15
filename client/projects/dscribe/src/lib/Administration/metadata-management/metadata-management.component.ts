@@ -2,10 +2,12 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MetadataManagementApiClient} from '../metadata-management-api-client';
 import {MetadataBasicInfoModel} from '../../metadata/metadata-basic-info-model';
 import {TypeBase} from '../../metadata/entity-base';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatPaginator, MatTableDataSource} from '@angular/material';
 import {PropertyBase} from '../../metadata/property-base';
-import {IdAndName} from '../../common/models/id-and-name';
 import {HasIdName} from '../../common/models/has-id-name';
+import {AddNEditEntityComponent, AddNEditEntityComponentData} from '../add-n-edit-entity/add-n-edit-entity.component';
+import {AddNEditPropertyComponent, AddNEditPropertyComponentData} from '../add-n-edit-property/add-n-edit-property.component';
+import {AddNEditPropertyMetadataModel} from '../models/add-n-edit-property-metadata-model';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -32,7 +34,9 @@ export class MetadataManagementComponent implements OnInit {
 	@ViewChild(MatPaginator) entitiesPaginator: MatPaginator;
 	@ViewChild(MatPaginator) propertiesPaginator: MatPaginator;
 
-	constructor(private apiClient: MetadataManagementApiClient) {
+	constructor(
+		private apiClient: MetadataManagementApiClient,
+		private dialog: MatDialog) {
 	}
 
 	ngOnInit() {
@@ -42,30 +46,42 @@ export class MetadataManagementComponent implements OnInit {
 		this.apiClient.getBasicInfo()
 			.subscribe(data => {
 				this.basicInfo = data;
-				this.apiClient.getTypes()
-					.subscribe(entities => {
-						this.entitiesDataSource.data = this.entities = entities;
-						this.entitiesAreLoading = false;
-					});
+				this.refreshEntities();
 			});
 	}
 
-	selectRow(entity: TypeBase) {
+	refreshEntities() {
+		this.apiClient.getTypes()
+			.subscribe(entities => {
+				this.entitiesDataSource.data = this.entities = entities;
+				this.entitiesAreLoading = false;
+			});
+	}
+
+	selectEntity(entity: TypeBase) {
 		if (entity == this.selectedEntity) {
 			return;
 		}
 		this.propertiesDataSource.data = this.properties = [];
 		this.selectedEntity = entity;
 		if (entity) {
-			this.propertiesAreLoading = true;
-			this.apiClient.getAllPropertyNames()
-				.subscribe(names => this.allPropertyNames = names);
-			this.apiClient.getProperties(entity.id)
-				.subscribe(props => {
-					this.propertiesDataSource.data = this.properties = props;
-					this.propertiesAreLoading = false;
-				});
+			this.refreshProperties();
 		}
+	}
+
+	selectProperty(property: PropertyBase) {
+		this.selectedProperty = property;
+	}
+
+	refreshProperties() {
+		this.propertiesAreLoading = true;
+		this.apiClient.getAllPropertyNames()
+			.subscribe(names => this.allPropertyNames = names);
+		this.apiClient.getProperties(this.selectedEntity.id)
+			.subscribe(props => {
+				this.propertiesDataSource.data = this.properties = props;
+				this.propertiesAreLoading = false;
+			});
 	}
 
 	getEntityUsageName(id: number) {
@@ -96,6 +112,42 @@ export class MetadataManagementComponent implements OnInit {
 			return prop.name;
 		}
 		return this.allPropertyNames.find(x => x.id === id).displayName;
+	}
+
+	addEntity() {
+		this.openAddNEditEntityDialog({}, true);
+	}
+
+	openAddNEditEntityDialog(instance: any, isNew: boolean) {
+		const dialogRef = this.dialog.open(AddNEditEntityComponent, {
+			width: '800px',
+			data: new AddNEditEntityComponentData(instance, isNew, this.basicInfo)
+		});
+		dialogRef.afterClosed().subscribe(
+			result => {
+				if (result !== undefined) {
+					this.refreshEntities();
+				}
+			}
+		);
+	}
+
+	addProperty() {
+		this.openAddNEditPropertyDialog({}, true);
+	}
+
+	openAddNEditPropertyDialog(instance: AddNEditPropertyMetadataModel, isNew: boolean) {
+		const dialogRef = this.dialog.open(AddNEditPropertyComponent, {
+			width: '800px',
+			data: new AddNEditPropertyComponentData(instance, this.basicInfo, this.entities, null, null)
+		});
+		dialogRef.afterClosed().subscribe(
+			result => {
+				if (result !== undefined) {
+					this.refreshProperties();
+				}
+			}
+		);
 	}
 }
 

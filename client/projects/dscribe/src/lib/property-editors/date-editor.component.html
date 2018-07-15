@@ -1,7 +1,8 @@
-<mat-form-field class="full-width">
+<mat-form-field class="full-width" appearance="outline">
+	<mat-label>{{property.title}}</mat-label>
 	<input matInput [placeholder]="property.title" [attr.id]="property.name" [matDatepicker]="picker"
-		   [ngModel]="entity[overridePropertyName || property.jsName]"
-		   (ngModelChange)="onModelChange($event)">
+				 [ngModel]="entity[overridePropertyName || property.jsName]"
+				 (ngModelChange)="onModelChange($event)">
 	<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 	<mat-datepicker #picker></mat-datepicker>
 </mat-form-field>

@@ -40,7 +40,7 @@
 	<tr mat-header-row *matHeaderRowDef="displayedEntityColumns"></tr>
 	<tr mat-row *matRowDef="let entity; columns: displayedEntityColumns;"
 			[ngClass]="{'highlight': selectedEntity?.id === entity.id}"
-			(click)="selectRow(entity)"
+			(click)="selectEntity(entity)"
 	></tr>
 </table>
 <mat-paginator id="entitiesPaginator" #entitiesPaginator [length]="entities?.length" [pageSize]="10"></mat-paginator>
@@ -49,6 +49,9 @@
 <ng-container>
 	<mat-card>
 		<h1>Properties of {{selectedEntity?.name}}</h1>
+		<button mat-button (click)="addProperty()" [disabled]="!selectedEntity">Add</button>
+		<button mat-button (click)="editProperty()" [disabled]="!selectedEntity || !selectedProperty">Edit</button>
+		<button mat-button (click)="deleteProperty()" [disabled]="!selectedEntity || !selectedProperty">Delete</button>
 	</mat-card>
 	<table mat-table [dataSource]="propertiesDataSource" matSort>
 
@@ -93,9 +96,9 @@
 		</ng-container>
 
 		<tr mat-header-row *matHeaderRowDef="displayedPropertyColumns"></tr>
-		<tr mat-row *matRowDef="let entity; columns: displayedPropertyColumns;"
-				[ngClass]="{'highlight': selectedRow?.id === entity.id}"
-				(click)="selectRow(entity)"
+		<tr mat-row *matRowDef="let property; columns: displayedPropertyColumns;"
+				[ngClass]="{'highlight': selectedProperty?.id === property.id}"
+				(click)="selectProperty(property)"
 		></tr>
 	</table>
 	<mat-paginator id="propertiesPaginator" #propertiesPaginator [length]="properties?.length"

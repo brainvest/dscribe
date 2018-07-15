@@ -16,7 +16,7 @@ import {
 	MatInputModule,
 	MatMenuModule,
 	MatPaginatorModule,
-	MatProgressSpinnerModule,
+	MatProgressSpinnerModule, MatSelectModule,
 	MatSortModule,
 	MatTableModule
 } from '@angular/material';
@@ -51,6 +51,8 @@ import {RouterModule} from '@angular/router';
 import {DSCRIBE_ROUTES} from './dscribe-routes';
 import {EntityGeneralUsageNamePipe} from './Administration/helpers/entity-general-usage-name.pipe';
 import {AddNEditEntityComponent} from './Administration/add-n-edit-entity/add-n-edit-entity.component';
+import { AddNEditPropertyComponent } from './Administration/add-n-edit-property/add-n-edit-property.component';
+import { KeysPipe } from './helpers/keys.pipe';
 
 @NgModule({
 	imports: [
@@ -69,6 +71,7 @@ import {AddNEditEntityComponent} from './Administration/add-n-edit-entity/add-n-
 		MatMenuModule,
 		MatPaginatorModule,
 		MatSortModule,
+		MatSelectModule,
 		MatTableModule,
 		MatCheckboxModule,
 		MatProgressSpinnerModule,
@@ -103,7 +106,9 @@ import {AddNEditEntityComponent} from './Administration/add-n-edit-entity/add-n-
 		HomePageComponent,
 		MetadataManagementComponent,
 		EntityGeneralUsageNamePipe,
-		AddNEditEntityComponent
+		AddNEditEntityComponent,
+		AddNEditPropertyComponent,
+		KeysPipe
 	],
 	exports: [DscribeComponent, ListComponent],
 	providers: [
@@ -112,7 +117,9 @@ import {AddNEditEntityComponent} from './Administration/add-n-edit-entity/add-n-
 	],
 	entryComponents: [
 		ListAddNEditDialogComponent,
-		ListDeleteDialogComponent
+		ListDeleteDialogComponent,
+		AddNEditEntityComponent,
+		AddNEditPropertyComponent
 	]
 })
 export class DscribeModule {
