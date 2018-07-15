@@ -20,6 +20,7 @@ export class AddNEditComponent implements OnInit {
 	@Input() entityType: string;
 	@Input() master: MasterReference;
 	@Output() EntitySaved = new EventEmitter<string>();
+	@Output() Canceled = new EventEmitter();
 
 	properties: PropertyMetadata[];
 	detailLists: MasterReference[];
@@ -75,6 +76,10 @@ export class AddNEditComponent implements OnInit {
 			error => this.processFailure(error)
 		)
 		;
+	}
+
+	cancel() {
+		this.Canceled.emit();
 	}
 
 	processFailure(error: any) {

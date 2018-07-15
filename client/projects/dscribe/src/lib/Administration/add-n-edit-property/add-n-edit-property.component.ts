@@ -6,6 +6,7 @@ import {DataTypeModel} from '../../metadata/data-type-model';
 import {PropertyBase} from '../../metadata/property-base';
 import {AddNEditEntityComponent} from '../add-n-edit-entity/add-n-edit-entity.component';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MetadataManagementApiClient} from '../metadata-management-api-client';
 
 @Component({
 	selector: 'dscribe-add-n-edit-property',
@@ -23,7 +24,8 @@ export class AddNEditPropertyComponent implements OnInit {
 
 	constructor(
 		private dialogRef: MatDialogRef<AddNEditEntityComponent>,
-		@Inject(MAT_DIALOG_DATA) public data: AddNEditPropertyComponentData) {
+		@Inject(MAT_DIALOG_DATA) public data: AddNEditPropertyComponentData,
+		private apiClient: MetadataManagementApiClient) {
 		this.property = data.property;
 		this.basicInfo = data.basicInfo;
 		this.entities = data.entities;
@@ -58,11 +60,23 @@ export class AddNEditPropertyComponent implements OnInit {
 	ngOnInit() {
 	}
 
+	save() {
+		const request = this.data.isNew ?
+			this.apiClient.addProperty(this.property) :
+			this.apiClient.editProperty(this.property);
+		request.subscribe(result => this.dialogRef.close('saved'));
+	}
+
+	cancel() {
+		this.dialogRef.close();
+	}
+
 }
 
 export class AddNEditPropertyComponentData {
 	constructor(
 		public property: AddNEditPropertyMetadataModel,
+		public isNew,
 		public basicInfo: MetadataBasicInfoModel,
 		public entities: TypeBase[],
 		public thisTypeProperties: PropertyBase[],

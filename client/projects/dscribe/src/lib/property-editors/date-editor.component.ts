@@ -12,6 +12,6 @@ export class DateEditorComponent {
 	@Input() overridePropertyName: string;
 
 	onModelChange(event: any) {
-		this.entity[this.overridePropertyName || this.property.jsName] = event.getIsoDate();
+		this.entity[this.overridePropertyName || this.property.jsName] = event.toISOString();
 	}
 }

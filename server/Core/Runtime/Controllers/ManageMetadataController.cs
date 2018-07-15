@@ -75,7 +75,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> EditType([FromBody]EntityMetadataModel model)
+		public async Task<ActionResult> EditEntity([FromBody]EntityMetadataModel model)
 		{
 			var error = EditTypeValidation(model);
 			if (error != null)
@@ -97,7 +97,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> DeleteType([FromBody]EntityMetadataModel model)
+		public async Task<ActionResult> DeleteEntity([FromBody]EntityMetadataModel model)
 		{
 			//TODO: Handle errors, validate model
 			var type = await _dbContext.Entities.FindAsync(model.Id);

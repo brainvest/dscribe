@@ -15,8 +15,10 @@ import {
 	MatIconModule,
 	MatInputModule,
 	MatMenuModule,
+	MatNativeDateModule,
 	MatPaginatorModule,
-	MatProgressSpinnerModule, MatSelectModule,
+	MatProgressSpinnerModule,
+	MatSelectModule,
 	MatSortModule,
 	MatTableModule
 } from '@angular/material';
@@ -51,8 +53,9 @@ import {RouterModule} from '@angular/router';
 import {DSCRIBE_ROUTES} from './dscribe-routes';
 import {EntityGeneralUsageNamePipe} from './Administration/helpers/entity-general-usage-name.pipe';
 import {AddNEditEntityComponent} from './Administration/add-n-edit-entity/add-n-edit-entity.component';
-import { AddNEditPropertyComponent } from './Administration/add-n-edit-property/add-n-edit-property.component';
-import { KeysPipe } from './helpers/keys.pipe';
+import {AddNEditPropertyComponent} from './Administration/add-n-edit-property/add-n-edit-property.component';
+import {KeysPipe} from './helpers/keys.pipe';
+import { ConfirmationDialogComponent } from './common/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
 	imports: [
@@ -69,6 +72,7 @@ import { KeysPipe } from './helpers/keys.pipe';
 		MatInputModule,
 		MatFormFieldModule,
 		MatMenuModule,
+		MatNativeDateModule,
 		MatPaginatorModule,
 		MatSortModule,
 		MatSelectModule,
@@ -108,7 +112,8 @@ import { KeysPipe } from './helpers/keys.pipe';
 		EntityGeneralUsageNamePipe,
 		AddNEditEntityComponent,
 		AddNEditPropertyComponent,
-		KeysPipe
+		KeysPipe,
+		ConfirmationDialogComponent
 	],
 	exports: [DscribeComponent, ListComponent],
 	providers: [
@@ -119,7 +124,8 @@ import { KeysPipe } from './helpers/keys.pipe';
 		ListAddNEditDialogComponent,
 		ListDeleteDialogComponent,
 		AddNEditEntityComponent,
-		AddNEditPropertyComponent
+		AddNEditPropertyComponent,
+		ConfirmationDialogComponent
 	]
 })
 export class DscribeModule {

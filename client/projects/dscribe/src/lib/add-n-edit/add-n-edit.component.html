@@ -6,7 +6,10 @@
 		</dscribe-property-editor>
 	</div>
 
-	<button class="save-btn" mat-raised-button color="primary" type="submit" (click)="saveEntity()">
-		Save
+	<button class="save-btn" mat-icon-button color="primary" type="submit" (click)="saveEntity()">
+		<mat-icon>save</mat-icon>
+	</button>
+	<button mat-icon-button color="warn" type="button" (click)="cancel()">
+		<mat-icon>cancel</mat-icon>
 	</button>
 </form>

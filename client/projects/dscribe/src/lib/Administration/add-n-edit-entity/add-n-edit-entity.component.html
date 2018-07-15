@@ -6,19 +6,19 @@
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Name</mat-label>
 			<input matInput type="text" placeholder="Name" name="name"
-						 [(ngModel)]="entity.name">
+						 [(ngModel)]="entity.name" required>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Singular Title</mat-label>
 			<input matInput type="text" placeholder="Singular Title" name="singular"
-						 [(ngModel)]="entity.singularTitle">
+						 [(ngModel)]="entity.singularTitle" required>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Plural Title</mat-label>
 			<input matInput type="text" placeholder="Plural Title" name="plural"
-						 [(ngModel)]="entity.pluralTitle">
+						 [(ngModel)]="entity.pluralTitle" required>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
@@ -30,7 +30,7 @@
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>General Usage Category</mat-label>
 			<mat-select name="usage" placeholder="General Usage Category"
-									[(ngModel)]="entity.entityGeneralUsageCategoryId">
+									[(ngModel)]="entity.entityGeneralUsageCategoryId" [required]="true">
 				<mat-option *ngFor="let category of data.basicInfo.entityGeneralUsageCategories" [value]="category.id">
 					{{category.name}}
 				</mat-option>
@@ -54,6 +54,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-	<button mat-button (click)="save()">Save</button>
-	<button mat-button (click)="cancel()">Cancel</button>
+	<button mat-icon-button (click)="save()"><mat-icon color="primary">save</mat-icon></button>
+	<button mat-icon-button (click)="cancel()"><mat-icon color="warn">cancel</mat-icon></button>
 </mat-dialog-actions>

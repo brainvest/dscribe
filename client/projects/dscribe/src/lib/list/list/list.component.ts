@@ -210,7 +210,7 @@ export class ListComponent implements OnInit, OnChanges {
 		});
 		dialogRef.afterClosed().subscribe(
 			result => {
-				if (result !== undefined) {
+				if (result === 'saved') {
 					this.refreshData();
 				}
 			}

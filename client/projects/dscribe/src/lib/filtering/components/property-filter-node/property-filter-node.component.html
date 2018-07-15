@@ -4,10 +4,12 @@
 		<mat-icon (click)="manipulator.delete(node)" title="remove">delete</mat-icon>
 		<mat-icon (click)="manipulator.toggleType(node)" title="convert to constant">refresh</mat-icon>
 	</div>
-	<select class="filter-option" [class.noOptionSelected]="!node.property" [(ngModel)]="node.property">
-		<option [ngValue]="undefined" selected invalid>properties of {{node.inputType.entityType.singularTitle}}</option>
-		<option *ngFor="let p of node.properties" [ngValue]="p">{{p?.title}}</option>
-	</select>
+	<mat-form-field appearance="outline">
+		<mat-select class="filter-option" [class.noOptionSelected]="!node.property" [(ngModel)]="node.property" placeholder="Property">
+			<mat-option [value]="undefined" selected invalid>properties of {{node.inputType.entityType.singularTitle}}</mat-option>
+			<mat-option *ngFor="let p of node.properties" [value]="p">{{p?.title}}</mat-option>
+		</mat-select>
+	</mat-form-field>
 	<ng-container *ngIf="node.child">
 		<dscribe-filter-node [node]="node.child"></dscribe-filter-node>
 	</ng-container>

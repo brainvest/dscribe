@@ -8,6 +8,7 @@ import {HasIdName} from '../../common/models/has-id-name';
 import {AddNEditEntityComponent, AddNEditEntityComponentData} from '../add-n-edit-entity/add-n-edit-entity.component';
 import {AddNEditPropertyComponent, AddNEditPropertyComponentData} from '../add-n-edit-property/add-n-edit-property.component';
 import {AddNEditPropertyMetadataModel} from '../models/add-n-edit-property-metadata-model';
+import {ConfirmationDialogComponent} from '../../common/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -31,8 +32,8 @@ export class MetadataManagementComponent implements OnInit {
 	displayedEntityColumns = ['name', 'usage', 'singular', 'plural', 'code', 'displayName'];
 	displayedPropertyColumns = ['name', 'title', 'dataType', 'nullable', 'dataTypeEntity', 'usage', 'foreignKey', 'inverse'];
 
-	@ViewChild(MatPaginator) entitiesPaginator: MatPaginator;
-	@ViewChild(MatPaginator) propertiesPaginator: MatPaginator;
+	@ViewChild('entitiesPaginator') entitiesPaginator: MatPaginator;
+	@ViewChild('propertiesPaginator') propertiesPaginator: MatPaginator;
 
 	constructor(
 		private apiClient: MetadataManagementApiClient,
@@ -118,6 +119,26 @@ export class MetadataManagementComponent implements OnInit {
 		this.openAddNEditEntityDialog({}, true);
 	}
 
+	editEntity() {
+		if (!this.selectedEntity) {
+			return;
+		}
+		this.openAddNEditEntityDialog(this.selectedEntity, false);
+	}
+
+	deleteEntity() {
+		if (!this.selectedEntity) {
+			return;
+		}
+		ConfirmationDialogComponent.Ask(this.dialog, 'Are you sure you want to delete this entity?', 'This action cannot be undone')
+			.subscribe(x => {
+				if (x) {
+					this.apiClient.deleteEntity(this.selectedEntity)
+						.subscribe(x => this.refreshEntities());
+				}
+			});
+	}
+
 	openAddNEditEntityDialog(instance: any, isNew: boolean) {
 		const dialogRef = this.dialog.open(AddNEditEntityComponent, {
 			width: '800px',
@@ -133,13 +154,34 @@ export class MetadataManagementComponent implements OnInit {
 	}
 
 	addProperty() {
-		this.openAddNEditPropertyDialog({}, true);
+		this.openAddNEditPropertyDialog({entityId: this.selectedEntity.id}, true);
+	}
+
+	editProperty() {
+		if (!this.selectedProperty) {
+			return;
+		}
+		this.openAddNEditPropertyDialog(this.selectedProperty, false);
+	}
+
+	deleteProperty() {
+		if (!this.selectedProperty) {
+			return;
+		}
+		ConfirmationDialogComponent.Ask(this.dialog, 'Are you sure you want to delete this property?', 'This action cannot be undone.')
+			.subscribe(x => {
+				if (x) {
+					this.apiClient.deleteProperty(this.selectedProperty)
+						.subscribe(x => this.refreshProperties());
+				}
+			});
 	}
 
 	openAddNEditPropertyDialog(instance: AddNEditPropertyMetadataModel, isNew: boolean) {
 		const dialogRef = this.dialog.open(AddNEditPropertyComponent, {
 			width: '800px',
-			data: new AddNEditPropertyComponentData(instance, this.basicInfo, this.entities, null, null)
+			data: new AddNEditPropertyComponentData(instance, isNew, this.basicInfo, this.entities,
+				null, null)
 		});
 		dialogRef.afterClosed().subscribe(
 			result => {

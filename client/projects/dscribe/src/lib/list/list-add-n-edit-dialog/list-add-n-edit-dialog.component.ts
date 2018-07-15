@@ -15,4 +15,8 @@ export class ListAddNEditDialogComponent {
 	afterEntitySaved() {
 		this.dialogRef.close('saved');
 	}
+
+	canceledByUser() {
+		this.dialogRef.close('canceled');
+	}
 }

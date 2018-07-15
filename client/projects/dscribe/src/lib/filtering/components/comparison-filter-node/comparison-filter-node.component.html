@@ -6,13 +6,18 @@
 	<div class="filter-node-container" *ngIf="ind == 0">
 		<div class="node-action-btns">
 			<mat-icon class="add-sibling-btn" (click)="manipulator.addSibling(node)"
-								*ngIf="node?.parent?.canReplaceChild()" title="Combine logically with another condition">fast_forward</mat-icon>
+								*ngIf="node?.parent?.canReplaceChild()" title="Combine logically with another condition">fast_forward
+			</mat-icon>
 			<mat-icon class="add-sibling-btn" (click)="manipulator.delete(node)"
-								*ngIf="node?.parent?.canReplaceChild()" title="remove this condition">delete</mat-icon>
+								*ngIf="node?.parent?.canReplaceChild()" title="remove this condition">delete
+			</mat-icon>
 		</div>
-		<select class="filter-option" [class.noOptionSelected]="!node.operator" [(ngModel)]="node.operator">
-			<option [ngValue]="undefined" selected invalid>Condition</option>
-			<option *ngFor="let o of node.operators" [ngValue]="o">{{o?.title}}</option>
-		</select>
+		<mat-form-field appearance="outline">
+			<mat-label>Condition</mat-label>
+			<mat-select class="filter-option" [class.noOptionSelected]="!node.operator" [(ngModel)]="node.operator" placeholder="Operator">
+				<mat-option [value]="undefined" selected invalid>Condition</mat-option>
+				<mat-option *ngFor="let o of node.operators" [value]="o">{{o?.title}}</mat-option>
+			</mat-select>
+		</mat-form-field>
 	</div>
 </ng-container>

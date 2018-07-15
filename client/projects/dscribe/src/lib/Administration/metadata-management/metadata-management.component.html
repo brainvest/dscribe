@@ -1,8 +1,14 @@
 <mat-card>
-	<h1>Entities</h1>
-	<button mat-button (click)="addEntity()">Create</button>
-	<button mat-button (click)="editEntity()" [disabled]="!selectedEntity">Edit</button>
-	<button mat-button (click)="deleteEntity()" [disabled]="!selectedEntity">Delete</button>
+	<span>Entities</span>
+	<button mat-icon-button (click)="addEntity()">
+		<mat-icon color="primary">add</mat-icon>
+	</button>
+	<button mat-icon-button (click)="editEntity()" [disabled]="!selectedEntity">
+		<mat-icon color="accent">edit</mat-icon>
+	</button>
+	<button mat-icon-button (click)="deleteEntity()" [disabled]="!selectedEntity">
+		<mat-icon color="warn">delete</mat-icon>
+	</button>
 </mat-card>
 
 <table mat-table [dataSource]="entitiesDataSource" matSort>
@@ -48,10 +54,18 @@
 
 <ng-container>
 	<mat-card>
-		<h1>Properties of {{selectedEntity?.name}}</h1>
-		<button mat-button (click)="addProperty()" [disabled]="!selectedEntity">Add</button>
-		<button mat-button (click)="editProperty()" [disabled]="!selectedEntity || !selectedProperty">Edit</button>
-		<button mat-button (click)="deleteProperty()" [disabled]="!selectedEntity || !selectedProperty">Delete</button>
+		<mat-card-title>Properties of {{selectedEntity?.name}}</mat-card-title>
+		<mat-card-actions>
+			<button mat-icon-button (click)="addProperty()" [disabled]="!selectedEntity">
+				<mat-icon color="primary">add</mat-icon>
+			</button>&nbsp;
+			<button mat-icon-button (click)="editProperty()" [disabled]="!selectedEntity || !selectedProperty">
+				<mat-icon color="accent">edit</mat-icon>
+			</button>&nbsp;
+			<button mat-icon-button (click)="deleteProperty()" [disabled]="!selectedEntity || !selectedProperty">
+				<mat-icon color="warn">delete</mat-icon>
+			</button>&nbsp;
+		</mat-card-actions>
 	</mat-card>
 	<table mat-table [dataSource]="propertiesDataSource" matSort>
 

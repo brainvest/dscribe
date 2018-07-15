@@ -6,6 +6,7 @@ import {LocalFacetsModel} from '../metadata/facets/local-facet-model';
 import {TypeBase} from '../metadata/entity-base';
 import {MetadataBasicInfoModel} from '../metadata/metadata-basic-info-model';
 import {HasIdName} from '../common/models/has-id-name';
+import {AddNEditPropertyMetadataModel} from './models/add-n-edit-property-metadata-model';
 
 @Injectable({
 	providedIn: 'root'
@@ -19,8 +20,32 @@ export class MetadataManagementApiClient {
 	private getTypeFacetsAPI = this.managementAPI + 'getTypeFacets';
 	private getPropertyFacetsAPI = this.managementAPI + 'getPropertyFacets';
 	private getAllPropertyNamesAPI = this.managementAPI + 'getAllPropertyNames';
+	private addEntityAPI = this.managementAPI + 'addEntity';
+	private editEntityAPI = this.managementAPI + 'editEntity';
+	private addPropertyAPI = this.managementAPI + 'addProperty';
+	private editPropertyAPI = this.managementAPI + 'editProperty';
 
 	constructor(private http: HttpClient) {
+	}
+
+	addEntity(entity: TypeBase) {
+		return this.http.post<null>(this.addEntityAPI, entity);
+	}
+
+	editEntity(entity: TypeBase) {
+		return this.http.post<null>(this.editEntityAPI, entity);
+	}
+
+	deleteEntity(entity: TypeBase): Observable<void> {
+		return this.http.post<void>(this.managementAPI + 'deleteEntity', entity);
+	}
+
+	addProperty(property: AddNEditPropertyMetadataModel) {
+		return this.http.post<null>(this.addPropertyAPI, property);
+	}
+
+	editProperty(property: AddNEditPropertyMetadataModel) {
+		return this.http.post<null>(this.editPropertyAPI, property);
 	}
 
 	getBasicInfo(): Observable<MetadataBasicInfoModel> {
@@ -33,10 +58,6 @@ export class MetadataManagementApiClient {
 
 	manageTypes(action: string, type: TypeBase): Observable<void> {
 		return this.http.post<void>(this.managementAPI + action + 'Type', type);
-	}
-
-	deleteType(type: TypeBase): Observable<void> {
-		return this.http.post<void>(this.managementAPI + 'deleteType', type);
 	}
 
 	getTypeFacets(): Observable<LocalFacetsModel> {
