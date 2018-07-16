@@ -7,12 +7,13 @@ export class AddNEditPropertyMetadataModel extends PropertyBase {
 
 	inversePropertyAction: RelatedPropertyAction;
 	newInversePropertyName: string;
+	newInversePropertyTitle: string;
 	newInversePropertyId: number;
 }
 
 export enum RelatedPropertyAction {
-	DontChange = 0,
-	ChooseExistingById = 1,
-	CreateNewByName = 2,
-	RenameExisting = 3
+	DontChange = 1,
+	ChooseExistingById = 2,
+	CreateNewByName = 3,
+	RenameExisting = 4
 }

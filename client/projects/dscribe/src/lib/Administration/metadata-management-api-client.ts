@@ -5,8 +5,8 @@ import {PropertyBase} from '../metadata/property-base';
 import {LocalFacetsModel} from '../metadata/facets/local-facet-model';
 import {TypeBase} from '../metadata/entity-base';
 import {MetadataBasicInfoModel} from '../metadata/metadata-basic-info-model';
-import {HasIdName} from '../common/models/has-id-name';
 import {AddNEditPropertyMetadataModel} from './models/add-n-edit-property-metadata-model';
+import {PropertyInfoModel} from './models/property-info-model';
 
 @Injectable({
 	providedIn: 'root'
@@ -24,6 +24,7 @@ export class MetadataManagementApiClient {
 	private editEntityAPI = this.managementAPI + 'editEntity';
 	private addPropertyAPI = this.managementAPI + 'addProperty';
 	private editPropertyAPI = this.managementAPI + 'editProperty';
+	private getPropertyForEditAPI = this.managementAPI + 'getPropertyForEdit';
 
 	constructor(private http: HttpClient) {
 	}
@@ -42,6 +43,10 @@ export class MetadataManagementApiClient {
 
 	addProperty(property: AddNEditPropertyMetadataModel) {
 		return this.http.post<null>(this.addPropertyAPI, property);
+	}
+
+	getPropertyForEdit(propertyId: number): Observable<AddNEditPropertyMetadataModel> {
+		return this.http.post<AddNEditPropertyMetadataModel>(this.getPropertyForEditAPI, {propertyId: propertyId});
 	}
 
 	editProperty(property: AddNEditPropertyMetadataModel) {
@@ -80,7 +85,7 @@ export class MetadataManagementApiClient {
 		return this.http.post<LocalFacetsModel>(this.getPropertyFacetsAPI, {typeName: typeName});
 	}
 
-	getAllPropertyNames(): Observable<HasIdName[]> {
-		return this.http.post<HasIdName[]>(this.getAllPropertyNamesAPI, {});
+	getAllPropertiesInfo(): Observable<PropertyInfoModel[]> {
+		return this.http.post<PropertyInfoModel[]>(this.getAllPropertyNamesAPI, {});
 	}
 }

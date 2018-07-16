@@ -4,6 +4,7 @@ using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> AddEntity([FromBody]EntityMetadataModel model)
+		public async Task<ActionResult> AddEntity(EntityMetadataModel model)
 		{
 			var error = AddTypeValidation(model);
 			if (error != null)
@@ -75,7 +76,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> EditEntity([FromBody]EntityMetadataModel model)
+		public async Task<ActionResult> EditEntity(EntityMetadataModel model)
 		{
 			var error = EditTypeValidation(model);
 			if (error != null)
@@ -97,7 +98,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> DeleteEntity([FromBody]EntityMetadataModel model)
+		public async Task<ActionResult> DeleteEntity(EntityMetadataModel model)
 		{
 			//TODO: Handle errors, validate model
 			var type = await _dbContext.Entities.FindAsync(model.Id);
@@ -108,7 +109,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 
 		//Same as above
 		[HttpPost]
-		public async Task<ActionResult<IEnumerable<PropertyMetadataModel>>> GetProperties([FromBody]PropertyMetadataRequestModel request)
+		public async Task<ActionResult<IEnumerable<PropertyMetadataModel>>> GetProperties(PropertyMetadataRequestModel request)
 		{
 			var properties = await _dbContext.Properties
 					.Where(x => x.EntityId == request.EntityId).OrderBy(x => x.Name)
@@ -121,36 +122,81 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 						Name = x.Name,
 						Title = x.Title,
 						PropertyGeneralUsageCategoryId = x.GeneralUsageCategoryId,
-						EntityId = x.EntityId,
+						OwnerEntityId = x.EntityId,
 						ForeignKeyPropertyId = x.ForeignKeyPropertyId,
 						InversePropertyId = x.InversePropertyId
 					}).ToListAsync();
 			return properties;
 		}
 
-		[HttpPost]
-		public async Task<ActionResult> AddProperty([FromBody]PropertyMetadataModel model)
+		public async Task<ActionResult<AddNEditPropertyMetadataModel>> GetPropertyForEdit(AddNEditPropertyInfoRequest request)
 		{
-			//TODO: Handle errors, validate model
-			var property = new Property
+			var model = await _dbContext.Properties.Select(x => new AddNEditPropertyMetadataModel
 			{
-				DataTypeId = (DataTypeEnum?)model.DataTypeId,
-				DataTypeEntityId = model.DataTypeEntityId,
-				IsNullable = model.IsNullable,
-				Name = model.Name,
-				Title = model.Title,
-				GeneralUsageCategoryId = model.PropertyGeneralUsageCategoryId,
-				EntityId = model.EntityId,
-				ForeignKeyPropertyId = model.ForeignKeyPropertyId,
-				InversePropertyId = model.InversePropertyId
-			};
-			_dbContext.Properties.Add(property);
-			await _dbContext.SaveChangesAsync();
+				DataTypeEntityId = x.DataTypeEntityId,
+				DataTypeId = (int)x.DataTypeId,
+				OwnerEntityId = x.EntityId,
+				ForeignKeyPropertyId = x.ForeignKeyPropertyId,
+				NewForeignKeyName = x.ForeignKeyProperty.Name,
+				Id = x.Id,
+				InversePropertyId = x.InversePropertyId,
+				IsNullable = x.IsNullable,
+				Name = x.Name,
+				PropertyGeneralUsageCategoryId = x.GeneralUsageCategoryId,
+				Title = x.Title
+			}).SingleOrDefaultAsync(x => x.Id == request.PropertyId);
+			if (model.DataTypeId == (int)DataTypeEnum.NavigationEntity)
+			{
+				var inverse = await _dbContext.Properties.SingleOrDefaultAsync(x => x.InversePropertyId == model.Id);
+				if (inverse != null)
+				{
+					model.InversePropertyId = inverse.Id;
+					model.NewInversePropertyTitle = inverse.Title;
+					model.NewInversePropertyName = inverse.Name;
+				}
+				model.InversePropertyAction = model.ForeignKeyAction = RelatedPropertyAction.DontChange;
+				model.NewForeignKeyId = model.ForeignKeyPropertyId;
+				model.NewInversePropertyId = model.InversePropertyId;
+			}
+			return model;
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> AddProperty(AddNEditPropertyMetadataModel model)
+		{
+			using (var transaction = await _dbContext.Database.BeginTransactionAsync())
+			{
+				//TODO: Handle errors, validate model
+				var property = new Property
+				{
+					DataTypeId = (DataTypeEnum?)model.DataTypeId,
+					DataTypeEntityId = model.DataTypeEntityId,
+					IsNullable = model.IsNullable,
+					Name = model.Name,
+					Title = model.Title,
+					GeneralUsageCategoryId = model.PropertyGeneralUsageCategoryId,
+					EntityId = model.OwnerEntityId,
+					InversePropertyId = model.InversePropertyId
+				};
+				if (property.DataTypeId == DataTypeEnum.NavigationEntity)
+				{
+					await HandleForeignKey(model, property);
+					await HandleInvserseProperty(model, property);
+				}
+				else
+				{
+					property.ForeignKeyPropertyId = model.NewForeignKeyId;
+					property.InversePropertyId = model.NewInversePropertyId;
+				}
+				_dbContext.Properties.Add(property);
+				await _dbContext.SaveChangesAsync();
+				transaction.Commit();
+			}
 			return Ok();
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> EditProperty([FromBody]PropertyMetadataModel model)
+		public async Task<ActionResult> EditProperty(AddNEditPropertyMetadataModel model)
 		{
 			//TODO: Handle errors, validate model
 			var property = await _dbContext.Properties.FindAsync(model.Id);
@@ -160,15 +206,86 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			property.Name = model.Name;
 			property.Title = model.Title;
 			property.GeneralUsageCategoryId = model.PropertyGeneralUsageCategoryId;
-			property.EntityId = model.EntityId;
-			property.ForeignKeyPropertyId = model.ForeignKeyPropertyId;
-			property.InversePropertyId = model.InversePropertyId;
+			if (property.DataTypeId == DataTypeEnum.NavigationEntity)
+			{
+				await HandleForeignKey(model, property);
+				await HandleInvserseProperty(model, property);
+			}
+			else
+			{
+				property.ForeignKeyPropertyId = model.NewForeignKeyId;
+				property.InversePropertyId = model.NewInversePropertyId;
+			}
 			await _dbContext.SaveChangesAsync();
 			return Ok();
 		}
 
+		private async Task HandleForeignKey(AddNEditPropertyMetadataModel model, Property property)
+		{
+			switch (model.ForeignKeyAction)
+			{
+				case RelatedPropertyAction.DontChange:
+					return;
+				case RelatedPropertyAction.ChooseExistingById:
+					property.ForeignKeyPropertyId = model.NewForeignKeyId;
+					return;
+				case RelatedPropertyAction.RenameExisting:
+					var existingForeignKey = await _dbContext.Properties.FindAsync(model.ForeignKeyPropertyId);
+					existingForeignKey.Name = model.NewForeignKeyName;
+					return;
+				case RelatedPropertyAction.CreateNewByName:
+					var newForeignKey = new Property
+					{
+						DataTypeId = DataTypeEnum.ForeignKey,
+						DataTypeEntityId = model.DataTypeEntityId,
+						EntityId = property.EntityId,
+						GeneralUsageCategoryId = (await _dbContext.PropertyGeneralUsageCategories.FirstAsync(x => x.Name.Contains("ForeignKey"))).Id,
+						IsNullable = model.IsNullable,
+						Name = model.NewForeignKeyName,
+						Title = model.Title
+					};
+					property.ForeignKeyProperty = newForeignKey;
+					await _dbContext.Properties.AddAsync(newForeignKey);
+					return;
+				default:
+					throw new NotImplementedException();
+			}
+		}
+
+		private async Task HandleInvserseProperty(AddNEditPropertyMetadataModel model, Property property)
+		{
+			switch (model.InversePropertyAction)
+			{
+				case RelatedPropertyAction.DontChange:
+					return;
+				case RelatedPropertyAction.ChooseExistingById:
+					property.InversePropertyId = model.NewInversePropertyId;
+					return;
+				case RelatedPropertyAction.RenameExisting:
+					var existingInverseProperty = await _dbContext.Properties.FindAsync(model.InversePropertyId);
+					existingInverseProperty.Name = model.NewForeignKeyName;
+					existingInverseProperty.Title = model.NewInversePropertyTitle;
+					return;
+				case RelatedPropertyAction.CreateNewByName:
+					var newInverseProperty = new Property
+					{
+						DataTypeId = DataTypeEnum.NavigationList,
+						DataTypeEntityId = model.OwnerEntityId,
+						EntityId = property.DataTypeEntityId.Value,
+						GeneralUsageCategoryId = (await _dbContext.PropertyGeneralUsageCategories.FirstAsync(x => x.Name.Contains("NavigationList"))).Id,
+						Name = model.NewInversePropertyName,
+						Title = model.NewInversePropertyTitle
+					};
+					newInverseProperty.InverseProperty = property;
+					await _dbContext.Properties.AddAsync(newInverseProperty);
+					return;
+				default:
+					throw new NotImplementedException();
+			}
+		}
+
 		[HttpPost]
-		public async Task<ActionResult> DeleteProperty([FromBody]PropertyMetadataModel model)
+		public async Task<ActionResult> DeleteProperty(PropertyMetadataModel model)
 		{
 			//TODO: Handle errors, validate model
 			var property = await _dbContext.Properties.FindAsync(model.Id);
@@ -343,14 +460,17 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<IEnumerable<PropertyNameModel>>> GetAllPropertyNames()
+		public async Task<ActionResult<IEnumerable<PropertyInfoModel>>> GetAllPropertyNames()
 		{
 			var appTypeId = _implementations.InstanceInfo.AppTypeId;
 			var names = await _dbContext.Properties.Where(x => x.Entity.AppTypeId == appTypeId)
-				.Select(x => new PropertyNameModel
+				.Select(x => new PropertyInfoModel
 				{
 					Id = x.Id,
-					Name = x.Name
+					Name = x.Name,
+					DataTypeEntityId = x.DataTypeEntityId,
+					DataTypeId = (int)x.DataTypeId,
+					OwnerEntityId = x.EntityId
 				}).ToListAsync();
 			return names;
 		}

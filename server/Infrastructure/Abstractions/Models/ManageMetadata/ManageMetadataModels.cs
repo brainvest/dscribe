@@ -26,23 +26,24 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string Name { get; set; }
 		public string Title { get; set; }
 		public int PropertyGeneralUsageCategoryId { get; set; }
-		public int EntityId { get; set; }
+		public int OwnerEntityId { get; set; }
 	}
 
 	public class AddNEditPropertyMetadataModel : PropertyMetadataModel
 	{
 		public RelatedPropertyAction ForeignKeyAction { get; set; }
-		public string ForeignKeyName { get; set; }
-		public int? OldForegnKeyId { get; set; }
+		public string NewForeignKeyName { get; set; }
+		public int? NewForeignKeyId { get; set; }
 
 		public RelatedPropertyAction InversePropertyAction { get; set; }
-		public string InversePropertyName { get; set; }
-		public int? OldInversePropertyId { get; set; }
+		public string NewInversePropertyName { get; set; }
+		public int? NewInversePropertyId { get; set; }
+		public string NewInversePropertyTitle { get; set; }
 	}
 
 	public enum RelatedPropertyAction
 	{
-		DontChange = 0,
+		DontChange = 1,
 		ChooseExistingById,
 		CreateNewByName,
 		RenameExisting
@@ -51,6 +52,11 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 	public class PropertyMetadataRequestModel
 	{
 		public int EntityId { get; set; }
+	}
+
+	public class AddNEditPropertyInfoRequest
+	{
+		public int PropertyId { get; set; }
 	}
 
 	public class MetadataBasicInfoModel
@@ -114,9 +120,12 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string Name { get; set; }
 	}
 
-	public class PropertyNameModel
+	public class PropertyInfoModel
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
+		public int DataTypeId { get; set; }
+		public int? DataTypeEntityId { get; set; }
+		public int OwnerEntityId { get; set; }
 	}
 }

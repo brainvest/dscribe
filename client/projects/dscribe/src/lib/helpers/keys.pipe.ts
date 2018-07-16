@@ -5,8 +5,9 @@ export class KeysPipe implements PipeTransform {
 	transform(value, args: string[]): any {
 		let keys = [];
 		for (const enumMember in value) {
-			if (!isNaN(parseInt(enumMember, 10))) {
-				keys.push({key: enumMember, value: value[enumMember]});
+			const val = parseInt(enumMember, 10);
+			if (!isNaN(val)) {
+				keys.push({key: val, value: value[enumMember]});
 			}
 		}
 		return keys;

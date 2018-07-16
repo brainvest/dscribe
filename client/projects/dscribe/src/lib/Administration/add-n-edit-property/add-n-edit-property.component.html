@@ -36,19 +36,22 @@
 		</mat-form-field>
 
 		<mat-form-field *ngIf="isNavigationProperty" class="full-width" appearance="outline">
-
 			<mat-label>Foreign Key Action</mat-label>
 			<mat-select name="foreignKeyAction" placeholder="Foreign Key Action"
 									[(ngModel)]="property.foreignKeyAction">
-				<mat-option *ngFor="let action of actions | keys" [value]="entity.id">
-					{{entity.name}}
+				<mat-option *ngFor="let action of actions | keys" [value]="action.key">
+					{{action.value}}
 				</mat-option>
 			</mat-select>
+		</mat-form-field>
 
+		<mat-form-field *ngIf="isNavigationProperty" class="full-width" appearance="outline">
 			<mat-label>Foreign Key Name</mat-label>
 			<input matInput type="text" placeholder="Foreign Key Name" name="foreignKeyName"
 						 [(ngModel)]="property.newForeignKeyName">
+		</mat-form-field>
 
+		<mat-form-field *ngIf="isNavigationProperty" class="full-width" appearance="outline">
 			<mat-label>Foreign Key</mat-label>
 			<mat-select name="foreignKeyId" placeholder="Choose Foreign Key"
 									[(ngModel)]="property.newForeignKeyId">
@@ -63,15 +66,25 @@
 			<mat-label>Inverse Property Action</mat-label>
 			<mat-select name="inversePropertyAction" placeholder="Inverse Property Action"
 									[(ngModel)]="property.inversePropertyAction">
-				<mat-option *ngFor="let action of actions | keys" [value]="entity.id">
-					{{entity.name}}
+				<mat-option *ngFor="let action of actions | keys" [value]="action.key">
+					{{action.value}}
 				</mat-option>
 			</mat-select>
+		</mat-form-field>
 
+		<mat-form-field *ngIf="isNavigationProperty" class="full-width" appearance="outline">
 			<mat-label>Inverse Property Name</mat-label>
-			<input matInput type="text" placeholder="Onverse Property Name" name="inversePropertyName"
+			<input matInput type="text" placeholder="Inverse Property Name" name="inversePropertyName"
 						 [(ngModel)]="property.newInversePropertyName">
+		</mat-form-field>
 
+		<mat-form-field *ngIf="isNavigationProperty" class="full-width" appearance="outline">
+			<mat-label>Inverse Property Title</mat-label>
+			<input matInput type="text" placeholder="Inverse Property Title" name="inversePropertyTitle"
+						 [(ngModel)]="property.newInversePropertyTitle">
+		</mat-form-field>
+
+		<mat-form-field *ngIf="hasInverseProperty" class="full-width" appearance="outline">
 			<mat-label>Inverse Property</mat-label>
 			<mat-select name="inversePropertyId" placeholder="Choose Inverse Property"
 									[(ngModel)]="property.newInversePropertyId">
@@ -98,6 +111,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-	<button mat-flat-button (click)="save()">Save</button>
-	<button mat-flat-button (click)="cancel()">Cancel</button>
+	<button mat-icon-button (click)="save()"><mat-icon color="primary">save</mat-icon></button>
+	<button mat-icon-button (click)="cancel()"><mat-icon color="warn">cancel</mat-icon></button>
 </mat-dialog-actions>

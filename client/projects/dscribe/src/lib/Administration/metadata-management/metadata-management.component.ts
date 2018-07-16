@@ -4,11 +4,11 @@ import {MetadataBasicInfoModel} from '../../metadata/metadata-basic-info-model';
 import {TypeBase} from '../../metadata/entity-base';
 import {MatDialog, MatPaginator, MatTableDataSource} from '@angular/material';
 import {PropertyBase} from '../../metadata/property-base';
-import {HasIdName} from '../../common/models/has-id-name';
 import {AddNEditEntityComponent, AddNEditEntityComponentData} from '../add-n-edit-entity/add-n-edit-entity.component';
 import {AddNEditPropertyComponent, AddNEditPropertyComponentData} from '../add-n-edit-property/add-n-edit-property.component';
 import {AddNEditPropertyMetadataModel} from '../models/add-n-edit-property-metadata-model';
 import {ConfirmationDialogComponent} from '../../common/confirmation-dialog/confirmation-dialog.component';
+import {PropertyInfoModel} from '../models/property-info-model';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -24,7 +24,7 @@ export class MetadataManagementComponent implements OnInit {
 	entitiesAreLoading = false;
 
 	properties: PropertyBase[];
-	allPropertyNames: HasIdName[];
+	allPropertiesInfo: PropertyInfoModel[];
 	propertiesDataSource = new MatTableDataSource<PropertyBase>();
 	selectedProperty: PropertyBase;
 	propertiesAreLoading = false;
@@ -76,8 +76,8 @@ export class MetadataManagementComponent implements OnInit {
 
 	refreshProperties() {
 		this.propertiesAreLoading = true;
-		this.apiClient.getAllPropertyNames()
-			.subscribe(names => this.allPropertyNames = names);
+		this.apiClient.getAllPropertiesInfo()
+			.subscribe(info => this.allPropertiesInfo = info);
 		this.apiClient.getProperties(this.selectedEntity.id)
 			.subscribe(props => {
 				this.propertiesDataSource.data = this.properties = props;
@@ -112,7 +112,7 @@ export class MetadataManagementComponent implements OnInit {
 		if (prop) {
 			return prop.name;
 		}
-		return this.allPropertyNames.find(x => x.id === id).displayName;
+		return this.allPropertiesInfo.find(x => x.id === id).name;
 	}
 
 	addEntity() {
@@ -154,14 +154,19 @@ export class MetadataManagementComponent implements OnInit {
 	}
 
 	addProperty() {
-		this.openAddNEditPropertyDialog({entityId: this.selectedEntity.id}, true);
+		const instance = new AddNEditPropertyMetadataModel();
+		instance.ownerEntityId = this.selectedEntity.id;
+		this.openAddNEditPropertyDialog(instance, true);
 	}
 
 	editProperty() {
 		if (!this.selectedProperty) {
 			return;
 		}
-		this.openAddNEditPropertyDialog(this.selectedProperty, false);
+		this.apiClient.getPropertyForEdit(this.selectedProperty.id)
+			.subscribe(property => {
+				this.openAddNEditPropertyDialog(property, false);
+			});
 	}
 
 	deleteProperty() {
@@ -181,7 +186,7 @@ export class MetadataManagementComponent implements OnInit {
 		const dialogRef = this.dialog.open(AddNEditPropertyComponent, {
 			width: '800px',
 			data: new AddNEditPropertyComponentData(instance, isNew, this.basicInfo, this.entities,
-				null, null)
+				this.properties, this.allPropertiesInfo)
 		});
 		dialogRef.afterClosed().subscribe(
 			result => {
