@@ -1,4 +1,4 @@
-<mat-form-field class="full-width" *ngIf="listRefresher" appearance="outline">
+<mat-form-field class="full-width" *ngIf="listRefresher && !isFilter" appearance="outline">
 	<mat-label>{{property.title}}</mat-label>
 	<input matInput [placeholder]="property.title" [attr.id]="property.name" [attr.aria-label]="property.name"
 				 [formControl]="inputCtrl"
@@ -11,3 +11,14 @@
 		</mat-option>
 	</mat-autocomplete>
 </mat-form-field>
+
+<input *ngIf="isFilter" [placeholder]="property.title" [attr.id]="property.name" [attr.aria-label]="property.name"
+			 [formControl]="inputCtrl"
+			 [matAutocomplete]="auto">
+<i *ngIf="loading" class="fa fa-spinner" matSuffix></i>
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+	<mat-option *ngFor="let item of filteredOptions | async" [value]="item.id"
+							(onSelectionChange)="selectionChange(item)">
+		{{ item.displayName ? item.displayName : '' }}
+	</mat-option>
+</mat-autocomplete>

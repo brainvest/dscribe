@@ -11,4 +11,5 @@ export class EntitySelectComponent {
 	@Input() color: string;
 	@Input() list: any[];
 	@Input() overridePropertyName: string;
+	@Input() isFilter: boolean;
 }

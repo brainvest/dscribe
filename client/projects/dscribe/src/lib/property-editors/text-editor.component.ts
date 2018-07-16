@@ -10,4 +10,5 @@ export class TextEditorComponent {
 	@Input() property: PropertyMetadata;
 	@Input() color: string;
 	@Input() overridePropertyName: string;
+	@Input() isFilter: boolean;
 }

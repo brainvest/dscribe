@@ -10,6 +10,7 @@ export class DateEditorComponent {
 	@Input() property: PropertyMetadata;
 	@Input() color: string;
 	@Input() overridePropertyName: string;
+	@Input() isFilter: boolean;
 
 	onModelChange(event: any) {
 		this.entity[this.overridePropertyName || this.property.jsName] = event.toISOString();

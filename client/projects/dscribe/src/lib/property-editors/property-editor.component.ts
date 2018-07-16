@@ -15,6 +15,7 @@ export class PropertyEditorComponent implements OnChanges {
 	@Input() dataType?: string;
 	@Input() overridePropertyName: string;
 	@Input() width: string;
+	@Input() isFilter: boolean;
 
 	inputType: string;
 

@@ -12,6 +12,7 @@ export class EntityListEditorComponent implements OnInit, OnChanges {
 	@Input() entity: any;
 	@Input() property: PropertyMetadata;
 	@Input() overridePropertyName: string;
+	@Input() isFilter: boolean;
 
 	master: MasterReference;
 	items: HasIdName[];

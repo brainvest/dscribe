@@ -7,12 +7,10 @@
 		<mat-icon (click)="manipulator.delete(node)" title="remove">delete</mat-icon>
 	</div>
 	<div *ngFor="let child of node.children; let i = index">
-		<mat-form-field *ngIf="i == 1 || node.children.length == 1" appearance="outline">
-			<mat-select class="filter-option" [(ngModel)]="node.operator">
-				<mat-option value="" disabled selected>Logical Operator</mat-option>
-				<mat-option *ngFor="let o of node.operators" [value]="o">{{o.title}}</mat-option>
-			</mat-select>
-		</mat-form-field>
+		<select class="filter-option" [(ngModel)]="node.operator" *ngIf="i == 1 || node.children.length == 1">
+			<option value="" disabled selected>Logical Operator</option>
+			<option *ngFor="let o of node.operators" [ngValue]="o">{{o.title}}</option>
+		</select>
 		<span *ngIf="i != node?.operator?.minNumberOfOperands - 1" class="filter-option">
 		{{i > 1 ? node?.operator?.title : ''}}
 	</span>

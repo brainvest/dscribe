@@ -1,4 +1,8 @@
-<mat-checkbox class="full-width" [(ngModel)]="entity[overridePropertyName || property.jsName]">{{property.title}}</mat-checkbox>
+<mat-checkbox *ngIf="!isFilter" class="full-width" [(ngModel)]="entity[overridePropertyName || property.jsName]">
+	{{property.title}}
+</mat-checkbox>
+
+<input type="checkbox" *ngIf="isFilter" [(ngModel)]="entity[overridePropertyName || property.jsName]">
 
 <div *ngIf="property.validationErrors">
 	<p *ngFor="let validationError of property.validationErrors" class="error-message">

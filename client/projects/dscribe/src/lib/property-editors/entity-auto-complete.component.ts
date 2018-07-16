@@ -18,6 +18,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 	@Input() property: PropertyMetadata;
 	@Input() color: string;
 	@Input() overridePropertyName: string;
+	@Input() isFilter: boolean;
 
 	inputCtrl = new FormControl();
 	filteredOptions: Observable<{ displayName: string, id: number }[]>;

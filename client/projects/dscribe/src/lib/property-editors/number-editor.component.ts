@@ -10,4 +10,5 @@ export class NumberEditorComponent {
 	@Input() property: PropertyMetadata;
 	@Input() color: string;
 	@Input() overridePropertyName: string;
+	@Input() isFilter: boolean;
 }

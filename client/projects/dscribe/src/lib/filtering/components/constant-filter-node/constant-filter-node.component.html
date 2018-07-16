@@ -3,10 +3,17 @@
 		<mat-icon (click)="manipulator.addSibling(node)" title="move under calculation">fast_forward</mat-icon>
 		<mat-icon (click)="manipulator.toggleType(node)" title="convert to dependent value">refresh</mat-icon>
 		<mat-icon (click)="node.removeValueAt(i)"
-							*ngIf="node.values.length > 1" title="remove">delete</mat-icon>
+							*ngIf="node.values.length > 1" title="remove">delete
+		</mat-icon>
 		<mat-icon class="add-value-btn" *ngIf="node.allowMultipleValues && i == node.values.length - 1"
-							(click)="node.addValue()" title="add">add</mat-icon>
+							(click)="node.addValue()" title="add">add
+		</mat-icon>
 	</div>
-	<dscribe-property-editor class="filter-option" [property]="node.dataType" [overridePropertyName]="'value'" [entity]="value">
+	<dscribe-property-editor
+		class="filter-option"
+		[property]="node.dataType"
+		[overridePropertyName]="'value'"
+		[entity]="value"
+		[isFilter]="true">
 	</dscribe-property-editor>
 </div>

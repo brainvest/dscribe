@@ -1,9 +1,16 @@
-<mat-form-field class="full-width" *ngIf="listRefresher" appearance="outline">
+<mat-form-field class="full-width" *ngIf="listRefresher && !isFilter" appearance="outline">
 	<mat-label>{{property.title}}</mat-label>
 	<select [attr.id]="property.name" [(ngModel)]="entity[overridePropertyName || property.jsName]"
+					[ngStyle]="{width: width}">
+		<option *ngFor="let item of list" [ngValue]="item.id">
+			{{ item.displayName ? item.displayName : item.name }}
+		</option>
+	</select>
+</mat-form-field>
+
+<select *ngIf="isFilter" [attr.id]="property.name" [(ngModel)]="entity[overridePropertyName || property.jsName]"
 				[ngStyle]="{width: width}">
 	<option *ngFor="let item of list" [ngValue]="item.id">
 		{{ item.displayName ? item.displayName : item.name }}
 	</option>
 </select>
-</mat-form-field>
