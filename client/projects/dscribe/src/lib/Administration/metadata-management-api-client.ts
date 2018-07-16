@@ -7,12 +7,14 @@ import {TypeBase} from '../metadata/entity-base';
 import {MetadataBasicInfoModel} from '../metadata/metadata-basic-info-model';
 import {AddNEditPropertyMetadataModel} from './models/add-n-edit-property-metadata-model';
 import {PropertyInfoModel} from './models/property-info-model';
+import {ReleaseMetadataRequest} from './models/release-metadata-request';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class MetadataManagementApiClient {
 	private managementAPI = 'api/ManageMetadata/';
+	private releaseAPI = 'api/ReleaseMetadata/';
 
 	private getTypesAPI = this.managementAPI + 'getTypes';
 	private getPropertiesAPI = this.managementAPI + 'getProperties';
@@ -25,6 +27,8 @@ export class MetadataManagementApiClient {
 	private addPropertyAPI = this.managementAPI + 'addProperty';
 	private editPropertyAPI = this.managementAPI + 'editProperty';
 	private getPropertyForEditAPI = this.managementAPI + 'getPropertyForEdit';
+
+	private releaseMetadataAPI = this.releaseAPI + 'releaseMetadata';
 
 	constructor(private http: HttpClient) {
 	}
@@ -88,4 +92,9 @@ export class MetadataManagementApiClient {
 	getAllPropertiesInfo(): Observable<PropertyInfoModel[]> {
 		return this.http.post<PropertyInfoModel[]>(this.getAllPropertyNamesAPI, {});
 	}
+
+	releaseMetadata(request: ReleaseMetadataRequest): Observable<null>{
+		return this.http.post<null>(this.releaseMetadataAPI, request);
+	}
+
 }

@@ -20,7 +20,7 @@ import {
 	MatProgressSpinnerModule,
 	MatSelectModule,
 	MatSortModule,
-	MatTableModule
+	MatTableModule, MatTooltipModule
 } from '@angular/material';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -56,6 +56,7 @@ import {AddNEditEntityComponent} from './Administration/add-n-edit-entity/add-n-
 import {AddNEditPropertyComponent} from './Administration/add-n-edit-property/add-n-edit-property.component';
 import {KeysPipe} from './helpers/keys.pipe';
 import { ConfirmationDialogComponent } from './common/confirmation-dialog/confirmation-dialog.component';
+import { ReleaseMetadataSettingsComponent } from './Administration/release-metadata-settings/release-metadata-settings.component';
 
 @NgModule({
 	imports: [
@@ -77,6 +78,7 @@ import { ConfirmationDialogComponent } from './common/confirmation-dialog/confir
 		MatSortModule,
 		MatSelectModule,
 		MatTableModule,
+		MatTooltipModule,
 		MatCheckboxModule,
 		MatProgressSpinnerModule,
 		ReactiveFormsModule,
@@ -113,7 +115,8 @@ import { ConfirmationDialogComponent } from './common/confirmation-dialog/confir
 		AddNEditEntityComponent,
 		AddNEditPropertyComponent,
 		KeysPipe,
-		ConfirmationDialogComponent
+		ConfirmationDialogComponent,
+		ReleaseMetadataSettingsComponent
 	],
 	exports: [DscribeComponent, ListComponent],
 	providers: [
@@ -125,7 +128,8 @@ import { ConfirmationDialogComponent } from './common/confirmation-dialog/confir
 		ListDeleteDialogComponent,
 		AddNEditEntityComponent,
 		AddNEditPropertyComponent,
-		ConfirmationDialogComponent
+		ConfirmationDialogComponent,
+		ReleaseMetadataSettingsComponent
 	]
 })
 export class DscribeModule {

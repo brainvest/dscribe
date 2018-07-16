@@ -9,6 +9,7 @@ import {AddNEditPropertyComponent, AddNEditPropertyComponentData} from '../add-n
 import {AddNEditPropertyMetadataModel} from '../models/add-n-edit-property-metadata-model';
 import {ConfirmationDialogComponent} from '../../common/confirmation-dialog/confirmation-dialog.component';
 import {PropertyInfoModel} from '../models/property-info-model';
+import {ReleaseMetadataSettingsComponent} from '../release-metadata-settings/release-metadata-settings.component';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -195,6 +196,12 @@ export class MetadataManagementComponent implements OnInit {
 				}
 			}
 		);
+	}
+
+	openReleaseSettings() {
+		this.dialog.open(ReleaseMetadataSettingsComponent, {
+			width: '300px'
+		});
 	}
 }
 

@@ -58,7 +58,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var appInstance = await _dbContext.AppInstances.SingleAsync(X => X.Id == request.AppInstanceId);
 			var appType = await _dbContext.AppTypes.SingleAsync(x => x.Id == appInstance.AppTypeId);
 
-			var bundle = MetadataBundle.FromDbWithoutNavigations(_dbContext, appType.Id, appInstance.Id);
+			var bundle = await MetadataBundle.FromDbWithoutNavigations(_dbContext, appType.Id, appInstance.Id);
 			var json = JsonConvert.SerializeObject(bundle);
 			var zipped = TextHelper.Zip(json);
 

@@ -9,6 +9,9 @@
 	<button mat-icon-button (click)="deleteEntity()" [disabled]="!selectedEntity">
 		<mat-icon color="warn">delete</mat-icon>
 	</button>
+	<button mat-icon-button (click)="openReleaseSettings()" matTooltip="Release Metadata">
+		<mat-icon color="warn">new_releases</mat-icon>
+	</button>
 </mat-card>
 
 <table mat-table [dataSource]="entitiesDataSource" matSort>

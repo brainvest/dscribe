@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>Release Metadata</h1>
+
+<mat-dialog-content>
+
+	<form #releaseForm="ngForm">
+		<mat-form-field appearance="outline">
+			<mat-label>App Instance Id</mat-label>
+			<input matInput
+						 placeholder="App Instance Id"
+						 name="appInstanceId" [(ngModel)]="releaseSettings.appInstanceId">
+		</mat-form-field>
+
+		<mat-checkbox name="setAsInstanceMetadata" [(ngModel)]="releaseSettings.setAsInstanceMetadata">Set as Instance Metadata</mat-checkbox>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Version</mat-label>
+			<input matInput
+						 placeholder="Version"
+						 name="version" [(ngModel)]="releaseSettings.version">
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Version Code</mat-label>
+			<input matInput
+						 placeholder="Version Code"
+						 name="versionCode" [(ngModel)]="releaseSettings.versionCode">
+		</mat-form-field>
+
+	</form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<button mat-icon-button (click)="release()">
+		<mat-icon color="primary">save</mat-icon>
+	</button>
+	<button mat-icon-button (click)="cancel()">
+		<mat-icon color="warn">cancel</mat-icon>
+	</button>
+</mat-dialog-actions>
