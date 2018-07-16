@@ -203,6 +203,17 @@ export class MetadataManagementComponent implements OnInit {
 			width: '300px'
 		});
 	}
+
+	generateCode() {
+		this.apiClient.generateCode()
+			.subscribe(x => {
+				if (x.success) {
+					alert('done');
+				} else {
+					alert('errors occured please see the validation errors');
+				}
+			});
+	}
 }
 
 

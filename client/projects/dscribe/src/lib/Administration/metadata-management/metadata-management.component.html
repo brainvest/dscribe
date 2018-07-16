@@ -12,6 +12,9 @@
 	<button mat-icon-button (click)="openReleaseSettings()" matTooltip="Release Metadata">
 		<mat-icon color="warn">new_releases</mat-icon>
 	</button>
+	<button mat-icon-button (click)="generateCode()" matTooltip="Generate Code">
+		<mat-icon color="warn">code</mat-icon>
+	</button>
 </mat-card>
 
 <table mat-table [dataSource]="entitiesDataSource" matSort>

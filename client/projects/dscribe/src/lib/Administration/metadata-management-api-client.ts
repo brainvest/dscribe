@@ -8,6 +8,7 @@ import {MetadataBasicInfoModel} from '../metadata/metadata-basic-info-model';
 import {AddNEditPropertyMetadataModel} from './models/add-n-edit-property-metadata-model';
 import {PropertyInfoModel} from './models/property-info-model';
 import {ReleaseMetadataRequest} from './models/release-metadata-request';
+import {MetadataValidationResponse} from './models/metadata-validation-response';
 
 @Injectable({
 	providedIn: 'root'
@@ -29,6 +30,7 @@ export class MetadataManagementApiClient {
 	private getPropertyForEditAPI = this.managementAPI + 'getPropertyForEdit';
 
 	private releaseMetadataAPI = this.releaseAPI + 'releaseMetadata';
+	private generateCodeAPI = this.releaseAPI + 'generateCode';
 
 	constructor(private http: HttpClient) {
 	}
@@ -93,8 +95,11 @@ export class MetadataManagementApiClient {
 		return this.http.post<PropertyInfoModel[]>(this.getAllPropertyNamesAPI, {});
 	}
 
-	releaseMetadata(request: ReleaseMetadataRequest): Observable<null>{
+	releaseMetadata(request: ReleaseMetadataRequest): Observable<null> {
 		return this.http.post<null>(this.releaseMetadataAPI, request);
 	}
 
+	generateCode(): Observable<MetadataValidationResponse> {
+		return this.http.post<MetadataValidationResponse>(this.generateCodeAPI, null);
+	}
 }
