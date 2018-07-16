@@ -20,7 +20,7 @@ import {
 	MatProgressSpinnerModule,
 	MatSelectModule,
 	MatSortModule,
-	MatTableModule, MatTooltipModule
+	MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule
 } from '@angular/material';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -80,6 +80,8 @@ import { ReleaseMetadataSettingsComponent } from './Administration/release-metad
 		MatTableModule,
 		MatTooltipModule,
 		MatCheckboxModule,
+		MatToolbarModule,
+		MatTabsModule,
 		MatProgressSpinnerModule,
 		ReactiveFormsModule,
 		RouterModule.forRoot(DSCRIBE_ROUTES)

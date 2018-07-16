@@ -12,6 +12,25 @@
 	width: 100%;
 }
 
+.page-header {
+	display: flex;
+	padding: 16px 8px;
+}
+
+.page-content {
+	padding: 20px 50px 20px 20px;
+}
+
+.table-actions {
+	display: flex;
+	justify-content: flex-end;
+	padding: 18px 8px;
+	border: 1px solid #d1d8dd;
+}
+
+.table {
+	background-color: #fff;
+}
 /********************************************
       Table
 *******************************************/

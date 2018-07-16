@@ -1,17 +1,25 @@
-<mat-menu #appMenu="matMenu">
-	<button mat-menu-item routerLink="/administration">
-		<mat-icon color="accent">settings</mat-icon>
-		Administration
-	</button>
-	<hr/>
-	<button mat-menu-item *ngFor="let entity of entities" routerLink="/entity/{{entity.name}}">
-		<mat-icon color="primary">list</mat-icon>
-		{{entity.pluralTitle}}
-	</button>
-</mat-menu>
+<nav class="dscribe-main-navbar mat-elevation-z6">
+	<mat-toolbar class="main-nav-header">
+		<h1>Dscribe</h1>
+	</mat-toolbar>
+	<mat-toolbar class="main-nav">
+		<mat-tab-group (selectedTabChange)="navigate(mainUrls[$event.index])">
+			<mat-tab label="Home"></mat-tab>
+			<mat-tab #entitiesTab label="View"></mat-tab>
+			<mat-tab label="Administration"></mat-tab>
+		</mat-tab-group>
+	</mat-toolbar>
+</nav>
 
-<button mat-icon-button [matMenuTriggerFor]="appMenu">
-	<mat-icon>more_vert</mat-icon>
-</button>
+<div class="container">
+	<nav *ngIf="entitiesTab.isActive" class="secondary-nav mat-elevation-z4" [ngClass]="sideNavOpen ? 'open' : 'close'">
+		<a class="secondary-nav-item" *ngFor="let entity of entities" routerLink="/entity/{{entity.name}}"
+				 routerLinkActive="active">
+				{{entity.name}}
+		</a>
+	</nav>
 
-<router-outlet></router-outlet>
+	<main>
+		<router-outlet></router-outlet>
+	</main>
+</div>

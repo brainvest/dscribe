@@ -1,2 +1,25 @@
 @import "../projects/dscribe/src/lib/themes/_core.scss";
 
+body {
+	margin: 0;
+	font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+
+dscribe-navigation {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 114px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
+}
+
+.dscribe-main-navbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 2;
+}

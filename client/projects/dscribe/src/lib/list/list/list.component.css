@@ -1,12 +1,3 @@
-.page-header {
-	display: flex;
-	padding: 16px 8px;
-}
-
-.page-title {
-	margin: 0;
-}
-
 .list-container {
 	position: relative;
 }
@@ -30,6 +21,7 @@ table {
 
 .filter {
 	border: 1px solid #d1d8dd;
+	border-top: none;
 }
 
 .filter__summary, .filter__content {
