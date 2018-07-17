@@ -17,4 +17,8 @@ export class MetadataService {
 		}
 		return this.metadata;
 	}
+
+	clearMetadata() {
+		this.metadata = new Metadata(this.http);
+	}
 }

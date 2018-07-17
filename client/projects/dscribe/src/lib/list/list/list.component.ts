@@ -56,12 +56,6 @@ export class ListComponent implements OnInit, OnChanges {
 	constructor(private metadataService: MetadataService,
 							private dataHandler: DataHandlerService,
 							private dialog: MatDialog) {
-		this.metadataService.getMetadata().getTypeByName('Organization')
-			.subscribe(entity => {
-				this.entity = entity;
-				this.refreshData();
-				this.createColumns(this.entity);
-			});
 		this.selection.onChange.subscribe(x => this.selectionChanged(x));
 	}
 
@@ -82,6 +76,7 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	createColumns(entity: EntityMetadata) {
+		this.detailLists = [];
 		this.columns = [];
 		this.displayedColumns = ['select'];
 		for (const propertyName in entity.properties) {
@@ -90,6 +85,9 @@ export class ListComponent implements OnInit, OnChanges {
 			}
 			const prop = entity.properties[propertyName];
 			if (prop.dataType === DataTypes.NavigationList) {
+				if (prop && prop.facetValues && prop.facetValues[KnownFacets.HideInList]) {
+					continue;
+				}
 				if (this.master) {
 					continue;
 				}
