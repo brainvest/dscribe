@@ -1,21 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MetadataService} from '../common/services/metadata.service';
 import {EntityMetadata} from '../metadata/entity-metadata';
+import {Router} from '@angular/router';
 
 @Component({
-  selector: 'dscribe-navigation',
-  templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.css']
+	selector: 'dscribe-navigation',
+	templateUrl: './navigation.component.html',
+	styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-
 	entities: EntityMetadata[];
-  constructor(private metadata: MetadataService) { }
+	mainUrls = ['main', 'entity', 'administration'];
+	sideNavOpen = true;
 
-  ngOnInit() {
-  	this.metadata.getMetadata()
+	constructor(private metadata: MetadataService, private router: Router) {
+	}
+
+	ngOnInit() {
+		this.navigate(this.mainUrls[0]);
+		this.metadata.getMetadata()
 			.getAllTypes()
-			.subscribe(entities => this.entities = entities);
-  }
+			.subscribe(entities => {
+				this.entities = entities;
+				this.mainUrls[1] = 'entity/' + this.entities[0].name;
+			});
+	}
+
+	navigate(url: string) {
+		this.router.navigateByUrl(url);
+	}
 
 }

@@ -1,58 +1,63 @@
-<div class="page-header">
+<mat-toolbar color="primary" class="page-header">
 	<h2 *ngIf="entity" class="page-title">{{entity.name}}</h2>
 	<div class="flex-spacer"></div>
-	<div class="page-actions">
-		<ng-template #newBtn>
-			<button mat-raised-button (click)="addNew()" color="primary">New</button>
-		</ng-template>
-		<button color="warn" *ngIf="selection.hasValue(); else newBtn" mat-raised-button (click)="deleteSelected()">
-			Delete
-		</button>
-	</div>
-</div>
+</mat-toolbar>
 
-<div class="filter">
-	<div class="filter__summary">
-		<button mat-stroked-button (click)="toggleFilter()">{{filterLambda ? 'Hide' : 'Show'}} Filters</button>
-		<div class="flex-spacer"></div>
-		<button mat-stroked-button color="primary" (click)="applyFilter()">Apply</button>
-	</div>
-	<div class="filter__content" *ngIf="filterLambda" style="margin-bottom: 0;">
-		<div class="manipulation-section__content">
-			<dscribe-filter-node [node]="filterLambda"></dscribe-filter-node>
+<div class="page-content">
+	<div class="table mat-elevation-z4">
+		<div class="table-actions">
+			<ng-template #newBtn>
+				<button mat-raised-button (click)="addNew()" color="primary">New</button>
+			</ng-template>
+			<button color="warn" *ngIf="selection.hasValue(); else newBtn" mat-raised-button (click)="deleteSelected()">
+				Delete
+			</button>
+		</div>
+
+		<div class="filter">
+			<div class="filter__summary">
+				<button mat-stroked-button (click)="toggleFilter()">{{filterLambda ? 'Hide' : 'Show'}} Filters</button>
+				<div class="flex-spacer"></div>
+				<button mat-stroked-button color="primary" (click)="applyFilter()">Apply</button>
+			</div>
+			<div class="filter__content" *ngIf="filterLambda" style="margin-bottom: 0;">
+				<div class="manipulation-section__content">
+					<dscribe-filter-node [node]="filterLambda"></dscribe-filter-node>
+				</div>
+			</div>
+		</div>
+
+		<div class="list-container">
+			<div class="table-loading-shade" *ngIf="isLoadingResults">
+				<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+			</div>
+			<div class="list-table-container">
+				<table mat-table [dataSource]="data" matSort>
+					<ng-container matColumnDef="select">
+						<th mat-header-cell *matHeaderCellDef>
+							<mat-checkbox *ngIf="allowMultiSelect" (change)="$event ? masterToggle() : null"
+														[checked]="selection.hasValue() && isAllSelected()"
+														[indeterminate]="selection.hasValue() && !isAllSelected()">
+							</mat-checkbox>
+						</th>
+						<td mat-cell *matCellDef="let row">
+							<mat-checkbox (click)="$event.stopPropagation()"
+														(change)="$event ? selection.toggle(row) : null"
+														[checked]="selection.isSelected(row)">
+							</mat-checkbox>
+						</td>
+					</ng-container>
+					<ng-container *ngFor="let col of columns" [matColumnDef]="col.name">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>{{col.title}}</th>
+						<td mat-cell *matCellDef="let row">{{row[col.jsName]}}</td>
+					</ng-container>
+					<tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+					<tr mat-row *matRowDef="let row; columns: displayedColumns;"
+							[ngClass]="{'highlight': selectedRow?.id === row.id}"
+							(click)="editRow(row)"></tr>
+				</table>
+			</div>
+			<mat-paginator class="list-paginator" [length]="totalCount" [pageSize]="pageSize"></mat-paginator>
 		</div>
 	</div>
-</div>
-
-<div class="list-container">
-	<div class="table-loading-shade" *ngIf="isLoadingResults">
-		<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-	</div>
-	<div class="list-table-container">
-		<table mat-table [dataSource]="data" matSort>
-			<ng-container matColumnDef="select">
-				<th mat-header-cell *matHeaderCellDef>
-					<mat-checkbox *ngIf="allowMultiSelect" (change)="$event ? masterToggle() : null"
-												[checked]="selection.hasValue() && isAllSelected()"
-												[indeterminate]="selection.hasValue() && !isAllSelected()">
-					</mat-checkbox>
-				</th>
-				<td mat-cell *matCellDef="let row">
-					<mat-checkbox (click)="$event.stopPropagation()"
-												(change)="$event ? selection.toggle(row) : null"
-												[checked]="selection.isSelected(row)">
-					</mat-checkbox>
-				</td>
-			</ng-container>
-			<ng-container *ngFor="let col of columns" [matColumnDef]="col.name">
-				<th mat-header-cell *matHeaderCellDef mat-sort-header>{{col.title}}</th>
-				<td mat-cell *matCellDef="let row">{{row[col.jsName]}}</td>
-			</ng-container>
-			<tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-			<tr mat-row *matRowDef="let row; columns: displayedColumns;"
-					[ngClass]="{'highlight': selectedRow?.id === row.id}"
-					(click)="editRow(row)"></tr>
-		</table>
-	</div>
-	<mat-paginator class="list-paginator" [length]="totalCount" [pageSize]="pageSize"></mat-paginator>
 </div>
