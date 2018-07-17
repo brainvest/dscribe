@@ -100,7 +100,9 @@ export class ListComponent implements OnInit, OnChanges {
 			this.columns.push(new ListColumn(
 				prop.name,
 				prop.title,
-				prop.jsName
+				prop.jsName,
+				prop.dataType,
+				prop.entityTypeName
 			));
 			if (prop && prop.facetValues && prop.facetValues[KnownFacets.HideInList]) {
 				continue;

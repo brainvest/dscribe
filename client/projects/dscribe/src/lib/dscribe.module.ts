@@ -57,6 +57,7 @@ import {AddNEditPropertyComponent} from './Administration/add-n-edit-property/ad
 import {KeysPipe} from './helpers/keys.pipe';
 import { ConfirmationDialogComponent } from './common/confirmation-dialog/confirmation-dialog.component';
 import { ReleaseMetadataSettingsComponent } from './Administration/release-metadata-settings/release-metadata-settings.component';
+import {DisplayValuePipe} from './common/display-value-pipe';
 
 @NgModule({
 	imports: [
@@ -118,7 +119,8 @@ import { ReleaseMetadataSettingsComponent } from './Administration/release-metad
 		AddNEditPropertyComponent,
 		KeysPipe,
 		ConfirmationDialogComponent,
-		ReleaseMetadataSettingsComponent
+		ReleaseMetadataSettingsComponent,
+		DisplayValuePipe
 	],
 	exports: [DscribeComponent, ListComponent],
 	providers: [

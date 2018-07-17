@@ -56,7 +56,7 @@ export class DataHandlerService {
 		}
 		this.enqueueForName(entityType, id);
 		return Observable.create(observer => {
-			observer.next('در حال بارگزاری');
+			observer.next('Loading...');
 			this.nameResponse.subscribe(() => {
 				const name2 = existing[id];
 				if (name2 !== undefined) {
