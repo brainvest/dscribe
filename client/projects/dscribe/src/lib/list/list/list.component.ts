@@ -18,7 +18,8 @@ import {StorageFilterNode} from '../../filtering/models/storage-filter-node';
 import {LambdaHelper} from '../../helpers/lambda-helper';
 import {FilterNode} from '../../filtering/models/filter-nodes/filter-node';
 import {FilterNodeFactory} from '../../filtering/models/filter-node-factory';
-import {SelectionModel} from '@angular/cdk/collections';
+import {SelectionChange, SelectionModel} from '@angular/cdk/collections';
+import {DataTypes} from '../../metadata/data-types';
 
 @Component({
 	selector: 'dscribe-list',
@@ -33,7 +34,9 @@ export class ListComponent implements OnInit, OnChanges {
 
 	@Input() entity: EntityMetadata;
 	@Input() master: MasterReference;
+	@Input() hideFilter: boolean;
 
+	detailLists?: MasterReference[];
 	displayedColumns = ['select'];
 	columns: ListColumn[] = [];
 	data = [];
@@ -59,6 +62,7 @@ export class ListComponent implements OnInit, OnChanges {
 				this.refreshData();
 				this.createColumns(this.entity);
 			});
+		this.selection.onChange.subscribe(x => this.selectionChanged(x));
 	}
 
 	ngOnInit() {
@@ -85,7 +89,15 @@ export class ListComponent implements OnInit, OnChanges {
 				continue;
 			}
 			const prop = entity.properties[propertyName];
-			if (prop.dataType === 'NavigationList') {
+			if (prop.dataType === DataTypes.NavigationList) {
+				if (this.master) {
+					continue;
+				}
+				if (!this.detailLists) {
+					this.detailLists = [];
+				}
+				this.detailLists.push(new MasterReference(null, prop, entity));
+				continue;
 			}
 			this.columns.push(new ListColumn(
 				prop.name,
@@ -94,6 +106,15 @@ export class ListComponent implements OnInit, OnChanges {
 			));
 			if (prop && prop.facetValues && prop.facetValues[KnownFacets.HideInList]) {
 				continue;
+			}
+			if (this.master) {
+				this.master.childList = this;
+				if (this.master.masterProperty
+					&& this.master.masterProperty.inverseProperty
+					&& this.master.masterProperty.inverseProperty.foreignKeyName
+					=== prop.name) {
+					continue;
+				}
 			}
 			this.displayedColumns.push(prop.name);
 		}
@@ -191,6 +212,14 @@ export class ListComponent implements OnInit, OnChanges {
 
 	selectRow(row: any) {
 		this.selectedRow = row;
+		if (this.detailLists && this.detailLists.length) {
+			for (const detail of this.detailLists) {
+				detail.master = this.selectedRow;
+				if (detail.childList) {
+					detail.childList.onMasterChanged();
+				}
+			}
+		}
 	}
 
 	editRow(row: any) {
@@ -243,4 +272,9 @@ export class ListComponent implements OnInit, OnChanges {
 		}
 	}
 
+	private selectionChanged(x: SelectionChange<any>) {
+		if (x.added.length === 1) {
+			this.selectRow(x.added[0]);
+		}
+	}
 }
