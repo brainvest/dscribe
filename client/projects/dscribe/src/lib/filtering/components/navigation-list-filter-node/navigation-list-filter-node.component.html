@@ -1,6 +1,6 @@
 <div style="border: 1px solid navy;">
 	<select class="filter-option" [class.noOptionSelected]="!node.operator" [(ngModel)]="node.operator">
-		<option [ngValue]="undefined" disabled invalid>عملگر</option>
+		<option [ngValue]="undefined" disabled invalid>Operator</option>
 		<option *ngFor="let o of node.operators" [ngValue]="o">{{o.title}}</option>
 	</select>
 	<ng-container *ngIf="node.hasAggregationSelection">

@@ -16,12 +16,18 @@
 	top: 0;
 	right: 16px;
 	visibility: collapse;
+	height: 10px;
+	font-size: 10px;
 	z-index: 10;
 	background-color: rgba(255, 255, 150, 0.4);
 	mat-icon {
+		vertical-align: top;
+		width: 10px;
+		height: 10px;
 		font-size: inherit;
 		background: none;
 		padding: 0;
+		margin: 0;
 		border: none;
 		color: purple;
 		cursor: default;

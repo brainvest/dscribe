@@ -68,7 +68,7 @@ export class NavigationListFilterNode extends FilterNode {
 		if (this.hasFiltering) {
 			if (!this.filterSubNode) {
 				this.filterSubNode = new LambdaFilterNode(this, this.property.entityType, false);
-				this.filterSubNode.title = 'شرط روی اعضا';
+				this.filterSubNode.title = 'Condition on members';
 			}
 		} else if (this.filterSubNode) {
 			this.filterSubNode = null;
