@@ -13,16 +13,19 @@ export class DisplayValuePipe implements PipeTransform {
 	}
 
 	transform(value: any, property: ListColumn): Observable<string> {
-		if (property.dataType !== DataTypes.ForeignKey) {
-			return of(value);
+		if (property.dataType === DataTypes.ForeignKey) {
+			if (value + '' === 'Loading...') {
+				return of('Loading...');
+			}
+			const id = parseInt(value);
+			if (isNaN(id)) {
+				return of(value);
+			}
+			return this.dataHandlerService.getName(property.dataTypeEntity, id);
 		}
-		if (value + '' === 'Loading...') {
-			return of('Loading...');
+		if (property.dataType === DataTypes.Date) {
+			return of(value.toString().substr(0, 10));
 		}
-		const id = parseInt(value);
-		if (isNaN(id)) {
-			return of(value);
-		}
-		return this.dataHandlerService.getName(property.dataTypeEntity, id);
+		return of(value);
 	}
 }
