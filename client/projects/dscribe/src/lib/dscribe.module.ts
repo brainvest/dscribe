@@ -48,15 +48,15 @@ import {PropertyFilterNodeComponent} from './filtering/components/property-filte
 import {FilterTreeManipulator} from './filtering/models/filter-tree-manipulator';
 import {NavigationComponent} from './navigation/navigation.component';
 import {HomePageComponent} from './home-page/home-page.component';
-import {MetadataManagementComponent} from './Administration/metadata-management/metadata-management.component';
+import {MetadataManagementComponent} from './administration/metadata-management/metadata-management.component';
 import {RouterModule} from '@angular/router';
 import {DSCRIBE_ROUTES} from './dscribe-routes';
-import {EntityGeneralUsageNamePipe} from './Administration/helpers/entity-general-usage-name.pipe';
-import {AddNEditEntityComponent} from './Administration/add-n-edit-entity/add-n-edit-entity.component';
-import {AddNEditPropertyComponent} from './Administration/add-n-edit-property/add-n-edit-property.component';
+import {EntityGeneralUsageNamePipe} from './administration/helpers/entity-general-usage-name.pipe';
+import {AddNEditEntityComponent} from './administration/add-n-edit-entity/add-n-edit-entity.component';
+import {AddNEditPropertyComponent} from './administration/add-n-edit-property/add-n-edit-property.component';
 import {KeysPipe} from './helpers/keys.pipe';
 import { ConfirmationDialogComponent } from './common/confirmation-dialog/confirmation-dialog.component';
-import { ReleaseMetadataSettingsComponent } from './Administration/release-metadata-settings/release-metadata-settings.component';
+import { ReleaseMetadataSettingsComponent } from './administration/release-metadata-settings/release-metadata-settings.component';
 import {DisplayValuePipe} from './common/display-value-pipe';
 
 @NgModule({
