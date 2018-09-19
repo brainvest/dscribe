@@ -19,15 +19,13 @@ export class ListContainerComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.route.paramMap.pipe(
-			flatMap(params =>
-				this.metadata.getMetadata().getTypeByName(params.get('entity')))
-		)
-			.subscribe(type => {
-				// TODO: if get type by name is unsuccessful type will be null,
-				// we need a solution to handle this kind of errors
-				this.entity = type;
-			});
+		this.route.paramMap.pipe(flatMap(params => {
+			return this.metadata.getMetadata().getTypeByName(params.get('entity'));
+		})).subscribe(type => {
+			// TODO: if get type by name is unsuccessful type will be null,
+			// we need a solution to handle this kind of errors
+			this.entity = type;
+		});
 	}
 
 }

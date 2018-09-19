@@ -6,6 +6,7 @@
     "start": "ng serve -o",
     "build": "ng build",
     "bundle-styles": "scss-bundle -c ./projects/dscribe/scss-bundle.config.json",
+		"build-lib": "ng build dscribe",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

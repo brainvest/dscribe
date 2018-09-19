@@ -20,7 +20,10 @@ import {
 	MatProgressSpinnerModule,
 	MatSelectModule,
 	MatSortModule,
-	MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule
+	MatTableModule,
+	MatTabsModule,
+	MatToolbarModule,
+	MatTooltipModule
 } from '@angular/material';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -55,14 +58,15 @@ import {EntityGeneralUsageNamePipe} from './administration/helpers/entity-genera
 import {AddNEditEntityComponent} from './administration/add-n-edit-entity/add-n-edit-entity.component';
 import {AddNEditPropertyComponent} from './administration/add-n-edit-property/add-n-edit-property.component';
 import {KeysPipe} from './helpers/keys.pipe';
-import { ConfirmationDialogComponent } from './common/confirmation-dialog/confirmation-dialog.component';
-import { ReleaseMetadataSettingsComponent } from './administration/release-metadata-settings/release-metadata-settings.component';
+import {ConfirmationDialogComponent} from './common/confirmation-dialog/confirmation-dialog.component';
+import {ReleaseMetadataSettingsComponent} from './administration/release-metadata-settings/release-metadata-settings.component';
 import {DisplayValuePipe} from './common/display-value-pipe';
 
 @NgModule({
 	imports: [
 		BrowserAnimationsModule,
 		CommonModule,
+		RouterModule,
 		FormsModule,
 		HttpClientModule,
 		MatAutocompleteModule,
@@ -85,7 +89,6 @@ import {DisplayValuePipe} from './common/display-value-pipe';
 		MatTabsModule,
 		MatProgressSpinnerModule,
 		ReactiveFormsModule,
-		RouterModule.forRoot(DSCRIBE_ROUTES)
 	],
 	declarations: [
 		DscribeComponent,

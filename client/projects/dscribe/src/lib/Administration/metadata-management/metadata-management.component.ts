@@ -39,6 +39,7 @@ export class MetadataManagementComponent implements OnInit {
 	constructor(
 		private apiClient: MetadataManagementApiClient,
 		private dialog: MatDialog) {
+		console.log(123);
 	}
 
 	ngOnInit() {
