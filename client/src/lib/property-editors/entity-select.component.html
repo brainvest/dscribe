@@ -1,0 +1,14 @@
+<mat-form-field class="full-width" *ngIf="!isFilter" appearance="outline">
+	<mat-label>{{property.title}}</mat-label>
+	<mat-select [attr.id]="property.name" [(ngModel)]="entity[overridePropertyName || property.jsName]">
+		<mat-option *ngFor="let item of list" [value]="item.id">
+			{{ item.displayName ? item.displayName : item.name }}
+		</mat-option>
+	</mat-select>
+</mat-form-field>
+
+<select *ngIf="isFilter" [attr.id]="property.name" [(ngModel)]="entity[overridePropertyName || property.jsName]">
+	<option *ngFor="let item of list" [ngValue]="item.id">
+		{{ item.displayName ? item.displayName : item.name }}
+	</option>
+</select>

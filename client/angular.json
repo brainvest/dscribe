@@ -4,8 +4,8 @@
   "newProjectRoot": "projects",
   "projects": {
     "dscribe-host": {
-      "root": "",
-      "sourceRoot": "src",
+      "root": "demo",
+      "sourceRoot": "demo/src",
       "projectType": "application",
       "prefix": "dscribe-host",
       "schematics": {},
@@ -13,17 +13,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/dscribe-host",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "outputPath": "demo/dist/dscribe-host",
+            "index": "demo/src/index.html",
+            "main": "demo/src/main.ts",
+            "polyfills": "demo/src/polyfills.ts",
+            "tsConfig": "demo/src/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "demo/src/favicon.ico",
+              "demo/src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "demo/src/styles.css"
             ],
             "scripts": []
           },
@@ -31,8 +31,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "demo/src/environments/environment.ts",
+                  "with": "demo/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -51,7 +51,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "dscribe-host:build",
-						"proxyConfig": "src/proxy.conf.json"
+						"proxyConfig": "demo/src/proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -68,17 +68,17 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
+            "main": "demo/src/test.ts",
+            "polyfills": "demo/src/polyfills.ts",
+            "tsConfig": "demo/src/tsconfig.spec.json",
+            "karmaConfig": "demo/src/karma.conf.js",
             "styles": [
-              "src/styles.css"
+              "demo/src/styles.css"
             ],
             "scripts": [],
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "demo/src/favicon.ico",
+              "demo/src/assets"
             ]
           }
         },
@@ -86,8 +86,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "demo/src/tsconfig.app.json",
+              "demo/src/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -97,13 +97,13 @@
       }
     },
     "dscribe-host-e2e": {
-      "root": "e2e/",
+      "root": "demo/e2e/",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
+            "protractorConfig": "demo/e2e/protractor.conf.js",
             "devServerTarget": "dscribe-host:serve"
           },
           "configurations": {
@@ -115,7 +115,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
+            "tsConfig": "demo/e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]
@@ -124,37 +124,37 @@
       }
     },
     "dscribe": {
-      "root": "projects/dscribe",
-      "sourceRoot": "projects/dscribe/src",
+      "root": "src",
+      "sourceRoot": "src",
       "projectType": "library",
       "prefix": "dscribe",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/dscribe/tsconfig.lib.json",
-            "project": "projects/dscribe/ng-package.json"
+            "tsConfig": "src/tsconfig.lib.json",
+            "project": "src/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "projects/dscribe/ng-package.prod.json"
+              "project": "src/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/dscribe/src/test.ts",
-            "tsConfig": "projects/dscribe/tsconfig.spec.json",
-            "karmaConfig": "projects/dscribe/karma.conf.js"
+            "main": "src/test.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/dscribe/tsconfig.lib.json",
-              "projects/dscribe/tsconfig.spec.json"
+              "src/tsconfig.lib.json",
+              "src/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
