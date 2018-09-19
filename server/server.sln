@@ -15,17 +15,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abstractions", "Infrastruct
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers", "Infrastructure\Helpers\Helpers.csproj", "{036AE449-79EB-4A47-89D5-D66E82CE8DA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataDbAccess", "Core\MetadataDbAccess\MetadataDbAccess.csproj", "{D670C74F-5159-49F0-9903-A35E50E83514}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetadataDbAccess", "Core\MetadataDbAccess\MetadataDbAccess.csproj", "{D670C74F-5159-49F0-9903-A35E50E83514}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metadata", "Core\Metadata\Metadata.csproj", "{242F1DF0-F351-40B2-B143-7310665E6B5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Metadata", "Core\Metadata\Metadata.csproj", "{242F1DF0-F351-40B2-B143-7310665E6B5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime", "Core\Runtime\Runtime.csproj", "{92DCBC44-EB67-41DD-B629-4F427852005B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Runtime", "Core\Runtime\Runtime.csproj", "{92DCBC44-EB67-41DD-B629-4F427852005B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EF", "EF", "{1AD5DB26-5349-4153-B38E-5292C1A392B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfCodeGenerator", "EfCodeGenerator\EfCodeGenerator.csproj", "{E4EADFAD-36A3-4DF7-A69F-B5BE906215AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfCodeGenerator", "EfCodeGenerator\EfCodeGenerator.csproj", "{E4EADFAD-36A3-4DF7-A69F-B5BE906215AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFBusinessDataAccess", "EFBusinessDataAccess\EFBusinessDataAccess.csproj", "{0E9C88FD-1659-436D-8DBB-554728269F5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFBusinessDataAccess", "EFBusinessDataAccess\EFBusinessDataAccess.csproj", "{0E9C88FD-1659-436D-8DBB-554728269F5C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security", "Infrastructure\Security\Security.csproj", "{AD0F1C4A-06FF-4699-8F5D-4A5CA4055F96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServerHost", "Infrastructure\IdentityServerHost\IdentityServerHost.csproj", "{C1B0D7C2-C310-4CC5-AB67-9662F83FA0E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +69,14 @@ Global
 		{0E9C88FD-1659-436D-8DBB-554728269F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E9C88FD-1659-436D-8DBB-554728269F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E9C88FD-1659-436D-8DBB-554728269F5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD0F1C4A-06FF-4699-8F5D-4A5CA4055F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD0F1C4A-06FF-4699-8F5D-4A5CA4055F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD0F1C4A-06FF-4699-8F5D-4A5CA4055F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD0F1C4A-06FF-4699-8F5D-4A5CA4055F96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1B0D7C2-C310-4CC5-AB67-9662F83FA0E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1B0D7C2-C310-4CC5-AB67-9662F83FA0E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1B0D7C2-C310-4CC5-AB67-9662F83FA0E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1B0D7C2-C310-4CC5-AB67-9662F83FA0E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +90,8 @@ Global
 		{1AD5DB26-5349-4153-B38E-5292C1A392B9} = {CDA7BCBC-3744-4101-8E8D-034C76E2FBEF}
 		{E4EADFAD-36A3-4DF7-A69F-B5BE906215AD} = {1AD5DB26-5349-4153-B38E-5292C1A392B9}
 		{0E9C88FD-1659-436D-8DBB-554728269F5C} = {1AD5DB26-5349-4153-B38E-5292C1A392B9}
+		{AD0F1C4A-06FF-4699-8F5D-4A5CA4055F96} = {63D3069E-C884-4A16-B748-35515165E76A}
+		{C1B0D7C2-C310-4CC5-AB67-9662F83FA0E9} = {63D3069E-C884-4A16-B748-35515165E76A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80FA172E-CD42-4E4F-A1D2-AC3D48E03B87}

@@ -45,7 +45,7 @@ export class NavigationComponent implements OnInit {
 
 	appInstanceSelected() {
 		DscribeInterceptor.appInstanceId = this.appInstanceId.toString();
-		DscribeInterceptor.appInstance = this.appInstances.find(x => x.id == this.appInstanceId);
+		DscribeInterceptor.appInstance = this.appInstances.find(x => x.id === this.appInstanceId);
 		this.metadata.clearMetadata();
 		this.metadata.getMetadata().getAllTypes()
 			.subscribe(entities => {
