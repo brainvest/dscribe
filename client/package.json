@@ -4,9 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
-    "build": "ng build",
-    "bundle-styles": "scss-bundle -c ./projects/dscribe/scss-bundle.config.json",
-		"build-lib": "ng build dscribe",
+    "build": "npm run build-lib && npm run bundle-styles",
+		"build-lib": "ng build dscribe --prod",
+    "bundle-styles": "scss-bundle -c ./src/scss-bundle.config.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

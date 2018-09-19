@@ -24,16 +24,21 @@ export class NavigationComponent implements OnInit {
 
 	ngOnInit() {
 		this.navigate(this.mainUrls[0]);
-		this.metadata.getMetadata()
-			.getAllTypes()
-			.subscribe(entities => {
-				this.entities = entities;
-				if (this.entities && this.entities.length) {
-					this.mainUrls[1] = 'entity/' + this.entities[0].name;
-				}
-			});
+
 		this.httpClient.post<AppInstanceInfoModel[]>('/api/AppManagement/getAppInstancesInfo', null)
-			.subscribe(apps => this.appInstances = apps);
+			.subscribe(apps => {
+				this.appInstances = apps;
+				this.appInstanceId = apps[0].id;
+				this.config.appInstance = apps[0];
+				this.metadata.getMetadata()
+					.getAllTypes()
+					.subscribe(entities => {
+						this.entities = entities;
+						if (this.entities && this.entities.length) {
+							this.mainUrls[1] = 'entity/' + this.entities[0].name;
+						}
+					});
+			});
 	}
 
 	navigate(url: string) {

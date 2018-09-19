@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {DscribeService} from '../dscribe.service';
 
@@ -10,11 +10,17 @@ export class DscribeInterceptor implements HttpInterceptor {
 
 	intercept(req: HttpRequest<any>, next: HttpHandler):
 		Observable<HttpEvent<any>> {
-		const newReq = req.clone({
-			headers: req.headers.set('AppInstance', String(this.config.appInstance.id))
-				.set('Content-Type', 'application/json') // TODO: this should not be hardcoded
-				.set('Authorization', this.config.authHeaderFetcher() || '')
-		});
+		let headers = req.headers || new HttpHeaders();
+		// TODO: this should not be hardcoded
+		headers = headers.set('Content-Type', 'application/json');
+		if (this.config.appInstance) {
+			headers = headers.set('AppInstance', String(this.config.appInstance.id));
+		}
+		if (this.config.authHeaderFetcher()) {
+			headers = headers.set('Authorization', this.config.authHeaderFetcher());
+		}
+
+		const newReq = req.clone({headers});
 		return next.handle(newReq);
 	}
 }
