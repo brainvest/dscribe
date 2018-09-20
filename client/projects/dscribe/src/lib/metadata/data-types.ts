@@ -12,5 +12,7 @@ export class DataTypes {
 	static Guid = 'Guid';
 	static decimal = 'decimal';
 	static long = 'long';
+	static short = 'short';
 	static byte = 'byte';
+	static double = 'double';
 }
