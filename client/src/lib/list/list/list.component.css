@@ -1,24 +1,6 @@
 .list-container {
 	position: relative;
 }
-
-.list-table-container {
-	position: relative;
-	height: 536px;
-	overflow: auto;
-	border: 1px solid #d1d8dd;
-	border-bottom: none;
-	border-top: none;
-}
-
-table {
-	width: 100%;
-}
-
-.mat-column-select {
-	max-width: 32px;
-}
-
 .filter {
 	border: 1px solid #d1d8dd;
 	border-top: none;

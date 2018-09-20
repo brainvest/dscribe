@@ -1,0 +1,10 @@
+.wrapper {
+	display: flex;
+}
+
+.box {
+	border: 1px solid grey;
+	width: calc(25% - 48px);
+	margin: 24px;
+	height: 300px;
+}
