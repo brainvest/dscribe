@@ -35,6 +35,10 @@
 
 .secondary-nav.open {
 	width: 240px;
+	min-width: 240px;
+	position: fixed;
+	bottom: 0;
+	top: 114px;
 }
 
 .secondary-nav.close {
@@ -45,6 +49,8 @@
 	flex-grow: 1;
 	background-color: #ECEFF1;
 }
+
+
 
 .main-nav-header, .main-nav {
 	background-color: #FAFAFA;

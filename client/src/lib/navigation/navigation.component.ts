@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {MetadataService} from '../common/services/metadata.service';
 import {EntityMetadata} from '../metadata/entity-metadata';
 import {Router} from '@angular/router';
@@ -9,7 +9,7 @@ import {DscribeService} from '../dscribe.service';
 @Component({
 	selector: 'dscribe-navigation',
 	templateUrl: './navigation.component.html',
-	styleUrls: ['./navigation.component.css']
+	styleUrls: ['./navigation.component.css'],
 })
 export class NavigationComponent implements OnInit {
 	entities: EntityMetadata[];

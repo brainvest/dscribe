@@ -5,18 +5,25 @@ import {AppComponent} from './app.component';
 import {AuthCallbackComponent} from './auth/auth-callback/auth-callback.component';
 import {AppRoutingModule} from './app-routing.module';
 import {DscribeModule} from '../../../src/lib/dscribe.module';
+import {DataTypeCardComponent} from './custom-templates/data-type-card/data-type-card.component';
+import {MatButtonModule, MatCardModule} from '@angular/material';
 
 @NgModule({
 	declarations: [
 		AppComponent,
-		AuthCallbackComponent
+		AuthCallbackComponent,
+		DataTypeCardComponent
 	],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
-		DscribeModule
+		DscribeModule,
+		MatCardModule,
+		MatButtonModule
 	],
-	providers: [],
+	entryComponents: [
+		DataTypeCardComponent
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule {
