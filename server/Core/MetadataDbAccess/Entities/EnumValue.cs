@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities
@@ -11,6 +10,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public EnumType EnumType { get; set; }
 
 		public string Name { get; set; }
+		[Column(TypeName = "varchar(200)")]
 		public string Identifier { get; set; }
 	}
 }

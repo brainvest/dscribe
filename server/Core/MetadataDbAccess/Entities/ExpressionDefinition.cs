@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 {
@@ -15,7 +12,9 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		[ForeignKey(nameof(AppTypeId))]
 		public AppType AppType { get; set; }
 
+		[Required, Column(TypeName = "varchar(200)")]
 		public string Identifier { get; set; }
+		[Required]
 		public string ShortDescription { get; set; }
 		public string LongDescription { get; set; }
 

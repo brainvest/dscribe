@@ -1,10 +1,7 @@
 using Brainvest.Dscribe.Helpers;
 using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 {
@@ -12,6 +9,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 	{
 		public int Id { get; set; }
 
+		[Column(TypeName = "varchar(200)")]
 		public string Version { get; set; }
 		public int? VersionCode { get; set; }
 
@@ -21,6 +19,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public DateTime ReleaseTime { get; set; }
 		public int CreatedByUserId { get; set; }
 
+		[Required]
 		public byte[] MetadataSnapshot { get; set; }
 
 		[NotMapped]

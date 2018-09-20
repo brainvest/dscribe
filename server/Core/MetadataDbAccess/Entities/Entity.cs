@@ -10,6 +10,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public int AppTypeId { get; set; }
 		public AppType AppType { get; set; }
 
+		[Column(TypeName = "varchar(200)")]
 		public string Name { get; set; }
 		public string TableName { get; set; }
 		public string SchemaName { get; set; }

@@ -1,9 +1,6 @@
 using Brainvest.Dscribe.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 {
@@ -14,10 +11,13 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public int AppTypeId { get; set; }
 		public AppType AppType { get; set; }
 
+		[Required, Column(TypeName = "varchar(200)")]
 		public string Name { get; set; }
+		[Required, MaxLength(200)]
 		public string Title { get; set; }
 
 		public bool IsProduction { get; set; }
+		[Required]
 		public string DataConnectionString { get; set; }
 		public bool IsEnabled { get; set; }
 		public bool UseUnreleasedMetadata { get; set; }

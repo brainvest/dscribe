@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Brainvest.Dscribe.Helpers
 {
@@ -32,6 +32,22 @@ namespace Brainvest.Dscribe.Helpers
 				return value;
 			}
 			return defaultValueGenerator();
+		}
+
+		public static IEnumerable<(TEnum value, string name)> GetValues<TEnum>()
+		{
+			if (!typeof(TEnum).IsEnum)
+			{
+				throw new ArgumentException($"Type {nameof(TEnum)} should be an enum type.");
+			}
+			return Enum.GetValues(typeof(TEnum)).Cast<TEnum>()
+				.Select(x => (x, Enum.GetName(typeof(TEnum), x))).ToList();
+		}
+
+		public static TAttribute GetAttribute<TEnum, TAttribute>(string value)
+			where TAttribute : Attribute
+		{
+			return Attribute.GetCustomAttribute(typeof(TEnum).GetMember(value).FirstOrDefault(), typeof(TAttribute)) as TAttribute;
 		}
 	}
 }

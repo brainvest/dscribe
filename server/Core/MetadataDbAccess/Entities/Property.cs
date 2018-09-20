@@ -11,6 +11,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		[ForeignKey(nameof(EntityId))]
 		public Entity Entity { get; set; }
 
+		[Column(TypeName = "varchar(200)")]
 		public string Name { get; set; }
 		public string Title { get; set; }
 
