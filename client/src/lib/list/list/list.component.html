@@ -31,32 +31,19 @@
 			<div class="table-loading-shade" *ngIf="isLoadingResults">
 				<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
 			</div>
-			<div class="list-table-container">
-				<table mat-table [dataSource]="data" matSort>
-					<ng-container matColumnDef="select">
-						<th mat-header-cell *matHeaderCellDef>
-							<mat-checkbox *ngIf="allowMultiSelect" (change)="$event ? masterToggle() : null"
-														[checked]="selection.hasValue() && isAllSelected()"
-														[indeterminate]="selection.hasValue() && !isAllSelected()">
-							</mat-checkbox>
-						</th>
-						<td mat-cell *matCellDef="let row">
-							<mat-checkbox (click)="$event.stopPropagation()"
-														(change)="$event ? selection.toggle(row) : null"
-														[checked]="selection.isSelected(row)">
-							</mat-checkbox>
-						</td>
-					</ng-container>
-					<ng-container *ngFor="let col of columns" [matColumnDef]="col.name">
-						<th mat-header-cell *matHeaderCellDef mat-sort-header>{{col.title || col.name}}</th>
-						<td mat-cell *matCellDef="let row">{{row[col.jsName] | displayValue:col | async}}</td>
-					</ng-container>
-					<tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-					<tr mat-row *matRowDef="let row; columns: displayedColumns;"
-							[ngClass]="{'highlight': selectedRow?.id === row.id}"
-							(click)="editRow(row)"></tr>
-				</table>
-			</div>
+			<ng-container [ngSwitch]="displayMode">
+				<ng-container *ngSwitchCase="'card'">
+					<div style="display: flex; flex-wrap: wrap">
+						<dscribe-custom-template-host [ngStyle]="{'width': getCustomTemplateWidth()}" style="margin: 24px;" *ngFor="let instance of data" [data]="instance"
+																					[entityTypeName]="entity.name">
+
+						</dscribe-custom-template-host>
+					</div>
+				</ng-container>
+				<dscribe-table-template *ngSwitchDefault (rowClick)="editRow($event)" [data]="data" [columns]="columns"
+																[displayedColumns]="displayedColumns" [selection]="selection">
+				</dscribe-table-template>
+			</ng-container>
 			<mat-paginator class="list-paginator" [length]="totalCount" [pageSize]="pageSize"></mat-paginator>
 		</div>
 
