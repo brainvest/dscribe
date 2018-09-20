@@ -13,7 +13,7 @@ export class AuthService {
 	private user: User = null;
 	private manager = new UserManager(this.getClientSettings());
 	getAuthorizationHeaderValue = () => {
-		return this.user && `${this.user.token_type} ${this.user.access_token}`;
+		return this.user && `${this.user.token_type} ${this.user.id_token}`;
 	};
 
 	constructor() {
@@ -45,7 +45,7 @@ export class AuthService {
 			redirect_uri: 'http://localhost:4200/auth-callback',
 			post_logout_redirect_uri: 'http://localhost:4200/',
 			response_type: 'id_token token',
-			scope: 'openid profile',
+			scope: 'openid profile roles',
 			filterProtocolClaims: true,
 			loadUserInfo: true
 		};

@@ -37,6 +37,13 @@ namespace Brainvest.Dscribe.Host
 			RuntimeStartup.ConfigureServices(services, Configuration);
 
 			services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+
+			services.AddAuthentication("Bearer")
+				.AddIdentityServerAuthentication(options =>
+				{
+					options.Authority = "http://localhost:5001";
+					options.RequireHttpsMetadata = false;
+				});
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -47,6 +54,7 @@ namespace Brainvest.Dscribe.Host
 			}
 			app.UseCors("AllowAll");
 			RuntimeStartup.Configure(app, env);
+			app.UseAuthentication();
 			app.UseMvc();
 		}
 	}
