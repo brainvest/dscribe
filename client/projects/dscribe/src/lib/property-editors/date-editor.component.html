@@ -1,16 +1,14 @@
 <mat-form-field *ngIf="!isFilter" class="full-width" appearance="outline">
 	<mat-label>{{property.title}}</mat-label>
-	<input matInput [placeholder]="property.title" [attr.id]="property.name" [matDatepicker]="picker"
-				 [ngModel]="entity[overridePropertyName || property.jsName]"
-				 (ngModelChange)="onModelChange($event)">
+	<input matInput [placeholder]="property.title" [attr.id]="property.name" [matDatepicker]="picker" [ngModel]="entity[overridePropertyName || property.jsName]"
+	 (ngModelChange)="onModelChange($event)">
 	<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 	<mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
 
 <span *ngIf="isFilter">
-		<input [placeholder]="property.title" [attr.id]="property.name" [matDatepicker]="picker"
-					 [ngModel]="entity[overridePropertyName || property.jsName]"
-					 (ngModelChange)="onModelChange($event)">
+	<input [placeholder]="property.title || property.overridePropertyName || property.jsName" [attr.id]="property.name"
+	 [matDatepicker]="picker" [ngModel]="entity[overridePropertyName || property.jsName]" (ngModelChange)="onModelChange($event)">
 	<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 	<mat-datepicker #picker></mat-datepicker>
 </span>

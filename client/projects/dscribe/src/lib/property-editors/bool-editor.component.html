@@ -1,5 +1,5 @@
 <mat-checkbox *ngIf="!isFilter" class="full-width" [(ngModel)]="entity[overridePropertyName || property.jsName]">
-	{{property.title}}
+	{{property.title || property.overridePropertyName || property.jsName}}
 </mat-checkbox>
 
 <input type="checkbox" *ngIf="isFilter" [(ngModel)]="entity[overridePropertyName || property.jsName]">

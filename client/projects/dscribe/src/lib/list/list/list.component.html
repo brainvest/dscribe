@@ -48,7 +48,7 @@
 						</td>
 					</ng-container>
 					<ng-container *ngFor="let col of columns" [matColumnDef]="col.name">
-						<th mat-header-cell *matHeaderCellDef mat-sort-header>{{col.title}}</th>
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>{{col.title || col.name}}</th>
 						<td mat-cell *matCellDef="let row">{{row[col.jsName] | displayValue:col | async}}</td>
 					</ng-container>
 					<tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
@@ -65,7 +65,7 @@
 				<mat-tab-group>
 					<mat-tab *ngFor="let prop of detailLists">
 						<ng-template mat-tab-label>
-							{{prop.masterProperty.title}} ({{prop.count}})
+							{{prop.masterProperty.title || prop.masterProperty.name}} ({{prop.count}})
 						</ng-template>
 						<dscribe-list
 							[hideFilter]="true"

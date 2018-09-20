@@ -4,7 +4,7 @@
 				 [(ngModel)]="entity[overridePropertyName || property.jsName]">
 </mat-form-field>
 
-<input type="text" *ngIf="isFilter" [placeholder]="property.title"
+<input type="text" *ngIf="isFilter" [placeholder]="property.title || property.overridePropertyName || property.jsName"
 			 [(ngModel)]="entity[overridePropertyName || property.jsName]">
 
 <div *ngIf="property?.validationErrors">
