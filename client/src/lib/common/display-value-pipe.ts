@@ -17,7 +17,7 @@ export class DisplayValuePipe implements PipeTransform {
 			if (value + '' === 'Loading...') {
 				return of('Loading...');
 			}
-			const id = parseInt(value);
+			const id = parseInt(value, 10);
 			if (isNaN(id)) {
 				return of(value);
 			}
