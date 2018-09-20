@@ -1,4 +1,0 @@
-{
-	"entry": "projects/dscribe/src/lib/themes/_core.scss",
-	"dest": "dist/themes/_theme.scss"
-}

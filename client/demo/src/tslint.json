@@ -1,16 +1,16 @@
 {
-    "extends": "../tslint.json",
+    "extends": "../../tslint.json",
     "rules": {
         "directive-selector": [
             true,
             "attribute",
-            "dscribe",
+            "dscribe-host",
             "camelCase"
         ],
         "component-selector": [
             true,
             "element",
-            "dscribe",
+            "dscribe-host",
             "kebab-case"
         ]
     }
