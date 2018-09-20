@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatPaginator, MatSort} from '@angular/material';
 import {MetadataService} from '../../common/services/metadata.service';
 import {DataHandlerService} from '../../common/services/data-handler.service';
@@ -18,8 +18,10 @@ import {StorageFilterNode} from '../../filtering/models/storage-filter-node';
 import {LambdaHelper} from '../../helpers/lambda-helper';
 import {FilterNode} from '../../filtering/models/filter-nodes/filter-node';
 import {FilterNodeFactory} from '../../filtering/models/filter-node-factory';
-import {SelectionChange, SelectionModel} from '@angular/cdk/collections';
+import {SelectionModel} from '@angular/cdk/collections';
 import {DataTypes} from '../../metadata/data-types';
+import {TableTemplateComponent} from '../list-templating/table-template/table-template.component';
+import {EntityTemplateMapper} from '../list-templating/entity-template-mapper';
 
 @Component({
 	selector: 'dscribe-list',
@@ -50,17 +52,24 @@ export class ListComponent implements OnInit, OnChanges {
 	filterLambda: LambdaFilterNode;
 	userDefinedFilter: StorageFilterNode;
 
+	displayMode = 'grid';
+
 	@ViewChild(MatPaginator) paginator: MatPaginator;
-	@ViewChild(MatSort) sort: MatSort;
+	@ViewChild(TableTemplateComponent) table: TableTemplateComponent;
+	sort: MatSort;
+	private customTemplate: { component: Type<any>; options?: any };
 
 	constructor(private metadataService: MetadataService,
 							private dataHandler: DataHandlerService,
 							private dialog: MatDialog) {
-		this.selection.onChange.subscribe(x => this.selectionChanged(x));
+		this.selection.changed.subscribe(x => {
+			if (x.added.length === 1) {
+				this.selectRow(x.added[0]);
+			}
+		});
 	}
 
 	ngOnInit() {
-		this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 		FilterNode.factory = new FilterNodeFactory();
 	}
 
@@ -69,6 +78,18 @@ export class ListComponent implements OnInit, OnChanges {
 			if (this.entity.name === this.displayedEntityType) {
 				return;
 			}
+			this.customTemplate = EntityTemplateMapper.get(this.entity.name);
+			if (this.customTemplate) {
+				this.displayMode = 'card';
+			} else {
+				this.displayMode = 'grid';
+			}
+			if (this.table) {
+				this.sort = this.table.sort;
+			} else {
+				this.sort = new MatSort();
+			}
+			this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 			this.displayedEntityType = this.entity.name;
 			this.refreshData();
 			this.createColumns(this.entity);
@@ -197,19 +218,6 @@ export class ListComponent implements OnInit, OnChanges {
 		this.openAddNEditDialog(newEntity, true);
 	}
 
-	isAllSelected() {
-		const numSelected = this.selection.selected.length;
-		const numRows = this.data.length;
-		return numSelected === numRows;
-	}
-
-	/** Selects all rows if they are not all selected; otherwise clear selection. */
-	masterToggle() {
-		this.isAllSelected() ?
-			this.selection.clear() :
-			this.data.forEach(row => this.selection.select(row));
-	}
-
 	selectRow(row: any) {
 		this.selectedRow = row;
 		if (this.detailLists && this.detailLists.length) {
@@ -272,9 +280,7 @@ export class ListComponent implements OnInit, OnChanges {
 		}
 	}
 
-	private selectionChanged(x: SelectionChange<any>) {
-		if (x.added.length === 1) {
-			this.selectRow(x.added[0]);
-		}
+	getCustomTemplateWidth(): string {
+		return `calc(${100 / this.customTemplate.options.perRow}% - 48px)`;
 	}
 }

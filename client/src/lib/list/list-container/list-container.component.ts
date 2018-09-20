@@ -10,12 +10,9 @@ import {EntityMetadata} from '../../metadata/entity-metadata';
 	styleUrls: ['./list-container.component.css']
 })
 export class ListContainerComponent implements OnInit {
-
 	entity: EntityMetadata;
 
-	constructor(private metadata: MetadataService,
-							private route: ActivatedRoute) {
-
+	constructor(private metadata: MetadataService, private route: ActivatedRoute) {
 	}
 
 	ngOnInit() {
