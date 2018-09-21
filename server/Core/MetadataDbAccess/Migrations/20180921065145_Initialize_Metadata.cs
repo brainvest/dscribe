@@ -38,6 +38,18 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EntityActionTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EntityActionTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EntityGeneralUsageCategories",
                 columns: table => new
                 {
@@ -101,6 +113,30 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PropertyGeneralUsageCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -271,6 +307,48 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                         name: "FK_AppInstances_MetadataReleases_MetadataReleaseId",
                         column: x => x.MetadataReleaseId,
                         principalTable: "MetadataReleases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EntityPermissions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    EntityId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: true),
+                    ActionTypeId = table.Column<int>(nullable: false),
+                    ActionName = table.Column<string>(type: "varchar(200)", nullable: true),
+                    Deny = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EntityPermissions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EntityPermissions_EntityActionTypes_ActionTypeId",
+                        column: x => x.ActionTypeId,
+                        principalTable: "EntityActionTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_EntityPermissions_Entities_EntityId",
+                        column: x => x.EntityId,
+                        principalTable: "Entities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_EntityPermissions_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_EntityPermissions_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -566,20 +644,32 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 {
                     { 1, "System.Int32", "int", true, "Integer" },
                     { 16, "System.Double", "double", true, "Double" },
+                    { 15, "System.Byte", "byte", true, "Tiny Integer" },
                     { 14, "System.Int16", "short", true, "Short Integer" },
                     { 13, "System.Int64", "long", true, "Long Integer" },
                     { 12, "System.Decimal", "decimal", true, "Decimal" },
                     { 11, "System.Guid", "Guid", true, "Guid" },
                     { 10, null, "NavigationList", false, "Navigation List" },
                     { 9, null, "Enum", true, "Enum" },
-                    { 15, "System.Byte", "byte", true, "Tiny Integer" },
+                    { 8, null, "NavigationEntity", false, "Navigation Property" },
                     { 7, null, "ForeignKey", true, "Foreign Key" },
                     { 6, "System.DateTime", "DateTime", true, "Date and Time" },
                     { 5, "System.TimeSpan", "Time", true, "Time Of Day" },
                     { 4, "System.DateTime", "Date", true, "Date" },
                     { 3, "System.Boolean", "bool", true, "Boolean" },
-                    { 2, "System.String", "string", false, "String" },
-                    { 8, null, "NavigationEntity", false, "Navigation Property" }
+                    { 2, "System.String", "string", false, "String" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EntityActionTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 32, "Other" },
+                    { 16, "Update" },
+                    { 1, "List" },
+                    { 4, "Insert" },
+                    { 8, "Delete" }
                 });
 
             migrationBuilder.InsertData(
@@ -596,9 +686,9 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 columns: new[] { "Id", "Identifier", "Title" },
                 values: new object[,]
                 {
-                    { 3, "C#", "C#" },
                     { 1, "SimplePath", "Simple Path" },
-                    { 2, "Json", "Json" }
+                    { 2, "Json", "Json" },
+                    { 3, "C#", "C#" }
                 });
 
             migrationBuilder.InsertData(
@@ -725,6 +815,26 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 name: "IX_EntityFacetValues_FacetDefinitionId",
                 table: "EntityFacetValues",
                 column: "FacetDefinitionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EntityPermissions_ActionTypeId",
+                table: "EntityPermissions",
+                column: "ActionTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EntityPermissions_EntityId",
+                table: "EntityPermissions",
+                column: "EntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EntityPermissions_RoleId",
+                table: "EntityPermissions",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EntityPermissions_UserId",
+                table: "EntityPermissions",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EnumValues_EnumTypeId",
@@ -882,6 +992,9 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 name: "EntityFacetValues");
 
             migrationBuilder.DropTable(
+                name: "EntityPermissions");
+
+            migrationBuilder.DropTable(
                 name: "EnumValues");
 
             migrationBuilder.DropTable(
@@ -895,6 +1008,15 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "EntityFacetDefinitions");
+
+            migrationBuilder.DropTable(
+                name: "EntityActionTypes");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "AppInstances");

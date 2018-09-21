@@ -1,5 +1,6 @@
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
+using Brainvest.Dscribe.MetadataDbAccess.Entities.Security;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -79,6 +80,13 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 				new PropertyGeneralUsageCategory { Id = 4, Name = "NavigationProperty" },
 				new PropertyGeneralUsageCategory { Id = 5, Name = "NavigationList" }
 			);
+			modelBuilder.Entity<EntityActionType>().HasData(
+				new EntityActionType { Id = EntityActionTypeEnum.List, Name = "List" },
+				new EntityActionType { Id = EntityActionTypeEnum.Insert, Name = "Insert" },
+				new EntityActionType { Id = EntityActionTypeEnum.Delete, Name = "Delete" },
+				new EntityActionType { Id = EntityActionTypeEnum.Update, Name = "Update" },
+				new EntityActionType { Id = EntityActionTypeEnum.Other, Name = "Other" }
+				);
 			#endregion
 		}
 
@@ -107,5 +115,11 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 		public DbSet<ExpressionFormat> ExpressionFormats { get; set; }
 
 		public DbSet<SavedFilter> SavedFilters { get; set; }
+
+		public DbSet<User> Users { get; set; }
+		public DbSet<Role> Roles { get; set; }
+		public DbSet<EntityActionType> EntityActionTypes { get; set; }
+		public DbSet<EntityPermission> EntityPermissions { get; set; }
+
 	}
 }

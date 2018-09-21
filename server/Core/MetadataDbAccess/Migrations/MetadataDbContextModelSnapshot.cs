@@ -166,6 +166,25 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.ToTable("Entities");
                 });
 
+            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.EntityActionType", b =>
+                {
+                    b.Property<int>("Id");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EntityActionTypes");
+
+                    b.HasData(
+                        new { Id = 1, Name = "List" },
+                        new { Id = 4, Name = "Insert" },
+                        new { Id = 8, Name = "Delete" },
+                        new { Id = 16, Name = "Update" },
+                        new { Id = 32, Name = "Other" }
+                    );
+                });
+
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.EntityFacetDefaultValue", b =>
                 {
                     b.Property<int>("Id")
@@ -592,6 +611,62 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.ToTable("SavedFilters");
                 });
 
+            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.EntityPermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ActionName")
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int>("ActionTypeId");
+
+                    b.Property<bool>("Deny");
+
+                    b.Property<int>("EntityId");
+
+                    b.Property<Guid?>("RoleId");
+
+                    b.Property<Guid?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActionTypeId");
+
+                    b.HasIndex("EntityId");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EntityPermissions");
+                });
+
+            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("UserName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.AppInstance", b =>
                 {
                     b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.AppType", "AppType")
@@ -811,6 +886,29 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.Entity", "InputEntity")
                         .WithMany()
                         .HasForeignKey("InputEntityId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.EntityPermission", b =>
+                {
+                    b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.EntityActionType", "ActionType")
+                        .WithMany()
+                        .HasForeignKey("ActionTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.Entity", "Entity")
+                        .WithMany()
+                        .HasForeignKey("EntityId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
