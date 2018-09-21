@@ -17,6 +17,12 @@
 		<div class="filter" *ngIf="!hideFilter">
 			<div class="filter__summary">
 				<button mat-stroked-button (click)="toggleFilter()">{{filterLambda ? 'Hide' : 'Show'}} Filters</button>
+				<ng-container *ngFor="let command of filterCommands">
+					<button *ngIf="shouldDisplayCommand(command)" mat-stroked-button
+									(click)="callFilterCommand(command)">
+						{{command.title}}
+					</button>
+				</ng-container>
 				<div class="flex-spacer"></div>
 				<button mat-stroked-button color="primary" (click)="applyFilter()">Apply</button>
 			</div>
@@ -31,19 +37,22 @@
 			<div class="table-loading-shade" *ngIf="isLoadingResults">
 				<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
 			</div>
-			<ng-container [ngSwitch]="displayMode">
-				<ng-container *ngSwitchCase="'card'">
-					<div style="display: flex; flex-wrap: wrap">
-						<dscribe-custom-template-host [ngStyle]="{'width': getCustomTemplateWidth()}" style="margin: 24px;" *ngFor="let instance of data" [data]="instance"
-																					[entityTypeName]="entity.name">
+			<div class="list-table-container">
+				<ng-container [ngSwitch]="displayMode">
+					<ng-container *ngSwitchCase="'card'">
+						<div style="display: flex; flex-wrap: wrap">
+							<dscribe-custom-template-host [ngStyle]="{'width': getCustomTemplateWidth()}" style="margin: 24px;"
+																						*ngFor="let instance of data" [data]="instance"
+																						[entityTypeName]="entity.name">
 
-						</dscribe-custom-template-host>
-					</div>
+							</dscribe-custom-template-host>
+						</div>
+					</ng-container>
+					<dscribe-table-template *ngSwitchDefault (rowClick)="editRow($event)" [data]="data" [columns]="columns"
+																	[displayedColumns]="displayedColumns" [selection]="selection">
+					</dscribe-table-template>
 				</ng-container>
-				<dscribe-table-template *ngSwitchDefault (rowClick)="editRow($event)" [data]="data" [columns]="columns"
-																[displayedColumns]="displayedColumns" [selection]="selection">
-				</dscribe-table-template>
-			</ng-container>
+			</div>
 			<mat-paginator class="list-paginator" [length]="totalCount" [pageSize]="pageSize"></mat-paginator>
 		</div>
 
