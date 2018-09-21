@@ -37,6 +37,7 @@
 			<div class="table-loading-shade" *ngIf="isLoadingResults">
 				<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
 			</div>
+      
 			<div class="list-table-container">
 				<ng-container [ngSwitch]="displayMode">
 					<ng-container *ngSwitchCase="'card'">
