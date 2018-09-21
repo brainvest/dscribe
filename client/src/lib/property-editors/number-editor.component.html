@@ -1,10 +1,10 @@
 <mat-form-field *ngIf="!isFilter" class="full-width" appearance="outline">
-	<mat-label>{{property.title}}</mat-label>
-	<input type="number" matInput [placeholder]="property.title"
+	<mat-label>{{property.title || property.jsName}}</mat-label>
+	<input type="number" matInput [placeholder]="property.title || property.jsName"
 				 [(ngModel)]="entity[overridePropertyName || property.jsName]">
 </mat-form-field>
 
-<input *ngIf="isFilter" type="number" [placeholder]="property.title || property.overridePropertyName || property.jsName"
+<input *ngIf="isFilter" type="number" [placeholder]="property.title || overridePropertyName || property.jsName"
 			 [(ngModel)]="entity[overridePropertyName || property.jsName]">
 
 <div *ngIf="property.validationErrors">

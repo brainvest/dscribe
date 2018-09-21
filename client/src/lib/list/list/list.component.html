@@ -34,14 +34,15 @@
 			<ng-container [ngSwitch]="displayMode">
 				<ng-container *ngSwitchCase="'card'">
 					<div style="display: flex; flex-wrap: wrap">
-						<dscribe-custom-template-host [ngStyle]="{'width': getCustomTemplateWidth()}" style="margin: 24px;" *ngFor="let instance of data" [data]="instance"
-																					[entityTypeName]="entity.name">
+						<dscribe-custom-template-host [ngStyle]="{'width': getCustomTemplateWidth()}" style="margin: 24px;" *ngFor="let instance of data"
+						 [data]="instance" [entityTypeName]="entity.name">
 
 						</dscribe-custom-template-host>
 					</div>
 				</ng-container>
 				<dscribe-table-template *ngSwitchDefault (rowClick)="editRow($event)" [data]="data" [columns]="columns"
-																[displayedColumns]="displayedColumns" [selection]="selection">
+				 [displayedColumns]="displayedColumns" [selection]="selection"
+				 [selectedRow]="selectedRow">
 				</dscribe-table-template>
 			</ng-container>
 			<mat-paginator class="list-paginator" [length]="totalCount" [pageSize]="pageSize"></mat-paginator>
@@ -54,10 +55,7 @@
 						<ng-template mat-tab-label>
 							{{prop.masterProperty.title || prop.masterProperty.name}} ({{prop.count}})
 						</ng-template>
-						<dscribe-list
-							[hideFilter]="true"
-							[entity]="prop.masterProperty.entityType"
-							[master]="prop">
+						<dscribe-list [hideFilter]="true" [entity]="prop.masterProperty.entityType" [master]="prop">
 						</dscribe-list>
 					</mat-tab>
 				</mat-tab-group>

@@ -13,6 +13,7 @@ export class TableTemplateComponent {
 	@Input() selection: SelectionModel<any>;
 	@Input() columns: ListColumn[];
 	@Input() displayedColumns: string[];
+	@Input() selectedRow: any;
 
 	@Output() rowClick = new EventEmitter<any>();
 
