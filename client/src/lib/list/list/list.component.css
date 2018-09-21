@@ -1,6 +1,16 @@
 .list-container {
 	position: relative;
 }
+
+.list-table-container {
+	position: relative;
+	height: 536px;
+	overflow: auto;
+	border: 1px solid #d1d8dd;
+	border-bottom: none;
+	border-top: none;
+}
+
 .filter {
 	border: 1px solid #d1d8dd;
 	border-top: none;
@@ -8,6 +18,10 @@
 
 .filter__summary, .filter__content {
 	padding: 16px 8px;
+}
+
+.filter__summary button {
+	margin: 0 8px;
 }
 
 .filter__summary {

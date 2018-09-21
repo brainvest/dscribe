@@ -22,6 +22,11 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {DataTypes} from '../../metadata/data-types';
 import {TableTemplateComponent} from '../list-templating/table-template/table-template.component';
 import {EntityTemplateMapper} from '../list-templating/entity-template-mapper';
+import {DscribeService} from '../../dscribe.service';
+import {DscribeFeatureArea} from '../../models/dscribe-feature-area.enum';
+import {DscribeCommand} from '../../models/dscribe-command';
+import {DscribeCommandCallbackInput} from '../../models/dscribe-command-callback-input';
+import {DscribeCommandDisplayPredicate} from '../../models/dscribe-command-display-predicate';
 
 @Component({
 	selector: 'dscribe-list',
@@ -58,10 +63,10 @@ export class ListComponent implements OnInit, OnChanges {
 	@ViewChild(TableTemplateComponent) table: TableTemplateComponent;
 	sort: MatSort;
 	private customTemplate: { component: Type<any>; options?: any };
+	filterCommands: DscribeCommand[];
 
-	constructor(private metadataService: MetadataService,
-							private dataHandler: DataHandlerService,
-							private dialog: MatDialog) {
+	constructor(private metadataService: MetadataService, private dataHandler: DataHandlerService,
+							private dialog: MatDialog, private dscribeService: DscribeService) {
 		this.selection.changed.subscribe(x => {
 			if (x.added.length === 1) {
 				this.selectRow(x.added[0]);
@@ -71,6 +76,11 @@ export class ListComponent implements OnInit, OnChanges {
 
 	ngOnInit() {
 		FilterNode.factory = new FilterNodeFactory();
+		this.dscribeService.getCommands().subscribe(commands => {
+			this.filterCommands = commands.filter(x =>
+				x.featureAreas === DscribeFeatureArea.Filter || x.featureAreas.includes(DscribeFeatureArea.Filter)
+			);
+		});
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -282,5 +292,15 @@ export class ListComponent implements OnInit, OnChanges {
 
 	getCustomTemplateWidth(): string {
 		return `calc(${100 / this.customTemplate.options.perRow}% - 48px)`;
+	}
+
+	callFilterCommand(command: DscribeCommand) {
+		command.callback(<DscribeCommandCallbackInput<ListComponent>> {
+			area: DscribeFeatureArea.Filter, sourceComponent: this
+		});
+	}
+
+	shouldDisplayCommand(command: DscribeCommand) {
+		return command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
 	}
 }

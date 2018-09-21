@@ -1,12 +1,15 @@
 import {Injectable} from '@angular/core';
-import {DscribeConfigModel} from './models/dscribe-config.model';
+import {DscribeConfig} from './models/dscribe-config';
 import {AppInstanceInfoModel} from './common/models/app-instance-info-model';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {DscribeCommand} from './models/dscribe-command';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class DscribeService {
-	private config = <DscribeConfigModel>{};
+	private config = <DscribeConfig>{};
+	private commands$: BehaviorSubject<DscribeCommand[]> = new BehaviorSubject<DscribeCommand[]>([]);
 
 	set authHeaderFetcher(fetcher: () => string) {
 		this.config.authHeaderFetcher = fetcher;
@@ -22,5 +25,13 @@ export class DscribeService {
 
 	get appInstance(): AppInstanceInfoModel {
 		return this.config.appInstance;
+	}
+
+	getCommands(): Observable<DscribeCommand[]> {
+		return this.commands$;
+	}
+
+	setCommands(value: DscribeCommand[]) {
+		this.commands$.next(value);
 	}
 }
