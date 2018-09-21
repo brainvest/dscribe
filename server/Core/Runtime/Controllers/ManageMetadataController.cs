@@ -1,7 +1,9 @@
 using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ManageMetadata;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,18 +20,25 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	{
 		MetadataDbContext _dbContext;
 		IImplementationsContainer _implementations;
+		IPermissionService _permissionService;
 
 		public ManageMetadataController(
 			MetadataDbContext dbContext,
-			IImplementationsContainer implementations)
+			IImplementationsContainer implementations,
+			IPermissionService permissionService)
 		{
 			_dbContext = dbContext;
 			_implementations = implementations;
+			_permissionService = permissionService;
 		}
 
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable<EntityMetadataModel>>> GetTypes()
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var appTypeId = _implementations.InstanceInfo.AppTypeId;
 			var types = await _dbContext.Entities.OrderBy(x => x.Name)
 					.Where(x => x.AppTypeId == appTypeId)
@@ -52,6 +61,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult> AddEntity(EntityMetadataModel model)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var error = AddTypeValidation(model);
 			if (error != null)
 			{
@@ -78,6 +91,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult> EditEntity(EntityMetadataModel model)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var error = EditTypeValidation(model);
 			if (error != null)
 			{
@@ -100,6 +117,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult> DeleteEntity(EntityMetadataModel model)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			//TODO: Handle errors, validate model
 			var type = await _dbContext.Entities.FindAsync(model.Id);
 			_dbContext.Entities.Remove(type);
@@ -111,6 +132,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable<PropertyMetadataModel>>> GetProperties(PropertyMetadataRequestModel request)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var properties = await _dbContext.Properties
 					.Where(x => x.EntityId == request.EntityId).OrderBy(x => x.Name)
 					.Select(x => new PropertyMetadataModel
@@ -131,6 +156,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 
 		public async Task<ActionResult<AddNEditPropertyMetadataModel>> GetPropertyForEdit(AddNEditPropertyInfoRequest request)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var model = await _dbContext.Properties.Select(x => new AddNEditPropertyMetadataModel
 			{
 				DataTypeEntityId = x.DataTypeEntityId,
@@ -164,6 +193,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult> AddProperty(AddNEditPropertyMetadataModel model)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			using (var transaction = await _dbContext.Database.BeginTransactionAsync())
 			{
 				//TODO: Handle errors, validate model
@@ -198,6 +231,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult> EditProperty(AddNEditPropertyMetadataModel model)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			//TODO: Handle errors, validate model
 			var property = await _dbContext.Properties.FindAsync(model.Id);
 			property.DataTypeId = (DataTypeEnum?)model.DataTypeId;
@@ -287,6 +324,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult> DeleteProperty(PropertyMetadataModel model)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			//TODO: Handle errors, validate model
 			var property = await _dbContext.Properties.FindAsync(model.Id);
 			_dbContext.Properties.Remove(property);
@@ -297,6 +338,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult<MetadataBasicInfoModel>> GetBasicInfo()
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var result = new MetadataBasicInfoModel
 			{
 				DefaultPropertyFacetValues = (await _dbContext.PropertyFacetDefaultValues
@@ -360,6 +405,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult<LocalFacetsModel>> GetTypeFacets()
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var result = new LocalFacetsModel()
 			{
 				LocalFacets = (await _dbContext.EntityFacetValues.Select(v => new
@@ -378,6 +427,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult<LocalFacetsModel>> GetPropertyFacets(PropertyFacetValuesRequest request)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var result = new LocalFacetsModel()
 			{
 				LocalFacets = (await _dbContext.PropertyFacetValues.Where(x => x.Property.Entity.Name == request.EntityName)
@@ -397,6 +450,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult> SaveTypeLocalFacetValue(SaveLocalFacetRequest request)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var existing = await _dbContext.EntityFacetValues
 				.Where(x =>
 					x.Entity.Name == request.EntityName
@@ -429,6 +486,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult> SavePropertyLocalFacetValue(SaveLocalFacetRequest request)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var existing = await _dbContext.PropertyFacetValues
 				.Where(x =>
 				x.Property.Entity.Name == request.EntityName
@@ -460,11 +521,15 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<IEnumerable<PropertyInfoModel>>> GetAllPropertyNames()
+		public async Task<ActionResult<IEnumerable<ManageMetadataPropertyInfoModel>>> GetAllPropertyNames()
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var appTypeId = _implementations.InstanceInfo.AppTypeId;
 			var names = await _dbContext.Properties.Where(x => x.Entity.AppTypeId == appTypeId)
-				.Select(x => new PropertyInfoModel
+				.Select(x => new ManageMetadataPropertyInfoModel
 				{
 					Id = x.Id,
 					Name = x.Name,

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 {
     [DbContext(typeof(MetadataDbContext))]
-    [Migration("20180921065145_Initialize_Metadata")]
+    [Migration("20180921185620_Initialize_Metadata")]
     partial class Initialize_Metadata
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,11 +179,13 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.ToTable("EntityActionTypes");
 
                     b.HasData(
-                        new { Id = 1, Name = "List" },
-                        new { Id = 4, Name = "Insert" },
-                        new { Id = 8, Name = "Delete" },
-                        new { Id = 16, Name = "Update" },
-                        new { Id = 32, Name = "Other" }
+                        new { Id = 1, Name = "GetMetadata" },
+                        new { Id = 2, Name = "Select" },
+                        new { Id = 3, Name = "Insert" },
+                        new { Id = 4, Name = "Delete" },
+                        new { Id = 5, Name = "Update" },
+                        new { Id = 6, Name = "ManageMetadata" },
+                        new { Id = 7, Name = "CustomNamedAction" }
                     );
                 });
 
@@ -613,7 +615,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.ToTable("SavedFilters");
                 });
 
-            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.EntityPermission", b =>
+            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.Permission", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -622,11 +624,13 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.Property<string>("ActionName")
                         .HasColumnType("varchar(200)");
 
-                    b.Property<int>("ActionTypeId");
+                    b.Property<int?>("ActionTypeId");
 
-                    b.Property<bool>("Deny");
+                    b.Property<int?>("AppInstanceId");
 
-                    b.Property<int>("EntityId");
+                    b.Property<int?>("EntityId");
+
+                    b.Property<int>("PermissionType");
 
                     b.Property<Guid?>("RoleId");
 
@@ -636,13 +640,19 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 
                     b.HasIndex("ActionTypeId");
 
+                    b.HasIndex("AppInstanceId");
+
                     b.HasIndex("EntityId");
 
                     b.HasIndex("RoleId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EntityPermissions");
+                    b.ToTable("Permissions");
+
+                    b.HasData(
+                        new { Id = 1, PermissionType = 1, RoleId = new Guid("7555dd25-ee7f-4a21-9156-3867dcbced77") }
+                    );
                 });
 
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.Role", b =>
@@ -655,6 +665,11 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new { Id = new Guid("2e17424d-9a7c-44ee-962e-0a0e12176cff"), Name = "Anonymous" },
+                        new { Id = new Guid("7555dd25-ee7f-4a21-9156-3867dcbced77"), Name = "Admin" }
+                    );
                 });
 
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.User", b =>
@@ -891,11 +906,16 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.EntityPermission", b =>
+            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.Permission", b =>
                 {
                     b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.EntityActionType", "ActionType")
                         .WithMany()
                         .HasForeignKey("ActionTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.AppInstance", "AppInstance")
+                        .WithMany()
+                        .HasForeignKey("AppInstanceId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.Entity", "Entity")

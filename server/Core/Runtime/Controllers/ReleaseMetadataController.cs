@@ -1,5 +1,6 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.CodeGeneration;
+using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.MetadataModels;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.Implementations.Ef.CodeGenerator;
@@ -13,11 +14,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Runtime.Controllers
@@ -25,6 +24,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	[Produces("application/json")]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
+	[Authorize(Roles = "MetadataAdmin")]
 	public class ReleaseMetadataController : ControllerBase
 	{
 
@@ -34,6 +34,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		IBusinessCompiler _compiler;
 		IImplementationsContainer _implementationContainer;
 		IGlobalConfiguration _globalConfiguration;
+		IPermissionService _permissionService;
 
 		public ReleaseMetadataController(
 			IHostingEnvironment hostingEnvironment,
@@ -41,7 +42,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			IBusinessCodeGenerator codeGenerator,
 			IBusinessCompiler compiler,
 			IImplementationsContainer implementationContainer,
-			IOptions<GlobalConfiguration> globalConfiguration
+			IOptions<GlobalConfiguration> globalConfiguration,
+			IPermissionService permissionService
 			)
 		{
 			_hostingEnvironment = hostingEnvironment;
@@ -50,11 +52,16 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			_compiler = compiler;
 			_implementationContainer = implementationContainer;
 			_globalConfiguration = globalConfiguration.Value;
+			_permissionService = permissionService;
 		}
 
 		[HttpPost]
 		public async Task<ActionResult> ReleaseMetadata(ReleaseMetadataRequest request)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationContainer, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var appInstance = await _dbContext.AppInstances.SingleAsync(X => X.Id == request.AppInstanceId);
 			var appType = await _dbContext.AppTypes.SingleAsync(x => x.Id == appInstance.AppTypeId);
 
@@ -83,13 +90,17 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult<MetadataValidationResponse>> GenerateCode()
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationContainer, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			var bundle = await MetadataBundle.FromDbWithoutNavigations(_dbContext
 				, _implementationContainer.InstanceInfo.AppTypeId, _implementationContainer.InstanceInfo.AppInstanceId);
 			bundle.FixupRelationships();
 			var metadataCache = new MetadataCache(bundle);
 			var errorList = await GenerateCodeValidation();
 			var result = new MetadataValidationResponse();
-			if (!errorList.Success)
+			if (errorList.Value?.Success != true)
 			{
 				return errorList;
 			}
@@ -127,8 +138,12 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			}
 		}
 
-		public async Task<MetadataValidationResponse> GenerateCodeValidation()
+		public async Task<ActionResult<MetadataValidationResponse>> GenerateCodeValidation()
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationContainer, null, ActionTypeEnum.ManageMetadata)))
+			{
+				return Unauthorized();
+			}
 			//var errors = new List<string>();
 			var errors = new MetadataValidationResponse();
 			var duplicateTypes = await _dbContext.Entities.Where(x => x.AppTypeId == _implementationContainer.InstanceInfo.AppTypeId)

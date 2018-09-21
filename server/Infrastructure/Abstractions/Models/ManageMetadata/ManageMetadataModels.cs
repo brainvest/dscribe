@@ -120,7 +120,7 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string Name { get; set; }
 	}
 
-	public class PropertyInfoModel
+	public class ManageMetadataPropertyInfoModel
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }

@@ -3,13 +3,11 @@ using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess;
 using Brainvest.Dscribe.Implementations.Ef.CodeGenerator;
+using Brainvest.Dscribe.Runtime.AccessControl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Brainvest.Dscribe.Runtime
 {
@@ -25,6 +23,7 @@ namespace Brainvest.Dscribe.Runtime
 			services.AddTransient<IBusinessCodeGenerator, EFCodeGenerator>();
 			services.AddTransient<IBusinessCompiler, EFCompiler>();
 			services.AddScoped<EntityHelper, EntityHelper>();
+			services.AddSingleton<IPermissionService, PermissionCache>();
 			services.Configure<GlobalConfiguration>(configuration.GetSection(nameof(GlobalConfiguration)));
 		}
 

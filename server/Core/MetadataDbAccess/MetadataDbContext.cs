@@ -1,7 +1,9 @@
+using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
 using Brainvest.Dscribe.MetadataDbAccess.Entities.Security;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace Brainvest.Dscribe.MetadataDbAccess
@@ -81,12 +83,24 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 				new PropertyGeneralUsageCategory { Id = 5, Name = "NavigationList" }
 			);
 			modelBuilder.Entity<EntityActionType>().HasData(
-				new EntityActionType { Id = EntityActionTypeEnum.List, Name = "List" },
-				new EntityActionType { Id = EntityActionTypeEnum.Insert, Name = "Insert" },
-				new EntityActionType { Id = EntityActionTypeEnum.Delete, Name = "Delete" },
-				new EntityActionType { Id = EntityActionTypeEnum.Update, Name = "Update" },
-				new EntityActionType { Id = EntityActionTypeEnum.Other, Name = "Other" }
-				);
+				new EntityActionType { Id = ActionTypeEnum.GetMetadata, Name = "GetMetadata" },
+				new EntityActionType { Id = ActionTypeEnum.Select, Name = "Select" },
+				new EntityActionType { Id = ActionTypeEnum.Insert, Name = "Insert" },
+				new EntityActionType { Id = ActionTypeEnum.Delete, Name = "Delete" },
+				new EntityActionType { Id = ActionTypeEnum.Update, Name = "Update" },
+				new EntityActionType { Id = ActionTypeEnum.ManageMetadata, Name = "ManageMetadata" },
+				new EntityActionType { Id = ActionTypeEnum.CustomNamedAction, Name = "CustomNamedAction" }
+			);
+
+			modelBuilder.Entity<Role>().HasData(
+				new Role { Id = Guid.Parse("2E17424D-9A7C-44EE-962E-0A0E12176CFF"), Name = "Anonymous" },
+				new Role { Id = Guid.Parse("7555DD25-EE7F-4A21-9156-3867DCBCED77"), Name = "Admin" }
+			);
+
+			modelBuilder.Entity<Permission>().HasData(
+				new Permission { Id = 1, RoleId = Guid.Parse("7555DD25-EE7F-4A21-9156-3867DCBCED77"), PermissionType = PermissionType.Allow }
+			);
+
 			#endregion
 		}
 
@@ -119,7 +133,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 		public DbSet<User> Users { get; set; }
 		public DbSet<Role> Roles { get; set; }
 		public DbSet<EntityActionType> EntityActionTypes { get; set; }
-		public DbSet<EntityPermission> EntityPermissions { get; set; }
+		public DbSet<Permission> Permissions { get; set; }
 
 	}
 }

@@ -1,12 +1,8 @@
 using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.Metadata;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Runtime.Controllers
 {
@@ -16,15 +12,21 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	public class MetadataController : ControllerBase
 	{
 		IImplementationsContainer _implementationsContainer;
+		IPermissionService _permissionService;
 
-		public MetadataController(IImplementationsContainer implementationsContainer)
+		public MetadataController(IImplementationsContainer implementationsContainer, IPermissionService permissionService)
 		{
 			_implementationsContainer = implementationsContainer;
+			_permissionService = permissionService;
 		}
 
 		[HttpGet]
 		public ActionResult<IEntityMetadataModel> GetEntityByName(string entityTypeName)
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, null, ActionTypeEnum.GetMetadata)))
+			{
+				return Unauthorized();
+			}
 			if (_implementationsContainer.MetadataModel.Entities.TryGetValue(entityTypeName, out var typeInfo))
 			{
 				return new ActionResult<IEntityMetadataModel>(typeInfo);
@@ -35,6 +37,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpGet]
 		public ActionResult<MetadataModel> GetComplete()
 		{
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, null, ActionTypeEnum.GetMetadata)))
+			{
+				return Unauthorized();
+			}
 			var result = new MetadataModel
 			{
 				PropertyDefaults = _implementationsContainer.MetadataModel.PropertyDefaults,

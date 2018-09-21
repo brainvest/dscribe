@@ -234,7 +234,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		{
 			try
 			{
-				var validationResult = _validator.Validate(request.Entity, EntityActionType.Delete);
+				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Delete);
 				if (validationResult?.IsValid == false)
 				{
 					return new BadRequestObjectResult(validationResult);
@@ -259,7 +259,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		{
 			try
 			{
-				var validationResult = _validator.Validate(request.Entity, EntityActionType.Insert);
+				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Insert);
 				if (validationResult?.IsValid == false)
 				{
 					return new BadRequestObjectResult(validationResult);
@@ -284,7 +284,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		{
 			try
 			{
-				var validationResult = _validator.Validate(request.Entity, EntityActionType.Update);
+				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Update);
 				if (validationResult?.IsValid == false)
 				{
 					return new BadRequestObjectResult(validationResult);
