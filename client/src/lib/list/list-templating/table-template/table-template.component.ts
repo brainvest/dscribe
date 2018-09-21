@@ -16,7 +16,6 @@ export class TableTemplateComponent {
 	@Input() selectedRow: any;
 
 	@Output() rowClick = new EventEmitter<any>();
-
 	@ViewChild(MatSort) sort: MatSort;
 
 
