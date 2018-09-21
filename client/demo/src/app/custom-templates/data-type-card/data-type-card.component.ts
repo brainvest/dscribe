@@ -4,7 +4,7 @@ import {DscribeTemplateComponent} from '../../../../../src/lib/list/list-templat
 import {Router} from '@angular/router';
 
 @DscribeListTemplate({
-	entityTypeName: 'DataTable',
+	entityTypeName: 'Product',
 	options: {
 		perRow: 4
 	}
