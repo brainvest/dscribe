@@ -53,7 +53,6 @@ import {NavigationComponent} from './navigation/navigation.component';
 import {HomePageComponent} from './home-page/home-page.component';
 import {MetadataManagementComponent} from './administration/metadata-management/metadata-management.component';
 import {RouterModule} from '@angular/router';
-import {DSCRIBE_ROUTES} from './dscribe-routes';
 import {EntityGeneralUsageNamePipe} from './administration/helpers/entity-general-usage-name.pipe';
 import {AddNEditEntityComponent} from './administration/add-n-edit-entity/add-n-edit-entity.component';
 import {AddNEditPropertyComponent} from './administration/add-n-edit-property/add-n-edit-property.component';
@@ -61,6 +60,8 @@ import {KeysPipe} from './helpers/keys.pipe';
 import {ConfirmationDialogComponent} from './common/confirmation-dialog/confirmation-dialog.component';
 import {ReleaseMetadataSettingsComponent} from './administration/release-metadata-settings/release-metadata-settings.component';
 import {DisplayValuePipe} from './common/display-value-pipe';
+import {TableTemplateComponent} from './list/list-templating/table-template/table-template.component';
+import {CustomTemplateHostComponent} from './list/list-templating/custom-template-host/custom-template-host.component';
 
 @NgModule({
 	imports: [
@@ -124,9 +125,11 @@ import {DisplayValuePipe} from './common/display-value-pipe';
 		KeysPipe,
 		ConfirmationDialogComponent,
 		ReleaseMetadataSettingsComponent,
-		DisplayValuePipe
+		DisplayValuePipe,
+		TableTemplateComponent,
+		CustomTemplateHostComponent
 	],
-	exports: [DscribeComponent, ListComponent],
+	exports: [DscribeComponent, ListComponent, DisplayValuePipe],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: DscribeInterceptor, multi: true},
 		FilterTreeManipulator
