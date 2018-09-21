@@ -1,3 +1,4 @@
+using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace Brainvest.Dscribe.Identity.Server.Host
 			{
 					new IdentityResources.OpenId(),
 					new IdentityResources.Profile(),
+					new IdentityResource("roles", "Roles", new List<string>(){ JwtClaimTypes.Role })
 			};
 		}
 
@@ -38,10 +40,12 @@ namespace Brainvest.Dscribe.Identity.Server.Host
 					AllowedScopes = new List<string>
 					{
 							IdentityServerConstants.StandardScopes.OpenId,
-							IdentityServerConstants.StandardScopes.Profile
+							IdentityServerConstants.StandardScopes.Profile,
+							"roles"
 					},
 					AllowOfflineAccess = true,
-					AllowAccessTokensViaBrowser = true
+					AllowAccessTokensViaBrowser = true,
+					AlwaysIncludeUserClaimsInIdToken = true
 				}
 			};
 		}
