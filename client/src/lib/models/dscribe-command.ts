@@ -9,6 +9,6 @@ export class DscribeCommand {
 							public featureAreas: DscribeFeatureArea | DscribeFeatureArea[],
 							public callback: (data: DscribeCommandCallbackInput<any>) =>
 								void | DscribeCommandCallbackOutput | Observable<DscribeCommandCallbackOutput>,
-							public displayPredicate: (data: DscribeCommandDisplayPredicate) => boolean = () => true) {
+							public displayPredicate: (data: DscribeCommandDisplayPredicate<any>) => boolean = () => true) {
 	}
 }
