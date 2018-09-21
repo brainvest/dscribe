@@ -748,6 +748,28 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     { 5, null, 1, "ReadOnlyInEdit" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "PropertyFacetDefaultValues",
+                columns: new[] { "Id", "AppInstanceId", "AppTypeId", "DefaultValue", "FacetDefinitionId", "GeneralUsageCategoryId" },
+                values: new object[,]
+                {
+                    { 1, null, null, "false", 1, 1 },
+                    { 2, null, null, "true", 1, 2 },
+                    { 12, null, null, "true", 1, 5 },
+                    { 14, null, null, "true", 1, 4 },
+                    { 3, null, null, "false", 2, 1 },
+                    { 4, null, null, "true", 2, 2 },
+                    { 13, null, null, "true", 2, 5 },
+                    { 15, null, null, "true", 2, 4 },
+                    { 5, null, null, "false", 3, 2 },
+                    { 10, null, null, "false", 3, 4 },
+                    { 11, null, null, "false", 3, 5 },
+                    { 6, null, null, "true", 4, 2 },
+                    { 8, null, null, "true", 4, 5 },
+                    { 9, null, null, "true", 4, 4 },
+                    { 7, null, null, "true", 5, 2 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AppInstances_AppTypeId",
                 table: "AppInstances",

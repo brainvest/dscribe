@@ -82,6 +82,23 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 				new PropertyGeneralUsageCategory { Id = 4, Name = "NavigationProperty" },
 				new PropertyGeneralUsageCategory { Id = 5, Name = "NavigationList" }
 			);
+			modelBuilder.Entity<PropertyFacetDefaultValue>().HasData(
+				new PropertyFacetDefaultValue { Id = 1, FacetDefinitionId = 1, GeneralUsageCategoryId = 1, DefaultValue = "false" },
+				new PropertyFacetDefaultValue { Id = 2, FacetDefinitionId = 1, GeneralUsageCategoryId = 2, DefaultValue = "true" },
+				new PropertyFacetDefaultValue { Id = 3, FacetDefinitionId = 2, GeneralUsageCategoryId = 1, DefaultValue = "false" },
+				new PropertyFacetDefaultValue { Id = 4, FacetDefinitionId = 2, GeneralUsageCategoryId = 2, DefaultValue = "true" },
+				new PropertyFacetDefaultValue { Id = 5, FacetDefinitionId = 3, GeneralUsageCategoryId = 2, DefaultValue = "false" },
+				new PropertyFacetDefaultValue { Id = 6, FacetDefinitionId = 4, GeneralUsageCategoryId = 2, DefaultValue = "true" },
+				new PropertyFacetDefaultValue { Id = 7, FacetDefinitionId = 5, GeneralUsageCategoryId = 2, DefaultValue = "true" },
+				new PropertyFacetDefaultValue { Id = 8, FacetDefinitionId = 4, GeneralUsageCategoryId = 5, DefaultValue = "true" },
+				new PropertyFacetDefaultValue { Id = 9, FacetDefinitionId = 4, GeneralUsageCategoryId = 4, DefaultValue = "true" },
+				new PropertyFacetDefaultValue { Id = 10, FacetDefinitionId = 3, GeneralUsageCategoryId = 4, DefaultValue = "false" },
+				new PropertyFacetDefaultValue { Id = 11, FacetDefinitionId = 3, GeneralUsageCategoryId = 5, DefaultValue = "false" },
+				new PropertyFacetDefaultValue { Id = 12, FacetDefinitionId = 1, GeneralUsageCategoryId = 5, DefaultValue = "true" },
+				new PropertyFacetDefaultValue { Id = 13, FacetDefinitionId = 2, GeneralUsageCategoryId = 5, DefaultValue = "true" },
+				new PropertyFacetDefaultValue { Id = 14, FacetDefinitionId = 1, GeneralUsageCategoryId = 4, DefaultValue = "true" },
+				new PropertyFacetDefaultValue { Id = 15, FacetDefinitionId = 2, GeneralUsageCategoryId = 4, DefaultValue = "true" }
+			);
 			modelBuilder.Entity<EntityActionType>().HasData(
 				new EntityActionType { Id = ActionTypeEnum.GetMetadata, Name = "GetMetadata" },
 				new EntityActionType { Id = ActionTypeEnum.Select, Name = "Select" },

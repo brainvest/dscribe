@@ -517,6 +517,24 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.HasIndex("GeneralUsageCategoryId");
 
                     b.ToTable("PropertyFacetDefaultValues");
+
+                    b.HasData(
+                        new { Id = 1, DefaultValue = "false", FacetDefinitionId = 1, GeneralUsageCategoryId = 1 },
+                        new { Id = 2, DefaultValue = "true", FacetDefinitionId = 1, GeneralUsageCategoryId = 2 },
+                        new { Id = 3, DefaultValue = "false", FacetDefinitionId = 2, GeneralUsageCategoryId = 1 },
+                        new { Id = 4, DefaultValue = "true", FacetDefinitionId = 2, GeneralUsageCategoryId = 2 },
+                        new { Id = 5, DefaultValue = "false", FacetDefinitionId = 3, GeneralUsageCategoryId = 2 },
+                        new { Id = 6, DefaultValue = "true", FacetDefinitionId = 4, GeneralUsageCategoryId = 2 },
+                        new { Id = 7, DefaultValue = "true", FacetDefinitionId = 5, GeneralUsageCategoryId = 2 },
+                        new { Id = 8, DefaultValue = "true", FacetDefinitionId = 4, GeneralUsageCategoryId = 5 },
+                        new { Id = 9, DefaultValue = "true", FacetDefinitionId = 4, GeneralUsageCategoryId = 4 },
+                        new { Id = 10, DefaultValue = "false", FacetDefinitionId = 3, GeneralUsageCategoryId = 4 },
+                        new { Id = 11, DefaultValue = "false", FacetDefinitionId = 3, GeneralUsageCategoryId = 5 },
+                        new { Id = 12, DefaultValue = "true", FacetDefinitionId = 1, GeneralUsageCategoryId = 5 },
+                        new { Id = 13, DefaultValue = "true", FacetDefinitionId = 2, GeneralUsageCategoryId = 5 },
+                        new { Id = 14, DefaultValue = "true", FacetDefinitionId = 1, GeneralUsageCategoryId = 4 },
+                        new { Id = 15, DefaultValue = "true", FacetDefinitionId = 2, GeneralUsageCategoryId = 4 }
+                    );
                 });
 
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.PropertyFacetDefinition", b =>
