@@ -1,3 +1,4 @@
+using Brainvest.Dscribe.Identity.Server.Host.Models;
 using Brainvest.Dscribe.Identity.Server.Host.Services;
 using Brainvest.Dscribe.Security.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace Brainvest.Dscribe.Identity.Server.Host
 {
@@ -31,6 +33,7 @@ namespace Brainvest.Dscribe.Identity.Server.Host
 					.AllowAnyOrigin()
 					.AllowAnyHeader()));
 
+
 			services.Configure<CookiePolicyOptions>(options =>
 			{
 				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -40,7 +43,7 @@ namespace Brainvest.Dscribe.Identity.Server.Host
 
 			services.AddDbContext<SecurityDbContext>(options =>
 					options.UseSqlServer(
-							Configuration.GetConnectionString("SecurityConnectionString")));
+							Configuration.GetConnectionString("AuthConnectionString")));
 			services.AddIdentity<User, Role>()
 					.AddEntityFrameworkStores<SecurityDbContext>()
 					.AddDefaultTokenProviders();
@@ -48,6 +51,7 @@ namespace Brainvest.Dscribe.Identity.Server.Host
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddScoped<IEmailSender, FakeEmailSender>();
 
+			var clients = Configuration.GetSection("Clients").Get<IEnumerable<ClientInfo>>();
 			services.AddIdentityServer(options =>
 			{
 				options.UserInteraction.LoginUrl = "/Identity/Account/Login";
@@ -57,7 +61,7 @@ namespace Brainvest.Dscribe.Identity.Server.Host
 			 .AddInMemoryPersistedGrants()
 			 .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
 			 .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
-			 .AddInMemoryClients(IdentityServerConfig.GetClients())
+			 .AddInMemoryClients(IdentityServerConfig.GetClients(clients))
 			 .AddAspNetIdentity<User>();
 		}
 

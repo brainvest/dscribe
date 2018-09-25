@@ -1,7 +1,9 @@
+using Brainvest.Dscribe.Identity.Server.Host.Models;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Brainvest.Dscribe.Identity.Server.Host
 {
@@ -25,29 +27,26 @@ namespace Brainvest.Dscribe.Identity.Server.Host
 			};
 		}
 
-		public static IEnumerable<Client> GetClients()
+		public static IEnumerable<Client> GetClients(IEnumerable<ClientInfo> clients)
 		{
-			return new List<Client>
+			return clients.Select(x => new Client
 			{
-				new Client
-				{
-					ClientId = "dscribe",
-					ClientName = "dscribe",
-					AllowedGrantTypes = GrantTypes.ImplicitAndClientCredentials,
-					RequireConsent = false,
-					RedirectUris = { "http://localhost:4200/auth-callback" },
-					PostLogoutRedirectUris = { "http://localhost:4200/" },
-					AllowedScopes = new List<string>
+				ClientId = x.ClientId,
+				ClientName = x.ClientName,
+				AllowedGrantTypes = GrantTypes.ImplicitAndClientCredentials,
+				RequireConsent = false,
+				RedirectUris = { x.RedirectUri },
+				PostLogoutRedirectUris = { x.PostLogoutRedirectUri },
+				AllowedScopes = new List<string>
 					{
 							IdentityServerConstants.StandardScopes.OpenId,
 							IdentityServerConstants.StandardScopes.Profile,
 							"roles"
 					},
-					AllowOfflineAccess = true,
-					AllowAccessTokensViaBrowser = true,
-					AlwaysIncludeUserClaimsInIdToken = true
-				}
-			};
+				AllowOfflineAccess = true,
+				AllowAccessTokensViaBrowser = true,
+				AlwaysIncludeUserClaimsInIdToken = true
+			});
 		}
 	}
 }
