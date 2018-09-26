@@ -1,17 +1,19 @@
 using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Composition;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {
 	public class EfCoreCompiler
 	{
-		public async Task<(bool succeeded, IEnumerable<Diagnostic> diagnostics)> GenerateAssemblyAsync(
+		public async Task<(bool succeeded, IEnumerable<IDiagnosticInfo> diagnostics)> GenerateAssemblyAsync(
 			string sourceCodeFile
 			, string fileName
 			, string assembliesPath)
@@ -35,7 +37,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			}
 			if (!CSharpLanguage.CompileToAssembly(sourceCode, Path.GetFileNameWithoutExtension(fileName), fileName, references, out var diagnostics))
 			{
-				return (false, diagnostics);
+				return (false, diagnostics?.Select(x => new DiagnosticInfo { Message = x.GetMessage() }));
 			}
 			return (true, null);
 		}

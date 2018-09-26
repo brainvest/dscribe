@@ -1,3 +1,4 @@
+using Brainvest.Dscribe.Implementations.EfCore.All;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.Runtime;
 using Microsoft.AspNetCore.Builder;
@@ -5,9 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Brainvest.Dscribe.Implementations.EfCore.CodeGenerator;
-using Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess;
-using Brainvest.Dscribe.Implementations.EfCore.All;
 
 namespace Brainvest.Dscribe.Host
 {

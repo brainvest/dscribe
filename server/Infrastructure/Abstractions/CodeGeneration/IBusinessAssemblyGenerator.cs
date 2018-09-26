@@ -7,6 +7,6 @@ namespace Brainvest.Dscribe.Abstractions.CodeGeneration
 {
 	public interface IBusinessAssemblyGenerator
 	{
-		Task<(bool succeeded, IEnumerable<Diagnostic> diagnostics)> GenerateAssembly(IMetadataCache cache, IInstanceInfo instanceInfo, string path, string instanceName);
+		Task<(bool succeeded, IEnumerable<IDiagnosticInfo> diagnostics)> GenerateAssembly(IMetadataCache cache, IInstanceInfo instanceInfo, string path, string instanceName);
 	}
 }

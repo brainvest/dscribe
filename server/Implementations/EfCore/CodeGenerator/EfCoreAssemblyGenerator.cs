@@ -12,7 +12,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {
 	class EfCoreAssemblyGenerator : IBusinessAssemblyGenerator
 	{
-		public async Task<(bool succeeded, IEnumerable<Diagnostic> diagnostics)> GenerateAssembly(IMetadataCache cache, IInstanceInfo instanceInfo, string path, string instanceName)
+		public async Task<(bool succeeded, IEnumerable<IDiagnosticInfo> diagnostics)> GenerateAssembly(IMetadataCache cache, IInstanceInfo instanceInfo, string path, string instanceName)
 		{
 			var codeGen = new EfCoreCodeGenerator();
 			var compileUnit = codeGen.CreateCode(cache, instanceInfo);
@@ -23,7 +23,6 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			var assembliesPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); //TODO: This is hardcoded
 			var assemblyPath = Path.Combine(compositionDirectory, instanceName + ".dll");
 			return await new EfCoreCompiler().GenerateAssemblyAsync(sourceCodeFilePath, assemblyPath, assembliesPath);
-
 		}
 
 		private void EnsurePath(string pluginsDirectory)

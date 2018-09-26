@@ -6,10 +6,11 @@
     <LangVersion>latest</LangVersion>
     <AssemblyName>Brainvest.Dscribe.Identity.Server.Host</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.Identity.Server.Host</RootNamespace>
-    <Version>0.1.0</Version>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	<Import Project="..\..\SolutionInfo.xml" />
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>

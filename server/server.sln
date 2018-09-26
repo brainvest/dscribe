@@ -31,7 +31,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfCore.CodeGenerator", "Imp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfCore.BusinessDataAccess", "Implementations\EfCore\BusinessDataAccess\EfCore.BusinessDataAccess.csproj", "{BAC4257F-3790-4135-941D-3635578664F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfCore.All", "Implementations\EfCore\EfCore.All\EfCore.All.csproj", "{11DC61FD-ADB5-482D-A34D-2DACE8070F5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfCore.All", "Implementations\EfCore\EfCore.All\EfCore.All.csproj", "{11DC61FD-ADB5-482D-A34D-2DACE8070F5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B4766A19-4EEE-4D51-A436-51FAB4298567}"
+	ProjectSection(SolutionItems) = preProject
+		SolutionInfo.xml = SolutionInfo.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

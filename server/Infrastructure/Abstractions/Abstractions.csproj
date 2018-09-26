@@ -4,10 +4,11 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.Abstractions</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.Abstractions</RootNamespace>
-    <Version>0.1.0</Version>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<Import Project="..\..\SolutionInfo.xml" />
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <LangVersion>latest</LangVersion>
@@ -22,7 +23,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="2.9.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 

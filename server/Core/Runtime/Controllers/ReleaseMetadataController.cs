@@ -12,9 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Runtime.Controllers
@@ -104,7 +102,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 
 			if (!succeeded)
 			{
-				result.Errors.AddRange(diagnostics.Select(x => x.GetMessage()));
+				result.Errors.AddRange(diagnostics.Select(x => x.Message));
 				result.Success = false;
 				return result;
 			}

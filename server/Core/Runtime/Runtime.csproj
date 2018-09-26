@@ -1,11 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.Runtime</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.Runtime</RootNamespace>
-    <Version>0.1.0</Version>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
+
+	<Import Project="..\..\SolutionInfo.xml" />
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -30,9 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\Abstractions\Abstractions.csproj" />
-    <ProjectReference Include="..\MetadataDbAccess\MetadataDbAccess.csproj" />
-    <ProjectReference Include="..\Metadata\Metadata.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Abstractions\Abstractions.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\MetadataDbAccess\MetadataDbAccess.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Metadata\Metadata.csproj" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
