@@ -5,10 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 
-namespace Brainvest.Dscribe.Implementations.Ef.CodeGenerator
+namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {
 	public class CSharpLanguage : ILanguageService
 	{

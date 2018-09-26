@@ -3,7 +3,7 @@ using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.MetadataModels;
 using Brainvest.Dscribe.Helpers;
-using Brainvest.Dscribe.Implementations.Ef.CodeGenerator;
+using Brainvest.Dscribe.Implementations.EfCore.CodeGenerator;
 using Brainvest.Dscribe.Metadata;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
@@ -24,17 +24,16 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	[Produces("application/json")]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	[Authorize(Roles = "MetadataAdmin")]
 	public class ReleaseMetadataController : ControllerBase
 	{
 
 		private readonly IHostingEnvironment _hostingEnvironment;
-		MetadataDbContext _dbContext;
-		IBusinessCodeGenerator _codeGenerator;
-		IBusinessCompiler _compiler;
-		IImplementationsContainer _implementationContainer;
-		IGlobalConfiguration _globalConfiguration;
-		IPermissionService _permissionService;
+		private readonly MetadataDbContext _dbContext;
+		private readonly IBusinessCodeGenerator _codeGenerator;
+		private readonly IBusinessCompiler _compiler;
+		private readonly IImplementationsContainer _implementationContainer;
+		private readonly IGlobalConfiguration _globalConfiguration;
+		private readonly IPermissionService _permissionService;
 
 		public ReleaseMetadataController(
 			IHostingEnvironment hostingEnvironment,
@@ -104,15 +103,14 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return errorList;
 			}
-			//return ienumerable
 
-			var compileUnit = (_codeGenerator as EFCodeGenerator).CreateCode(metadataCache, _implementationContainer.InstanceInfo);
+			var compileUnit = (_codeGenerator as EfCoreCodeGenerator).CreateCode(metadataCache, _implementationContainer.InstanceInfo);
 			var compositionDirectory = Path.Combine(_globalConfiguration.ImplementationsDirectory, _implementationContainer.InstanceInfo.InstanceName);
 			EnsurePath(compositionDirectory);
 			var sourceCodeFilePath = Path.Combine(compositionDirectory, "source.cs");
-			(_codeGenerator as EFCodeGenerator).GenerateSourceCode(compileUnit, sourceCodeFilePath);
+			(_codeGenerator as EfCoreCodeGenerator).GenerateSourceCode(compileUnit, sourceCodeFilePath);
 			var assembliesPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); //TODO: This is hardcoded
-			var (succeeded, diagnostics) = await (_compiler as EFCompiler).GenerateAssembly(sourceCodeFilePath, Path.Combine(
+			var (succeeded, diagnostics) = await (_compiler as EfCoreCompiler).GenerateAssembly(sourceCodeFilePath, Path.Combine(
 				compositionDirectory, _implementationContainer.InstanceInfo.InstanceName + ".dll")
 				, assembliesPath);
 			if (!succeeded)

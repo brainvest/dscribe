@@ -29,8 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\EFBusinessDataAccess\EFBusinessDataAccess.csproj" />
-    <ProjectReference Include="..\..\EfCodeGenerator\EfCodeGenerator.csproj" />
+    <ProjectReference Include="..\..\Implementations\EfCore\BusinessDataAccess\EfCoreBusinessDataAccess.csproj" />
+    <ProjectReference Include="..\..\Implementations\EfCore\CodeGenerator\EfCoreCodeGenerator.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Abstractions\Abstractions.csproj" />
     <ProjectReference Include="..\MetadataDbAccess\MetadataDbAccess.csproj" />
     <ProjectReference Include="..\Metadata\Metadata.csproj" />

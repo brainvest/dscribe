@@ -1,13 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
+namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 {
-	public static class EFHelper
+	public static class EfCoreHelper
 	{
 		public static void PerformMigrations<TDbContext>(TDbContext context)
 			where TDbContext : DbContext
@@ -26,7 +23,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		{
 			using (var context = dbContextFactory())
 			{
-				typeof(EFHelper).GetMethods()
+				typeof(EfCoreHelper).GetMethods()
 					.Single(x => x.Name == nameof(PerformMigrations) && x.IsGenericMethodDefinition)
 					.MakeGenericMethod(context.GetType()).Invoke(null, new object[] { context });
 			}

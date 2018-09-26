@@ -9,18 +9,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
+namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 {
-	public class EFEntityHandlerInternal
+	public class EfCoreEntityHandlerInternal
 	{
 		private IImplementationsContainer _implementationsContainer;
 		private IEntityValidator _validator;
 		private EntityHelper _entityHelper;
 
-		public EFEntityHandlerInternal(
+		public EfCoreEntityHandlerInternal(
 			IImplementationsContainer implementationsContainer,
 			IEntityValidator validator,
 			EntityHelper entityHelper)
@@ -46,7 +45,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 				{
 					return;
 				}
-				EFHelper.PerformMigrations(() => _implementationsContainer.RepositoryFactory() as DbContext);
+				EfCoreHelper.PerformMigrations(() => _implementationsContainer.RepositoryFactory() as DbContext);
 			}
 		}
 

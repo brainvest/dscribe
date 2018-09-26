@@ -10,19 +10,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
+namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 {
-	public class EFEntityHandler : IEntityHandler
+	public class EfCoreEntityHandler : IEntityHandler
 	{
 		private IImplementationsContainer _implementationsContainer;
-		EFEntityHandlerInternal _handlerInternal;
+		EfCoreEntityHandlerInternal _handlerInternal;
 
-		public EFEntityHandler(
+		public EfCoreEntityHandler(
 			IImplementationsContainer implementationsContainer,
-			EFEntityHandlerInternal handlerInternal)
+			EfCoreEntityHandlerInternal handlerInternal)
 		{
 			_implementationsContainer = implementationsContainer;
 			_handlerInternal = handlerInternal;
@@ -31,7 +30,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		public async Task<int> CountByFilter(EntityListRequest request)
 		{
 			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
-			var method = _handlerInternal.GetType().GetMethod(nameof(EFEntityHandlerInternal.CountByFilterInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
+			var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.CountByFilterInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 			var r = this.GetType().GetMethod(nameof(CreateGenericListRequest), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType)
 					.Invoke(this, new object[] { request });
 			var awaitable = method.Invoke(_handlerInternal, new object[] { r }) as Task<int>;
@@ -41,7 +40,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		public async Task<IEnumerable> GetByFilter(EntityListRequest request)
 		{
 			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
-			var method = _handlerInternal.GetType().GetMethod(nameof(EFEntityHandlerInternal.GetByFilterInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
+			var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetByFilterInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 			var r = this.GetType().GetMethod(nameof(CreateGenericListRequest), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType)
 					.Invoke(this, new object[] { request });
 			var awaitable = method.Invoke(_handlerInternal, new object[] { r }) as Task<IEnumerable>;
@@ -51,7 +50,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		public async Task<int?> GetGroupCount(GrouppedListRequest request)
 		{
 			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
-			var method = _handlerInternal.GetType().GetMethod(nameof(EFEntityHandlerInternal.CountGroupsInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
+			var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.CountGroupsInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 			var r = this.GetType().GetMethod(nameof(CreateGenericGroupRequest), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType)
 					.Invoke(this, new object[] { request });
 			var awaitable = method.Invoke(_handlerInternal, new object[] { r }) as Task<int>;
@@ -62,7 +61,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		{
 			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 			var keyType = _implementationsContainer.Metadata[request.EntityTypeName].GetPrimaryKey().GetDataType().GetClrType();
-			var method = _handlerInternal.GetType().GetMethod(nameof(EFEntityHandlerInternal.GetExpressionValueInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType, keyType);
+			var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetExpressionValueInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType, keyType);
 			var awaitable = method.Invoke(_handlerInternal, new object[] { request.Ids, request.Properties }) as Task;
 			await awaitable;
 			return awaitable.GetType().GetProperty("Result").GetValue(awaitable) as ExpressionValueResponse;
@@ -71,7 +70,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		public async Task<IEnumerable> GetGroupped(GrouppedListRequest request)
 		{
 			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
-			var method = _handlerInternal.GetType().GetMethod(nameof(EFEntityHandlerInternal.GetGrouppedInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
+			var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetGrouppedInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 			var r = this.GetType().GetMethod(nameof(CreateGenericGroupRequest), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType)
 					.Invoke(this, new object[] { request });
 			var awaitable = method.Invoke(_handlerInternal, new object[] { r }) as Task<IEnumerable>;
@@ -82,7 +81,7 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		{
 			var entityType = _implementationsContainer.Reflector.GetType(request.EntityType);
 			var keyType = _implementationsContainer.Metadata[request.EntityType].GetPrimaryKey().GetDataType().GetClrType();
-			var method = _handlerInternal.GetType().GetMethod(nameof(EFEntityHandlerInternal.GetIdAndNameInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType, keyType);
+			var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetIdAndNameInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType, keyType);
 			var awaitable = method.Invoke(_handlerInternal, new object[] { request.Ids }) as Task<IEnumerable<NameResponseItem>>;
 			return await awaitable;
 		}
@@ -91,24 +90,24 @@ namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
 		{
 			var entityType = _implementationsContainer.Reflector.GetType(request.EntityType);
 			var keyType = _implementationsContainer.Metadata[request.EntityType].GetPrimaryKey().GetDataType().GetClrType();
-			var method = _handlerInternal.GetType().GetMethod(nameof(EFEntityHandlerInternal.GetAutocompleteItemsInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType, keyType);
+			var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetAutocompleteItemsInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType, keyType);
 			var awaitable = method.Invoke(_handlerInternal, new object[] { request.QueryText }) as Task<IEnumerable<NameResponseItem>>;
 			return await awaitable;
 		}
 
 		public async Task<ActionResult<object>> Edit(ManageEntityRequest request)
 		{
-			return await CallMethod(request, nameof(EFEntityHandlerInternal.EditInternal));
+			return await CallMethod(request, nameof(EfCoreEntityHandlerInternal.EditInternal));
 		}
 
 		public async Task<ActionResult<object>> Add(ManageEntityRequest request)
 		{
-			return await CallMethod(request, nameof(EFEntityHandlerInternal.AddInternal));
+			return await CallMethod(request, nameof(EfCoreEntityHandlerInternal.AddInternal));
 		}
 
 		public async Task<ActionResult<object>> Delete(ManageEntityRequest request)
 		{
-			return await CallMethod(request, nameof(EFEntityHandlerInternal.DeleteInternal));
+			return await CallMethod(request, nameof(EfCoreEntityHandlerInternal.DeleteInternal));
 		}
 
 		private async Task<ActionResult<object>> CallMethod(ManageEntityRequest request, string internalMethodName)

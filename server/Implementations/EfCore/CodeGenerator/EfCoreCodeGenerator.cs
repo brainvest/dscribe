@@ -7,18 +7,15 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Composition;
 using System.IO;
-using System.Linq;
-using System.Text;
 
-namespace Brainvest.Dscribe.Implementations.Ef.CodeGenerator
+namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {
-	public class EFCodeGenerator : IBusinessCodeGenerator
+	public class EfCoreCodeGenerator : IBusinessCodeGenerator
 	{
-		public EFCodeGenerator()
+		public EfCoreCodeGenerator()
 		{
 		}
 

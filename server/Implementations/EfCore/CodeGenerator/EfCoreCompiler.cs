@@ -1,22 +1,16 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Microsoft.CodeAnalysis;
-using Microsoft.CSharp;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.CodeDom;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Composition;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Brainvest.Dscribe.Implementations.Ef.CodeGenerator
+namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {
-	public class EFCompiler : IBusinessCompiler<CodeDomBusinessCode>
+	public class EfCoreCompiler : IBusinessCompiler<CodeDomBusinessCode>
 	{
 		public async Task<(bool succeeded, IEnumerable<Diagnostic> diagnostics)> GenerateAssembly(
 			string sourceCodeFile

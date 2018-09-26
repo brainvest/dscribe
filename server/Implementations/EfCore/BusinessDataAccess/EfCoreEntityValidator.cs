@@ -2,17 +2,14 @@ using Brainvest.Dscribe.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Brainvest.Dscribe.Implementations.Ef.BusinessDataAccess
+namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 {
-	public class EntityValidator : IEntityValidator
+	public class EfCoreEntityValidator : IEntityValidator
 	{
 		private IImplementationsContainer _implementationsContainer;
 
-		public EntityValidator(IImplementationsContainer implementationsContainer)
+		public EfCoreEntityValidator(IImplementationsContainer implementationsContainer)
 		{
 			_implementationsContainer = implementationsContainer;
 		}
