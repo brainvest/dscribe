@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.Abstractions</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.Abstractions</RootNamespace>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

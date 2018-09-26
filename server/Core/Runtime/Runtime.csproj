@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.Runtime</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.Runtime</RootNamespace>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -29,8 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Implementations\EfCore\BusinessDataAccess\EfCoreBusinessDataAccess.csproj" />
-    <ProjectReference Include="..\..\Implementations\EfCore\CodeGenerator\EfCoreCodeGenerator.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Abstractions\Abstractions.csproj" />
     <ProjectReference Include="..\MetadataDbAccess\MetadataDbAccess.csproj" />
     <ProjectReference Include="..\Metadata\Metadata.csproj" />

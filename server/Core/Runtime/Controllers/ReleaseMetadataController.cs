@@ -3,11 +3,9 @@ using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.MetadataModels;
 using Brainvest.Dscribe.Helpers;
-using Brainvest.Dscribe.Implementations.EfCore.CodeGenerator;
 using Brainvest.Dscribe.Metadata;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,8 +27,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 
 		private readonly IHostingEnvironment _hostingEnvironment;
 		private readonly MetadataDbContext _dbContext;
-		private readonly IBusinessCodeGenerator _codeGenerator;
-		private readonly IBusinessCompiler _compiler;
+		private readonly IBusinessAssemblyGenerator _assemblyGenerator;
 		private readonly IImplementationsContainer _implementationContainer;
 		private readonly IGlobalConfiguration _globalConfiguration;
 		private readonly IPermissionService _permissionService;
@@ -38,8 +35,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		public ReleaseMetadataController(
 			IHostingEnvironment hostingEnvironment,
 			MetadataDbContext dbContext,
-			IBusinessCodeGenerator codeGenerator,
-			IBusinessCompiler compiler,
+			IBusinessAssemblyGenerator assemblyGenerator,
 			IImplementationsContainer implementationContainer,
 			IOptions<GlobalConfiguration> globalConfiguration,
 			IPermissionService permissionService
@@ -47,8 +43,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		{
 			_hostingEnvironment = hostingEnvironment;
 			_dbContext = dbContext;
-			_codeGenerator = codeGenerator;
-			_compiler = compiler;
+			_assemblyGenerator = assemblyGenerator;
 			_implementationContainer = implementationContainer;
 			_globalConfiguration = globalConfiguration.Value;
 			_permissionService = permissionService;
@@ -104,15 +99,9 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				return errorList;
 			}
 
-			var compileUnit = (_codeGenerator as EfCoreCodeGenerator).CreateCode(metadataCache, _implementationContainer.InstanceInfo);
-			var compositionDirectory = Path.Combine(_globalConfiguration.ImplementationsDirectory, _implementationContainer.InstanceInfo.InstanceName);
-			EnsurePath(compositionDirectory);
-			var sourceCodeFilePath = Path.Combine(compositionDirectory, "source.cs");
-			(_codeGenerator as EfCoreCodeGenerator).GenerateSourceCode(compileUnit, sourceCodeFilePath);
-			var assembliesPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); //TODO: This is hardcoded
-			var (succeeded, diagnostics) = await (_compiler as EfCoreCompiler).GenerateAssembly(sourceCodeFilePath, Path.Combine(
-				compositionDirectory, _implementationContainer.InstanceInfo.InstanceName + ".dll")
-				, assembliesPath);
+			var (succeeded, diagnostics) = await _assemblyGenerator.GenerateAssembly(metadataCache, _implementationContainer.InstanceInfo
+				, _globalConfiguration.ImplementationsDirectory, _implementationContainer.InstanceInfo.InstanceName);
+
 			if (!succeeded)
 			{
 				result.Errors.AddRange(diagnostics.Select(x => x.GetMessage()));
@@ -121,19 +110,6 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			}
 			result.Success = true;
 			return result;
-		}
-
-		private void EnsurePath(string pluginsDirectory)
-		{
-			if (Directory.GetDirectoryRoot(pluginsDirectory).Equals(pluginsDirectory, StringComparison.InvariantCultureIgnoreCase))
-			{
-				return;
-			}
-			EnsurePath(Directory.GetParent(pluginsDirectory).FullName);
-			if (!Directory.Exists(pluginsDirectory))
-			{
-				Directory.CreateDirectory(pluginsDirectory);
-			}
 		}
 
 		public async Task<ActionResult<MetadataValidationResponse>> GenerateCodeValidation()

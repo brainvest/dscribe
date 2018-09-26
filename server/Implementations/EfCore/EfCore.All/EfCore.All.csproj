@@ -2,31 +2,28 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <AssemblyName>Brainvest.Dscribe.MetadataDbAccess</AssemblyName>
-    <RootNamespace>Brainvest.Dscribe.MetadataDbAccess</RootNamespace>
+    <AssemblyName>Brainvest.Dscribe.Implementations.EfCore.All</AssemblyName>
+    <LangVersion>latest</LangVersion>
     <Version>0.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Humanizer.Core" Version="2.5.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\Helpers\Helpers.csproj" />
+    <ProjectReference Include="..\BusinessDataAccess\EfCore.BusinessDataAccess.csproj" />
+    <ProjectReference Include="..\CodeGenerator\EfCore.CodeGenerator.csproj" />
   </ItemGroup>
 
 </Project>

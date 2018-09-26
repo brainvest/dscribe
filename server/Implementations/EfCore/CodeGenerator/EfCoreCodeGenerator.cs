@@ -1,5 +1,4 @@
 using Brainvest.Dscribe.Abstractions;
-using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Humanizer;
 using Microsoft.CSharp;
@@ -13,7 +12,7 @@ using System.IO;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {
-	public class EfCoreCodeGenerator : IBusinessCodeGenerator
+	public class EfCoreCodeGenerator
 	{
 		public EfCoreCodeGenerator()
 		{

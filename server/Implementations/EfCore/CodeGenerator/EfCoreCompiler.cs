@@ -1,5 +1,4 @@
 using Brainvest.Dscribe.Abstractions;
-using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -10,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {
-	public class EfCoreCompiler : IBusinessCompiler<CodeDomBusinessCode>
+	public class EfCoreCompiler
 	{
-		public async Task<(bool succeeded, IEnumerable<Diagnostic> diagnostics)> GenerateAssembly(
+		public async Task<(bool succeeded, IEnumerable<Diagnostic> diagnostics)> GenerateAssemblyAsync(
 			string sourceCodeFile
 			, string fileName
 			, string assembliesPath)

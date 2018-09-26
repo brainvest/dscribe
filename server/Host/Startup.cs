@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Brainvest.Dscribe.Implementations.EfCore.CodeGenerator;
+using Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess;
+using Brainvest.Dscribe.Implementations.EfCore.All;
 
 namespace Brainvest.Dscribe.Host
 {
@@ -30,6 +33,7 @@ namespace Brainvest.Dscribe.Host
 					options.UseSqlServer(Configuration.GetConnectionString("EngineConnectionString")));
 
 			RuntimeStartup.ConfigureServices(services, Configuration);
+			services.RegisterEfCore();
 
 			services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 

@@ -5,6 +5,7 @@
     <AssemblyName>Brainvest.Dscribe.Security</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.Security</RootNamespace>
     <LangVersion>latest</LangVersion>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
