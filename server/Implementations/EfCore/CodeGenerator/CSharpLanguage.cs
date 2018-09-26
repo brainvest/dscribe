@@ -28,7 +28,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			var options = new CSharpCompilationOptions(
 				OutputKind.DynamicallyLinkedLibrary,
 				optimizationLevel: enableOptimisations ? OptimizationLevel.Release : OptimizationLevel.Debug,
-				allowUnsafe: true);
+				allowUnsafe: false);
 
 			return CSharpCompilation.Create(assemblyName, options: options, references: references);
 		}
