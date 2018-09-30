@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\MetadataDbAccess\MetadataDbAccess.csproj" />
     <ProjectReference Include="..\Core\Runtime\Runtime.csproj" />
     <ProjectReference Include="..\Implementations\EfCore\EfCore.All\EfCore.All.csproj" />
   </ItemGroup>
