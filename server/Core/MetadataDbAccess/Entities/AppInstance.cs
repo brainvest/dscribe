@@ -17,6 +17,10 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public string Title { get; set; }
 
 		public bool IsProduction { get; set; }
+
+		public DatabaseProviderEnum DatabaseProviderId { get; set; }
+		public DatabaseProvider DatabaseProvider { get; set; }
+
 		[Required]
 		public string DataConnectionString { get; set; }
 		public bool IsEnabled { get; set; }

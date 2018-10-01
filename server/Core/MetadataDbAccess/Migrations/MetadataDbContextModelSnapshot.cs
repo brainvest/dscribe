@@ -27,6 +27,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.Property<string>("DataConnectionString")
                         .IsRequired();
 
+                    b.Property<int>("DatabaseProviderId");
+
                     b.Property<bool>("IsEnabled");
 
                     b.Property<bool>("IsProduction");
@@ -48,6 +50,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppTypeId");
+
+                    b.HasIndex("DatabaseProviderId");
 
                     b.HasIndex("MetadataReleaseId");
 
@@ -82,6 +86,22 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("AppTypes");
+                });
+
+            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.DatabaseProvider", b =>
+                {
+                    b.Property<int>("Id");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DatabaseProviders");
+
+                    b.HasData(
+                        new { Id = 1, Name = "MySql" },
+                        new { Id = 2, Name = "SqlServer" }
+                    );
                 });
 
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.DataType", b =>
@@ -682,6 +702,11 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.AppType", "AppType")
                         .WithMany()
                         .HasForeignKey("AppTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.DatabaseProvider", "DatabaseProvider")
+                        .WithMany()
+                        .HasForeignKey("DatabaseProviderId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.MetadataRelease", "MetadataRelease")
