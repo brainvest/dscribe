@@ -6,9 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SaasKit.Multitenancy;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Runtime
@@ -18,21 +16,22 @@ namespace Brainvest.Dscribe.Runtime
 		private static ConcurrentDictionary<int, Lazy<Task<ImplementationContainer>>> _implementations =
 			new ConcurrentDictionary<int, Lazy<Task<ImplementationContainer>>>();
 
-		public static async Task<ImplementationContainer> GetContainer(HttpContext httpContext)
+		public static async Task<ImplementationContainer> GetContainer(HttpContext httpContext, ImplementationResolverOptions options)
 		{
-			if (!httpContext.Request.Headers.TryGetValue("AppInstance", out var appInstanceHeaders))
+			int appInstanceId;
+			if (!httpContext.Request.Headers.TryGetValue("AppInstance", out var appInstanceHeaders) || appInstanceHeaders.Count == 0)
 			{
-				return null;
+				if (options?.DefaultAppInstanceId == null)
+				{
+					return null;
+				}
+				appInstanceId = options.DefaultAppInstanceId.Value;
 			}
-			if (appInstanceHeaders.Count == 0)
-			{
-				return null;
-			}
-			if (appInstanceHeaders.Count > 1)
+			else if (appInstanceHeaders.Count > 1)
 			{
 				throw new Exception("The AppInstance header should be specified exactly once");
 			}
-			if (!int.TryParse(appInstanceHeaders.Single(), out var appInstanceId))
+			else if (!int.TryParse(appInstanceHeaders.Single(), out appInstanceId))
 			{
 				throw new Exception("The AppInstance header should be an integer");
 			}
@@ -51,11 +50,23 @@ namespace Brainvest.Dscribe.Runtime
 		}
 	}
 
+	public class ImplementationResolverOptions
+	{
+		// if this is provided, it will be used if the request does not contain the app instance header
+		public int? DefaultAppInstanceId { get; set; }
+	}
+
 	public class ImplementationResolver : ITenantResolver<IImplementationsContainer>
 	{
+		private readonly ImplementationResolverOptions _options;
+		public ImplementationResolver(ImplementationResolverOptions options)
+		{
+			_options = options;
+		}
+
 		public async Task<TenantContext<IImplementationsContainer>> ResolveAsync(HttpContext context)
 		{
-			var container = await ImplementationFactory.GetContainer(context);
+			var container = await ImplementationFactory.GetContainer(context, _options);
 			if (container == null)
 			{
 				return null;
@@ -66,9 +77,15 @@ namespace Brainvest.Dscribe.Runtime
 
 	public class MetadataModelResolver : ITenantResolver<IMetadataModel>
 	{
+		private readonly ImplementationResolverOptions _options;
+		public MetadataModelResolver(ImplementationResolverOptions options)
+		{
+			_options = options;
+		}
+
 		public async Task<TenantContext<IMetadataModel>> ResolveAsync(HttpContext context)
 		{
-			var container = await ImplementationFactory.GetContainer(context);
+			var container = await ImplementationFactory.GetContainer(context, _options);
 			if (container == null)
 			{
 				return null;
@@ -79,9 +96,15 @@ namespace Brainvest.Dscribe.Runtime
 
 	public class BusinessReflectorResolver : ITenantResolver<IBusinessReflector>
 	{
+		private readonly ImplementationResolverOptions _options;
+		public BusinessReflectorResolver(ImplementationResolverOptions options)
+		{
+			_options = options;
+		}
+
 		public async Task<TenantContext<IBusinessReflector>> ResolveAsync(HttpContext context)
 		{
-			var container = await ImplementationFactory.GetContainer(context);
+			var container = await ImplementationFactory.GetContainer(context, _options);
 			if (container == null)
 			{
 				return null;
@@ -92,9 +115,15 @@ namespace Brainvest.Dscribe.Runtime
 
 	public class InstanceResolver : ITenantResolver<IInstanceInfo>
 	{
+		private readonly ImplementationResolverOptions _options;
+		public InstanceResolver(ImplementationResolverOptions options)
+		{
+			_options = options;
+		}
+
 		public async Task<TenantContext<IInstanceInfo>> ResolveAsync(HttpContext context)
 		{
-			var container = await ImplementationFactory.GetContainer(context);
+			var container = await ImplementationFactory.GetContainer(context, _options);
 			if (container == null)
 			{
 				return null;

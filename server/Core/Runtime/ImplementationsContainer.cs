@@ -7,9 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Runtime
@@ -40,6 +38,7 @@ namespace Brainvest.Dscribe.Runtime
 				AppInstanceId = appInstanceId,
 				AppTypeId = appType.Id,
 				InstanceName = instance.Name,
+				Provider = instance.DatabaseProviderId,
 				ConnectionString = instance.DataConnectionString,
 				MigrateDatabase = instance.MigrateDatabase
 			};
@@ -68,7 +67,17 @@ namespace Brainvest.Dscribe.Runtime
 				var dbContextType = bridge.BusinessDbContextFactory.GetType().Assembly.GetTypes().Single(x => x.IsSubclassOf(typeof(DbContext)));
 				reflector.RegisterAssembly(dbContextType.Assembly);
 				var dbContextOptionsBuilder = Activator.CreateInstance(typeof(DbContextOptionsBuilder<>).MakeGenericType(dbContextType)) as DbContextOptionsBuilder;
-				implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.ConnectionString).Options;
+				switch (instanceInfo.Provider)
+				{
+					case DatabaseProviderEnum.MySql:
+						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseMySql(instanceInfo.ConnectionString).Options;
+						break;
+					case DatabaseProviderEnum.SqlServer:
+						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.ConnectionString).Options;
+						break;
+					default:
+						throw new NotImplementedException($"The provider {instanceInfo.Provider} is not implemented");
+				}
 			}
 			return implementationsContainer;
 		}
