@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Brainvest.Dscribe.Host
 {
@@ -28,7 +29,22 @@ namespace Brainvest.Dscribe.Host
 					.AllowAnyHeader()));
 
 			services.AddDbContext<MetadataDbContext>(options =>
-					options.UseSqlServer(Configuration.GetConnectionString("EngineConnectionString")));
+					{
+						var provider = Configuration.GetSection("EfProvider").Get<string>();
+						switch (provider)
+						{
+							case "MySql":
+								options.UseMySql(
+										Configuration.GetConnectionString("Engine_MySql"));
+								return;
+							case "SqlServer":
+								options.UseSqlServer(
+										Configuration.GetConnectionString("Engine_SqlServer"));
+								return;
+							default:
+								throw new NotImplementedException($"The provider {provider} is not implemented yet.");
+						}
+					});
 
 			RuntimeStartup.ConfigureServices(services, Configuration);
 			services.RegisterEfCore();
@@ -36,11 +52,11 @@ namespace Brainvest.Dscribe.Host
 			services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 
 			services.AddAuthentication("Bearer")
-				.AddIdentityServerAuthentication(options =>
-				{
-					options.Authority = "http://localhost:5001";
-					options.RequireHttpsMetadata = false;
-				});
+					.AddIdentityServerAuthentication(options =>
+					{
+						options.Authority = "http://localhost:5001";
+						options.RequireHttpsMetadata = false;
+					});
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)

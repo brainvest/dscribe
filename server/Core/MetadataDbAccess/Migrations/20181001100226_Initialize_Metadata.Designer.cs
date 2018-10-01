@@ -3,14 +3,13 @@ using System;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 {
     [DbContext(typeof(MetadataDbContext))]
-    [Migration("20180921201117_Initialize_Metadata")]
+    [Migration("20181001100226_Initialize_Metadata")]
     partial class Initialize_Metadata
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,14 +17,12 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.AppInstance", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AppTypeId");
 
@@ -68,8 +65,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.AppType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -131,8 +127,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Entity", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AppTypeId");
 
@@ -162,8 +157,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.HasIndex("GeneralUsageCategoryId");
 
                     b.HasIndex("AppTypeId", "Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Entities");
                 });
@@ -192,8 +186,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.EntityFacetDefaultValue", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int?>("AppInstanceId");
 
@@ -221,8 +214,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.EntityFacetDefinition", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("EnumTypeId");
 
@@ -242,8 +234,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.EntityFacetValue", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("EntityId");
 
@@ -263,8 +254,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.EntityGeneralUsageCategory", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
@@ -281,8 +271,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.EnumType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Identifier")
                         .HasColumnType("varchar(200)");
@@ -297,8 +286,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.EnumValue", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("EnumTypeId");
 
@@ -317,8 +305,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.ExpressionBody", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Body");
 
@@ -346,8 +333,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.ExpressionDefinition", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int?>("ActiveBodyId");
 
@@ -418,8 +404,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.MetadataRelease", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AppTypeId");
 
@@ -445,8 +430,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Property", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int?>("DataTypeEntityId");
 
@@ -486,8 +470,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     b.HasIndex("InversePropertyId");
 
                     b.HasIndex("EntityId", "Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Properties");
                 });
@@ -495,8 +478,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.PropertyFacetDefaultValue", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int?>("AppInstanceId");
 
@@ -542,8 +524,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.PropertyFacetDefinition", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int?>("EnumTypeId");
 
@@ -571,8 +552,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.PropertyFacetValue", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("FacetDefinitionId");
 
@@ -592,8 +572,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.PropertyGeneralUsageCategory", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
@@ -613,8 +592,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.SavedFilter", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Body")
                         .IsRequired();
@@ -636,8 +614,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.Security.Permission", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ActionName")
                         .HasColumnType("varchar(200)");
