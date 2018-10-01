@@ -14,9 +14,9 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	[ApiController]
 	public class EntityController : ControllerBase
 	{
-		IEntityHandler _entityHandler;
-		IImplementationsContainer _implementationsContainer;
-		IPermissionService _permissionService;
+		private readonly IEntityHandler _entityHandler;
+		private readonly IImplementationsContainer _implementationsContainer;
+		private readonly IPermissionService _permissionService;
 
 		public EntityController(
 			IEntityHandler entityHandler,

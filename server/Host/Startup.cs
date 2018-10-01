@@ -48,10 +48,6 @@ namespace Brainvest.Dscribe.Host
 
 			RuntimeStartup.ConfigureServices(services, Configuration);
 			services.RegisterEfCore();
-			services.AddSingleton(new ImplementationResolverOptions
-			{
-				DefaultAppInstanceId = null
-			});
 
 			services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 
