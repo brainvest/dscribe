@@ -40,15 +40,16 @@
 			<ng-container [ngSwitch]="displayMode">
 				<ng-container *ngSwitchCase="'card'">
 					<div style="display: flex; flex-wrap: wrap">
-						<dscribe-custom-template-host [ngStyle]="{'width': getCustomTemplateWidth()}" style="margin: 24px;" *ngFor="let instance of data"
-						 [data]="instance" [entityTypeName]="entity.name">
+						<dscribe-custom-template-host [ngStyle]="{'width': getCustomTemplateWidth()}" style="margin: 24px;"
+																					*ngFor="let instance of data" (select)="customTemplateSelected(instance)"
+																					[isSelected]="selection.isSelected(instance)"
+																					[data]="instance" [entityTypeName]="entity.name">
 
 						</dscribe-custom-template-host>
 					</div>
 				</ng-container>
 				<dscribe-table-template *ngSwitchDefault (rowClick)="editRow($event)" [data]="data" [columns]="columns"
-				 [displayedColumns]="displayedColumns" [selection]="selection"
-				 [selectedRow]="selectedRow">
+																[displayedColumns]="displayedColumns" [selection]="selection">
 				</dscribe-table-template>
 			</ng-container>
 			<mat-paginator class="list-paginator" [length]="totalCount" [pageSize]="pageSize"></mat-paginator>

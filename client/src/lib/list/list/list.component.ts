@@ -53,7 +53,6 @@ export class ListComponent implements OnInit, OnChanges {
 	isDataConnected = false;
 	userRefresh: EventEmitter<null> = new EventEmitter<null>();
 	pageSize = 10;
-	selectedRow: any = null;
 	filterLambda: LambdaFilterNode;
 	userDefinedFilter: StorageFilterNode;
 
@@ -69,7 +68,7 @@ export class ListComponent implements OnInit, OnChanges {
 							private dialog: MatDialog, private dscribeService: DscribeService) {
 		this.selection.changed.subscribe(x => {
 			if (x.added.length === 1) {
-				this.selectRow(x.added[0]);
+				this.selectDetails(x.added[0]);
 			}
 		});
 	}
@@ -146,6 +145,7 @@ export class ListComponent implements OnInit, OnChanges {
 			}
 			this.displayedColumns.push(prop.name);
 		}
+		console.log(this.detailLists);
 	}
 
 	applyFilter() {
@@ -170,7 +170,6 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	refreshData() {
-		this.selectedRow = null;
 		this.isLoadingResults = true;
 		this.paginator.pageIndex = 0;
 		this.data = [];
@@ -225,11 +224,10 @@ export class ListComponent implements OnInit, OnChanges {
 		this.openAddNEditDialog(newEntity, true);
 	}
 
-	selectRow(row: any) {
-		this.selectedRow = row;
+	selectDetails(row: any) {
 		if (this.detailLists && this.detailLists.length) {
 			for (const detail of this.detailLists) {
-				detail.master = this.selectedRow;
+				detail.master = row;
 				if (detail.childList) {
 					detail.childList.onMasterChanged();
 				}
@@ -272,10 +270,10 @@ export class ListComponent implements OnInit, OnChanges {
 		};
 
 		deleteDialogRef.afterClosed().subscribe((result) => {
-			if (result === 'deleted') {
-				this.refreshData();
+				if (result === 'deleted') {
+					this.refreshData();
+				}
 			}
-		}
 		);
 	}
 
@@ -299,5 +297,13 @@ export class ListComponent implements OnInit, OnChanges {
 
 	shouldDisplayCommand(command: DscribeCommand) {
 		return command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
+	}
+
+	customTemplateSelected(instance: any) {
+		if (!this.allowMultiSelect) {
+			this.selection.clear();
+		}
+		this.selection.select(instance);
+		this.selectDetails(instance);
 	}
 }
