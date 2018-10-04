@@ -10,6 +10,7 @@ export class ListAddNEditDialogComponent {
 
 	constructor(public dialogRef: MatDialogRef<ListAddNEditDialogComponent>,
 							@Inject(MAT_DIALOG_DATA) public data: any) {
+		console.log(data);
 	}
 
 	afterEntitySaved() {
