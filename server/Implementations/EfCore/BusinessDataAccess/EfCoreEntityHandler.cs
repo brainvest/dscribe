@@ -3,6 +3,7 @@ using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using Brainvest.Dscribe.Helpers.FilterNodeConverter;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
@@ -146,6 +147,10 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 		private object CreateGenericObject(ManageEntityRequest request, Type entityType)
 		{
 			var jEntity = request.Entity as JObject;
+			if (jEntity == null)
+			{
+				jEntity = JObject.Parse(JsonConvert.SerializeObject(request.Entity));
+			}
 			var toObjectMethod = typeof(JObject).GetMethods(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public)
 				.Single(x => x.Name == nameof(JObject.ToObject) && x.GetGenericArguments().Length == 1 && x.GetParameters().Length == 0);
 			toObjectMethod = toObjectMethod.MakeGenericMethod(entityType);

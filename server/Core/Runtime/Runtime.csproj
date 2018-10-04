@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -28,13 +28,14 @@
     <PackageReference Include="Microsoft.Composition" Version="1.0.31" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.3" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
     <PackageReference Include="SaasKit.Multitenancy" Version="1.1.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\Abstractions\Abstractions.csproj" PrivateAssets="All" />
-    <ProjectReference Include="..\MetadataDbAccess\MetadataDbAccess.csproj" PrivateAssets="All" />
-    <ProjectReference Include="..\Metadata\Metadata.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\..\Infrastructure\Abstractions\Abstractions.csproj" />
+    <ProjectReference Include="..\MetadataDbAccess\MetadataDbAccess.csproj" />
+    <ProjectReference Include="..\Metadata\Metadata.csproj" />
   </ItemGroup>
 
 </Project>

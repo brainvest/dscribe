@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.1</TargetFramework>
@@ -24,8 +24,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\BusinessDataAccess\EfCore.BusinessDataAccess.csproj" PrivateAssets="All" />
-		<ProjectReference Include="..\CodeGenerator\EfCore.CodeGenerator.csproj" PrivateAssets="All" />
+		<ProjectReference Include="..\BusinessDataAccess\EfCore.BusinessDataAccess.csproj" />
+		<ProjectReference Include="..\CodeGenerator\EfCore.CodeGenerator.csproj" />
 	</ItemGroup>
 
 </Project>

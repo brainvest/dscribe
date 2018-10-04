@@ -118,6 +118,11 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 				new Permission { Id = 1, RoleId = Guid.Parse("7555DD25-EE7F-4A21-9156-3867DCBCED77"), PermissionType = PermissionType.Allow }
 			);
 
+			modelBuilder.Entity<DatabaseProvider>().HasData(
+				new DatabaseProvider { Id = DatabaseProviderEnum.MySql, Name = "MySql" },
+				new DatabaseProvider { Id = DatabaseProviderEnum.SqlServer, Name = "SqlServer" }
+			);
+
 			#endregion
 		}
 
@@ -126,6 +131,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 
 		public DbSet<MetadataRelease> MetadataReleases { get; set; }
 
+		public DbSet<DatabaseProvider> DatabaseProviders { get; set; }
 		public DbSet<DataType> DataTypes { get; set; }
 		public DbSet<EnumType> EnumTypes { get; set; }
 		public DbSet<EnumValue> EnumValues { get; set; }
