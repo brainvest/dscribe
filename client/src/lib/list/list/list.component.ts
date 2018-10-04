@@ -122,9 +122,6 @@ export class ListComponent implements OnInit, OnChanges {
 				if (this.master) {
 					continue;
 				}
-				if (!this.detailLists) {
-					this.detailLists = [];
-				}
 				this.detailLists.push(new MasterReference(null, prop, entity));
 				continue;
 			}
