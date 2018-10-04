@@ -55,7 +55,7 @@
 			<mat-paginator class="list-paginator" [length]="totalCount" [pageSize]="pageSize"></mat-paginator>
 		</div>
 
-		<section class="detail-section" *ngIf="selectedRow">
+		<section class="detail-section" *ngIf="selection.hasValue()">
 			<mat-card *ngIf="detailLists && detailLists.length">
 				<mat-tab-group>
 					<mat-tab *ngFor="let prop of detailLists">

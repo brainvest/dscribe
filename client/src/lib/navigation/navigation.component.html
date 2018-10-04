@@ -1,9 +1,12 @@
 <nav class="dscribe-main-navbar mat-elevation-z6">
 	<mat-toolbar class="main-nav-header">
-		<h1>Select the App Instance:</h1>
-		<select title="Select the App Instance" (change)="appInstanceSelected()" [(ngModel)]="appInstanceId">
-			<option *ngFor="let appInstance of appInstances" [ngValue]="appInstance.id">{{appInstance.title}}</option>
-		</select>
+		<button mat-button [matMenuTriggerFor]="menu">
+			{{selectedAppInstance && selectedAppInstance.title}}
+			<mat-icon>keyboard_arrow_down</mat-icon>
+		</button>
+		<mat-menu #menu="matMenu">
+			<button *ngFor="let appInstance of appInstances" mat-menu-item (click)="appInstanceSelected(appInstance)">{{appInstance.title}}</button>
+		</mat-menu>
 	</mat-toolbar>
 	<mat-toolbar class="main-nav">
 		<mat-tab-group (selectedTabChange)="navigate(mainUrls[$event.index])">

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MetadataService} from '../common/services/metadata.service';
 import {EntityMetadata} from '../metadata/entity-metadata';
 import {Router} from '@angular/router';
@@ -16,7 +16,7 @@ export class NavigationComponent implements OnInit {
 	mainUrls = ['main', 'entity', 'administration'];
 	sideNavOpen = true;
 	appInstances: AppInstanceInfoModel[] = [];
-	appInstanceId: number;
+	selectedAppInstance: AppInstanceInfoModel;
 
 	constructor(private metadata: MetadataService, private router: Router, private httpClient: HttpClient,
 							private metaData: MetadataService, private config: DscribeService) {
@@ -28,7 +28,7 @@ export class NavigationComponent implements OnInit {
 		this.httpClient.post<AppInstanceInfoModel[]>('/api/AppManagement/getAppInstancesInfo', null)
 			.subscribe(apps => {
 				this.appInstances = apps;
-				this.appInstanceId = apps[0].id;
+				this.selectedAppInstance = apps[0];
 				this.config.appInstance = apps[0];
 				this.metadata.getMetadata()
 					.getAllTypes()
@@ -45,8 +45,9 @@ export class NavigationComponent implements OnInit {
 		this.router.navigateByUrl(url);
 	}
 
-	appInstanceSelected() {
-		this.config.appInstance = this.appInstances.find(x => x.id === this.appInstanceId);
+	appInstanceSelected(appInstance: AppInstanceInfoModel) {
+		this.config.appInstance = appInstance;
+		this.selectedAppInstance = appInstance;
 		this.metadata.clearMetadata();
 		this.metadata.getMetadata().getAllTypes()
 			.subscribe(entities => {
