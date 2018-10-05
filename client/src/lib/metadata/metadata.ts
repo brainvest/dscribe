@@ -33,7 +33,7 @@ export class Metadata {
 				this.currentTypes = this.extractTypeSemantics(x.entities, x.propertyDefaults);
 				this.fixUpRelationships();
 				this.typesObservable.next(this.currentTypes);
-			});
+			}, console.error);
 	}
 
 	getAllTypes(): Observable<EntityMetadata[]> {

@@ -19,8 +19,8 @@ export class AddNEditComponent implements OnInit {
 	@Input() action: string;
 	@Input() entityType: string;
 	@Input() master: MasterReference;
-	@Output() EntitySaved = new EventEmitter<string>();
-	@Output() Canceled = new EventEmitter();
+	@Output() entitySaved = new EventEmitter<string>();
+	@Output() canceled = new EventEmitter();
 
 	properties: PropertyMetadata[];
 	detailLists: MasterReference[];
@@ -67,7 +67,7 @@ export class AddNEditComponent implements OnInit {
 	}
 
 	private afterEntitySaved(action: string) {
-		this.EntitySaved.emit(action);
+		this.entitySaved.emit(action);
 	}
 
 	saveEntity() {
@@ -79,7 +79,7 @@ export class AddNEditComponent implements OnInit {
 	}
 
 	cancel() {
-		this.Canceled.emit();
+		this.canceled.emit();
 	}
 
 	processFailure(error: any) {
