@@ -45,7 +45,8 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 					},
 				AllowOfflineAccess = true,
 				AllowAccessTokensViaBrowser = true,
-				AlwaysIncludeUserClaimsInIdToken = true
+				AlwaysIncludeUserClaimsInIdToken = true,
+				AccessTokenLifetime = 86400
 			});
 		}
 	}
