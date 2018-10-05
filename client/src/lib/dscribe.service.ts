@@ -34,4 +34,29 @@ export class DscribeService {
 	setCommands(value: DscribeCommand[]) {
 		this.commands$.next(value);
 	}
+
+	getServerRoot() {
+		return this.config.serverRoot || '';
+	}
+
+	setServerRoot(value: string) {
+		this.config.serverRoot = value;
+	}
+
+	url(relativeToRoot: string) {
+		const server = this.config.serverRoot || '';
+		if (server.endsWith('/')) {
+			if (relativeToRoot.startsWith('/')) {
+				return server + relativeToRoot.substring(1);
+			} else {
+				return server + relativeToRoot;
+			}
+		} else {
+			if (relativeToRoot.startsWith('/')) {
+				return server + relativeToRoot;
+			} else {
+				return server + '/' + relativeToRoot;
+			}
+		}
+	}
 }

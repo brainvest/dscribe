@@ -7,24 +7,25 @@ import {EntityBase} from '../models/entity-base';
 import {GroupListRequest} from '../models/groupping/group-list-request';
 import {catchError, map, share} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
+import {DscribeService} from '../../dscribe.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class DataHandlerService {
 
-	private filterAPI = 'api/entity/getByFilter';
-	private filterCountAPI = 'api/entity/countByFilter';
-	private groupAPI = 'api/entity/getGroupped';
-	private groupCountAPI = 'api/entity/getGroupCount';
-	private displayNameAPI = 'api/entity/GetIdAndName';
-	private allIdAndNameAPI = 'api/entity/GetAllIdAndName';
-	private autocompeleteIdNameAPI = 'api/entity/GetAutocompleteItems';
-	private managementURL = 'api/entity/';
-	private expressionValueAPI = 'api/entity/GetExpressionValue';
-	private saveFiltersApi = 'api/filters/save';
-	private listFiltersApi = 'api/filters/list';
-	private getFilterTextApi = 'api/entity/GetFilterText';
+	private filterAPI = this.dscribeService.url('api/entity/getByFilter');
+	private filterCountAPI = this.dscribeService.url('api/entity/countByFilter');
+	private groupAPI = this.dscribeService.url('api/entity/getGroupped');
+	private groupCountAPI = this.dscribeService.url('api/entity/getGroupCount');
+	private displayNameAPI = this.dscribeService.url('api/entity/GetIdAndName');
+	private allIdAndNameAPI = this.dscribeService.url('api/entity/GetAllIdAndName');
+	private autocompeleteIdNameAPI = this.dscribeService.url('api/entity/GetAutocompleteItems');
+	private managementURL = this.dscribeService.url('api/entity/');
+	private expressionValueAPI = this.dscribeService.url('api/entity/GetExpressionValue');
+	private saveFiltersApi = this.dscribeService.url('api/filters/save');
+	private listFiltersApi = this.dscribeService.url('api/filters/list');
+	private getFilterTextApi = this.dscribeService.url('api/entity/GetFilterText');
 
 	private cache: { [id: string]: IdAndNameCacheEntry; } = {};
 	private cache2: { [entityName: string]: EntityIdAndNames; } = {};
@@ -38,7 +39,7 @@ export class DataHandlerService {
 	private expressionValueAutoDownloader: any;
 	private expressionValueResponse: BehaviorSubject<any> = new BehaviorSubject<any>(1);
 
-	constructor(private http: HttpClient) {
+	constructor(private http: HttpClient, private dscribeService: DscribeService) {
 	}
 
 	getName(entityType: string, id: number): Observable<string> {
