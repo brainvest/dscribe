@@ -1,8 +1,10 @@
-﻿import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {PropertyMetadata} from '../metadata/property-metadata';
-import {MasterReference} from '../list/models/master-reference';
-import {HasIdName} from '../common/models/has-id-name';
-import {DataHandlerService} from '../common/services/data-handler.service';
+﻿import { MessageService } from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/message';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { PropertyMetadata } from '../metadata/property-metadata';
+import { MasterReference } from '../list/models/master-reference';
+import { HasIdName } from '../common/models/has-id-name';
+import { DataHandlerService } from '../common/services/data-handler.service';
 
 @Component({
 	selector: 'dscribe-entity-list-editor',
@@ -16,16 +18,22 @@ export class EntityListEditorComponent implements OnInit, OnChanges {
 
 	master: MasterReference;
 	items: HasIdName[];
+	msgs: Message[] = [];
 
-	constructor(private dataHandlerService: DataHandlerService) {
+	constructor(
+		private dataHandlerService: DataHandlerService,
+		private messageService: MessageService) {
 	}
 
 
 	ngOnInit(): void {
-		this.dataHandlerService.getIdAndNames(this.property.entityTypeName).subscribe(res => {
+		this.dataHandlerService.getIdAndNames(this.property.entityTypeName).subscribe(
+			(res: any) => {
 				this.items = res;
 			},
-			error => console.error(error)
+			(errors: any) => {
+				this.msgs = errors;
+			}
 		);
 		// TODO: Will cause exception
 		this.master = new MasterReference(this.entity, this.property, null);

@@ -62,9 +62,15 @@ import {ReleaseMetadataSettingsComponent} from './administration/release-metadat
 import {DisplayValuePipe} from './common/display-value-pipe';
 import {TableTemplateComponent} from './list/list-templating/table-template/table-template.component';
 import {CustomTemplateHostComponent} from './list/list-templating/custom-template-host/custom-template-host.component';
+import {ToastModule} from 'primeng/toast';
+import { HttpStatusProxy } from './helpers/http-status-proxy';
+import {GrowlModule} from 'primeng/growl';
+import {BrowserModule} from '@angular/platform-browser';
+
 
 @NgModule({
 	imports: [
+		BrowserModule,
 		BrowserAnimationsModule,
 		CommonModule,
 		RouterModule,
@@ -90,6 +96,8 @@ import {CustomTemplateHostComponent} from './list/list-templating/custom-templat
 		MatTabsModule,
 		MatProgressSpinnerModule,
 		ReactiveFormsModule,
+		ToastModule,
+		GrowlModule
 	],
 	declarations: [
 		DscribeComponent,
@@ -132,7 +140,8 @@ import {CustomTemplateHostComponent} from './list/list-templating/custom-templat
 	exports: [DscribeComponent, ListComponent, DisplayValuePipe],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: DscribeInterceptor, multi: true},
-		FilterTreeManipulator
+		FilterTreeManipulator,
+		HttpStatusProxy
 	],
 	entryComponents: [
 		ListAddNEditDialogComponent,

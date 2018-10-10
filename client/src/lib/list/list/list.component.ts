@@ -1,38 +1,41 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
-import {MatDialog, MatPaginator, MatSort} from '@angular/material';
-import {MetadataService} from '../../common/services/metadata.service';
-import {DataHandlerService} from '../../common/services/data-handler.service';
-import {EntityMetadata} from '../../metadata/entity-metadata';
-import {catchError, map, startWith, switchMap} from 'rxjs/operators';
-import {merge, of} from 'rxjs';
-import {EntityListRequest} from '../../common/models/entity-list-request';
-import {SortItem} from '../../common/models/sort-item';
-import {ListColumn} from '../models/list-column';
-import {KnownFacets} from '../../metadata/facets/known-facet';
-import {MasterReference} from '../models/master-reference';
-import {HasId} from '../../common/models/has-id';
-import {ListAddNEditDialogComponent} from '../list-add-n-edit-dialog/list-add-n-edit-dialog.component';
-import {ListDeleteDialogComponent} from '../list-delete-dialog/list-delete-dialog.component';
-import {LambdaFilterNode} from '../../filtering/models/filter-nodes/lambda-filter-node';
-import {StorageFilterNode} from '../../filtering/models/storage-filter-node';
-import {LambdaHelper} from '../../helpers/lambda-helper';
-import {FilterNode} from '../../filtering/models/filter-nodes/filter-node';
-import {FilterNodeFactory} from '../../filtering/models/filter-node-factory';
-import {SelectionModel} from '@angular/cdk/collections';
-import {DataTypes} from '../../metadata/data-types';
-import {TableTemplateComponent} from '../list-templating/table-template/table-template.component';
-import {EntityTemplateMapper} from '../list-templating/entity-template-mapper';
-import {DscribeService} from '../../dscribe.service';
-import {DscribeFeatureArea} from '../../models/dscribe-feature-area.enum';
-import {DscribeCommand} from '../../models/dscribe-command';
-import {DscribeCommandCallbackInput} from '../../models/dscribe-command-callback-input';
-import {DscribeCommandDisplayPredicate} from '../../models/dscribe-command-display-predicate';
+import { Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, Type, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatPaginator, MatSort } from '@angular/material';
+import { MetadataService } from '../../common/services/metadata.service';
+import { DataHandlerService } from '../../common/services/data-handler.service';
+import { EntityMetadata } from '../../metadata/entity-metadata';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { merge, of } from 'rxjs';
+import { EntityListRequest } from '../../common/models/entity-list-request';
+import { SortItem } from '../../common/models/sort-item';
+import { ListColumn } from '../models/list-column';
+import { KnownFacets } from '../../metadata/facets/known-facet';
+import { MasterReference } from '../models/master-reference';
+import { HasId } from '../../common/models/has-id';
+import { ListAddNEditDialogComponent } from '../list-add-n-edit-dialog/list-add-n-edit-dialog.component';
+import { ListDeleteDialogComponent } from '../list-delete-dialog/list-delete-dialog.component';
+import { LambdaFilterNode } from '../../filtering/models/filter-nodes/lambda-filter-node';
+import { StorageFilterNode } from '../../filtering/models/storage-filter-node';
+import { LambdaHelper } from '../../helpers/lambda-helper';
+import { FilterNode } from '../../filtering/models/filter-nodes/filter-node';
+import { FilterNodeFactory } from '../../filtering/models/filter-node-factory';
+import { SelectionModel } from '@angular/cdk/collections';
+import { DataTypes } from '../../metadata/data-types';
+import { TableTemplateComponent } from '../list-templating/table-template/table-template.component';
+import { EntityTemplateMapper } from '../list-templating/entity-template-mapper';
+import { DscribeService } from '../../dscribe.service';
+import { DscribeFeatureArea } from '../../models/dscribe-feature-area.enum';
+import { DscribeCommand } from '../../models/dscribe-command';
+import { DscribeCommandCallbackInput } from '../../models/dscribe-command-callback-input';
+import { DscribeCommandDisplayPredicate } from '../../models/dscribe-command-display-predicate';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/message';
 
 @Component({
 	selector: 'dscribe-list',
 	templateUrl: './list.component.html',
 	styleUrls: ['./list.component.css'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	providers: [MessageService]
 })
 export class ListComponent implements OnInit, OnChanges {
 	initialSelection = [];
@@ -64,9 +67,13 @@ export class ListComponent implements OnInit, OnChanges {
 	sort: MatSort;
 	private customTemplate: { component: Type<any>; options?: any };
 	filterCommands: DscribeCommand[];
+	msgs: Message[] = [];
 
-	constructor(private metadataService: MetadataService, private dataHandler: DataHandlerService,
-							private dialog: MatDialog, private dscribeService: DscribeService) {
+	constructor(
+		private metadataService: MetadataService,
+		private dataHandler: DataHandlerService,
+		private dialog: MatDialog,
+		private dscribeService: DscribeService) {
 		this.selection.changed.subscribe(x => {
 			if (x.added.length === 1) {
 				this.selectRow(x.added[0]);
@@ -76,11 +83,14 @@ export class ListComponent implements OnInit, OnChanges {
 
 	ngOnInit() {
 		FilterNode.factory = new FilterNodeFactory();
-		this.dscribeService.getCommands().subscribe(commands => {
-			this.filterCommands = commands.filter(x =>
-				x.featureAreas === DscribeFeatureArea.Filter || x.featureAreas.includes(DscribeFeatureArea.Filter)
-			);
-		});
+		this.dscribeService.getCommands().subscribe(
+			(commands: any) => {
+				this.filterCommands = commands.filter(x =>
+					x.featureAreas === DscribeFeatureArea.Filter || x.featureAreas.includes(DscribeFeatureArea.Filter)
+				);
+			}, (errors: any) => {
+				this.msgs = errors;
+			});
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -178,10 +188,14 @@ export class ListComponent implements OnInit, OnChanges {
 		this.paginator.pageIndex = 0;
 		this.data = [];
 		this.connectData();
-		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters())).subscribe((data) => {
-			this.totalCount = data;
-			this.userRefresh.emit();
-		});
+		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters()))
+			.subscribe(
+				(data) => {
+					this.totalCount = data;
+					this.userRefresh.emit();
+				}, (errors: any) => {
+					this.msgs = errors;
+				});
 	}
 
 	connectData() {
@@ -198,14 +212,19 @@ export class ListComponent implements OnInit, OnChanges {
 					if (this.sort.active) {
 						sort.push(new SortItem(this.sort.active, this.sort.direction === 'desc'));
 					}
-					return this.dataHandler.getByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters(),
-						this.paginator.pageIndex * this.pageSize, this.pageSize, sort));
+					return this.dataHandler.getByFilter(
+						new EntityListRequest(
+							this.entity.name,
+							this.getCurrentFilters(),
+							this.paginator.pageIndex * this.pageSize,
+							this.pageSize, sort));
 				}),
 				map(data => {
 					this.isLoadingResults = false;
 					return data;
 				}),
-				catchError(() => {
+				catchError((errors: any[]) => {
+					this.msgs = errors;
 					this.isLoadingResults = false;
 					return of([]);
 				})
@@ -295,12 +314,12 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	callFilterCommand(command: DscribeCommand) {
-		command.callback(<DscribeCommandCallbackInput<ListComponent>> {
+		command.callback(<DscribeCommandCallbackInput<ListComponent>>{
 			area: DscribeFeatureArea.Filter, sourceComponent: this
 		});
 	}
 
 	shouldDisplayCommand(command: DscribeCommand) {
-		return command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
+		return command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{ component: this });
 	}
 }
