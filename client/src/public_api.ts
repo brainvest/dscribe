@@ -20,4 +20,4 @@ export * from './lib/dscribe.component';
 export * from './lib/dscribe.module';
 export * from './lib/dscribe.service';
 export * from './lib/metadata/entity-metadata';
-
+export * from './lib/dscribe-routes';
