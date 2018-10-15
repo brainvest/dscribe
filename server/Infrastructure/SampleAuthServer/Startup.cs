@@ -72,6 +72,9 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			services.AddScoped<IEmailSender, FakeEmailSender>();
 
 			var clients = Configuration.GetSection("Clients").Get<IEnumerable<ClientInfo>>();
+
+			services.Configure<ConfigModel>(Configuration.GetSection("Config"));
+
 			services.AddIdentityServer(options =>
 			{
 				options.UserInteraction.LoginUrl = "/Identity/Account/Login";
