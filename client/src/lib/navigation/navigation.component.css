@@ -8,7 +8,7 @@
 	transition: width 300ms;
 	overflow: auto;
 	padding: 24px 0;
-	background-color: #FAFAFA;
+	background-color: #262F3D;
 }
 
 .secondary-nav-item {
@@ -20,15 +20,15 @@
 	padding: 0 32px;
 	margin: 8px 0 8px 4px;
 	font-size: 16px;
-	color: rgba(0, 0, 0, .67);
+	color: rgba(255, 255, 255, .7);
 }
 
 .secondary-nav-item:hover {
-	color: #3F51B5;
+	background-color: rgba(255, 255, 255, 0.08);
 }
 
 .secondary-nav-item.active {
-	color: #3F51B5;
+	color: #4fc3f7!important;
 	border-left: #3F51B5 solid 4px;
 	margin-left: 0;
 }
@@ -50,14 +50,25 @@
 	background-color: #ECEFF1;
 }
 
-
+.dscribe-main-navbar {
+	background-color: rgb(3, 155, 229);
+	color: #ffffff;
+}
 
 .main-nav-header, .main-nav {
-	background-color: #FAFAFA;
+	background-color: rgb(3, 155, 229);
 }
 
 .main-nav-header {
 	border-bottom: 1px solid #d8d8d8;
+}
+
+.mat-toolbar {
+	color: white !important;
+}
+
+mat-tab {
+	color: white !important;
 }
 
 .main-nav {
