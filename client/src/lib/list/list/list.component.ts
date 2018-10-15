@@ -49,7 +49,7 @@ export class ListComponent implements OnInit, OnChanges {
 	data = [];
 	totalCount = 0;
 	private displayedEntityType: string;
-	isLoadingResults = true;
+	isLoadingResults = false;
 	isDataConnected = false;
 	userRefresh: EventEmitter<null> = new EventEmitter<null>();
 	pageSize = 10;
@@ -177,6 +177,8 @@ export class ListComponent implements OnInit, OnChanges {
 		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters())).subscribe((data) => {
 			this.totalCount = data;
 			this.userRefresh.emit();
+		}, error =>{
+			this.isLoadingResults = false;
 		});
 	}
 

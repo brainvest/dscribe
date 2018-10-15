@@ -28,7 +28,7 @@
 }
 
 .secondary-nav-item.active {
-	color: #4fc3f7!important;
+	color: #4fc3f7 !important;
 	border-left: #3F51B5 solid 4px;
 	margin-left: 0;
 }
@@ -74,4 +74,8 @@ mat-tab {
 .main-nav {
 	padding: 0;
 	height: 50px;
+}
+
+:host ::ng-deep .mat-tab-label-content {
+	color: white!important;
 }

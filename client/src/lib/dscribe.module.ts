@@ -50,7 +50,6 @@ import {NavigationListFilterNodeComponent} from './filtering/components/navigati
 import {PropertyFilterNodeComponent} from './filtering/components/property-filter-node/property-filter-node.component';
 import {FilterTreeManipulator} from './filtering/models/filter-tree-manipulator';
 import {NavigationComponent} from './navigation/navigation.component';
-import {HomePageComponent} from './home-page/home-page.component';
 import {MetadataManagementComponent} from './administration/metadata-management/metadata-management.component';
 import {RouterModule} from '@angular/router';
 import {EntityGeneralUsageNamePipe} from './administration/helpers/entity-general-usage-name.pipe';
@@ -117,7 +116,6 @@ import {CustomTemplateHostComponent} from './list/list-templating/custom-templat
 		NavigationListFilterNodeComponent,
 		PropertyFilterNodeComponent,
 		NavigationComponent,
-		HomePageComponent,
 		MetadataManagementComponent,
 		EntityGeneralUsageNamePipe,
 		AddNEditEntityComponent,
