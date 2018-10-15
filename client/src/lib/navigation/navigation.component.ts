@@ -13,7 +13,7 @@ import {DscribeService} from '../dscribe.service';
 })
 export class NavigationComponent implements OnInit {
 	entities: EntityMetadata[];
-	mainUrls = ['main', 'entity', 'administration'];
+	mainUrls = ['entity', 'administration'];
 	sideNavOpen = true;
 	appInstances: AppInstanceInfoModel[] = [];
 	selectedAppInstance: AppInstanceInfoModel;
@@ -44,7 +44,7 @@ export class NavigationComponent implements OnInit {
 			.subscribe(entities => {
 				this.entities = entities;
 				if (this.entities && this.entities.length) {
-					this.mainUrls[1] = 'entity/' + this.entities[0].name;
+					this.mainUrls[0] = 'entity/' + this.entities[0].name;
 				}
 			});
 	}
