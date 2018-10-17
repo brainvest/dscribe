@@ -38,7 +38,7 @@
 	min-width: 240px;
 	position: fixed;
 	bottom: 0;
-	top: 65px;
+	top: 51px;
 }
 
 .secondary-nav.close {
@@ -53,7 +53,6 @@
 .dscribe-main-navbar {
 	background-color: rgb(3, 155, 229);
 	color: #ffffff;
-	height: 50px;
 }
 
 .main-nav {
@@ -63,6 +62,7 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-between;
+	height: 50px!important;
 }
 
 .main-nav-tabs {
