@@ -38,7 +38,7 @@
 	min-width: 240px;
 	position: fixed;
 	bottom: 0;
-	top: 114px;
+	top: 65px;
 }
 
 .secondary-nav.close {
@@ -53,10 +53,20 @@
 .dscribe-main-navbar {
 	background-color: rgb(3, 155, 229);
 	color: #ffffff;
+	height: 50px;
 }
 
-.main-nav-header, .main-nav {
+.main-nav {
 	background-color: rgb(3, 155, 229);
+	padding: 0;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.main-nav-tabs {
+
 }
 
 .main-nav-header {
@@ -71,11 +81,6 @@ mat-tab {
 	color: white !important;
 }
 
-.main-nav {
-	padding: 0;
-	height: 50px;
-}
-
 :host ::ng-deep .mat-tab-label-content {
-	color: white!important;
+	color: white !important;
 }
