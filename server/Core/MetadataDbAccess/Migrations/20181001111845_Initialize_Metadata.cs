@@ -13,8 +13,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-									.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						Name = table.Column<string>(type: "nvarchar(200)", nullable: false),
 						Title = table.Column<string>(maxLength: 200, nullable: false)
 					},
@@ -67,8 +67,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-									.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						Name = table.Column<string>(nullable: true)
 					},
 					constraints: table =>
@@ -81,8 +81,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-									.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						Name = table.Column<string>(nullable: true),
 						Identifier = table.Column<string>(type: "varchar(200)", nullable: true)
 					},
@@ -122,8 +122,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						Name = table.Column<string>(nullable: true)
 					},
 					constraints: table =>
@@ -160,8 +160,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						Version = table.Column<string>(type: "varchar(200)", nullable: true),
 						VersionCode = table.Column<int>(nullable: true),
 						AppTypeId = table.Column<int>(nullable: false),
@@ -185,8 +185,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						AppTypeId = table.Column<int>(nullable: false),
 						Name = table.Column<string>(type: "varchar(200)", nullable: true),
 						TableName = table.Column<string>(nullable: true),
@@ -226,8 +226,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						EnumTypeId = table.Column<int>(nullable: false),
 						Name = table.Column<string>(nullable: true),
 						Identifier = table.Column<string>(type: "varchar(200)", nullable: true)
@@ -248,8 +248,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						Name = table.Column<string>(nullable: true),
 						FacetTypeId = table.Column<int>(nullable: false),
 						EnumTypeId = table.Column<int>(nullable: false)
@@ -276,8 +276,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						Name = table.Column<string>(nullable: true),
 						FacetTypeId = table.Column<int>(nullable: false),
 						EnumTypeId = table.Column<int>(nullable: true)
@@ -304,8 +304,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						AppTypeId = table.Column<int>(nullable: false),
 						Name = table.Column<string>(type: "varchar(200)", nullable: false),
 						Title = table.Column<string>(maxLength: 200, nullable: false),
@@ -345,8 +345,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						InputEntityId = table.Column<int>(nullable: false),
 						Title = table.Column<string>(nullable: false),
 						Body = table.Column<string>(nullable: false),
@@ -368,8 +368,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						EntityId = table.Column<int>(nullable: false),
 						FacetDefinitionId = table.Column<int>(nullable: false),
 						Value = table.Column<string>(nullable: true)
@@ -396,8 +396,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						FacetDefinitionId = table.Column<int>(nullable: false),
 						GeneralUsageCategoryId = table.Column<int>(nullable: false),
 						AppTypeId = table.Column<int>(nullable: true),
@@ -438,8 +438,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						EntityId = table.Column<int>(nullable: true),
 						RoleId = table.Column<Guid>(nullable: true),
 						UserId = table.Column<Guid>(nullable: true),
@@ -488,8 +488,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						FacetDefinitionId = table.Column<int>(nullable: false),
 						GeneralUsageCategoryId = table.Column<int>(nullable: false),
 						AppTypeId = table.Column<int>(nullable: true),
@@ -530,8 +530,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						AppTypeId = table.Column<int>(nullable: false),
 						Identifier = table.Column<string>(type: "varchar(200)", nullable: false),
 						ShortDescription = table.Column<string>(nullable: false),
@@ -561,8 +561,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						DefinitionId = table.Column<int>(nullable: false),
 						IsActive = table.Column<bool>(nullable: false),
 						CreationTime = table.Column<DateTime>(nullable: false),
@@ -593,7 +593,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						EntityId = table.Column<int>(nullable: false),
 						Name = table.Column<string>(type: "varchar(200)", nullable: true),
 						Title = table.Column<string>(nullable: true),
@@ -658,8 +659,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
 					columns: table => new
 					{
 						Id = table.Column<int>(nullable: false)
-									.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-						.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+							.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+							.Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
 						PropertyId = table.Column<int>(nullable: false),
 						FacetDefinitionId = table.Column<int>(nullable: false),
 						Value = table.Column<string>(nullable: true)
