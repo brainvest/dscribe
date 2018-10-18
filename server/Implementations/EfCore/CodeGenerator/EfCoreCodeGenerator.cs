@@ -3,6 +3,7 @@ using Brainvest.Dscribe.Abstractions.Metadata;
 using Humanizer;
 using Microsoft.CSharp;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
@@ -27,6 +28,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IBusinessRepositoryFactory).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(TableAttribute).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(ForeignKeyAttribute).Namespace));
+			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(JsonIgnoreAttribute).Namespace));
 
 			var codeDbContext = CreateDbContextCode();
 			codeNamespace.Types.Add(codeDbContext);
@@ -60,6 +62,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 					string dataType;
 					if (property.DataType == DataTypes.NavigationList)
 					{
+						snippet.Text += "[JsonIgnore]" + Environment.NewLine;
 						dataType = $"System.Collections.Generic.ICollection<{property.EntityTypeName}>";
 					}
 					else if (property.DataType == DataTypes.ForeignKey)
