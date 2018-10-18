@@ -18,7 +18,7 @@
 	<nav *ngIf="entitiesTab.isActive" class="secondary-nav mat-elevation-z4" [ngClass]="sideNavOpen ? 'open' : 'close'">
 		<a class="secondary-nav-item" *ngFor="let entity of entities" routerLink="/entity/{{entity.name}}"
 			 routerLinkActive="active">
-			{{entity.name}}
+			{{entity.pluralTitle || entity.name}}
 		</a>
 	</nav>
 

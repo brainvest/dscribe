@@ -44,7 +44,7 @@ export class ListComponent implements OnInit, OnChanges {
 	@Input() hideFilter: boolean;
 
 	detailLists?: MasterReference[];
-	displayedColumns = ['select'];
+	displayedColumns = [];
 	columns: ListColumn[] = [];
 	data = [];
 	totalCount = 0;
@@ -108,7 +108,7 @@ export class ListComponent implements OnInit, OnChanges {
 	createColumns(entity: EntityMetadata) {
 		this.detailLists = [];
 		this.columns = [];
-		this.displayedColumns = ['select'];
+		this.displayedColumns = [];
 		for (const propertyName in entity.properties) {
 			if (!entity.properties.hasOwnProperty(propertyName)) {
 				continue;
@@ -177,7 +177,7 @@ export class ListComponent implements OnInit, OnChanges {
 		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters())).subscribe((data) => {
 			this.totalCount = data;
 			this.userRefresh.emit();
-		}, error =>{
+		}, error => {
 			this.isLoadingResults = false;
 		});
 	}
@@ -237,10 +237,6 @@ export class ListComponent implements OnInit, OnChanges {
 		}
 	}
 
-	editRow(row: any) {
-		this.openAddNEditDialog(row, false);
-	}
-
 	openAddNEditDialog(instance: any, isNew: boolean) {
 		const dialogRef = this.dialog.open(ListAddNEditDialogComponent, {
 			width: '800px',
@@ -261,6 +257,10 @@ export class ListComponent implements OnInit, OnChanges {
 		);
 	}
 
+	editSelectedRow() {
+		this.openAddNEditDialog(this.selection.selected[0], false);
+	}
+
 	deleteSelected() {
 		const deleteDialogRef = this.dialog.open(ListDeleteDialogComponent, {
 			width: '300px'
@@ -279,12 +279,29 @@ export class ListComponent implements OnInit, OnChanges {
 		);
 	}
 
-	toggleFilter() {
-		if (this.filterLambda) {
-			this.filterLambda = null;
-		} else {
-			this.filterLambda = new LambdaFilterNode(null, this.entity, false);
+	selectRow(row: any) {
+		if (!this.allowMultiSelect) {
+			this.selection.clear();
 		}
+		this.selection.select(row);
+		this.selectDetails(row);
+	}
+
+	get filterVisible() {
+		return !!this.filterLambda;
+	}
+
+	set filterVisible(value) {
+		if (value) {
+			this.filterLambda = new LambdaFilterNode(null, this.entity, false);
+		} else {
+			this.filterLambda = null;
+			this.userDefinedFilter = null;
+		}
+	}
+
+	toggleFilter() {
+		this.filterVisible = !this.filterVisible;
 	}
 
 	getCustomTemplateWidth(): string {
@@ -298,14 +315,7 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	shouldDisplayCommand(command: DscribeCommand) {
-		return command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
+		return !command.displayPredicate || command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
 	}
 
-	customTemplateSelected(instance: any) {
-		if (!this.allowMultiSelect) {
-			this.selection.clear();
-		}
-		this.selection.select(instance);
-		this.selectDetails(instance);
-	}
 }

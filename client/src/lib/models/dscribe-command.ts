@@ -4,11 +4,11 @@ import {DscribeCommandDisplayPredicate} from './dscribe-command-display-predicat
 import {DscribeCommandCallbackOutput} from './dscribe-command-callback-output';
 import {DscribeCommandCallbackInput} from './dscribe-command-callback-input';
 
-export class DscribeCommand {
-	constructor(public name: string, public title: string,
-							public featureAreas: DscribeFeatureArea | DscribeFeatureArea[],
-							public callback: (data: DscribeCommandCallbackInput<any>) =>
-								void | DscribeCommandCallbackOutput | Observable<DscribeCommandCallbackOutput>,
-							public displayPredicate: (data: DscribeCommandDisplayPredicate<any>) => boolean = () => true) {
-	}
+export interface DscribeCommand {
+	name: string;
+	title: string;
+	iconName?: string;
+	featureAreas: DscribeFeatureArea | DscribeFeatureArea[];
+	callback: (data: DscribeCommandCallbackInput<any>) => void | DscribeCommandCallbackOutput | Observable<DscribeCommandCallbackOutput>;
+	displayPredicate?: (data: DscribeCommandDisplayPredicate<any>) => boolean;
 }

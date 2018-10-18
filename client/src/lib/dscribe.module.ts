@@ -6,7 +6,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {DscribeInterceptor} from './common/dscribe-interceptor';
 import {
 	MatAutocompleteModule,
-	MatButtonModule,
+	MatButtonModule, MatButtonToggleModule,
 	MatCardModule,
 	MatCheckboxModule,
 	MatDatepickerModule,
@@ -86,6 +86,7 @@ import {CustomTemplateHostComponent} from './list/list-templating/custom-templat
 		MatTooltipModule,
 		MatCheckboxModule,
 		MatToolbarModule,
+		MatButtonToggleModule,
 		MatTabsModule,
 		MatProgressSpinnerModule,
 		ReactiveFormsModule,

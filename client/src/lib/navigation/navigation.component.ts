@@ -45,6 +45,7 @@ export class NavigationComponent implements OnInit {
 				this.entities = entities;
 				if (this.entities && this.entities.length) {
 					this.mainUrls[0] = 'entity/' + this.entities[0].name;
+					this.router.navigateByUrl(this.mainUrls[0]);
 				}
 			});
 	}
