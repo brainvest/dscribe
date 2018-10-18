@@ -1,6 +1,4 @@
-﻿import { MessageService } from 'primeng/components/common/messageservice';
-import { Message } from 'primeng/components/common/message';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+﻿import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { PropertyMetadata } from '../metadata/property-metadata';
 import { MasterReference } from '../list/models/master-reference';
 import { HasIdName } from '../common/models/has-id-name';
@@ -18,11 +16,8 @@ export class EntityListEditorComponent implements OnInit, OnChanges {
 
 	master: MasterReference;
 	items: HasIdName[];
-	msgs: Message[] = [];
-
 	constructor(
-		private dataHandlerService: DataHandlerService,
-		private messageService: MessageService) {
+		private dataHandlerService: DataHandlerService) {
 	}
 
 
@@ -32,7 +27,6 @@ export class EntityListEditorComponent implements OnInit, OnChanges {
 				this.items = res;
 			},
 			(errors: any) => {
-				this.msgs = errors;
 			}
 		);
 		// TODO: Will cause exception

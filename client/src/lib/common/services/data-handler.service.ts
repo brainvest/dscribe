@@ -7,7 +7,6 @@ import { EntityBase } from '../models/entity-base';
 import { GroupListRequest } from '../models/groupping/group-list-request';
 import { catchError, map, share } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { HttpStatusProxy } from '../../helpers/http-status-proxy';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,8 +14,7 @@ import { HttpStatusProxy } from '../../helpers/http-status-proxy';
 export class DataHandlerService {
 
 	constructor(
-		private http: HttpClient,
-		private httpStatusProxy: HttpStatusProxy) {
+		private http: HttpClient) {
 	}
 	private filterAPI = 'api/entity/getByFilter';
 	private filterCountAPI = 'api/entity/countByFilter';
@@ -137,7 +135,7 @@ export class DataHandlerService {
 			}
 		}
 		const download = this.http.post<HasIdName[]>(this.allIdAndNameAPI, { entityType: entityType })
-			.pipe(catchError(this.handleError.bind(this)), share());
+			.pipe(share());
 		this.cache[entityType] = new IdAndNameCacheEntry;
 		this.cache[entityType].observable = download;
 		download.subscribe(res => {
@@ -151,41 +149,41 @@ export class DataHandlerService {
 		return this.http.post<IdAndName>(this.autocompeleteIdNameAPI, {
 			entityType: entityType,
 			queryText: queryText
-		}).pipe(catchError(this.handleError.bind(this)));
+		});
 	}
 
 	countByFilter(request: EntityListRequest): Observable<number> {
 		return this.http.post<number>(this.filterCountAPI , request.getRequestObject())
-			.pipe(catchError(this.handleError.bind(this)));
+			;
 	}
 
 	getByFilter(request: EntityListRequest): Observable<EntityBase[]> {
 		return this.http.post<EntityBase[]>(this.filterAPI , request.getRequestObject())
-			.pipe(catchError(this.handleError.bind(this)));
+			;
 	}
 
 	getGroupCount(request: GroupListRequest): Observable<number> {
 		return this.http.post<number>(this.groupCountAPI, request.getRequestObject())
-			.pipe(catchError(this.handleError.bind(this)));
+			;
 	}
 
 	getGrouped(request: GroupListRequest): Observable<any[]> {
 		return this.http.post<any[]>(this.groupAPI, request.getRequestObject())
-			.pipe(catchError(this.handleError.bind(this)));
+			;
 	}
 
 	manageEntity(entity: EntityBase, entityType: string, action: string): Observable<EntityBase> {
 		return this.http.post<EntityBase>(this.managementURL + action, {
 			entityType: entityType,
 			entity: entity
-		}).pipe(catchError(this.handleError.bind(this)));
+		});
 	}
 
 	deleteEntity(entityType: string, entity: EntityBase): Observable<EntityBase> {
 		return this.http.post<EntityBase>(this.managementURL + 'delete', {
 			entityType: entityType,
 			entity: entity
-		}).pipe(catchError(this.handleError.bind(this)));
+		});
 	}
 
 	getAutoCompleteItems(entityTypeName: string, searchTerm: string): Observable<{ displayName: string, id: number }[]> {
@@ -196,16 +194,14 @@ export class DataHandlerService {
 				}
 				const regExp = new RegExp(this.escapeRegExp(searchTerm), 'i');
 				return res.names.filter(name => regExp.test(name.displayName));
-			})).pipe(catchError(this.handleError.bind(this)));
+			}));
 	}
 
 	private escapeRegExp(str: string): string {
 		return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\^\$\|]/g, '\\$&');
 	}
 
-	private handleError(error: any) {
-		return throwError(this.httpStatusProxy.translateError(error));
-	}
+
 }
 
 class IdAndNameCacheEntry {

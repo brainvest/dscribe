@@ -1,4 +1,3 @@
-import { MessageService } from 'primeng/components/common/messageservice';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MetadataManagementApiClient } from '../metadata-management-api-client';
 import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
@@ -11,7 +10,6 @@ import { AddNEditPropertyMetadataModel } from '../models/add-n-edit-property-met
 import { ConfirmationDialogComponent } from '../../common/confirmation-dialog/confirmation-dialog.component';
 import { PropertyInfoModel } from '../models/property-info-model';
 import { ReleaseMetadataSettingsComponent } from '../release-metadata-settings/release-metadata-settings.component';
-import { Message } from 'primeng/components/common/message';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -31,7 +29,6 @@ export class MetadataManagementComponent implements OnInit {
 	propertiesDataSource = new MatTableDataSource<PropertyBase>();
 	selectedProperty: PropertyBase;
 	propertiesAreLoading = false;
-	msgs: Message[] = [];
 	displayedEntityColumns = ['name', 'usage', 'singular', 'plural', 'code', 'displayName'];
 	displayedPropertyColumns = ['name', 'title', 'dataType', 'nullable', 'dataTypeEntity', 'usage', 'foreignKey', 'inverse'];
 
@@ -54,7 +51,6 @@ export class MetadataManagementComponent implements OnInit {
 					this.basicInfo = data;
 					this.refreshEntities();
 				}, (errors: any) => {
-					this.msgs = errors;
 				});
 	}
 
@@ -64,7 +60,6 @@ export class MetadataManagementComponent implements OnInit {
 				this.entitiesDataSource.data = this.entities = entities;
 				this.entitiesAreLoading = false;
 			}, (errors: any) => {
-				this.msgs = errors;
 			});
 	}
 
@@ -92,7 +87,6 @@ export class MetadataManagementComponent implements OnInit {
 				this.propertiesDataSource.data = this.properties = props;
 				this.propertiesAreLoading = false;
 			}, (errors: any) => {
-				this.msgs = errors;
 			});
 	}
 
@@ -148,7 +142,6 @@ export class MetadataManagementComponent implements OnInit {
 						.subscribe(() => {
 							this.refreshEntities();
 						}, (errors: any) => {
-							this.msgs = errors;
 						});
 				}
 			});
@@ -165,7 +158,6 @@ export class MetadataManagementComponent implements OnInit {
 					this.refreshEntities();
 				}
 			}, (errors: any) => {
-				this.msgs = errors;
 			}
 		);
 	}
@@ -184,7 +176,6 @@ export class MetadataManagementComponent implements OnInit {
 			.subscribe(property => {
 				this.openAddNEditPropertyDialog(property, false);
 			}, (errors: any) => {
-				this.msgs = errors;
 			});
 	}
 
@@ -201,7 +192,6 @@ export class MetadataManagementComponent implements OnInit {
 								this.refreshProperties();
 							},
 							(errors: any) => {
-								this.msgs = errors;
 							});
 				}
 			});
@@ -219,7 +209,6 @@ export class MetadataManagementComponent implements OnInit {
 					this.refreshProperties();
 				}
 			}, (errors: any) => {
-				this.msgs = errors;
 			}
 		);
 	}
@@ -239,7 +228,6 @@ export class MetadataManagementComponent implements OnInit {
 					alert('errors occured please see the validation errors');
 				}
 			}, (errors: any) => {
-				this.msgs = errors;
 			});
 	}
 }

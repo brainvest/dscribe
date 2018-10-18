@@ -27,15 +27,12 @@ import { DscribeFeatureArea } from '../../models/dscribe-feature-area.enum';
 import { DscribeCommand } from '../../models/dscribe-command';
 import { DscribeCommandCallbackInput } from '../../models/dscribe-command-callback-input';
 import { DscribeCommandDisplayPredicate } from '../../models/dscribe-command-display-predicate';
-import { MessageService } from 'primeng/components/common/messageservice';
-import { Message } from 'primeng/components/common/message';
 
 @Component({
 	selector: 'dscribe-list',
 	templateUrl: './list.component.html',
 	styleUrls: ['./list.component.css'],
 	encapsulation: ViewEncapsulation.None,
-	providers: [MessageService]
 })
 export class ListComponent implements OnInit, OnChanges {
 	initialSelection = [];
@@ -67,7 +64,6 @@ export class ListComponent implements OnInit, OnChanges {
 	sort: MatSort;
 	private customTemplate: { component: Type<any>; options?: any };
 	filterCommands: DscribeCommand[];
-	msgs: Message[] = [];
 
 	constructor(
 		private metadataService: MetadataService,
@@ -89,7 +85,6 @@ export class ListComponent implements OnInit, OnChanges {
 					x.featureAreas === DscribeFeatureArea.Filter || x.featureAreas.includes(DscribeFeatureArea.Filter)
 				);
 			}, (errors: any) => {
-				this.msgs = errors;
 			});
 	}
 
@@ -194,7 +189,6 @@ export class ListComponent implements OnInit, OnChanges {
 					this.totalCount = data;
 					this.userRefresh.emit();
 				}, (errors: any) => {
-					this.msgs = errors;
 				});
 	}
 
@@ -224,7 +218,6 @@ export class ListComponent implements OnInit, OnChanges {
 					return data;
 				}),
 				catchError((errors: any[]) => {
-					this.msgs = errors;
 					this.isLoadingResults = false;
 					return of([]);
 				})
