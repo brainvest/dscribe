@@ -12,7 +12,7 @@
 		[action]="data?.action"
 		[entity]="data?.entity"
 		[master]="data?.master"
-		(entitySaved)="afterEntitySaved()"
+		(entitySaved)="afterEntitySaved($event)"
 		(canceled)="canceledByUser()">
 	</dscribe-add-n-edit>
 </mat-dialog-content>

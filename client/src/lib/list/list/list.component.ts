@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatPaginator, MatSort} from '@angular/material';
 import {MetadataService} from '../../common/services/metadata.service';
 import {DataHandlerService} from '../../common/services/data-handler.service';
@@ -42,6 +42,7 @@ export class ListComponent implements OnInit, OnChanges {
 	@Input() entity: EntityMetadata;
 	@Input() master: MasterReference;
 	@Input() hideFilter: boolean;
+	@Output() selectionChanged = new EventEmitter<any>();
 
 	detailLists?: MasterReference[];
 	displayedColumns = [];
@@ -282,6 +283,7 @@ export class ListComponent implements OnInit, OnChanges {
 	selectRow(row: any) {
 		if (this.selection.isSelected(row)) {
 			this.selection.deselect(row);
+			this.selectionChanged.emit(null);
 			return;
 		}
 		if (!this.allowMultiSelect) {
@@ -289,6 +291,7 @@ export class ListComponent implements OnInit, OnChanges {
 		}
 		this.selection.select(row);
 		this.selectDetails(row);
+		this.selectionChanged.emit(row);
 	}
 
 	get filterVisible() {
