@@ -10,9 +10,9 @@
 								matTooltip="Edit Selected {{entity?.singularTitle}}">
 					<mat-icon>edit</mat-icon>
 				</button>
-				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="deleteSelected()"
+				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="deleteSelected()" color="warn"
 								matTooltip="Delete selected {{entity?.singularTitle}}">
-					<mat-icon color="warn">delete</mat-icon>
+					<mat-icon>delete</mat-icon>
 				</button>
 				<span *ngIf="!hideFilter">
 					<mat-button-toggle (change)="toggleFilter()" [checked]="filterVisible"

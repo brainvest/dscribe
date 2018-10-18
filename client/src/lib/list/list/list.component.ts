@@ -280,6 +280,10 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	selectRow(row: any) {
+		if (this.selection.isSelected(row)) {
+			this.selection.deselect(row);
+			return;
+		}
 		if (!this.allowMultiSelect) {
 			this.selection.clear();
 		}
