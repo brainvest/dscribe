@@ -10,6 +10,7 @@ import {AddNEditPropertyMetadataModel} from '../models/add-n-edit-property-metad
 import {ConfirmationDialogComponent} from '../../common/confirmation-dialog/confirmation-dialog.component';
 import {PropertyInfoModel} from '../models/property-info-model';
 import {ReleaseMetadataSettingsComponent} from '../release-metadata-settings/release-metadata-settings.component';
+import {DscribeService} from '../../dscribe.service';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -36,21 +37,19 @@ export class MetadataManagementComponent implements OnInit {
 	@ViewChild('entitiesPaginator') entitiesPaginator: MatPaginator;
 	@ViewChild('propertiesPaginator') propertiesPaginator: MatPaginator;
 
-	constructor(
-		private apiClient: MetadataManagementApiClient,
-		private dialog: MatDialog) {
-		console.log(123);
+	constructor(private apiClient: MetadataManagementApiClient, private dialog: MatDialog,
+							private dscribeService: DscribeService) {
 	}
 
 	ngOnInit() {
 		this.entitiesDataSource.paginator = this.entitiesPaginator;
 		this.propertiesDataSource.paginator = this.propertiesPaginator;
 		this.entitiesAreLoading = true;
-		this.apiClient.getBasicInfo()
-			.subscribe(data => {
+		this.dscribeService.appInstance$.subscribe(() =>
+			this.apiClient.getBasicInfo().subscribe(data => {
 				this.basicInfo = data;
 				this.refreshEntities();
-			});
+			}));
 	}
 
 	refreshEntities() {

@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatPaginator, MatSort} from '@angular/material';
-import {MetadataService} from '../../common/services/metadata.service';
 import {DataHandlerService} from '../../common/services/data-handler.service';
 import {EntityMetadata} from '../../metadata/entity-metadata';
 import {catchError, map, startWith, switchMap} from 'rxjs/operators';
@@ -65,8 +64,7 @@ export class ListComponent implements OnInit, OnChanges {
 	private customTemplate: { component: Type<any>; options?: any };
 	filterCommands: DscribeCommand[];
 
-	constructor(private metadataService: MetadataService, private dataHandler: DataHandlerService,
-							private dialog: MatDialog, private dscribeService: DscribeService) {
+	constructor(private dataHandler: DataHandlerService, private dialog: MatDialog, private dscribeService: DscribeService) {
 		this.selection.changed.subscribe(x => {
 			if (x.added.length === 1) {
 				this.selectDetails(x.added[0]);

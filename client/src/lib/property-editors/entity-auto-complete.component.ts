@@ -5,7 +5,6 @@ import {Observable} from 'rxjs';
 import {DataHandlerService} from '../common/services/data-handler.service';
 import {PropertyMetadata} from '../metadata/property-metadata';
 import {map, mergeMap, share, startWith} from 'rxjs/operators';
-import {MetadataService} from '../common/services/metadata.service';
 import {EntityMetadata} from '../metadata/entity-metadata';
 import {ListAddNEditDialogComponent} from '../list/list-add-n-edit-dialog/list-add-n-edit-dialog.component';
 import {AddNEditResult} from '../common/models/add-n-edit-result';
@@ -108,10 +107,10 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 				return;
 			}
 			this.dataHandler.getName(this.property.entityTypeName, data.selectedRow.id)
-				.subscribe(x => {
+				.subscribe(y => {
 					this.selectionChange({
 						id: data.selectedRow.id,
-						displayName: x
+						displayName: y
 					});
 				});
 		});
@@ -156,8 +155,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 		<mat-dialog-actions>
 			<button mat-raised-button color="primary" (click)="doneClicked()">تایید</button>
 		</mat-dialog-actions>
-	`,
-	providers: [MetadataService]
+	`
 })
 export class AutoCompleteMoreDialogComponent {
 	inputs: {

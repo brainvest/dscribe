@@ -30,15 +30,13 @@ export class AddNEditComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.metadataService.getMetadata()
-			.getTypeByName(this.entityType)
-			.subscribe(
-				metadata => {
-					this.entityMetadata = metadata;
-					this.createPropertyEditors();
-				},
-				error => console.log(error)
-			);
+		this.metadataService.getTypeByName(this.entityType).subscribe(
+			metadata => {
+				this.entityMetadata = metadata;
+				this.createPropertyEditors();
+			},
+			error => console.log(error)
+		);
 	}
 
 	private createPropertyEditors() {

@@ -9,17 +9,17 @@ import {DataTypeCardComponent} from './custom-templates/data-type-card/data-type
 import {MatButtonModule, MatCardModule} from '@angular/material';
 
 @NgModule({
-	declarations: [
-		AppComponent,
-		AuthCallbackComponent,
-		DataTypeCardComponent
-	],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
 		DscribeModule,
 		MatCardModule,
 		MatButtonModule
+	],
+	declarations: [
+		AppComponent,
+		AuthCallbackComponent,
+		DataTypeCardComponent
 	],
 	entryComponents: [
 		DataTypeCardComponent
