@@ -1,5 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {AddNEditResult} from '../../common/models/add-n-edit-result';
 
 @Component({
 	selector: 'dscribe-list-add-n-edit-dialog',
@@ -13,11 +14,11 @@ export class ListAddNEditDialogComponent {
 		console.log(data);
 	}
 
-	afterEntitySaved() {
-		this.dialogRef.close('saved');
+	afterEntitySaved(result: AddNEditResult) {
+		this.dialogRef.close(result);
 	}
 
 	canceledByUser() {
-		this.dialogRef.close('canceled');
+		this.dialogRef.close(null);
 	}
 }

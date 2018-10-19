@@ -6,6 +6,7 @@ import {MetadataService} from '../common/services/metadata.service';
 import {DataHandlerService} from '../common/services/data-handler.service';
 import {KnownFacets} from '../metadata/facets/known-facet';
 import {EntityBase} from '../common/models/entity-base';
+import {AddNEditResult} from '../common/models/add-n-edit-result';
 
 @Component({
 	selector: 'dscribe-add-n-edit',
@@ -19,7 +20,7 @@ export class AddNEditComponent implements OnInit {
 	@Input() action: string;
 	@Input() entityType: string;
 	@Input() master: MasterReference;
-	@Output() entitySaved = new EventEmitter<string>();
+	@Output() entitySaved = new EventEmitter<AddNEditResult>();
 	@Output() canceled = new EventEmitter();
 
 	properties: PropertyMetadata[];
@@ -66,8 +67,8 @@ export class AddNEditComponent implements OnInit {
 		}
 	}
 
-	private afterEntitySaved(action: string) {
-		this.entitySaved.emit(action);
+	private afterEntitySaved(action: string, entity: any) {
+		this.entitySaved.emit(new AddNEditResult(action, entity));
 	}
 
 	saveEntity() {
@@ -105,7 +106,7 @@ export class AddNEditComponent implements OnInit {
 				}
 			}
 		}
-		this.afterEntitySaved(action);
+		this.afterEntitySaved(action, res);
 	}
 
 }

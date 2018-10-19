@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatPaginator, MatSort} from '@angular/material';
 import {MetadataService} from '../../common/services/metadata.service';
 import {DataHandlerService} from '../../common/services/data-handler.service';
@@ -42,14 +42,15 @@ export class ListComponent implements OnInit, OnChanges {
 	@Input() entity: EntityMetadata;
 	@Input() master: MasterReference;
 	@Input() hideFilter: boolean;
+	@Output() selectionChanged = new EventEmitter<any>();
 
 	detailLists?: MasterReference[];
-	displayedColumns = ['select'];
+	displayedColumns = [];
 	columns: ListColumn[] = [];
 	data = [];
 	totalCount = 0;
 	private displayedEntityType: string;
-	isLoadingResults = true;
+	isLoadingResults = false;
 	isDataConnected = false;
 	userRefresh: EventEmitter<null> = new EventEmitter<null>();
 	pageSize = 10;
@@ -108,7 +109,7 @@ export class ListComponent implements OnInit, OnChanges {
 	createColumns(entity: EntityMetadata) {
 		this.detailLists = [];
 		this.columns = [];
-		this.displayedColumns = ['select'];
+		this.displayedColumns = [];
 		for (const propertyName in entity.properties) {
 			if (!entity.properties.hasOwnProperty(propertyName)) {
 				continue;
@@ -177,6 +178,8 @@ export class ListComponent implements OnInit, OnChanges {
 		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters())).subscribe((data) => {
 			this.totalCount = data;
 			this.userRefresh.emit();
+		}, error => {
+			this.isLoadingResults = false;
 		});
 	}
 
@@ -235,16 +238,13 @@ export class ListComponent implements OnInit, OnChanges {
 		}
 	}
 
-	editRow(row: any) {
-		this.openAddNEditDialog(row, false);
-	}
-
 	openAddNEditDialog(instance: any, isNew: boolean) {
+		const action = isNew ? 'add' : 'edit';
 		const dialogRef = this.dialog.open(ListAddNEditDialogComponent, {
 			width: '800px',
 			data: {
 				entity: instance,
-				action: isNew ? 'add' : 'edit',
+				action: action,
 				entityType: this.entity.name,
 				title: this.entity.singularTitle,
 				master: this.master
@@ -252,11 +252,15 @@ export class ListComponent implements OnInit, OnChanges {
 		});
 		dialogRef.afterClosed().subscribe(
 			result => {
-				if (result === 'saved') {
+				if (result && result.action === action) {
 					this.refreshData();
 				}
 			}
 		);
+	}
+
+	editSelectedRow() {
+		this.openAddNEditDialog(this.selection.selected[0], false);
 	}
 
 	deleteSelected() {
@@ -277,12 +281,35 @@ export class ListComponent implements OnInit, OnChanges {
 		);
 	}
 
-	toggleFilter() {
-		if (this.filterLambda) {
-			this.filterLambda = null;
-		} else {
-			this.filterLambda = new LambdaFilterNode(null, this.entity, false);
+	selectRow(row: any) {
+		if (this.selection.isSelected(row)) {
+			this.selection.deselect(row);
+			this.selectionChanged.emit(null);
+			return;
 		}
+		if (!this.allowMultiSelect) {
+			this.selection.clear();
+		}
+		this.selection.select(row);
+		this.selectDetails(row);
+		this.selectionChanged.emit(row);
+	}
+
+	get filterVisible() {
+		return !!this.filterLambda;
+	}
+
+	set filterVisible(value) {
+		if (value) {
+			this.filterLambda = new LambdaFilterNode(null, this.entity, false);
+		} else {
+			this.filterLambda = null;
+			this.userDefinedFilter = null;
+		}
+	}
+
+	toggleFilter() {
+		this.filterVisible = !this.filterVisible;
 	}
 
 	getCustomTemplateWidth(): string {
@@ -296,14 +323,7 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	shouldDisplayCommand(command: DscribeCommand) {
-		return command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
+		return !command.displayPredicate || command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
 	}
 
-	customTemplateSelected(instance: any) {
-		if (!this.allowMultiSelect) {
-			this.selection.clear();
-		}
-		this.selection.select(instance);
-		this.selectDetails(instance);
-	}
 }

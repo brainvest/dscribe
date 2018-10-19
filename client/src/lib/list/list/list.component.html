@@ -1,36 +1,44 @@
-<mat-toolbar *ngIf="!master" color="primary" class="page-header">
-	<h2 *ngIf="entity" class="page-title">{{entity.name}}</h2>
-	<div class="flex-spacer"></div>
-</mat-toolbar>
-
 <div class="page-content">
 	<div class="table mat-elevation-z4">
 		<div class="table-actions">
-			<ng-template #newBtn>
-				<button mat-raised-button (click)="addNew()" color="primary">New</button>
-			</ng-template>
-			<button color="warn" *ngIf="selection.hasValue(); else newBtn" mat-raised-button (click)="deleteSelected()">
-				Delete
-			</button>
-		</div>
-
-		<div class="filter" *ngIf="!hideFilter">
-			<div class="filter__summary">
-				<button mat-stroked-button (click)="toggleFilter()">{{filterLambda ? 'Hide' : 'Show'}} Filters</button>
-				<ng-container *ngFor="let command of filterCommands">
-					<button *ngIf="shouldDisplayCommand(command)" mat-stroked-button
+			<span>{{entity?.pluralTitle || entity?.name}}</span>
+			<div>
+				<button mat-icon-button (click)="addNew()" color="primary" matTooltip="Add New {{entity?.singularTitle}}">
+					<mat-icon>add</mat-icon>
+				</button>
+				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="editSelectedRow()" color="primary"
+								matTooltip="Edit Selected {{entity?.singularTitle}}">
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="deleteSelected()" color="warn"
+								matTooltip="Delete selected {{entity?.singularTitle}}">
+					<mat-icon>delete</mat-icon>
+				</button>
+				<span *ngIf="!hideFilter">
+					<mat-button-toggle (change)="toggleFilter()" [checked]="filterVisible"
+														 matTooltip="{{filterVisible ? 'Hide' : 'Show'}} Filter"><mat-icon>filter_list</mat-icon></mat-button-toggle>
+					<ng-container *ngFor="let command of filterCommands">
+					<button *ngIf="shouldDisplayCommand(command)"
+									matTooltip="{{command.title}}"
+									mat-icon-button
 									(click)="callFilterCommand(command)">
-						{{command.title}}
+						<mat-icon *ngIf="command.iconName">{{command.iconName}}</mat-icon>
+						<span *ngIf="!command.iconName">{{command.title}}</span>
 					</button>
 				</ng-container>
-				<div class="flex-spacer"></div>
-				<button mat-stroked-button color="primary" (click)="applyFilter()">Apply</button>
+				</span>
 			</div>
+		</div>
+
+		<div class="filter" *ngIf="filterVisible">
 			<div class="filter__content" *ngIf="filterLambda" style="margin-bottom: 0;">
 				<div class="manipulation-section__content">
 					<dscribe-filter-node [node]="filterLambda"></dscribe-filter-node>
 				</div>
 			</div>
+			<button mat-icon-button color="accent" (click)="applyFilter()" matTooltip="Apply Filter">
+				<mat-icon>done_outline</mat-icon>
+			</button>
 		</div>
 
 		<div class="list-container">
@@ -41,14 +49,14 @@
 				<ng-container *ngSwitchCase="'card'">
 					<div style="display: flex; flex-wrap: wrap">
 						<dscribe-custom-template-host [ngStyle]="{'width': getCustomTemplateWidth()}" style="margin: 24px;"
-																					*ngFor="let instance of data" (select)="customTemplateSelected(instance)"
+																					*ngFor="let instance of data" (select)="selectRow(instance)"
 																					[isSelected]="selection.isSelected(instance)"
 																					[data]="instance" [entityTypeName]="entity.name">
 
 						</dscribe-custom-template-host>
 					</div>
 				</ng-container>
-				<dscribe-table-template *ngSwitchDefault (rowClick)="editRow($event)" [data]="data" [columns]="columns"
+				<dscribe-table-template *ngSwitchDefault (rowClick)="selectRow($event)" [data]="data" [columns]="columns"
 																[displayedColumns]="displayedColumns" [selection]="selection">
 				</dscribe-table-template>
 			</ng-container>

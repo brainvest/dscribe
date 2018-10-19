@@ -40,7 +40,8 @@ namespace Brainvest.Dscribe.Runtime
 				InstanceName = instance.Name,
 				Provider = instance.DatabaseProviderId,
 				ConnectionString = instance.DataConnectionString,
-				MigrateDatabase = instance.MigrateDatabase
+				MigrateDatabase = instance.MigrateDatabase,
+				GeneratedCodeNamespace = instance.GeneratedCodeNamespace
 			};
 
 			var bridge = new BusinessAssemblyBridge(

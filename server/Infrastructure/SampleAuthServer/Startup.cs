@@ -4,6 +4,7 @@ using Brainvest.Dscribe.Security.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,10 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 					.AllowAnyOrigin()
 					.AllowAnyHeader()));
 
+			foreach (var pair in Configuration.AsEnumerable())
+			{
+				Console.WriteLine($"{pair.Key}:{pair.Value}");
+			}
 
 			services.Configure<CookiePolicyOptions>(options =>
 			{
@@ -67,6 +72,9 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			services.AddScoped<IEmailSender, FakeEmailSender>();
 
 			var clients = Configuration.GetSection("Clients").Get<IEnumerable<ClientInfo>>();
+
+			services.Configure<ConfigModel>(Configuration.GetSection("Config"));
+
 			services.AddIdentityServer(options =>
 			{
 				options.UserInteraction.LoginUrl = "/Identity/Account/Login";
@@ -98,6 +106,11 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			//app.UseHttpsRedirection();
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
+
+			app.UseForwardedHeaders(new ForwardedHeadersOptions
+			{
+				ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+			});
 
 			app.UseIdentityServer();
 

@@ -13,7 +13,7 @@ import {DscribeService} from '../dscribe.service';
 })
 export class NavigationComponent implements OnInit {
 	entities: EntityMetadata[];
-	mainUrls = ['main', 'entity', 'administration'];
+	mainUrls = ['entity', 'administration'];
 	sideNavOpen = true;
 	appInstances: AppInstanceInfoModel[] = [];
 	selectedAppInstance: AppInstanceInfoModel;
@@ -25,19 +25,10 @@ export class NavigationComponent implements OnInit {
 	ngOnInit() {
 		this.navigate(this.mainUrls[0]);
 
-		this.httpClient.post<AppInstanceInfoModel[]>('/api/AppManagement/getAppInstancesInfo', null)
+		this.httpClient.post<AppInstanceInfoModel[]>(this.config.url('api/AppManagement/getAppInstancesInfo'), null)
 			.subscribe(apps => {
 				this.appInstances = apps;
-				this.selectedAppInstance = apps[0];
-				this.config.appInstance = apps[0];
-				this.metadata.getMetadata()
-					.getAllTypes()
-					.subscribe(entities => {
-						this.entities = entities;
-						if (this.entities && this.entities.length) {
-							this.mainUrls[1] = 'entity/' + this.entities[0].name;
-						}
-					});
+				this.appInstanceSelected(apps[0]);
 			});
 	}
 
@@ -53,7 +44,8 @@ export class NavigationComponent implements OnInit {
 			.subscribe(entities => {
 				this.entities = entities;
 				if (this.entities && this.entities.length) {
-					this.mainUrls[1] = 'entity/' + this.entities[0].name;
+					this.mainUrls[0] = 'entity/' + this.entities[0].name;
+					this.router.navigateByUrl(this.mainUrls[0]);
 				}
 			});
 	}
