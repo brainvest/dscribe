@@ -22,7 +22,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 		public CodeDomBusinessCode CreateCode(IMetadataCache cache, IInstanceInfo instanceInfo)
 		{
 			var compileUnit = new CodeCompileUnit();
-			var codeNamespace = new CodeNamespace($"Brainvest.Dscribe{instanceInfo.InstanceName}.Business");
+			var codeNamespace = new CodeNamespace(instanceInfo.GeneratedCodeNamespace ?? $"Brainvest.Dscribe{instanceInfo.InstanceName}.Business");
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IDisposable).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(DbContext).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IBusinessRepositoryFactory).Namespace));
@@ -35,7 +35,10 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			foreach (var type in cache)
 			{
 				AddTypeToDbContext(type, codeDbContext);
-				var codeType = new CodeTypeDeclaration(type.Name);
+				var codeType = new CodeTypeDeclaration(type.Name)
+				{
+					IsPartial = true
+				};
 				if (!string.IsNullOrWhiteSpace(type.SchemaName) || !string.IsNullOrWhiteSpace(type.TableName))
 				{
 					if (string.IsNullOrWhiteSpace(type.SchemaName))
@@ -86,14 +89,17 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 					{
 						snippet.Text += $"		[ForeignKey(\"{property.ForeignKey.Name}\")]\n";
 					}
-					snippet.Text += $"		public {dataType} {property.Name} {{ get; set; }}";
+					snippet.Text += $"		public virtual {dataType} {property.Name} {{ get; set; }}";
 					codeType.Members.Add(snippet);
 				}
 				codeNamespace.Types.Add(codeType);
 			}
-			var factoryCode = new CodeTypeDeclaration("DbContextFactory");
+			var factoryCode = new CodeTypeDeclaration("DbContextFactory")
+			{
+				IsPartial = true
+			};
 			factoryCode.BaseTypes.Add($"IBusinessRepositoryFactory");
-			factoryCode.Members.Add(new CodeSnippetTypeMember("		public IDisposable GetDbContext(DbContextOptions options){ return new BusinessDbContext(options); }"));
+			factoryCode.Members.Add(new CodeSnippetTypeMember("		public virtual IDisposable GetDbContext(DbContextOptions options){ return new BusinessDbContext(options); }"));
 			factoryCode.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(ExportAttribute)),
 				new CodeAttributeArgument(new CodeSnippetExpression("typeof(IBusinessRepositoryFactory)"))));
 			codeNamespace.Types.Add(factoryCode);
@@ -105,14 +111,17 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 		{
 			var snippet = new CodeSnippetTypeMember
 			{
-				Text = $"		public DbSet<{type.Name}> {type.TableName ?? type.Name.Pluralize()} {{ get; set; }}"
+				Text = $"		public virtual DbSet<{type.Name}> {type.TableName ?? type.Name.Pluralize()} {{ get; set; }}"
 			};
 			codeDbContext.Members.Add(snippet);
 		}
 
 		private static CodeTypeDeclaration CreateDbContextCode()
 		{
-			var codeDbContext = new CodeTypeDeclaration("BusinessDbContext");
+			var codeDbContext = new CodeTypeDeclaration("BusinessDbContext")
+			{
+				IsPartial = true
+			};
 			codeDbContext.BaseTypes.Add(new CodeTypeReference(typeof(DbContext)));
 			var constructor = new CodeConstructor
 			{

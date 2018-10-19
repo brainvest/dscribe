@@ -61,7 +61,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 			);
 			modelBuilder.Entity<EntityGeneralUsageCategory>().HasData(
 				new EntityGeneralUsageCategory { Id = 1, Name = "WorkingData" },
-				new EntityGeneralUsageCategory { Id = 2, Name = "BasicInfo" }
+				new EntityGeneralUsageCategory { Id = 2, Name = "BasicInfo" },
+				new EntityGeneralUsageCategory { Id = 3, Name = "Model" }
 			);
 			modelBuilder.Entity<FacetType>().HasData(
 				new FacetType { Id = FacetDataType.Bool, Identifier = "bool", Name = "Boolean" },

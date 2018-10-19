@@ -8,5 +8,6 @@ namespace Brainvest.Dscribe.Abstractions
 		public DatabaseProviderEnum Provider { get; set; }
 		public string ConnectionString { get; set; }
 		public bool MigrateDatabase { get; set; }
+		public string GeneratedCodeNamespace { get; set; }
 	}
 }
