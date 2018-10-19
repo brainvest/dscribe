@@ -239,11 +239,12 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	openAddNEditDialog(instance: any, isNew: boolean) {
+		const action = isNew ? 'add' : 'edit';
 		const dialogRef = this.dialog.open(ListAddNEditDialogComponent, {
 			width: '800px',
 			data: {
 				entity: instance,
-				action: isNew ? 'add' : 'edit',
+				action: action,
 				entityType: this.entity.name,
 				title: this.entity.singularTitle,
 				master: this.master
@@ -251,7 +252,7 @@ export class ListComponent implements OnInit, OnChanges {
 		});
 		dialogRef.afterClosed().subscribe(
 			result => {
-				if (result === 'saved') {
+				if (result && result.action === action) {
 					this.refreshData();
 				}
 			}
