@@ -10,6 +10,7 @@ import { AddNEditPropertyMetadataModel } from '../models/add-n-edit-property-met
 import { ConfirmationDialogComponent } from '../../common/confirmation-dialog/confirmation-dialog.component';
 import { PropertyInfoModel } from '../models/property-info-model';
 import { ReleaseMetadataSettingsComponent } from '../release-metadata-settings/release-metadata-settings.component';
+import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -37,9 +38,8 @@ export class MetadataManagementComponent implements OnInit {
 
 	constructor(
 		private apiClient: MetadataManagementApiClient,
-		private dialog: MatDialog) {
-		console.log(123);
-	}
+		private dialog: MatDialog,
+		private snackbarService: SnackBarService) { }
 
 	ngOnInit() {
 		this.entitiesDataSource.paginator = this.entitiesPaginator;
@@ -51,6 +51,7 @@ export class MetadataManagementComponent implements OnInit {
 					this.basicInfo = data;
 					this.refreshEntities();
 				}, (errors: any) => {
+					this.snackbarService.open(errors);
 				});
 	}
 
@@ -60,6 +61,7 @@ export class MetadataManagementComponent implements OnInit {
 				this.entitiesDataSource.data = this.entities = entities;
 				this.entitiesAreLoading = false;
 			}, (errors: any) => {
+				this.snackbarService.open(errors);
 			});
 	}
 
@@ -87,6 +89,7 @@ export class MetadataManagementComponent implements OnInit {
 				this.propertiesDataSource.data = this.properties = props;
 				this.propertiesAreLoading = false;
 			}, (errors: any) => {
+				this.snackbarService.open(errors);
 			});
 	}
 
@@ -142,6 +145,7 @@ export class MetadataManagementComponent implements OnInit {
 						.subscribe(() => {
 							this.refreshEntities();
 						}, (errors: any) => {
+							this.snackbarService.open(errors);
 						});
 				}
 			});
@@ -158,6 +162,7 @@ export class MetadataManagementComponent implements OnInit {
 					this.refreshEntities();
 				}
 			}, (errors: any) => {
+				this.snackbarService.open(errors);
 			}
 		);
 	}
@@ -176,6 +181,7 @@ export class MetadataManagementComponent implements OnInit {
 			.subscribe(property => {
 				this.openAddNEditPropertyDialog(property, false);
 			}, (errors: any) => {
+				this.snackbarService.open(errors);
 			});
 	}
 
@@ -186,14 +192,16 @@ export class MetadataManagementComponent implements OnInit {
 		ConfirmationDialogComponent.Ask(this.dialog, 'Are you sure you want to delete this property?', 'This action cannot be undone.')
 			.subscribe(x => {
 				if (x) {
-					this.apiClient.deleteProperty(this.selectedProperty)
-						.subscribe(
-							() => {
-								this.refreshProperties();
-							},
-							(errors: any) => {
-							});
+					this.apiClient.deleteProperty(this.selectedProperty).subscribe(
+						() => {
+							this.refreshProperties();
+						},
+						(errors: any) => {
+							this.snackbarService.open(errors);
+						});
 				}
+			}, (errors: any) => {
+				this.snackbarService.open(errors);
 			});
 	}
 
@@ -208,7 +216,8 @@ export class MetadataManagementComponent implements OnInit {
 				if (result !== undefined) {
 					this.refreshProperties();
 				}
-			}, (errors: any) => {
+			},  (errors: any) => {
+				this.snackbarService.open(errors);
 			}
 		);
 	}
@@ -227,7 +236,8 @@ export class MetadataManagementComponent implements OnInit {
 				} else {
 					alert('errors occured please see the validation errors');
 				}
-			}, (errors: any) => {
+			},  (errors: any) => {
+				this.snackbarService.open(errors);
 			});
 	}
 }

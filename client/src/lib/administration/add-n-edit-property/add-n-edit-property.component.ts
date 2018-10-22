@@ -8,6 +8,7 @@ import {AddNEditEntityComponent} from '../add-n-edit-entity/add-n-edit-entity.co
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {MetadataManagementApiClient} from '../metadata-management-api-client';
 import {PropertyInfoModel} from '../models/property-info-model';
+import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-add-n-edit-property',
@@ -26,7 +27,8 @@ export class AddNEditPropertyComponent implements OnInit {
 	constructor(
 		private dialogRef: MatDialogRef<AddNEditEntityComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: AddNEditPropertyComponentData,
-		private apiClient: MetadataManagementApiClient) {
+		private apiClient: MetadataManagementApiClient,
+		private snackbarService: SnackBarService) {
 		this.property = data.property;
 		this.basicInfo = data.basicInfo;
 		this.entities = data.entities;
@@ -76,7 +78,11 @@ export class AddNEditPropertyComponent implements OnInit {
 		const request = this.data.isNew ?
 			this.apiClient.addProperty(this.property) :
 			this.apiClient.editProperty(this.property);
-		request.subscribe(result => this.dialogRef.close('saved'));
+		request.subscribe((result : any) => {
+			this.dialogRef.close('saved')
+		},(errors: any) => {
+			this.snackbarService.open(errors);
+		});
 	}
 
 	cancel() {

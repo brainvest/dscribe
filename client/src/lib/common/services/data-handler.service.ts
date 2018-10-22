@@ -153,23 +153,19 @@ export class DataHandlerService {
 	}
 
 	countByFilter(request: EntityListRequest): Observable<number> {
-		return this.http.post<number>(this.filterCountAPI , request.getRequestObject())
-			;
+		return this.http.post<number>(this.filterCountAPI , request.getRequestObject());
 	}
 
 	getByFilter(request: EntityListRequest): Observable<EntityBase[]> {
-		return this.http.post<EntityBase[]>(this.filterAPI , request.getRequestObject())
-			;
+		return this.http.post<EntityBase[]>(this.filterAPI , request.getRequestObject());
 	}
 
 	getGroupCount(request: GroupListRequest): Observable<number> {
-		return this.http.post<number>(this.groupCountAPI, request.getRequestObject())
-			;
+		return this.http.post<number>(this.groupCountAPI, request.getRequestObject());
 	}
 
 	getGrouped(request: GroupListRequest): Observable<any[]> {
-		return this.http.post<any[]>(this.groupAPI, request.getRequestObject())
-			;
+		return this.http.post<any[]>(this.groupAPI, request.getRequestObject());
 	}
 
 	manageEntity(entity: EntityBase, entityType: string, action: string): Observable<EntityBase> {

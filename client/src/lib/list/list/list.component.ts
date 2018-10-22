@@ -27,6 +27,7 @@ import { DscribeFeatureArea } from '../../models/dscribe-feature-area.enum';
 import { DscribeCommand } from '../../models/dscribe-command';
 import { DscribeCommandCallbackInput } from '../../models/dscribe-command-callback-input';
 import { DscribeCommandDisplayPredicate } from '../../models/dscribe-command-display-predicate';
+import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-list',
@@ -69,11 +70,14 @@ export class ListComponent implements OnInit, OnChanges {
 		private metadataService: MetadataService,
 		private dataHandler: DataHandlerService,
 		private dialog: MatDialog,
-		private dscribeService: DscribeService) {
-		this.selection.changed.subscribe(x => {
+		private dscribeService: DscribeService,
+		private snackbarService: SnackBarService) {
+		this.selection.changed.subscribe((x: any) => {
 			if (x.added.length === 1) {
 				this.selectRow(x.added[0]);
 			}
+		}, (errors: any) => {
+			this.snackbarService.open(errors);
 		});
 	}
 
@@ -85,6 +89,7 @@ export class ListComponent implements OnInit, OnChanges {
 					x.featureAreas === DscribeFeatureArea.Filter || x.featureAreas.includes(DscribeFeatureArea.Filter)
 				);
 			}, (errors: any) => {
+				this.snackbarService.open(errors);
 			});
 	}
 
@@ -185,10 +190,11 @@ export class ListComponent implements OnInit, OnChanges {
 		this.connectData();
 		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters()))
 			.subscribe(
-				(data) => {
+				(data : any) => {
 					this.totalCount = data;
 					this.userRefresh.emit();
 				}, (errors: any) => {
+					this.snackbarService.open(errors);
 				});
 	}
 
@@ -217,11 +223,16 @@ export class ListComponent implements OnInit, OnChanges {
 					this.isLoadingResults = false;
 					return data;
 				}),
-				catchError((errors: any[]) => {
+				catchError((errors: any) => {
+					this.snackbarService.open(errors);
 					this.isLoadingResults = false;
 					return of([]);
 				})
-			).subscribe(data => this.data = data);
+			).subscribe((data : any) => {
+				this.data = data
+			}, (errors: any) => {
+				this.snackbarService.open(errors);
+			});
 	}
 
 	onMasterChanged() {
@@ -268,10 +279,12 @@ export class ListComponent implements OnInit, OnChanges {
 			}
 		});
 		dialogRef.afterClosed().subscribe(
-			result => {
+			(result: any) => {
 				if (result === 'saved') {
 					this.refreshData();
 				}
+			}, (errors: any) => {
+				this.snackbarService.open(errors);
 			}
 		);
 	}
@@ -286,10 +299,12 @@ export class ListComponent implements OnInit, OnChanges {
 			selectedRow: this.selection.selected[0]
 		};
 
-		deleteDialogRef.afterClosed().subscribe((result) => {
+		deleteDialogRef.afterClosed().subscribe((result: any) => {
 			if (result === 'deleted') {
 				this.refreshData();
 			}
+		}, (errors: any) => {
+			this.snackbarService.open(errors);
 		}
 		);
 	}

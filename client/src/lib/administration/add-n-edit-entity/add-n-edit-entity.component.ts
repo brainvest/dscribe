@@ -12,7 +12,7 @@ import { SnackBarService } from '../../common/notifications/snackbar.service';
 })
 export class AddNEditEntityComponent implements OnInit {
 
-	entity: TypeBase;
+	entity: TypeBase = new TypeBase();
 
 	constructor(
 		private dialogRef: MatDialogRef<AddNEditEntityComponent>,
@@ -31,8 +31,8 @@ export class AddNEditEntityComponent implements OnInit {
 			this.apiClient.editEntity(this.entity);
 		request.subscribe((data: any) => {
 			this.dialogRef.close('saved');
-		}, (error: any) => {
-			this.snackbarService.open(error);
+		}, (errors: any) => {
+			this.snackbarService.open(errors);
 		});
 	}
 
