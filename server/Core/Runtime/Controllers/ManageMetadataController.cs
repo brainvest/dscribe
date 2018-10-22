@@ -65,12 +65,11 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
-			var error = AddTypeValidation(model);
-			if (error != null)
-			{
-				return BadRequest(error);
-			}
-
+			//var error = AddTypeValidation(model);
+			//if (error != null)
+			//{
+			//	return BadRequest(error);
+			//}
 			var type = new Entity
 			{
 				BaseEntityId = model.BaseEntityId,

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 {
@@ -8,10 +9,15 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string CodePath { get; set; }
 		public string DisplayNamePath { get; set; }
 		public int Id { get; set; }
+		[Required]
+		[MaxLength(200 , ErrorMessage = "Maximom length of Name is 200")]
 		public string Name { get; set; }
 		public string SchemaName { get; set; }
+		[Required]
 		public string SingularTitle { get; set; }
+		[Required]
 		public string PluralTitle { get; set; }
+		[Required]
 		public int EntityGeneralUsageCategoryId { get; set; }
 	}
 
