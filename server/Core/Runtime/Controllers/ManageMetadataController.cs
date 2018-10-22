@@ -3,6 +3,7 @@ using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ManageMetadata;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
+using Brainvest.Dscribe.Runtime.Validations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,13 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
+
+			var validationMessage = await MetadataValidationLogic.GetTypesValidation(_dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
+			}
+
 			var appTypeId = _implementations.InstanceInfo.AppTypeId;
 			var types = await _dbContext.Entities.OrderBy(x => x.Name)
 					.Where(x => x.AppTypeId == appTypeId)
@@ -65,11 +73,13 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
-			//var error = AddTypeValidation(model);
-			//if (error != null)
-			//{
-			//	return BadRequest(error);
-			//}
+
+			var validationMessage = await MetadataValidationLogic.AddEntityValidation(model, _dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
+			}
+
 			var type = new Entity
 			{
 				BaseEntityId = model.BaseEntityId,
@@ -94,7 +104,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
-			var error = EditTypeValidation(model);
+			var error = await MetadataValidationLogic.EditEntityValidation(model, _dbContext);
 			if (error != null)
 			{
 				return BadRequest(error);
@@ -120,14 +130,17 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
-			//TODO: Handle errors, validate model
+			var validationMessage = await MetadataValidationLogic.DeleteEntityValidation(model, _dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
+			}
 			var type = await _dbContext.Entities.FindAsync(model.Id);
 			_dbContext.Entities.Remove(type);
 			await _dbContext.SaveChangesAsync();
 			return Ok();
 		}
 
-		//Same as above
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable<PropertyMetadataModel>>> GetProperties(PropertyMetadataRequestModel request)
 		{
@@ -135,6 +148,13 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
+
+			var validationMessage = await MetadataValidationLogic.GetPropertiesValidation(request, _dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
+			}
+
 			var properties = await _dbContext.Properties
 					.Where(x => x.EntityId == request.EntityId).OrderBy(x => x.Name)
 					.Select(x => new PropertyMetadataModel
@@ -159,6 +179,13 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
+
+			var validationMessage = await MetadataValidationLogic.GetPropertyForEditValidation(request, _dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
+			}
+
 			var model = await _dbContext.Properties.Select(x => new AddNEditPropertyMetadataModel
 			{
 				DataTypeEntityId = x.DataTypeEntityId,
@@ -196,9 +223,15 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
+
+			var validationMessage = await MetadataValidationLogic.AddPropertyValidation(model, _dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
+			}
 			using (var transaction = await _dbContext.Database.BeginTransactionAsync())
 			{
-				//TODO: Handle errors, validate model
+				// Why Transaction in here ? ( Arash )
 				var property = new Property
 				{
 					DataTypeId = (DataTypeEnum?)model.DataTypeId,
@@ -234,7 +267,12 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
-			//TODO: Handle errors, validate model
+			var validationMessage = await MetadataValidationLogic.EditPropertyValidation(model, _dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
+			}
+
 			var property = await _dbContext.Properties.FindAsync(model.Id);
 			property.DataTypeId = (DataTypeEnum?)model.DataTypeId;
 			property.DataTypeEntityId = model.DataTypeEntityId;
@@ -327,7 +365,11 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
-			//TODO: Handle errors, validate model
+			var validationMessage = await MetadataValidationLogic.DeletePropertyValidation(model, _dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
+			}
 			var property = await _dbContext.Properties.FindAsync(model.Id);
 			_dbContext.Properties.Remove(property);
 			await _dbContext.SaveChangesAsync();
@@ -340,6 +382,12 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
 				return Unauthorized();
+			}
+
+			var validationMessage = await MetadataValidationLogic.GetBasicInfoValidation(_dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
 			}
 			var result = new MetadataBasicInfoModel
 			{
@@ -408,6 +456,12 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
+
+			var validationMessage = await MetadataValidationLogic.GetTypeFacetsValidation(_dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
+			}
 			var result = new LocalFacetsModel()
 			{
 				LocalFacets = (await _dbContext.EntityFacetValues.Select(v => new
@@ -429,6 +483,13 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
 				return Unauthorized();
+			}
+
+
+			var validationMessage = await MetadataValidationLogic.GetPropertyFacetsValidation(request,_dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
 			}
 			var result = new LocalFacetsModel()
 			{
@@ -452,6 +513,12 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
 				return Unauthorized();
+			}
+
+			var validationMessage = await MetadataValidationLogic.SaveTypeLocalFacetValueValidation(request, _dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
 			}
 			var existing = await _dbContext.EntityFacetValues
 				.Where(x =>
@@ -488,6 +555,11 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
 				return Unauthorized();
+			}
+			var validationMessage = await MetadataValidationLogic.SavePropertyLocalFacetValueValidation(request, _dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
 			}
 			var existing = await _dbContext.PropertyFacetValues
 				.Where(x =>
@@ -526,6 +598,11 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
+			var validationMessage = await MetadataValidationLogic.GetAllPropertyNamesValidation(_dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
+			{
+				return StatusCode(500, validationMessage);
+			}
 			var appTypeId = _implementations.InstanceInfo.AppTypeId;
 			var names = await _dbContext.Properties.Where(x => x.Entity.AppTypeId == appTypeId)
 				.Select(x => new ManageMetadataPropertyInfoModel
@@ -537,35 +614,6 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					OwnerEntityId = x.EntityId
 				}).ToListAsync();
 			return names;
-		}
-
-		private string AddTypeValidation(EntityMetadataModel model)
-		{
-			string error = null;
-			if (string.IsNullOrWhiteSpace(model.Name))
-			{
-				return error = "Name Can't be empty";
-			}
-
-			if (model.Name.Length > 128)
-			{
-				return error = "Table name length should be less than 128 characters.";
-			}
-			return error;
-		}
-
-		private string EditTypeValidation(EntityMetadataModel model)
-		{
-			string error = null;
-			if (string.IsNullOrWhiteSpace(model.Name))
-			{
-				return error = "Name Can't be empty";
-			}
-			if (model.Name.Length > 128)
-			{
-				return error = "Table name length should be less than 128 characters.";
-			}
-			return error;
 		}
 	}
 }

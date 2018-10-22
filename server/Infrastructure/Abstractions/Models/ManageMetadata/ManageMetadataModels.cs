@@ -29,9 +29,12 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public int Id { get; set; }
 		public int? InversePropertyId { get; set; }
 		public bool IsNullable { get; set; }
+		[MaxLength(200 , ErrorMessage = "Maximom length of Name is 200")]
 		public string Name { get; set; }
 		public string Title { get; set; }
+		[Required]
 		public int PropertyGeneralUsageCategoryId { get; set; }
+		[Required]
 		public int OwnerEntityId { get; set; }
 	}
 
