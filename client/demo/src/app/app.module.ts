@@ -19,7 +19,7 @@ import {MatButtonModule, MatCardModule} from '@angular/material';
 	declarations: [
 		AppComponent,
 		AuthCallbackComponent,
-		DataTypeCardComponent
+		DataTypeCardComponent,
 	],
 	entryComponents: [
 		DataTypeCardComponent
