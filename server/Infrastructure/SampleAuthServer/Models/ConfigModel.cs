@@ -6,5 +6,6 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models
 		public string Organization { get; set; }
 		public string Description { get; set; }
 		public bool AllowRegistration { get; set; }
+		public string PathBase { get; set; }
 	}
 }

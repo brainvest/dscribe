@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 
@@ -26,7 +27,6 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 
 		public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddCors(options => options.AddPolicy("AllowAll",
@@ -75,7 +75,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 				options.UserInteraction.LoginUrl = "/Identity/Account/Login";
 				options.UserInteraction.LogoutUrl = "/Identity/Account/Logout";
 			})
-			 .AddDeveloperSigningCredential()
+			.AddDeveloperSigningCredential()
 			 .AddInMemoryPersistedGrants()
 			 .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
 			 .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
@@ -83,8 +83,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			 .AddAspNetIdentity<User>();
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptions<ConfigModel> options, ILogger<Startup> logger)
 		{
 			if (env.IsDevelopment())
 			{
@@ -97,14 +96,22 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			}
 
 			app.UseCors("AllowAll");
-			//app.UseHttpsRedirection();
+			if (!string.IsNullOrWhiteSpace(options.Value.PathBase))
+			{
+				app.UsePathBase(options.Value.PathBase);
+				logger.LogInformation($"Using path {options.Value.PathBase}");
+			}
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
 
-			app.UseForwardedHeaders(new ForwardedHeadersOptions
+			var forwardedHeaderOptions = new ForwardedHeadersOptions
 			{
 				ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-			});
+			};
+			forwardedHeaderOptions.KnownNetworks.Clear();
+			forwardedHeaderOptions.KnownProxies.Clear();
+
+			app.UseForwardedHeaders(forwardedHeaderOptions);
 
 			app.UseIdentityServer();
 
