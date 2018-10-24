@@ -1,8 +1,8 @@
-﻿import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { PropertyMetadata } from '../metadata/property-metadata';
-import { MasterReference } from '../list/models/master-reference';
-import { HasIdName } from '../common/models/has-id-name';
-import { DataHandlerService } from '../common/services/data-handler.service';
+﻿import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {PropertyMetadata} from '../metadata/property-metadata';
+import {MasterReference} from '../list/models/master-reference';
+import {HasIdName} from '../common/models/has-id-name';
+import {DataHandlerService} from '../common/services/data-handler.service';
 
 @Component({
 	selector: 'dscribe-entity-list-editor',
@@ -16,18 +16,16 @@ export class EntityListEditorComponent implements OnInit, OnChanges {
 
 	master: MasterReference;
 	items: HasIdName[];
-	constructor(
-		private dataHandlerService: DataHandlerService) {
+
+	constructor(private dataHandlerService: DataHandlerService) {
 	}
 
 
 	ngOnInit(): void {
-		this.dataHandlerService.getIdAndNames(this.property.entityTypeName).subscribe(
-			(res: any) => {
+		this.dataHandlerService.getIdAndNames(this.property.entityTypeName).subscribe(res => {
 				this.items = res;
 			},
-			(errors: any) => {
-			}
+			error => console.error(error)
 		);
 		// TODO: Will cause exception
 		this.master = new MasterReference(this.entity, this.property, null);

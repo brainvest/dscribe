@@ -1,50 +1,38 @@
-import {
-	Component,
-	EventEmitter,
-	Input,
-	OnChanges,
-	OnInit,
-	Output,
-	SimpleChanges,
-	Type,
-	ViewChild,
-	ViewEncapsulation
-} from '@angular/core';
-import { MatDialog, MatPaginator, MatSort } from '@angular/material';
-import { MetadataService } from '../../common/services/metadata.service';
-import { DataHandlerService } from '../../common/services/data-handler.service';
-import { EntityMetadata } from '../../metadata/entity-metadata';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { merge, of } from 'rxjs';
-import { EntityListRequest } from '../../common/models/entity-list-request';
-import { SortItem } from '../../common/models/sort-item';
-import { ListColumn } from '../models/list-column';
-import { KnownFacets } from '../../metadata/facets/known-facet';
-import { MasterReference } from '../models/master-reference';
-import { HasId } from '../../common/models/has-id';
-import { ListAddNEditDialogComponent } from '../list-add-n-edit-dialog/list-add-n-edit-dialog.component';
-import { ListDeleteDialogComponent } from '../list-delete-dialog/list-delete-dialog.component';
-import { LambdaFilterNode } from '../../filtering/models/filter-nodes/lambda-filter-node';
-import { StorageFilterNode } from '../../filtering/models/storage-filter-node';
-import { LambdaHelper } from '../../helpers/lambda-helper';
-import { FilterNode } from '../../filtering/models/filter-nodes/filter-node';
-import { FilterNodeFactory } from '../../filtering/models/filter-node-factory';
-import { SelectionModel } from '@angular/cdk/collections';
-import { DataTypes } from '../../metadata/data-types';
-import { TableTemplateComponent } from '../list-templating/table-template/table-template.component';
-import { EntityTemplateMapper } from '../list-templating/entity-template-mapper';
-import { DscribeService } from '../../dscribe.service';
-import { DscribeFeatureArea } from '../../models/dscribe-feature-area.enum';
-import { DscribeCommand } from '../../models/dscribe-command';
-import { DscribeCommandCallbackInput } from '../../models/dscribe-command-callback-input';
-import { DscribeCommandDisplayPredicate } from '../../models/dscribe-command-display-predicate';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
+import {MatDialog, MatPaginator, MatSort} from '@angular/material';
+import {MetadataService} from '../../common/services/metadata.service';
+import {DataHandlerService} from '../../common/services/data-handler.service';
+import {EntityMetadata} from '../../metadata/entity-metadata';
+import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+import {merge, of} from 'rxjs';
+import {EntityListRequest} from '../../common/models/entity-list-request';
+import {SortItem} from '../../common/models/sort-item';
+import {ListColumn} from '../models/list-column';
+import {KnownFacets} from '../../metadata/facets/known-facet';
+import {MasterReference} from '../models/master-reference';
+import {HasId} from '../../common/models/has-id';
+import {ListAddNEditDialogComponent} from '../list-add-n-edit-dialog/list-add-n-edit-dialog.component';
+import {ListDeleteDialogComponent} from '../list-delete-dialog/list-delete-dialog.component';
+import {LambdaFilterNode} from '../../filtering/models/filter-nodes/lambda-filter-node';
+import {StorageFilterNode} from '../../filtering/models/storage-filter-node';
+import {LambdaHelper} from '../../helpers/lambda-helper';
+import {FilterNode} from '../../filtering/models/filter-nodes/filter-node';
+import {FilterNodeFactory} from '../../filtering/models/filter-node-factory';
+import {SelectionModel} from '@angular/cdk/collections';
+import {DataTypes} from '../../metadata/data-types';
+import {TableTemplateComponent} from '../list-templating/table-template/table-template.component';
+import {EntityTemplateMapper} from '../list-templating/entity-template-mapper';
+import {DscribeService} from '../../dscribe.service';
+import {DscribeFeatureArea} from '../../models/dscribe-feature-area.enum';
+import {DscribeCommand} from '../../models/dscribe-command';
+import {DscribeCommandCallbackInput} from '../../models/dscribe-command-callback-input';
+import {DscribeCommandDisplayPredicate} from '../../models/dscribe-command-display-predicate';
 
 @Component({
 	selector: 'dscribe-list',
 	templateUrl: './list.component.html',
 	styleUrls: ['./list.component.css'],
-	encapsulation: ViewEncapsulation.None,
+	encapsulation: ViewEncapsulation.None
 })
 export class ListComponent implements OnInit, OnChanges {
 	initialSelection = [];
@@ -77,31 +65,22 @@ export class ListComponent implements OnInit, OnChanges {
 	private customTemplate: { component: Type<any>; options?: any };
 	filterCommands: DscribeCommand[];
 
-	constructor(
-		private metadataService: MetadataService,
-		private dataHandler: DataHandlerService,
-		private dialog: MatDialog,
-		private dscribeService: DscribeService,
-		private snackbarService: SnackBarService) {
-		this.selection.changed.subscribe((x: any) => {
+	constructor(private metadataService: MetadataService, private dataHandler: DataHandlerService,
+							private dialog: MatDialog, private dscribeService: DscribeService) {
+		this.selection.changed.subscribe(x => {
 			if (x.added.length === 1) {
 				this.selectDetails(x.added[0]);
 			}
-		}, (errors: any) => {
-			this.snackbarService.open(errors);
 		});
 	}
 
 	ngOnInit() {
 		FilterNode.factory = new FilterNodeFactory();
-		this.dscribeService.getCommands().subscribe(
-			(commands: any) => {
-				this.filterCommands = commands.filter(x =>
-					x.featureAreas === DscribeFeatureArea.Filter || x.featureAreas.includes(DscribeFeatureArea.Filter)
-				);
-			}, (errors: any) => {
-				this.snackbarService.open(errors);
-			});
+		this.dscribeService.getCommands().subscribe(commands => {
+			this.filterCommands = commands.filter(x =>
+				x.featureAreas === DscribeFeatureArea.Filter || x.featureAreas.includes(DscribeFeatureArea.Filter)
+			);
+		});
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -196,15 +175,12 @@ export class ListComponent implements OnInit, OnChanges {
 		this.paginator.pageIndex = 0;
 		this.data = [];
 		this.connectData();
-		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters()))
-			.subscribe(
-				(data: any) => {
-					this.totalCount = data;
-					this.userRefresh.emit();
-				}, (errors: any) => {
-					this.snackbarService.open(errors);
-					this.isLoadingResults = false;
-				});
+		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters())).subscribe((data) => {
+			this.totalCount = data;
+			this.userRefresh.emit();
+		}, error => {
+			this.isLoadingResults = false;
+		});
 	}
 
 	connectData() {
@@ -221,27 +197,18 @@ export class ListComponent implements OnInit, OnChanges {
 					if (this.sort.active) {
 						sort.push(new SortItem(this.sort.active, this.sort.direction === 'desc'));
 					}
-					return this.dataHandler.getByFilter(
-						new EntityListRequest(
-							this.entity.name,
-							this.getCurrentFilters(),
-							this.paginator.pageIndex * this.pageSize,
-							this.pageSize, sort));
+					return this.dataHandler.getByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters(),
+						this.paginator.pageIndex * this.pageSize, this.pageSize, sort));
 				}),
 				map(data => {
 					this.isLoadingResults = false;
 					return data;
 				}),
-				catchError((errors: any) => {
-					this.snackbarService.open(errors);
+				catchError(() => {
 					this.isLoadingResults = false;
 					return of([]);
 				})
-			).subscribe((data: any) => {
-				this.data = data;
-			}, (errors: any) => {
-				this.snackbarService.open(errors);
-			});
+			).subscribe(data => this.data = data);
 	}
 
 	onMasterChanged() {
@@ -284,12 +251,10 @@ export class ListComponent implements OnInit, OnChanges {
 			}
 		});
 		dialogRef.afterClosed().subscribe(
-			(result: any) => {
+			result => {
 				if (result && result.action === action) {
 					this.refreshData();
 				}
-			}, (errors: any) => {
-				this.snackbarService.open(errors);
 			}
 		);
 	}
@@ -308,13 +273,12 @@ export class ListComponent implements OnInit, OnChanges {
 			selectedRow: this.selection.selected[0]
 		};
 
-		deleteDialogRef.afterClosed().subscribe((result: any) => {
-			if (result === 'deleted') {
-				this.refreshData();
+		deleteDialogRef.afterClosed().subscribe((result) => {
+				if (result === 'deleted') {
+					this.refreshData();
+				}
 			}
-		}, (errors: any) => {
-			this.snackbarService.open(errors);
-		});
+		);
 	}
 
 	selectRow(row: any) {
@@ -353,13 +317,13 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	callFilterCommand(command: DscribeCommand) {
-		command.callback(<DscribeCommandCallbackInput<ListComponent>>{
+		command.callback(<DscribeCommandCallbackInput<ListComponent>> {
 			area: DscribeFeatureArea.Filter, sourceComponent: this
 		});
 	}
 
 	shouldDisplayCommand(command: DscribeCommand) {
-		return !command.displayPredicate || command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{ component: this });
+		return !command.displayPredicate || command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
 	}
 
 }

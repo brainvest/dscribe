@@ -1,7 +1,6 @@
-import { Component, Optional } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
-import { DataHandlerService } from '../../common/services/data-handler.service';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
+import {Component, Optional} from '@angular/core';
+import {MatDialogRef} from '@angular/material';
+import {DataHandlerService} from '../../common/services/data-handler.service';
 
 @Component({
 	selector: 'dscribe-list-delete-dialog',
@@ -16,20 +15,15 @@ export class ListDeleteDialogComponent {
 		selectedRow: any
 	};
 
-	constructor(
-		@Optional() public dialogRef: MatDialogRef<ListDeleteDialogComponent>,
-		private snackbarService: SnackBarService,
-		private dataHandler: DataHandlerService) {
+	constructor(@Optional() public dialogRef: MatDialogRef<ListDeleteDialogComponent>,
+							private dataHandler: DataHandlerService) {
 	}
 
 	deleteEntity() {
 		this.dataHandler.deleteEntity(this.inputs.entityType, this.inputs.selectedRow).subscribe(
-			(res: any) => {
-				this.afterDelete(res);
-			},
-			(errors: any) => {
-				this.snackbarService.open(errors);
-			});
+			res => this.afterDelete(res),
+			error => console.log(error)
+		);
 	}
 
 	private afterDelete(res: any) {

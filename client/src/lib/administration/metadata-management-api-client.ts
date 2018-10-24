@@ -1,7 +1,6 @@
-import { catchError } from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import {Observable} from 'rxjs';
 import {PropertyBase} from '../metadata/property-base';
 import {LocalFacetsModel} from '../metadata/facets/local-facet-model';
 import {TypeBase} from '../metadata/entity-base';
@@ -34,8 +33,8 @@ export class MetadataManagementApiClient {
 	private releaseMetadataAPI = this.releaseAPI + 'releaseMetadata';
 	private generateCodeAPI = this.releaseAPI + 'generateCode';
 
-
-	constructor(private http: HttpClient, private dscribeService: DscribeService) {	}
+	constructor(private http: HttpClient, private dscribeService: DscribeService) {
+	}
 
 	addEntity(entity: TypeBase) {
 		return this.http.post<null>(this.addEntityAPI, entity);
@@ -54,8 +53,7 @@ export class MetadataManagementApiClient {
 	}
 
 	getPropertyForEdit(propertyId: number): Observable<AddNEditPropertyMetadataModel> {
-		return this.http.post<AddNEditPropertyMetadataModel>(this.getPropertyForEditAPI, {propertyId: propertyId})
-			;
+		return this.http.post<AddNEditPropertyMetadataModel>(this.getPropertyForEditAPI, {propertyId: propertyId});
 	}
 
 	editProperty(property: AddNEditPropertyMetadataModel) {

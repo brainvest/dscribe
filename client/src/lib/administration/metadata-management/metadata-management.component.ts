@@ -1,16 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MetadataManagementApiClient } from '../metadata-management-api-client';
-import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
-import { TypeBase } from '../../metadata/entity-base';
-import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
-import { PropertyBase } from '../../metadata/property-base';
-import { AddNEditEntityComponent, AddNEditEntityComponentData } from '../add-n-edit-entity/add-n-edit-entity.component';
-import { AddNEditPropertyComponent, AddNEditPropertyComponentData } from '../add-n-edit-property/add-n-edit-property.component';
-import { AddNEditPropertyMetadataModel } from '../models/add-n-edit-property-metadata-model';
-import { ConfirmationDialogComponent } from '../../common/confirmation-dialog/confirmation-dialog.component';
-import { PropertyInfoModel } from '../models/property-info-model';
-import { ReleaseMetadataSettingsComponent } from '../release-metadata-settings/release-metadata-settings.component';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MetadataManagementApiClient} from '../metadata-management-api-client';
+import {MetadataBasicInfoModel} from '../../metadata/metadata-basic-info-model';
+import {TypeBase} from '../../metadata/entity-base';
+import {MatDialog, MatPaginator, MatTableDataSource} from '@angular/material';
+import {PropertyBase} from '../../metadata/property-base';
+import {AddNEditEntityComponent, AddNEditEntityComponentData} from '../add-n-edit-entity/add-n-edit-entity.component';
+import {AddNEditPropertyComponent, AddNEditPropertyComponentData} from '../add-n-edit-property/add-n-edit-property.component';
+import {AddNEditPropertyMetadataModel} from '../models/add-n-edit-property-metadata-model';
+import {ConfirmationDialogComponent} from '../../common/confirmation-dialog/confirmation-dialog.component';
+import {PropertyInfoModel} from '../models/property-info-model';
+import {ReleaseMetadataSettingsComponent} from '../release-metadata-settings/release-metadata-settings.component';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -30,6 +29,7 @@ export class MetadataManagementComponent implements OnInit {
 	propertiesDataSource = new MatTableDataSource<PropertyBase>();
 	selectedProperty: PropertyBase;
 	propertiesAreLoading = false;
+
 	displayedEntityColumns = ['name', 'usage', 'singular', 'plural', 'code', 'displayName'];
 	displayedPropertyColumns = ['name', 'title', 'dataType', 'nullable', 'dataTypeEntity', 'usage', 'foreignKey', 'inverse'];
 
@@ -38,21 +38,19 @@ export class MetadataManagementComponent implements OnInit {
 
 	constructor(
 		private apiClient: MetadataManagementApiClient,
-		private dialog: MatDialog,
-		private snackbarService: SnackBarService) { }
+		private dialog: MatDialog) {
+		console.log(123);
+	}
 
 	ngOnInit() {
 		this.entitiesDataSource.paginator = this.entitiesPaginator;
 		this.propertiesDataSource.paginator = this.propertiesPaginator;
 		this.entitiesAreLoading = true;
 		this.apiClient.getBasicInfo()
-			.subscribe(
-				(data: any) => {
-					this.basicInfo = data;
-					this.refreshEntities();
-				}, (errors: any) => {
-					this.snackbarService.open(errors);
-				});
+			.subscribe(data => {
+				this.basicInfo = data;
+				this.refreshEntities();
+			});
 	}
 
 	refreshEntities() {
@@ -60,13 +58,11 @@ export class MetadataManagementComponent implements OnInit {
 			.subscribe(entities => {
 				this.entitiesDataSource.data = this.entities = entities;
 				this.entitiesAreLoading = false;
-			}, (errors: any) => {
-				this.snackbarService.open(errors);
 			});
 	}
 
 	selectEntity(entity: TypeBase) {
-		if (entity === this.selectedEntity) {
+		if (entity == this.selectedEntity) {
 			return;
 		}
 		this.propertiesDataSource.data = this.properties = [];
@@ -88,8 +84,6 @@ export class MetadataManagementComponent implements OnInit {
 			.subscribe(props => {
 				this.propertiesDataSource.data = this.properties = props;
 				this.propertiesAreLoading = false;
-			}, (errors: any) => {
-				this.snackbarService.open(errors);
 			});
 	}
 
@@ -142,11 +136,7 @@ export class MetadataManagementComponent implements OnInit {
 			.subscribe(x => {
 				if (x) {
 					this.apiClient.deleteEntity(this.selectedEntity)
-						.subscribe(() => {
-							this.refreshEntities();
-						}, (errors: any) => {
-							this.snackbarService.open(errors);
-						});
+						.subscribe(x => this.refreshEntities());
 				}
 			});
 	}
@@ -161,8 +151,6 @@ export class MetadataManagementComponent implements OnInit {
 				if (result !== undefined) {
 					this.refreshEntities();
 				}
-			}, (errors: any) => {
-				this.snackbarService.open(errors);
 			}
 		);
 	}
@@ -180,8 +168,6 @@ export class MetadataManagementComponent implements OnInit {
 		this.apiClient.getPropertyForEdit(this.selectedProperty.id)
 			.subscribe(property => {
 				this.openAddNEditPropertyDialog(property, false);
-			}, (errors: any) => {
-				this.snackbarService.open(errors);
 			});
 	}
 
@@ -192,16 +178,9 @@ export class MetadataManagementComponent implements OnInit {
 		ConfirmationDialogComponent.Ask(this.dialog, 'Are you sure you want to delete this property?', 'This action cannot be undone.')
 			.subscribe(x => {
 				if (x) {
-					this.apiClient.deleteProperty(this.selectedProperty).subscribe(
-						() => {
-							this.refreshProperties();
-						},
-						(errors: any) => {
-							this.snackbarService.open(errors);
-						});
+					this.apiClient.deleteProperty(this.selectedProperty)
+						.subscribe(x => this.refreshProperties());
 				}
-			}, (errors: any) => {
-				this.snackbarService.open(errors);
 			});
 	}
 
@@ -216,8 +195,6 @@ export class MetadataManagementComponent implements OnInit {
 				if (result !== undefined) {
 					this.refreshProperties();
 				}
-			},  (errors: any) => {
-				this.snackbarService.open(errors);
 			}
 		);
 	}
@@ -236,8 +213,6 @@ export class MetadataManagementComponent implements OnInit {
 				} else {
 					alert('errors occured please see the validation errors');
 				}
-			},  (errors: any) => {
-				this.snackbarService.open(errors);
 			});
 	}
 }

@@ -40,7 +40,7 @@ namespace Brainvest.Dscribe.Metadata
 					PluralTitle = x.PluralTitle,
 					DisplayNamePath = x.DisplayNamePath,
 					CodePath = x.CodePath,
-					PrimaryKeyPath = x.Properties?.FirstOrDefault(p => p.GeneralUsageCategoryId == 2)?.Name, //TODO: Unsafe
+					PrimaryKeyPath = x.Properties?.FirstOrDefault(p => p.GeneralUsageCategoryId == 2).Name, //TODO: Unsafe
 					Properties = x.Properties?.Select(p =>
 				new PropertyMetadata
 				{
