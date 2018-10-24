@@ -26,6 +26,6 @@ export class DscribeInterceptor implements HttpInterceptor {
 	}
 
 	private handleError(error: HttpErrorResponse) {
-		return throwError(error.statusText)
+		return throwError(error.statusText);
 	}
 }

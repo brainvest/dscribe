@@ -1,4 +1,15 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit,Output ,SimpleChanges, Type, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+	Component,
+	EventEmitter,
+	Input,
+	OnChanges,
+	OnInit,
+	Output,
+	SimpleChanges,
+	Type,
+	ViewChild,
+	ViewEncapsulation
+} from '@angular/core';
 import { MatDialog, MatPaginator, MatSort } from '@angular/material';
 import { MetadataService } from '../../common/services/metadata.service';
 import { DataHandlerService } from '../../common/services/data-handler.service';
@@ -187,12 +198,12 @@ export class ListComponent implements OnInit, OnChanges {
 		this.connectData();
 		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters()))
 			.subscribe(
-				(data : any) => {
+				(data: any) => {
 					this.totalCount = data;
 					this.userRefresh.emit();
 				}, (errors: any) => {
 					this.snackbarService.open(errors);
-     			this.isLoadingResults = false;
+					this.isLoadingResults = false;
 				});
 	}
 
@@ -226,8 +237,8 @@ export class ListComponent implements OnInit, OnChanges {
 					this.isLoadingResults = false;
 					return of([]);
 				})
-			).subscribe((data : any) => {
-				this.data = data
+			).subscribe((data: any) => {
+				this.data = data;
 			}, (errors: any) => {
 				this.snackbarService.open(errors);
 			});
@@ -348,7 +359,7 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	shouldDisplayCommand(command: DscribeCommand) {
-		return !command.displayPredicate || command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
+		return !command.displayPredicate || command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{ component: this });
 	}
 
 }

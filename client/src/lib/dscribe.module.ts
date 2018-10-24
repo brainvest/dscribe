@@ -47,7 +47,9 @@ import { ComparisonFilterNodeComponent } from './filtering/components/comparison
 import { ConstantFilterNodeComponent } from './filtering/components/constant-filter-node/constant-filter-node.component';
 import { LambdaFilterNodeComponent } from './filtering/components/lambda-filter-node/lambda-filter-node.component';
 import { LogicalFilterNodeComponent } from './filtering/components/logical-filter-node/logical-filter-node.component';
-import { NavigationListFilterNodeComponent } from './filtering/components/navigation-list-filter-node/navigation-list-filter-node.component';
+import {
+	NavigationListFilterNodeComponent
+} from './filtering/components/navigation-list-filter-node/navigation-list-filter-node.component';
 import { PropertyFilterNodeComponent } from './filtering/components/property-filter-node/property-filter-node.component';
 import { FilterTreeManipulator } from './filtering/models/filter-tree-manipulator';
 import { NavigationComponent } from './navigation/navigation.component';

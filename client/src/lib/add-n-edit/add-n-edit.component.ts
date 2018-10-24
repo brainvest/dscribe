@@ -7,7 +7,7 @@ import { DataHandlerService } from '../common/services/data-handler.service';
 import { KnownFacets } from '../metadata/facets/known-facet';
 import { EntityBase } from '../common/models/entity-base';
 import { SnackBarService } from '../common/notifications/snackbar.service';
-import {AddNEditResult} from '../common/models/add-n-edit-result';
+import { AddNEditResult } from '../common/models/add-n-edit-result';
 
 @Component({
 	selector: 'dscribe-add-n-edit',
@@ -79,7 +79,7 @@ export class AddNEditComponent implements OnInit {
 	saveEntity() {
 		this.dataHandler.manageEntity(this.entity, this.entityType, this.action).subscribe(
 			(res: any) => {
-				this.processSaveResponse(res, this.action)
+				this.processSaveResponse(res, this.action);
 			},
 			(errors: any) => {
 				this.processFailure(errors);
