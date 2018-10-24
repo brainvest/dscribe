@@ -6,7 +6,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DscribeInterceptor } from './common/dscribe-interceptor';
 import {
 	MatAutocompleteModule,
-	MatButtonModule,
+	MatButtonModule, MatButtonToggleModule,
 	MatCardModule,
 	MatCheckboxModule,
 	MatDatepickerModule,
@@ -51,7 +51,6 @@ import { NavigationListFilterNodeComponent } from './filtering/components/naviga
 import { PropertyFilterNodeComponent } from './filtering/components/property-filter-node/property-filter-node.component';
 import { FilterTreeManipulator } from './filtering/models/filter-tree-manipulator';
 import { NavigationComponent } from './navigation/navigation.component';
-import { HomePageComponent } from './home-page/home-page.component';
 import { MetadataManagementComponent } from './administration/metadata-management/metadata-management.component';
 import { RouterModule } from '@angular/router';
 import { EntityGeneralUsageNamePipe } from './administration/helpers/entity-general-usage-name.pipe';
@@ -65,7 +64,6 @@ import { TableTemplateComponent } from './list/list-templating/table-template/ta
 import { CustomTemplateHostComponent } from './list/list-templating/custom-template-host/custom-template-host.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { SnackBarService } from './common/notifications/snackbar.service';
-
 
 @NgModule({
 	imports: [
@@ -92,48 +90,48 @@ import { SnackBarService } from './common/notifications/snackbar.service';
 		MatTooltipModule,
 		MatCheckboxModule,
 		MatToolbarModule,
+		MatButtonToggleModule,
 		MatTabsModule,
 		MatProgressSpinnerModule,
 		ReactiveFormsModule,
 		MatSnackBarModule
 	],
 	declarations: [
-		DscribeComponent,
-		AddNEditComponent,
-		ListContainerComponent,
-		ListComponent,
-		ListAddNEditDialogComponent,
-		ListDeleteDialogComponent,
-		PropertyEditorComponent,
-		BoolEditorComponent,
-		DateEditorComponent,
-		DatetimeEditorComponent,
-		EntityAutoCompleteComponent,
-		AutoCompleteMoreDialogComponent,
-		EntityListEditorComponent,
-		EntitySelectComponent,
-		NumberEditorComponent,
-		TextEditorComponent,
-		FilterNodeComponent,
 		ArithmeticFilterNodeComponent,
-		ComparisonFilterNodeComponent,
-		ConstantFilterNodeComponent,
-		LambdaFilterNodeComponent,
-		LogicalFilterNodeComponent,
-		NavigationListFilterNodeComponent,
-		PropertyFilterNodeComponent,
-		NavigationComponent,
-		HomePageComponent,
-		MetadataManagementComponent,
-		EntityGeneralUsageNamePipe,
+		AddNEditComponent,
 		AddNEditEntityComponent,
 		AddNEditPropertyComponent,
-		KeysPipe,
+		AutoCompleteMoreDialogComponent,
+		BoolEditorComponent,
+		ComparisonFilterNodeComponent,
 		ConfirmationDialogComponent,
-		ReleaseMetadataSettingsComponent,
+		ConstantFilterNodeComponent,
+		CustomTemplateHostComponent,
+		DateEditorComponent,
+		DatetimeEditorComponent,
 		DisplayValuePipe,
+		DscribeComponent,
+		EntityAutoCompleteComponent,
+		EntityGeneralUsageNamePipe,
+		EntityListEditorComponent,
+		EntitySelectComponent,
+		FilterNodeComponent,
+		KeysPipe,
+		LambdaFilterNodeComponent,
+		ListDeleteDialogComponent,
+		ListComponent,
+		ListContainerComponent,
+		ListAddNEditDialogComponent,
+		LogicalFilterNodeComponent,
+		MetadataManagementComponent,
+		NavigationComponent,
+		NavigationListFilterNodeComponent,
+		NumberEditorComponent,
+		PropertyEditorComponent,
+		PropertyFilterNodeComponent,
+		ReleaseMetadataSettingsComponent,
 		TableTemplateComponent,
-		CustomTemplateHostComponent
+		TextEditorComponent
 	],
 	exports: [DscribeComponent, ListComponent, DisplayValuePipe],
 	providers: [

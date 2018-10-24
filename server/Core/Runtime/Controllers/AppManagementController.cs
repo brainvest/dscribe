@@ -36,6 +36,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				MetadataReleaseVersion = x.MetadataRelease.Version,
 				MetadataReleaseVersionCode = x.MetadataRelease.VersionCode,
 				Name = x.Name,
+				GeneratedCodeNamespace = x.GeneratedCodeNamespace,
 				Title = x.Title,
 				UseUnreleasedMetadata = x.UseUnreleasedMetadata
 			}).ToListAsync();

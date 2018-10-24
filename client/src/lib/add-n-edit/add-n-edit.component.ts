@@ -7,6 +7,7 @@ import { DataHandlerService } from '../common/services/data-handler.service';
 import { KnownFacets } from '../metadata/facets/known-facet';
 import { EntityBase } from '../common/models/entity-base';
 import { SnackBarService } from '../common/notifications/snackbar.service';
+import {AddNEditResult} from '../common/models/add-n-edit-result';
 
 @Component({
 	selector: 'dscribe-add-n-edit',
@@ -20,8 +21,8 @@ export class AddNEditComponent implements OnInit {
 	@Input() action: string;
 	@Input() entityType: string;
 	@Input() master: MasterReference;
-	@Output() EntitySaved = new EventEmitter<string>();
-	@Output() Canceled = new EventEmitter();
+	@Output() entitySaved = new EventEmitter<AddNEditResult>();
+	@Output() canceled = new EventEmitter();
 
 	properties: PropertyMetadata[];
 	detailLists: MasterReference[];
@@ -71,8 +72,8 @@ export class AddNEditComponent implements OnInit {
 		}
 	}
 
-	private afterEntitySaved(action: string) {
-		this.EntitySaved.emit(action);
+	private afterEntitySaved(action: string, entity: any) {
+		this.entitySaved.emit(new AddNEditResult(action, entity));
 	}
 
 	saveEntity() {
@@ -89,7 +90,7 @@ export class AddNEditComponent implements OnInit {
 	}
 
 	cancel() {
-		this.Canceled.emit();
+		this.canceled.emit();
 	}
 
 	processFailure(error: any) {
@@ -115,7 +116,7 @@ export class AddNEditComponent implements OnInit {
 				}
 			}
 		}
-		this.afterEntitySaved(action);
+		this.afterEntitySaved(action, res);
 	}
 
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, Type, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit,Output ,SimpleChanges, Type, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatPaginator, MatSort } from '@angular/material';
 import { MetadataService } from '../../common/services/metadata.service';
 import { DataHandlerService } from '../../common/services/data-handler.service';
@@ -43,18 +43,18 @@ export class ListComponent implements OnInit, OnChanges {
 	@Input() entity: EntityMetadata;
 	@Input() master: MasterReference;
 	@Input() hideFilter: boolean;
+	@Output() selectionChanged = new EventEmitter<any>();
 
 	detailLists?: MasterReference[];
-	displayedColumns = ['select'];
+	displayedColumns = [];
 	columns: ListColumn[] = [];
 	data = [];
 	totalCount = 0;
 	private displayedEntityType: string;
-	isLoadingResults = true;
+	isLoadingResults = false;
 	isDataConnected = false;
 	userRefresh: EventEmitter<null> = new EventEmitter<null>();
 	pageSize = 10;
-	selectedRow: any = null;
 	filterLambda: LambdaFilterNode;
 	userDefinedFilter: StorageFilterNode;
 
@@ -74,7 +74,7 @@ export class ListComponent implements OnInit, OnChanges {
 		private snackbarService: SnackBarService) {
 		this.selection.changed.subscribe((x: any) => {
 			if (x.added.length === 1) {
-				this.selectRow(x.added[0]);
+				this.selectDetails(x.added[0]);
 			}
 		}, (errors: any) => {
 			this.snackbarService.open(errors);
@@ -119,7 +119,7 @@ export class ListComponent implements OnInit, OnChanges {
 	createColumns(entity: EntityMetadata) {
 		this.detailLists = [];
 		this.columns = [];
-		this.displayedColumns = ['select'];
+		this.displayedColumns = [];
 		for (const propertyName in entity.properties) {
 			if (!entity.properties.hasOwnProperty(propertyName)) {
 				continue;
@@ -131,9 +131,6 @@ export class ListComponent implements OnInit, OnChanges {
 				}
 				if (this.master) {
 					continue;
-				}
-				if (!this.detailLists) {
-					this.detailLists = [];
 				}
 				this.detailLists.push(new MasterReference(null, prop, entity));
 				continue;
@@ -159,6 +156,7 @@ export class ListComponent implements OnInit, OnChanges {
 			}
 			this.displayedColumns.push(prop.name);
 		}
+		console.log(this.detailLists);
 	}
 
 	applyFilter() {
@@ -183,7 +181,6 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	refreshData() {
-		this.selectedRow = null;
 		this.isLoadingResults = true;
 		this.paginator.pageIndex = 0;
 		this.data = [];
@@ -195,6 +192,7 @@ export class ListComponent implements OnInit, OnChanges {
 					this.userRefresh.emit();
 				}, (errors: any) => {
 					this.snackbarService.open(errors);
+     			this.isLoadingResults = false;
 				});
 	}
 
@@ -251,11 +249,10 @@ export class ListComponent implements OnInit, OnChanges {
 		this.openAddNEditDialog(newEntity, true);
 	}
 
-	selectRow(row: any) {
-		this.selectedRow = row;
+	selectDetails(row: any) {
 		if (this.detailLists && this.detailLists.length) {
 			for (const detail of this.detailLists) {
-				detail.master = this.selectedRow;
+				detail.master = row;
 				if (detail.childList) {
 					detail.childList.onMasterChanged();
 				}
@@ -263,16 +260,13 @@ export class ListComponent implements OnInit, OnChanges {
 		}
 	}
 
-	editRow(row: any) {
-		this.openAddNEditDialog(row, false);
-	}
-
 	openAddNEditDialog(instance: any, isNew: boolean) {
+		const action = isNew ? 'add' : 'edit';
 		const dialogRef = this.dialog.open(ListAddNEditDialogComponent, {
 			width: '800px',
 			data: {
 				entity: instance,
-				action: isNew ? 'add' : 'edit',
+				action: action,
 				entityType: this.entity.name,
 				title: this.entity.singularTitle,
 				master: this.master
@@ -280,13 +274,17 @@ export class ListComponent implements OnInit, OnChanges {
 		});
 		dialogRef.afterClosed().subscribe(
 			(result: any) => {
-				if (result === 'saved') {
+				if (result && result.action === action) {
 					this.refreshData();
 				}
 			}, (errors: any) => {
 				this.snackbarService.open(errors);
 			}
 		);
+	}
+
+	editSelectedRow() {
+		this.openAddNEditDialog(this.selection.selected[0], false);
 	}
 
 	deleteSelected() {
@@ -305,16 +303,38 @@ export class ListComponent implements OnInit, OnChanges {
 			}
 		}, (errors: any) => {
 			this.snackbarService.open(errors);
+		});
+	}
+
+	selectRow(row: any) {
+		if (this.selection.isSelected(row)) {
+			this.selection.deselect(row);
+			this.selectionChanged.emit(null);
+			return;
 		}
-		);
+		if (!this.allowMultiSelect) {
+			this.selection.clear();
+		}
+		this.selection.select(row);
+		this.selectDetails(row);
+		this.selectionChanged.emit(row);
+	}
+
+	get filterVisible() {
+		return !!this.filterLambda;
+	}
+
+	set filterVisible(value) {
+		if (value) {
+			this.filterLambda = new LambdaFilterNode(null, this.entity, false);
+		} else {
+			this.filterLambda = null;
+			this.userDefinedFilter = null;
+		}
 	}
 
 	toggleFilter() {
-		if (this.filterLambda) {
-			this.filterLambda = null;
-		} else {
-			this.filterLambda = new LambdaFilterNode(null, this.entity, false);
-		}
+		this.filterVisible = !this.filterVisible;
 	}
 
 	getCustomTemplateWidth(): string {
@@ -328,6 +348,7 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	shouldDisplayCommand(command: DscribeCommand) {
-		return command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{ component: this });
+		return !command.displayPredicate || command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
 	}
+
 }

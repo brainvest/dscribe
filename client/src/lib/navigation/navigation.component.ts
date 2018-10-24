@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MetadataService} from '../common/services/metadata.service';
 import {EntityMetadata} from '../metadata/entity-metadata';
 import {Router} from '@angular/router';
@@ -13,10 +13,10 @@ import {DscribeService} from '../dscribe.service';
 })
 export class NavigationComponent implements OnInit {
 	entities: EntityMetadata[];
-	mainUrls = ['main', 'entity', 'administration'];
+	mainUrls = ['entity', 'administration'];
 	sideNavOpen = true;
 	appInstances: AppInstanceInfoModel[] = [];
-	appInstanceId: number;
+	selectedAppInstance: AppInstanceInfoModel;
 
 	constructor(private metadata: MetadataService, private router: Router, private httpClient: HttpClient,
 							private metaData: MetadataService, private config: DscribeService) {
@@ -25,19 +25,10 @@ export class NavigationComponent implements OnInit {
 	ngOnInit() {
 		this.navigate(this.mainUrls[0]);
 
-		this.httpClient.post<AppInstanceInfoModel[]>('/api/AppManagement/getAppInstancesInfo', null)
+		this.httpClient.post<AppInstanceInfoModel[]>(this.config.url('api/AppManagement/getAppInstancesInfo'), null)
 			.subscribe(apps => {
 				this.appInstances = apps;
-				this.appInstanceId = apps[0].id;
-				this.config.appInstance = apps[0];
-				this.metadata.getMetadata()
-					.getAllTypes()
-					.subscribe(entities => {
-						this.entities = entities;
-						if (this.entities && this.entities.length) {
-							this.mainUrls[1] = 'entity/' + this.entities[0].name;
-						}
-					});
+				this.appInstanceSelected(apps[0]);
 			});
 	}
 
@@ -45,14 +36,16 @@ export class NavigationComponent implements OnInit {
 		this.router.navigateByUrl(url);
 	}
 
-	appInstanceSelected() {
-		this.config.appInstance = this.appInstances.find(x => x.id === this.appInstanceId);
+	appInstanceSelected(appInstance: AppInstanceInfoModel) {
+		this.config.appInstance = appInstance;
+		this.selectedAppInstance = appInstance;
 		this.metadata.clearMetadata();
 		this.metadata.getMetadata().getAllTypes()
 			.subscribe(entities => {
 				this.entities = entities;
 				if (this.entities && this.entities.length) {
-					this.mainUrls[1] = 'entity/' + this.entities[0].name;
+					this.mainUrls[0] = 'entity/' + this.entities[0].name;
+					this.router.navigateByUrl(this.mainUrls[0]);
 				}
 			});
 	}

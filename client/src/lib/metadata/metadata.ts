@@ -5,6 +5,7 @@ import {PropertyMetadata} from './property-metadata';
 import {CompleteMetadataModel} from './complete-metadata-model';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {DscribeService} from '../dscribe.service';
 
 export type FacetValue = [boolean, number, string];
 
@@ -23,17 +24,17 @@ export class Metadata {
 	private typesObservable: ReplaySubject<EntityMetadata[]> = new ReplaySubject<EntityMetadata[]>(1);
 	private currentTypes: EntityMetadata[];
 
-	constructor(private http: HttpClient) {
+	constructor(private http: HttpClient, private config: DscribeService) {
 		this.getComplete();
 	}
 
 	getComplete(): void {
-		this.http.get<CompleteMetadataModel>('api/metadata/getComplete')
+		this.http.get<CompleteMetadataModel>(this.config.url('api/metadata/getComplete'))
 			.subscribe(x => {
 				this.currentTypes = this.extractTypeSemantics(x.entities, x.propertyDefaults);
 				this.fixUpRelationships();
 				this.typesObservable.next(this.currentTypes);
-			});
+			}, console.error);
 	}
 
 	getAllTypes(): Observable<EntityMetadata[]> {
