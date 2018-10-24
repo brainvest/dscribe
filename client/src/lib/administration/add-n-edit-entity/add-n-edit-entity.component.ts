@@ -1,8 +1,9 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {TypeBase} from '../../metadata/entity-base';
-import {MetadataBasicInfoModel} from '../../metadata/metadata-basic-info-model';
-import {MetadataManagementApiClient} from '../metadata-management-api-client';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { TypeBase } from '../../metadata/entity-base';
+import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
+import { MetadataManagementApiClient } from '../metadata-management-api-client';
+import { SnackBarService } from '../../common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-add-n-edit-entity',
@@ -11,12 +12,13 @@ import {MetadataManagementApiClient} from '../metadata-management-api-client';
 })
 export class AddNEditEntityComponent implements OnInit {
 
-	entity: TypeBase;
+	entity: TypeBase = new TypeBase();
 
 	constructor(
 		private dialogRef: MatDialogRef<AddNEditEntityComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: AddNEditEntityComponentData,
-		private apiClient: MetadataManagementApiClient) {
+		private apiClient: MetadataManagementApiClient,
+		private snackbarService: SnackBarService) {
 	}
 
 	ngOnInit() {
@@ -27,8 +29,10 @@ export class AddNEditEntityComponent implements OnInit {
 		const request = (this.data.isNew) ?
 			this.apiClient.addEntity(this.entity) :
 			this.apiClient.editEntity(this.entity);
-		request.subscribe(data => {
+		request.subscribe((data: any) => {
 			this.dialogRef.close('saved');
+		}, (errors: any) => {
+			this.snackbarService.open(errors);
 		});
 	}
 
@@ -42,9 +46,7 @@ export class AddNEditEntityComponentData {
 	constructor(
 		public entity: TypeBase,
 		public isNew: boolean,
-		public basicInfo: MetadataBasicInfoModel) {
-
-	}
+		public basicInfo: MetadataBasicInfoModel) {}
 
 	get action() {
 		return this.isNew ? 'Add' : 'Edit';
