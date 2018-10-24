@@ -23,7 +23,7 @@
               "demo/src/assets"
             ],
             "styles": [
-              "demo/src/styles.css"
+              "demo/src/styles.css",
             ],
             "scripts": []
           },
@@ -51,7 +51,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "dscribe-host:build",
-						"proxyConfig": "demo/src/proxy.conf.json"
+            "proxyConfig": "demo/src/proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -73,7 +73,7 @@
             "tsConfig": "demo/src/tsconfig.spec.json",
             "karmaConfig": "demo/src/karma.conf.js",
             "styles": [
-              "demo/src/styles.css"
+              "demo/src/styles.css",
             ],
             "scripts": [],
             "assets": [

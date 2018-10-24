@@ -9,7 +9,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 		public static void PerformMigrations<TDbContext>(TDbContext context)
 			where TDbContext : DbContext
 		{
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 			//new DbMigrator(
 			//	new DbMigrationsConfiguration<TDbContext>
 			//	{
