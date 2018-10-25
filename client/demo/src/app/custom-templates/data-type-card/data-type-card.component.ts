@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DscribeListTemplate} from '../../../../../src/lib/list/list-templating/dscribe-list-template.decorator';
 import {DscribeTemplateComponent} from '../../../../../src/lib/list/list-templating/dscribe-template-component';
 import {Router} from '@angular/router';
@@ -16,11 +16,9 @@ import {Router} from '@angular/router';
 })
 export class DataTypeCardComponent implements DscribeTemplateComponent {
 	@Input() data: any;
+	@Input() select: boolean;
+	@Output() selectChange = new EventEmitter<boolean>();
 
-	constructor(private router: Router) {
-	}
-
-	goToDatasources() {
-		this.router.navigateByUrl('entity/DataSource');
+	constructor() {
 	}
 }

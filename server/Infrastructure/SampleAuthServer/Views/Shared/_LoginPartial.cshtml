@@ -3,6 +3,7 @@
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@inject IOptions<ConfigModel> Options
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -20,7 +21,10 @@
 else
 {
 	<ul class="nav navbar-nav navbar-right">
-		<li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
 		<li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+		@if (Options.Value.AllowRegistration)
+		{
+			<li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+		}
 	</ul>
 }

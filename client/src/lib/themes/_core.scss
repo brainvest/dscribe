@@ -23,9 +23,12 @@
 
 .table-actions {
 	display: flex;
-	justify-content: flex-end;
-	padding: 18px 8px;
+	justify-content: space-between;
+	align-items: center;
 	border: 1px solid #d1d8dd;
+	border-bottom: 0;
+	padding: 0 10px;
+	background-color: #ECEFF1;
 }
 
 .table {
@@ -69,10 +72,3 @@
 	font: 500 20px/32px IranSans, Metropolis, sans-serif;
 	margin-top: 0;
 }
-
-
-.container main dscribe-list-container {
-	display: block;
-	margin-left: 240px;
-}
-

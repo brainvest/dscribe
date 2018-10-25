@@ -1,0 +1,45 @@
+.container {
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+}
+
+.container main {
+	flex-grow: 1;
+	background-color: #ECEFF1;
+}
+
+.dscribe-main-navbar {
+	background-color: rgb(3, 155, 229);
+	color: #ffffff;
+}
+
+.main-nav {
+	background-color: rgb(3, 155, 229);
+	padding: 8px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	height: 50px !important;
+}
+
+.main-nav-tabs-container {
+	flex: 1;
+}
+
+.main-nav-tabs-container .main-nav-tab {
+	line-height: 48px;
+}
+
+.main-nav-tabs-container .main-nav-tab.active {
+	border-bottom: 1px solid white;
+}
+
+.main-nav-header {
+	border-bottom: 1px solid #d8d8d8;
+}
+
+.mat-toolbar {
+	color: white !important;
+}

@@ -1,13 +1,13 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {AddNEditPropertyMetadataModel, RelatedPropertyAction} from '../models/add-n-edit-property-metadata-model';
-import {MetadataBasicInfoModel} from '../../metadata/metadata-basic-info-model';
-import {TypeBase} from '../../metadata/entity-base';
-import {DataTypeModel} from '../../metadata/data-type-model';
-import {PropertyBase} from '../../metadata/property-base';
-import {AddNEditEntityComponent} from '../add-n-edit-entity/add-n-edit-entity.component';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {MetadataManagementApiClient} from '../metadata-management-api-client';
-import {PropertyInfoModel} from '../models/property-info-model';
+import { Component, Inject, OnInit } from '@angular/core';
+import { AddNEditPropertyMetadataModel, RelatedPropertyAction } from '../models/add-n-edit-property-metadata-model';
+import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
+import { TypeBase } from '../../metadata/entity-base';
+import { DataTypeModel } from '../../metadata/data-type-model';
+import { PropertyBase } from '../../metadata/property-base';
+import { AddNEditEntityComponent } from '../add-n-edit-entity/add-n-edit-entity.component';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MetadataManagementApiClient } from '../metadata-management-api-client';
+import { PropertyInfoModel } from '../models/property-info-model';
 import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
 
 @Component({
@@ -59,7 +59,7 @@ export class AddNEditPropertyComponent implements OnInit {
 	}
 
 	get compatibleInverseProperties() {
-		if (this.property.dataTypeId ===  DataTypeModel.NavigationalDataTypeIds.navigationProperty) {
+		if (this.property.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationProperty) {
 			return this.allProperties.filter(x =>
 				x.ownerEntityId === this.property.dataTypeEntityId &&
 				x.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationList &&
@@ -78,9 +78,9 @@ export class AddNEditPropertyComponent implements OnInit {
 		const request = this.data.isNew ?
 			this.apiClient.addProperty(this.property) :
 			this.apiClient.editProperty(this.property);
-		request.subscribe((result : any) => {
-			this.dialogRef.close('saved')
-		},(errors: any) => {
+		request.subscribe((result: any) => {
+			this.dialogRef.close('saved');
+		}, (errors: any) => {
 			this.snackbarService.open(errors);
 		});
 	}

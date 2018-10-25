@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
 		if (this.authService.isLoggedIn()) {
 			return true;
 		}
-
+		sessionStorage.setItem('returnUrl', state.url);
 		this.authService.startAuthentication();
 		return false;
 	}

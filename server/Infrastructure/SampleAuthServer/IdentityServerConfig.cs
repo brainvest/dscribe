@@ -35,7 +35,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 				ClientName = x.ClientName,
 				AllowedGrantTypes = GrantTypes.ImplicitAndClientCredentials,
 				RequireConsent = false,
-				RedirectUris = { x.RedirectUri },
+				RedirectUris = { x.RedirectUri, x.SilentRefreshUri },
 				PostLogoutRedirectUris = { x.PostLogoutRedirectUri },
 				AllowedScopes = new List<string>
 					{
@@ -43,9 +43,11 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 							IdentityServerConstants.StandardScopes.Profile,
 							"roles"
 					},
+				AllowedCorsOrigins = new List<string> { x.PostLogoutRedirectUri },
 				AllowOfflineAccess = true,
 				AllowAccessTokensViaBrowser = true,
-				AlwaysIncludeUserClaimsInIdToken = true
+				AlwaysIncludeUserClaimsInIdToken = true,
+				AccessTokenLifetime = 300
 			});
 		}
 	}
