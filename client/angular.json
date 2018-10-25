@@ -20,7 +20,9 @@
             "tsConfig": "demo/src/tsconfig.app.json",
             "assets": [
               "demo/src/favicon.ico",
-              "demo/src/assets"
+              "demo/src/assets",
+							"demo/src/oidc-silent-refresh/index.html",
+							"demo/src/oidc-silent-refresh/oidc-client.min.js"
             ],
             "styles": [
               "demo/src/styles.css",

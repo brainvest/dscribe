@@ -1,9 +1,13 @@
 <nav class="dscribe-main-navbar mat-elevation-z6">
 	<mat-toolbar class="main-nav">
-		<mat-tab-group class="main-nav-tabs" (selectedTabChange)="navigate(mainUrls[$event.index])">
-			<mat-tab #entitiesTab label="View"></mat-tab>
-			<mat-tab label="Administration"></mat-tab>
-		</mat-tab-group>
+		<div class="main-nav-tabs-container">
+			<a mat-button class="main-nav-tab" href="/entity" routerLink="/entity" routerLinkActive="active">
+				Entities
+			</a>
+			<a mat-button class="main-nav-tab" href="/administration" routerLink="/administration" routerLinkActive="active">
+				Administration
+			</a>
+		</div>
 		<button mat-button [matMenuTriggerFor]="menu">
 			{{selectedAppInstance && selectedAppInstance.title}}
 			<mat-icon>keyboard_arrow_down</mat-icon>
@@ -11,17 +15,12 @@
 	</mat-toolbar>
 </nav>
 <mat-menu #menu="matMenu">
-	<button *ngFor="let appInstance of appInstances" mat-menu-item (click)="appInstanceSelected(appInstance)">{{appInstance.title}}</button>
+	<button *ngFor="let appInstance of appInstances" mat-menu-item (click)="appInstanceSelected(appInstance)">
+		{{appInstance.title}}
+	</button>
 </mat-menu>
 
 <div class="container">
-	<nav *ngIf="entitiesTab.isActive" class="secondary-nav mat-elevation-z4" [ngClass]="sideNavOpen ? 'open' : 'close'">
-		<a class="secondary-nav-item" *ngFor="let entity of entities" routerLink="/entity/{{entity.name}}"
-			 routerLinkActive="active">
-			{{entity.pluralTitle || entity.name}}
-		</a>
-	</nav>
-
 	<main>
 		<router-outlet></router-outlet>
 	</main>

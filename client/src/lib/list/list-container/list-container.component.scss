@@ -1,14 +1,43 @@
-.container {
+.list-wrapper {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
+}
+
+.list-wrapper .list-container {
 	flex: 1;
 	display: flex;
 	flex-direction: row;
 }
 
+dscribe-list {
+	flex-grow: 1;
+	margin-left: 240px;
+	&[dir=rtl] {
+		margin-left: unset;
+		margin-right: 240px;
+	}
+}
+
 .secondary-nav {
 	transition: width 300ms;
-	overflow: auto;
 	padding: 24px 0;
 	background-color: #262F3D;
+	min-width: 240px;
+	position: fixed;
+	top: 51px;
+	bottom: 0;
+	left: 0;
+
+	&[dir=rtl] {
+		left: unset;
+		right: 0;
+	}
 }
 
 .secondary-nav-item {
@@ -43,44 +72,4 @@
 
 .secondary-nav.close {
 	width: 0;
-}
-
-.container main {
-	flex-grow: 1;
-	background-color: #ECEFF1;
-}
-
-.dscribe-main-navbar {
-	background-color: rgb(3, 155, 229);
-	color: #ffffff;
-}
-
-.main-nav {
-	background-color: rgb(3, 155, 229);
-	padding: 0;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	height: 50px!important;
-}
-
-.main-nav-tabs {
-
-}
-
-.main-nav-header {
-	border-bottom: 1px solid #d8d8d8;
-}
-
-.mat-toolbar {
-	color: white !important;
-}
-
-mat-tab {
-	color: white !important;
-}
-
-:host ::ng-deep .mat-tab-label-content {
-	color: white !important;
 }

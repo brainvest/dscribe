@@ -41,13 +41,6 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 				Console.WriteLine($"{pair.Key}:{pair.Value}");
 			}
 
-			services.Configure<CookiePolicyOptions>(options =>
-			{
-				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
-				options.CheckConsentNeeded = context => true;
-				options.MinimumSameSitePolicy = SameSiteMode.None;
-			});
-
 			services.AddDbContext<SecurityDbContext>(options =>
 			{
 				var provider = Configuration.GetSection("EfProvider").Get<string>();
@@ -65,6 +58,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 						throw new NotImplementedException($"The provider {provider} is not implemented yet.");
 				}
 			});
+
 			services.AddIdentity<User, Role>()
 					.AddEntityFrameworkStores<SecurityDbContext>()
 					.AddDefaultTokenProviders();

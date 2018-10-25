@@ -6,7 +6,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DscribeInterceptor } from './common/dscribe-interceptor';
 import {
 	MatAutocompleteModule,
-	MatButtonModule, MatButtonToggleModule,
+	MatButtonModule,
+	MatButtonToggleModule,
 	MatCardModule,
 	MatCheckboxModule,
 	MatDatepickerModule,

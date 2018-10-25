@@ -16,6 +16,10 @@ export class AppComponent {
 	entity: EntityMetadata;
 
 	constructor(public authService: AuthService, private dscribeService: DscribeService) {
+		this.setupDscribe();
+	}
+
+	private setupDscribe() {
 		const clbck = (x: DscribeCommandCallbackInput<ListComponent>) => x.sourceComponent.refreshData();
 		const dispPred = (x: DscribeCommandDisplayPredicate<ListComponent>) => x.component.displayMode === 'grid';
 		this.dscribeService.setCommands([{
