@@ -1,7 +1,7 @@
 <div mat-dialog-title>
 	<h1>{{data.action}} {{data.title}}</h1>
 	<div class="flex-spacer"></div>
-	<button mat-dialog-close mat-icon-button>
+	<button mat-dialog-close mat-icon-button tabindex="-1">
 		<mat-icon>close</mat-icon>
 	</button>
 </div>
@@ -12,7 +12,7 @@
 		[action]="data?.action"
 		[entity]="data?.entity"
 		[master]="data?.master"
-		(EntitySaved)="afterEntitySaved()"
-		(Canceled)="canceledByUser()">
+		(entitySaved)="afterEntitySaved($event)"
+		(canceled)="canceledByUser()">
 	</dscribe-add-n-edit>
 </mat-dialog-content>

@@ -3,11 +3,9 @@
  */
 
 
-
-
-export  * from  './lib/models/dscribe-feature-area.enum';
-export  * from './lib/models/dscribe-command';
-export  * from './lib/models/dscribe-command-display-predicate';
+export * from './lib/models/dscribe-feature-area.enum';
+export * from './lib/models/dscribe-command';
+export * from './lib/models/dscribe-command-display-predicate';
 export * from './lib/models/dscribe-command-callback-input';
 
 export * from './lib/list/list/list.component';
@@ -21,4 +19,4 @@ export * from './lib/dscribe.module';
 export * from './lib/dscribe.service';
 export * from './lib/metadata/entity-metadata';
 export * from './lib/dscribe-routes';
-
+export * from './lib/administration/metadata-management/metadata-management.component';

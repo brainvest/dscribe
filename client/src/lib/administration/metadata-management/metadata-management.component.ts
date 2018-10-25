@@ -11,6 +11,7 @@ import { ConfirmationDialogComponent } from '../../common/confirmation-dialog/co
 import { PropertyInfoModel } from '../models/property-info-model';
 import { ReleaseMetadataSettingsComponent } from '../release-metadata-settings/release-metadata-settings.component';
 import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
+import {DscribeService} from '../../dscribe.service';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -39,20 +40,20 @@ export class MetadataManagementComponent implements OnInit {
 	constructor(
 		private apiClient: MetadataManagementApiClient,
 		private dialog: MatDialog,
-		private snackbarService: SnackBarService) { }
-
+		private snackbarService: SnackBarService,
+    private dscribeService: DscribeService) { }
+  
 	ngOnInit() {
 		this.entitiesDataSource.paginator = this.entitiesPaginator;
 		this.propertiesDataSource.paginator = this.propertiesPaginator;
 		this.entitiesAreLoading = true;
-		this.apiClient.getBasicInfo()
-			.subscribe(
-				(data: any) => {
-					this.basicInfo = data;
-					this.refreshEntities();
-				}, (errors: any) => {
+		this.dscribeService.appInstance$.subscribe(() =>
+			this.apiClient.getBasicInfo().subscribe(data => {
+				this.basicInfo = data;
+				this.refreshEntities();
+			}, (errors: any) => {
 					this.snackbarService.open(errors);
-				});
+				}));
 	}
 
 	refreshEntities() {

@@ -16,5 +16,6 @@ namespace Brainvest.Dscribe.Abstractions.Models.AppManagement
 		public string Name { get; set; }
 		public string Title { get; set; }
 		public bool UseUnreleasedMetadata { get; set; }
+		public string GeneratedCodeNamespace { get; set; }
 	}
 }

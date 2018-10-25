@@ -14,10 +14,12 @@
 .filter {
 	border: 1px solid #d1d8dd;
 	border-top: none;
+	display: flex;
+	flex-flow: row;
 }
 
-.filter__summary, .filter__content {
-	padding: 16px 8px;
+.filter__content{
+	flex-grow: 1;
 }
 
 .filter__summary button {

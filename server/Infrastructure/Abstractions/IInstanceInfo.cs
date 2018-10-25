@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Brainvest.Dscribe.Abstractions
 {
 	public interface IInstanceInfo
@@ -11,5 +7,6 @@ namespace Brainvest.Dscribe.Abstractions
 		string InstanceName { get; }
 		string ConnectionString { get; }
 		bool MigrateDatabase { get; set; }
+		string GeneratedCodeNamespace { get; set; }
 	}
 }
