@@ -3,11 +3,11 @@ import {RouterModule, Routes} from '@angular/router';
 import {AppComponent} from './app.component';
 import {AuthGuard} from './auth/auth.guard';
 import {AuthCallbackComponent} from './auth/auth-callback/auth-callback.component';
-import {DscribeComponent} from '../../../src/lib/dscribe.component';
+import {DSCRIBE_ROUTES} from '../../../src/lib/dscribe-routes';
 
 const routes: Routes = [
 	{path: 'auth-callback', component: AuthCallbackComponent},
-	{path: '', component: AppComponent, canActivate: [AuthGuard], children: DscribeComponent.DSCRIBE_ROUTES},
+	{path: '', component: AppComponent, canActivate: [AuthGuard], children: DSCRIBE_ROUTES},
 ];
 
 @NgModule({

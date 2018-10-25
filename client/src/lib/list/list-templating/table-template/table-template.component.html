@@ -1,26 +1,12 @@
 <div class="list-table-container">
 	<table mat-table [dataSource]="data" matSort>
-		<ng-container matColumnDef="select">
-			<th mat-header-cell *matHeaderCellDef>
-				<mat-checkbox *ngIf="selection.isMultipleSelection()" (change)="$event ? masterToggle() : null"
-											[checked]="selection.hasValue() && isAllSelected()"
-											[indeterminate]="selection.hasValue() && !isAllSelected()">
-				</mat-checkbox>
-			</th>
-			<td mat-cell *matCellDef="let row">
-				<mat-checkbox (click)="$event.stopPropagation()"
-											(change)="$event ? selection.toggle(row) : null"
-											[checked]="selection.isSelected(row)">
-				</mat-checkbox>
-			</td>
-		</ng-container>
 		<ng-container *ngFor="let col of columns" [matColumnDef]="col.name">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>{{col.title || col.jsName}}</th>
 			<td mat-cell *matCellDef="let row">{{row[col.jsName] | displayValue:col | async}}</td>
 		</ng-container>
 		<tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
 		<tr mat-row *matRowDef="let row; columns: displayedColumns;"
-				[ngClass]="{'highlight': selectedRow?.id === row.id}"
+				[ngClass]="{'selected': selection.isSelected(row)}"
 				(click)="rowClick.emit(row)"></tr>
 	</table>
 </div>

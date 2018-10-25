@@ -2,6 +2,7 @@ using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Composition;
@@ -28,6 +29,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 				MetadataReference.CreateFromFile(typeof(DbContext).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(KeyAttribute).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(IBusinessRepositoryFactory).Assembly.Location),
+				MetadataReference.CreateFromFile(typeof(JsonIgnoreAttribute).Assembly.Location),
 			};
 			string sourceCode;
 			using (var fileStream = new FileStream(sourceCodeFile, FileMode.Open, FileAccess.Read))

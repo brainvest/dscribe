@@ -1,12 +1,13 @@
-import {Component, Input, OnChanges, OnInit, Optional, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnInit, Optional, SimpleChanges, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatAutocompleteTrigger, MatDialog, MatDialogRef} from '@angular/material';
 import {Observable} from 'rxjs';
 import {DataHandlerService} from '../common/services/data-handler.service';
 import {PropertyMetadata} from '../metadata/property-metadata';
 import {map, mergeMap, share, startWith} from 'rxjs/operators';
-import {MetadataService} from '../common/services/metadata.service';
 import {EntityMetadata} from '../metadata/entity-metadata';
+import {ListAddNEditDialogComponent} from '../list/list-add-n-edit-dialog/list-add-n-edit-dialog.component';
+import {AddNEditResult} from '../common/models/add-n-edit-result';
 
 @Component({
 	selector: 'dscribe-entity-auto-complete-component',
@@ -25,8 +26,12 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 	listRefresher = true;
 	selection: { displayName: string, id: number };
 	loading = false;
+	isAutoCompleteOpen: boolean;
 
-	constructor(private dataHandler: DataHandlerService) {
+	@ViewChild(MatAutocompleteTrigger)
+	trigger: MatAutocompleteTrigger;
+
+	constructor(private dataHandler: DataHandlerService, private dialog: MatDialog) {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -57,6 +62,9 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 	}
 
 	filter(name: string): Observable<{ displayName: string, id: number }[]> {
+		if (name) {
+			this.trigger.autocompleteDisabled = false;
+		}
 		return this.dataHandler.getAutoCompleteItems(this.property.entityTypeName, name);
 	}
 
@@ -66,8 +74,72 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 
 	selectionChange(item) {
 		this.selection = item;
-		this.entity[this.overridePropertyName || this.property.jsName] = item.id;
+		this.entity[this.overridePropertyName || this.property.jsName] = item && item.id;
+		this.inputCtrl.setValue(item);
 	}
+
+	clean() {
+		this.selectionChange(null);
+		this.inputCtrl.setValue('');
+		this.trigger.autocompleteDisabled = true;
+	}
+
+	toggleDropDown() {
+		if (this.trigger.autocomplete.isOpen) {
+			this.trigger.closePanel();
+			this.trigger.autocompleteDisabled = true;
+		} else {
+			this.trigger.autocompleteDisabled = false;
+			this.trigger.openPanel();
+		}
+	}
+
+	selectFromList() {
+		const data = {
+			entity: this.property.entityType,
+			selectedRow: null
+		};
+		this.dialog.open(AutoCompleteMoreDialogComponent, {
+			width: '800px',
+			data: data
+		}).afterClosed().subscribe(x => {
+			if (!x) {
+				return;
+			}
+			this.dataHandler.getName(this.property.entityTypeName, data.selectedRow.id)
+				.subscribe(y => {
+					this.selectionChange({
+						id: data.selectedRow.id,
+						displayName: y
+					});
+				});
+		});
+	}
+
+	addNew() {
+		this.dialog.open(ListAddNEditDialogComponent, {
+			width: '800px',
+			data: {
+				entity: {},
+				action: 'add',
+				entityType: this.property.entityType.name,
+				title: this.property.entityType.singularTitle,
+				master: null
+			}
+		}).afterClosed().subscribe((x: AddNEditResult) => {
+			if (!x) {
+				return;
+			}
+			this.dataHandler.getName(this.property.entityTypeName, x.instance.id)
+				.subscribe(y => {
+					this.selectionChange({
+						id: x.instance.id,
+						displayName: y
+					});
+				});
+		});
+	}
+
 }
 
 @Component({
@@ -77,14 +149,13 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			<dscribe-list
 				[hideFilter]="false"
 				[entity]="inputs.entity"
-				(RowSelectionChanged)="listRowSelectionChanged($event)">
+				(selectionChanged)="listRowSelectionChanged($event)">
 			</dscribe-list>
 		</mat-dialog-content>
 		<mat-dialog-actions>
 			<button mat-raised-button color="primary" (click)="doneClicked()">تایید</button>
 		</mat-dialog-actions>
-	`,
-	providers: [MetadataService]
+	`
 })
 export class AutoCompleteMoreDialogComponent {
 	inputs: {
@@ -93,7 +164,9 @@ export class AutoCompleteMoreDialogComponent {
 		selectedRow: any
 	};
 
-	constructor(@Optional() public dialogRef: MatDialogRef<AutoCompleteMoreDialogComponent>) {
+	constructor(@Optional() public dialogRef: MatDialogRef<AutoCompleteMoreDialogComponent>,
+							@Inject(MAT_DIALOG_DATA) public data: any) {
+		this.inputs = data;
 	}
 
 	listRowSelectionChanged(row: any) {
@@ -103,4 +176,5 @@ export class AutoCompleteMoreDialogComponent {
 	doneClicked() {
 		this.dialogRef.close(this.inputs.selectedRow);
 	}
+
 }

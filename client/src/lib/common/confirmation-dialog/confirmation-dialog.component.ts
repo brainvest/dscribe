@@ -15,6 +15,14 @@ export class ConfirmationDialogComponent implements OnInit {
 		@Inject(MAT_DIALOG_DATA) public data: ConfirmationDialogData) {
 	}
 
+	static Ask(dialog: MatDialog, title: string, message = null): Observable<boolean> {
+		const dialogRef = dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+			width: '300px',
+			data: new ConfirmationDialogData(title, message)
+		});
+		return dialogRef.afterClosed().pipe(map(x => !!x));
+	}
+
 	ngOnInit() {
 	}
 
@@ -24,14 +32,6 @@ export class ConfirmationDialogComponent implements OnInit {
 
 	cancel() {
 		this.dialogRef.close();
-	}
-
-	static Ask(dialog: MatDialog, title: string, message = null): Observable<boolean> {
-		const dialogRef = dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
-			width: '300px',
-			data: new ConfirmationDialogData(title, message)
-		});
-		return dialogRef.afterClosed().pipe(map(x => !!x));
 	}
 
 }

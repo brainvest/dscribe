@@ -9,11 +9,10 @@ import {MatSort} from '@angular/material';
 	styleUrls: ['./table-template.component.css']
 })
 export class TableTemplateComponent {
-	@Input() data: any[];ss
+	@Input() data: any[];
 	@Input() selection: SelectionModel<any>;
 	@Input() columns: ListColumn[];
 	@Input() displayedColumns: string[];
-	@Input() selectedRow: any;
 
 	@Output() rowClick = new EventEmitter<any>();
 	@ViewChild(MatSort) sort: MatSort;

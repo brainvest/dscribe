@@ -1,17 +1,21 @@
-<mat-card>
+<mat-card style="cursor: pointer" (click)="selectChange.emit(!select)" [ngStyle]="{'border': select ? '1px solid darkblue' : 'none'}">
 	<mat-card-header>
 		<mat-card-title>{{data.name}}</mat-card-title>
 		<mat-card-subtitle>{{data.unitPrice}}</mat-card-subtitle>
 	</mat-card-header>
-	<img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+	<ng-container [ngSwitch]="data.name">
+		<img *ngSwitchCase="'Book'" mat-card-image
+				 src="https://static1.squarespace.com/static/599057466f4ca37e4c92bdf4/t/599059b617bffcfc0aaade7d/1502632376875/stack-of-product-leadership-books.jpg?format=2500w"
+				 alt="Book">
+		<img *ngSwitchCase="'Pen'" mat-card-image
+				 src="https://www.elfcosmetics.com/dw/image/v2/BBXC_PRD/on/demandware.static/-/Sites-elf-master/default/dwea73685c/21653_SILO.jpg?sfrm=png"
+				 alt="Photo of a Shiba Inu">
+		<img *ngSwitchDefault mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+				 alt="Photo of a Shiba Inu">
+	</ng-container>
 	<mat-card-content>
 		<p>
 			{{data.description}}
 		</p>
 	</mat-card-content>
-	<mat-card-actions>
-		<button mat-button (click)="goToDatasources()">
-			{{data.dataSourceId | displayValue:{dataType: 'ForeignKey', dataTypeEntity: 'DataSource'} | async}}
-		</button>
-	</mat-card-actions>
 </mat-card>
