@@ -10,8 +10,9 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string DisplayNamePath { get; set; }
 		public int Id { get; set; }
 		[Required]
-		[MaxLength(200 , ErrorMessage = "Maximom length of Name is 200")]
+		[RegularExpression(@"^[\p{L}_][\p{L}\p{N}@$#_]{0,127}$", ErrorMessage = "Entity name is not in a correct format.")]
 		public string Name { get; set; }
+		[RegularExpression(@"^[a-zA-Z0-9]{0,29}$", ErrorMessage = "Schema is not in a correct format.")]
 		public string SchemaName { get; set; }
 		[Required]
 		public string SingularTitle { get; set; }
