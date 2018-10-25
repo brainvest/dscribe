@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest, HttpErrorResponse} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
 import {DscribeService} from '../dscribe.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class DscribeInterceptor implements HttpInterceptor {
@@ -21,6 +22,10 @@ export class DscribeInterceptor implements HttpInterceptor {
 		}
 
 		const newReq = req.clone({headers});
-		return next.handle(newReq);
+		return next.handle(newReq).pipe(catchError(this.handleError));
+	}
+
+	private handleError(error: HttpErrorResponse) {
+		return throwError(error.statusText);
 	}
 }

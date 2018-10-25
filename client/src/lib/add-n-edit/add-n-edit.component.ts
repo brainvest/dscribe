@@ -1,12 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {EntityMetadata} from '../metadata/entity-metadata';
-import {MasterReference} from '../list/models/master-reference';
-import {PropertyMetadata} from '../metadata/property-metadata';
-import {MetadataService} from '../common/services/metadata.service';
-import {DataHandlerService} from '../common/services/data-handler.service';
-import {KnownFacets} from '../metadata/facets/known-facet';
-import {EntityBase} from '../common/models/entity-base';
-import {AddNEditResult} from '../common/models/add-n-edit-result';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { EntityMetadata } from '../metadata/entity-metadata';
+import { MasterReference } from '../list/models/master-reference';
+import { PropertyMetadata } from '../metadata/property-metadata';
+import { MetadataService } from '../common/services/metadata.service';
+import { DataHandlerService } from '../common/services/data-handler.service';
+import { KnownFacets } from '../metadata/facets/known-facet';
+import { EntityBase } from '../common/models/entity-base';
+import { SnackBarService } from '../common/notifications/snackbar.service';
+import { AddNEditResult } from '../common/models/add-n-edit-result';
 
 @Component({
 	selector: 'dscribe-add-n-edit',
@@ -26,17 +27,23 @@ export class AddNEditComponent implements OnInit {
 	properties: PropertyMetadata[];
 	detailLists: MasterReference[];
 
-	constructor(private metadataService: MetadataService, private dataHandler: DataHandlerService) {
+	constructor(
+		private metadataService: MetadataService,
+		private dataHandler: DataHandlerService,
+		private snackbarService: SnackBarService) {
 	}
 
 	ngOnInit() {
-		this.metadataService.getTypeByName(this.entityType).subscribe(
-			metadata => {
-				this.entityMetadata = metadata;
-				this.createPropertyEditors();
-			},
-			error => console.log(error)
-		);
+		this.metadataService.getMetadata()
+			.getTypeByName(this.entityType)
+			.subscribe(
+				(metadata: any) => {
+					this.entityMetadata = metadata;
+					this.createPropertyEditors();
+				},
+				(errors: any) => {
+					this.snackbarService.open(errors);
+				});
 	}
 
 	private createPropertyEditors() {
@@ -71,10 +78,15 @@ export class AddNEditComponent implements OnInit {
 
 	saveEntity() {
 		this.dataHandler.manageEntity(this.entity, this.entityType, this.action).subscribe(
-			res => this.processSaveResponse(res, this.action),
-			error => this.processFailure(error)
+			(res: any) => {
+				this.processSaveResponse(res, this.action);
+			},
+			(errors: any) => {
+				this.processFailure(errors);
+				this.snackbarService.open(errors);
+			}
 		)
-		;
+			;
 	}
 
 	cancel() {

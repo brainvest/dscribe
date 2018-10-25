@@ -1,18 +1,21 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {HasIdName} from '../models/has-id-name';
-import {IdAndName} from '../models/id-and-name';
-import {EntityListRequest} from '../models/entity-list-request';
-import {EntityBase} from '../models/entity-base';
-import {GroupListRequest} from '../models/groupping/group-list-request';
-import {catchError, map, share} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { HasIdName } from '../models/has-id-name';
+import { IdAndName } from '../models/id-and-name';
+import { EntityListRequest } from '../models/entity-list-request';
+import { EntityBase } from '../models/entity-base';
+import { GroupListRequest } from '../models/groupping/group-list-request';
+import { catchError, map, share } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import {DscribeService} from '../../dscribe.service';
 
+
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class DataHandlerService {
+
+	constructor(private http: HttpClient, private dscribeService: DscribeService) { 	}
 
 	private filterAPI = this.dscribeService.url('api/entity/getByFilter');
 	private filterCountAPI = this.dscribeService.url('api/entity/countByFilter');
@@ -39,8 +42,6 @@ export class DataHandlerService {
 	private expressionValueAutoDownloader: any;
 	private expressionValueResponse: BehaviorSubject<any> = new BehaviorSubject<any>(1);
 
-	constructor(private http: HttpClient, private dscribeService: DscribeService) {
-	}
 
 	getName(entityType: string, id: number): Observable<string> {
 		if (id === null || id === undefined || id.toString().length === 0) {
@@ -135,8 +136,8 @@ export class DataHandlerService {
 				return existing.observable;
 			}
 		}
-		const download = this.http.post<HasIdName[]>(this.allIdAndNameAPI, {entityType: entityType})
-			.pipe(catchError(this.handleError), share());
+		const download = this.http.post<HasIdName[]>(this.allIdAndNameAPI, { entityType: entityType })
+			.pipe(share());
 		this.cache[entityType] = new IdAndNameCacheEntry;
 		this.cache[entityType].observable = download;
 		download.subscribe(res => {
@@ -154,11 +155,11 @@ export class DataHandlerService {
 	}
 
 	countByFilter(request: EntityListRequest): Observable<number> {
-		return this.http.post<number>(this.filterCountAPI, request.getRequestObject());
+		return this.http.post<number>(this.filterCountAPI , request.getRequestObject());
 	}
 
 	getByFilter(request: EntityListRequest): Observable<EntityBase[]> {
-		return this.http.post<EntityBase[]>(this.filterAPI, request.getRequestObject());
+		return this.http.post<EntityBase[]>(this.filterAPI , request.getRequestObject());
 	}
 
 	getGroupCount(request: GroupListRequest): Observable<number> {
@@ -198,13 +199,7 @@ export class DataHandlerService {
 		return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\^\$\|]/g, '\\$&');
 	}
 
-	private handleError(error: any) {
-		const errMsg = (error.message) ? error.message :
-			error.status ? `${error.status} - ${error.statusText}` :
-				'Server error';
-		console.error(errMsg);
-		return Observable.throw(errMsg);
-	}
+
 }
 
 class IdAndNameCacheEntry {
