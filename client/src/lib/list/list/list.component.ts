@@ -167,7 +167,6 @@ export class ListComponent implements OnInit, OnChanges {
 			}
 			this.displayedColumns.push(prop.name);
 		}
-		console.log(this.detailLists);
 	}
 
 	applyFilter() {

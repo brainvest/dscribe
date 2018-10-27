@@ -34,7 +34,7 @@ export class AddNEditComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.metadataService.getMetadata()
+		this.metadataService
 			.getTypeByName(this.entityType)
 			.subscribe(
 				(metadata: any) => {
