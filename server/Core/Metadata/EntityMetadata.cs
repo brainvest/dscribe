@@ -79,7 +79,7 @@ namespace Brainvest.Dscribe.Metadata
 		{
 			if (_primaryKey == null)
 			{
-				_primaryKey = GetAllProperties().Single(x => (x as PropertyMetadata).GeneralBahvior.PropertyGeneralUsageCategoryId == 2); //TODO: magic value
+				_primaryKey = GetAllProperties().SingleOrDefault(x => (x as PropertyMetadata).GeneralBahvior.PropertyGeneralUsageCategoryId == 2); //TODO: magic value
 			}
 			return _primaryKey;
 		}
