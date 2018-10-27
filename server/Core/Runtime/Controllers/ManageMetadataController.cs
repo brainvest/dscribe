@@ -44,7 +44,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.GetTypesValidation(_dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 
 			var appTypeId = _implementations.InstanceInfo.AppTypeId;
@@ -77,7 +77,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.AddEntityValidation(model, _dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 
 			var type = new Entity
@@ -133,7 +133,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.DeleteEntityValidation(model, _dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 			var type = await _dbContext.Entities.FindAsync(model.Id);
 			_dbContext.Entities.Remove(type);
@@ -152,7 +152,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.GetPropertiesValidation(request, _dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 
 			var properties = await _dbContext.Properties
@@ -183,7 +183,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.GetPropertyForEditValidation(request, _dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 
 			var model = await _dbContext.Properties.Select(x => new AddNEditPropertyMetadataModel
@@ -227,7 +227,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.AddPropertyValidation(model, _dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 			using (var transaction = await _dbContext.Database.BeginTransactionAsync())
 			{
@@ -270,7 +270,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.EditPropertyValidation(model, _dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 
 			var property = await _dbContext.Properties.FindAsync(model.Id);
@@ -368,7 +368,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.DeletePropertyValidation(model, _dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 			var property = await _dbContext.Properties.FindAsync(model.Id);
 			_dbContext.Properties.Remove(property);
@@ -387,7 +387,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.GetBasicInfoValidation(_dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 			var result = new MetadataBasicInfoModel
 			{
@@ -460,7 +460,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.GetTypeFacetsValidation(_dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 			var result = new LocalFacetsModel()
 			{
@@ -489,7 +489,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.GetPropertyFacetsValidation(request,_dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 			var result = new LocalFacetsModel()
 			{
@@ -518,7 +518,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.SaveTypeLocalFacetValueValidation(request, _dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 			var existing = await _dbContext.EntityFacetValues
 				.Where(x =>
@@ -559,7 +559,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.SavePropertyLocalFacetValueValidation(request, _dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 			var existing = await _dbContext.PropertyFacetValues
 				.Where(x =>
@@ -601,7 +601,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var validationMessage = await MetadataValidationLogic.GetAllPropertyNamesValidation(_dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return StatusCode(500, validationMessage);
+				return StatusCode(400, validationMessage);
 			}
 			var appTypeId = _implementations.InstanceInfo.AppTypeId;
 			var names = await _dbContext.Properties.Where(x => x.Entity.AppTypeId == appTypeId)

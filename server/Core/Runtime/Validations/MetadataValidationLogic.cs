@@ -15,6 +15,10 @@ namespace Brainvest.Dscribe.Runtime.Validations
 		}
 		public static async Task<string> AddEntityValidation(EntityMetadataModel model, MetadataDbContext dbContext)
 		{
+			if (await dbContext.Entities.AnyAsync(x => x.Name == model.Name))
+			{
+				return "Entity " + model.Name + " is already exist.";
+			}
 			return await Task.FromResult(string.Empty);
 		}
 		public static async Task<string> EditEntityValidation(EntityMetadataModel model, MetadataDbContext dbContext)
@@ -55,6 +59,12 @@ namespace Brainvest.Dscribe.Runtime.Validations
 		}
 		public static async Task<string> AddPropertyValidation(AddNEditPropertyMetadataModel model, MetadataDbContext dbContext)
 		{
+			if (
+				model.PropertyGeneralUsageCategoryId == 2 && 
+				await dbContext.Entities.AnyAsync(x => x.Properties.Where(y => y.EntityId == model.OwnerEntityId).Any(y => y.GeneralUsageCategoryId == 2)))
+			{
+				return "This entity already has a primary key";
+			}
 			if (!await dbContext.Entities.AnyAsync(x => x.Id == model.OwnerEntityId))
 			{
 				return "Entity not found";
