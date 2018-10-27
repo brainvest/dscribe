@@ -27,6 +27,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public bool UseUnreleasedMetadata { get; set; }
 		public bool MigrateDatabase { get; set; }
 
+		public string GeneratedCodeNamespace { get; set; }
+
 		public int? MetadataReleaseId { get; set; }
 		public MetadataRelease MetadataRelease { get; set; }
 	}

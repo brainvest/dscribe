@@ -10,13 +10,14 @@ import {AddNEditPropertyMetadataModel} from './models/add-n-edit-property-metada
 import {PropertyInfoModel} from './models/property-info-model';
 import {ReleaseMetadataRequest} from './models/release-metadata-request';
 import {MetadataValidationResponse} from './models/metadata-validation-response';
+import {DscribeService} from '../dscribe.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class MetadataManagementApiClient {
-	private managementAPI = 'api/ManageMetadata/';
-	private releaseAPI = 'api/ReleaseMetadata/';
+	private managementAPI = this.dscribeService.url('api/ManageMetadata/');
+	private releaseAPI = this.dscribeService.url('api/ReleaseMetadata/');
 
 	private getTypesAPI = this.managementAPI + 'getTypes';
 	private getPropertiesAPI = this.managementAPI + 'getProperties';
@@ -33,9 +34,8 @@ export class MetadataManagementApiClient {
 	private releaseMetadataAPI = this.releaseAPI + 'releaseMetadata';
 	private generateCodeAPI = this.releaseAPI + 'generateCode';
 
-	constructor(
-		private http: HttpClient) {
-	}
+
+	constructor(private http: HttpClient, private dscribeService: DscribeService) {	}
 
 	addEntity(entity: TypeBase) {
 		return this.http.post<null>(this.addEntityAPI, entity);

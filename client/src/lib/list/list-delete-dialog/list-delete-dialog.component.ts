@@ -25,7 +25,7 @@ export class ListDeleteDialogComponent {
 	deleteEntity() {
 		this.dataHandler.deleteEntity(this.inputs.entityType, this.inputs.selectedRow).subscribe(
 			(res: any) => {
-				this.afterDelete(res)
+				this.afterDelete(res);
 			},
 			(errors: any) => {
 				this.snackbarService.open(errors);
