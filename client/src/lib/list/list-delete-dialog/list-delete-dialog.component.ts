@@ -1,7 +1,7 @@
 import { Component, Optional } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { DataHandlerService } from '../../common/services/data-handler.service';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
+import {SnackBarService} from '../../common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-list-delete-dialog',

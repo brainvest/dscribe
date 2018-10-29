@@ -59,6 +59,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 						Name = x.Name,
 						SchemaName = x.SchemaName,
 						SingularTitle = x.SingularTitle,
+						TableName = x.TableName,
 						PluralTitle = x.PluralTitle,
 						EntityGeneralUsageCategoryId = x.GeneralUsageCategoryId
 					})
@@ -90,7 +91,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				SingularTitle = model.SingularTitle,
 				PluralTitle = model.PluralTitle,
 				GeneralUsageCategoryId = model.EntityGeneralUsageCategoryId,
-				AppTypeId = _implementations.InstanceInfo.AppTypeId
+				AppTypeId = _implementations.InstanceInfo.AppTypeId,
+				TableName = model.TableName
 			};
 			_dbContext.Entities.Add(type);
 			await _dbContext.SaveChangesAsync();
@@ -118,6 +120,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			type.SchemaName = model.SchemaName;
 			type.SingularTitle = model.SingularTitle;
 			type.PluralTitle = model.PluralTitle;
+			type.TableName = model.TableName;
 			type.GeneralUsageCategoryId = model.EntityGeneralUsageCategoryId;
 			await _dbContext.SaveChangesAsync();
 			return Ok();

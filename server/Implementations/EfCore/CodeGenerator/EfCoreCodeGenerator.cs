@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Composition;
 using System.IO;
@@ -26,6 +27,8 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IDisposable).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(DbContext).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IBusinessRepositoryFactory).Namespace));
+			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(KeyAttribute).Namespace));
+			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(NotMappedAttribute).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(TableAttribute).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(ForeignKeyAttribute).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(JsonIgnoreAttribute).Namespace));
@@ -34,11 +37,19 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			codeNamespace.Types.Add(codeDbContext);
 			foreach (var type in cache)
 			{
-				AddTypeToDbContext(type, codeDbContext);
+				var primaryKey = type.GetPrimaryKey();
 				var codeType = new CodeTypeDeclaration(type.Name)
 				{
 					IsPartial = true
 				};
+				if (primaryKey == null)
+				{
+					codeType.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(NotMappedAttribute))));
+				}
+				else
+				{
+					AddTypeToDbContext(type, codeDbContext);
+				}
 				if (!string.IsNullOrWhiteSpace(type.SchemaName) || !string.IsNullOrWhiteSpace(type.TableName))
 				{
 					if (string.IsNullOrWhiteSpace(type.SchemaName))
@@ -65,7 +76,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 					string dataType;
 					if (property.DataType == DataTypes.NavigationList)
 					{
-						snippet.Text += "[JsonIgnore]" + Environment.NewLine;
+						snippet.Text += "		[JsonIgnore]" + Environment.NewLine;
 						dataType = $"System.Collections.Generic.ICollection<{property.EntityTypeName}>";
 					}
 					else if (property.DataType == DataTypes.ForeignKey)
@@ -88,6 +99,10 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 					if (property.ForeignKey != null)
 					{
 						snippet.Text += $"		[ForeignKey(\"{property.ForeignKey.Name}\")]\n";
+					}
+					if (property == primaryKey)
+					{
+						snippet.Text += "		[Key]\n";
 					}
 					snippet.Text += $"		public virtual {dataType} {property.Name} {{ get; set; }}";
 					codeType.Members.Add(snippet);

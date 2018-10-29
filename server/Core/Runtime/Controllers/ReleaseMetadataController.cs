@@ -160,8 +160,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				}
 
 			}
-			if (errors.Warnings.Count > 0 || errors.Errors.Count() > 0)
+			if (errors.Errors.Count() > 0)
+			{
 				errors.Success = false;
+			}
 			return errors;
 		}
 	}

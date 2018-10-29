@@ -20,6 +20,7 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string PluralTitle { get; set; }
 		[Required]
 		public int EntityGeneralUsageCategoryId { get; set; }
+		public string TableName { get; set; }
 	}
 
 	public class PropertyMetadataModel
