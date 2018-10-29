@@ -26,10 +26,10 @@ export class DscribeInterceptor implements HttpInterceptor {
 	}
 
 	private handleError(error: HttpErrorResponse) {
-		if (error.status === 500) {
-			return throwError(error.error)
+		if (error.status === 400 && typeof error.error === 'string') {
+			return throwError(error.error);
 		}
-		return throwError(error.statusText)
+		return throwError(error.statusText);
 	}
 }
  
