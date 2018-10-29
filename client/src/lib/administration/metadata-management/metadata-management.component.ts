@@ -10,8 +10,8 @@ import { AddNEditPropertyMetadataModel } from '../models/add-n-edit-property-met
 import { ConfirmationDialogComponent } from '../../common/confirmation-dialog/confirmation-dialog.component';
 import { PropertyInfoModel } from '../models/property-info-model';
 import { ReleaseMetadataSettingsComponent } from '../release-metadata-settings/release-metadata-settings.component';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
 import {DscribeService} from '../../dscribe.service';
+import {SnackBarService} from '../../common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-metadata-management',

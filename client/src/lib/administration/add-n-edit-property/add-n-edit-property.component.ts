@@ -8,7 +8,7 @@ import { AddNEditEntityComponent } from '../add-n-edit-entity/add-n-edit-entity.
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { MetadataManagementApiClient } from '../metadata-management-api-client';
 import { PropertyInfoModel } from '../models/property-info-model';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
+import {SnackBarService} from '../../common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-add-n-edit-property',

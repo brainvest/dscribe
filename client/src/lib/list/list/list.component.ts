@@ -38,7 +38,7 @@ import { DscribeFeatureArea } from '../../models/dscribe-feature-area.enum';
 import { DscribeCommand } from '../../models/dscribe-command';
 import { DscribeCommandCallbackInput } from '../../models/dscribe-command-callback-input';
 import { DscribeCommandDisplayPredicate } from '../../models/dscribe-command-display-predicate';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
+import {SnackBarService} from '../../common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-list',
