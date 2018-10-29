@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 {
@@ -8,11 +9,17 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string CodePath { get; set; }
 		public string DisplayNamePath { get; set; }
 		public int Id { get; set; }
+		[Required]
+		[MaxLength(200 , ErrorMessage = "Maximom length of Name is 200")]
 		public string Name { get; set; }
 		public string SchemaName { get; set; }
+		[Required]
 		public string SingularTitle { get; set; }
+		[Required]
 		public string PluralTitle { get; set; }
+		[Required]
 		public int EntityGeneralUsageCategoryId { get; set; }
+		public string TableName { get; set; }
 	}
 
 	public class PropertyMetadataModel
@@ -23,9 +30,12 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public int Id { get; set; }
 		public int? InversePropertyId { get; set; }
 		public bool IsNullable { get; set; }
+		[MaxLength(200 , ErrorMessage = "Maximom length of Name is 200")]
 		public string Name { get; set; }
 		public string Title { get; set; }
+		[Required]
 		public int PropertyGeneralUsageCategoryId { get; set; }
+		[Required]
 		public int OwnerEntityId { get; set; }
 	}
 
