@@ -102,5 +102,43 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				};
 			}
 		}
+
+		public async Task<ActionResult<DraftHistoryResponse>> GetHistory(DraftHistoryRequest request)
+		{
+			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			{
+				var query = dbContext.Drafts.Where(x => x.Identifier == request.Identifier);
+				var totalCount = query.CountAsync();
+				var drafts = query.OrderByDescending(x => x.Version)
+					.Skip(request.StartIndex).Take(request.Count)
+					.Select(x => new DraftHistoryResponse.Item
+					{
+						ActionTypeId = x.ActionTypeId,
+						CreationTime = x.CreationTime,
+						EntityTypeId = x.EntityTypeId,
+						Identifier = x.Identifier,
+						Version = x.Version,
+						JsonData = x.JsonData,
+						OwnerUserId = x.OwnerUserId,
+						IsLastVersion = x.IsLastVersion
+					}).ToListAsync();
+				return new DraftHistoryResponse
+				{
+					Items = await drafts,
+					TotalCount = await totalCount
+				};
+			}
+		}
+
+		public async Task<ActionResult<RemoveDraftResponse>> Remove(RemoveDraftRequest request)
+		{
+			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			{
+				var drafts = await dbContext.Drafts.Where(x => x.Identifier == request.Identifier).ToListAsync();
+				dbContext.Drafts.RemoveRange(drafts);
+				await dbContext.SaveChangesAsync();
+				return Ok();
+			}
+		}
 	}
 }

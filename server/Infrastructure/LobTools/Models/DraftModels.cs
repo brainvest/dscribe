@@ -50,11 +50,27 @@ namespace Brainvest.Dscribe.LobTools.Models
 	public class DraftHistoryRequest
 	{
 		public Guid Identifier { get; set; }
+		public int StartIndex { get; set; }
+		[Range(1, 100)]
+		public int Count { get; set; }
 	}
 
 	public class DraftHistoryResponse
 	{
+		public int TotalCount { get; internal set; }
+		internal List<Item> Items { get; set; }
 
+		internal class Item
+		{
+			public ActionTypeEnum ActionTypeId { get; set; }
+			public DateTime CreationTime { get; set; }
+			public int EntityTypeId { get; set; }
+			public Guid Identifier { get; set; }
+			public int Version { get; set; }
+			public string JsonData { get; set; }
+			public Guid? OwnerUserId { get; set; }
+			public bool IsLastVersion { get; set; }
+		}
 	}
 
 	public class RemoveDraftRequest
