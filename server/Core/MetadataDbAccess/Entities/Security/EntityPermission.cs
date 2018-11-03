@@ -15,7 +15,6 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities.Security
 		public Role Role { get; set; }
 
 		public Guid? UserId { get; set; }
-		public User User { get; set; }
 
 		public ActionTypeEnum? ActionTypeId { get; set; }
 		public EntityActionType ActionType { get; set; }

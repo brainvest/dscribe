@@ -154,7 +154,6 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 
 		public DbSet<SavedFilter> SavedFilters { get; set; }
 
-		public DbSet<User> Users { get; set; }
 		public DbSet<Role> Roles { get; set; }
 		public DbSet<EntityActionType> EntityActionTypes { get; set; }
 		public DbSet<Permission> Permissions { get; set; }

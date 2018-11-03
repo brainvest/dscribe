@@ -19,9 +19,9 @@ namespace Brainvest.Dscribe.Runtime.AccessControl
 			public Dictionary<(string entityName, int appTypeId), int> EntityTypes { get; set; }
 		}
 
-		// TODO: in a large application this list might get large and searching it will be slow, better to be replaced with
+		// TODO: in a large application this list might get large and searching it will be slow, better to be replaced with a faster data structure
 		private Lazy<CachedInfo> _cache;
-		private IServiceScopeFactory _serviceScopeFactory;
+		private readonly IServiceScopeFactory _serviceScopeFactory;
 
 		public PermissionCache(IServiceScopeFactory serviceScopeFactory)
 		{

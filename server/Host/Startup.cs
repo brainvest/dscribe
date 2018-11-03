@@ -1,6 +1,7 @@
 using Brainvest.Dscribe.Implementations.EfCore.All;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.Runtime;
+using Brainvest.Dscribe.LobTools;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,24 +30,25 @@ namespace Brainvest.Dscribe.Host
 					.AllowAnyHeader()));
 
 			services.AddDbContext<MetadataDbContext>(options =>
+				{
+					var provider = Configuration.GetSection("EfProvider").Get<string>();
+					switch (provider)
 					{
-						var provider = Configuration.GetSection("EfProvider").Get<string>();
-						switch (provider)
-						{
-							case "MySql":
-								options.UseMySql(
-										Configuration.GetConnectionString("Engine_MySql"));
-								return;
-							case "SqlServer":
-								options.UseSqlServer(
-										Configuration.GetConnectionString("Engine_SqlServer"));
-								return;
-							default:
-								throw new NotImplementedException($"The provider {provider} is not implemented yet.");
-						}
-					});
+						case "MySql":
+							options.UseMySql(
+									Configuration.GetConnectionString("Engine_MySql"));
+							return;
+						case "SqlServer":
+							options.UseSqlServer(
+									Configuration.GetConnectionString("Engine_SqlServer"));
+							return;
+						default:
+							throw new NotImplementedException($"The provider {provider} is not implemented yet.");
+					}
+				});
 
 			RuntimeStartup.ConfigureServices(services, Configuration);
+			LobToolsStartup.ConfigureServices(services, Configuration);
 			services.RegisterEfCore();
 
 			services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
@@ -63,6 +65,7 @@ namespace Brainvest.Dscribe.Host
 		{
 			app.UseCors("AllowAll");
 			RuntimeStartup.Configure(app, env);
+			LobToolsStartup.Configure(app, env);
 			app.UseAuthentication();
 			app.UseMvc();
 		}
