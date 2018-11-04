@@ -1,6 +1,6 @@
 import {GroupItem} from './group-item';
 import {AggregationInfo} from './aggregation-info';
-import {EntityMetadata} from '../../../metadata/entity-metadata';
+import {EntityTypeMetadata} from '../../../metadata/entity-type-metadata';
 import {LambdaFilterNode} from '../../../filtering/models/filter-nodes/lambda-filter-node';
 import {SortItem} from '../sort-item';
 import {GroupListRequest} from './group-list-request';
@@ -10,17 +10,17 @@ export class GroupingInfo {
 	public groupBy: GroupItem[] = [];
 	public aggregations: AggregationInfo[] = [];
 
-	constructor(public semanticType: EntityMetadata) {
+	constructor(public entityType: EntityTypeMetadata) {
 
 	}
 
 	public getRequest(filters: LambdaFilterNode[], orders: SortItem[], startIndex: number = null, count: number = null) {
-		return new GroupListRequest(this.semanticType.name, filters, orders, this.groupBy, this.aggregations, startIndex, count);
+		return new GroupListRequest(this.entityType.name, filters, orders, this.groupBy, this.aggregations, startIndex, count);
 	}
 
-	public getFakeSemantics(): EntityMetadata {
+	public getFakeSemantics(): EntityTypeMetadata {
 		const cols: PropertyMetadata[] = [];
-		const fakeType = new EntityMetadata('Groupped' + this.semanticType.name, 'گروه', 'گروه ها', null);
+		const fakeType = new EntityTypeMetadata('Groupped' + this.entityType.name, 'گروه', 'گروه ها', null);
 
 		let propIndex = 0;
 		for (let i = 0; i < this.groupBy.length; i++) {

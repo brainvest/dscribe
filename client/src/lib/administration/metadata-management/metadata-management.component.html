@@ -1,15 +1,15 @@
 <div class="page-content">
 	<div class="table-wrapper">
 		<div class="table-toolbar">
-			<span>Entities</span>
+			<span>Entity Types</span>
 			<div>
-				<button mat-icon-button (click)="addEntity()">
+				<button mat-icon-button (click)="addEntityType()">
 					<mat-icon color="primary">add</mat-icon>
 				</button>
-				<button mat-icon-button (click)="editEntity()" [disabled]="!selectedEntity">
+				<button mat-icon-button (click)="editEntityType()" [disabled]="!selectedEntityType">
 					<mat-icon color="accent">edit</mat-icon>
 				</button>
-				<button mat-icon-button (click)="deleteEntity()" [disabled]="!selectedEntity">
+				<button mat-icon-button (click)="deleteEntityType()" [disabled]="!selectedEntityType">
 					<mat-icon color="warn">delete</mat-icon>
 				</button>
 				<button mat-icon-button (click)="openReleaseSettings()" matTooltip="Release Metadata">
@@ -21,59 +21,59 @@
 			</div>
 		</div>
 
-		<table mat-table [dataSource]="entitiesDataSource" matSort>
+		<table mat-table [dataSource]="entityTypesDataSource" matSort>
 
 			<ng-container matColumnDef="name">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-				<td mat-cell *matCellDef="let entity">{{entity.name}}</td>
+				<td mat-cell *matCellDef="let entityType">{{entityType.name}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="usage">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Usage</th>
-				<td mat-cell *matCellDef="let entity">{{getEntityUsageName(entity.entityGeneralUsageCategoryId)}}</td>
+				<td mat-cell *matCellDef="let entityType">{{getEntityTypeUsageName(entityType.entityTypeGeneralUsageCategoryId)}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="singular">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Singular</th>
-				<td mat-cell *matCellDef="let entity">{{entity.singularTitle}}</td>
+				<td mat-cell *matCellDef="let entityType">{{entityType.singularTitle}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="plural">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Plural</th>
-				<td mat-cell *matCellDef="let entity">{{entity.pluralTitle}}</td>
+				<td mat-cell *matCellDef="let entityType">{{entityType.pluralTitle}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="code">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
-				<td mat-cell *matCellDef="let entity">{{entity.codePath}}</td>
+				<td mat-cell *matCellDef="let entityType">{{entityType.codePath}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="displayName">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Display Name</th>
-				<td mat-cell *matCellDef="let entity">{{entity.displayNamePath}}</td>
+				<td mat-cell *matCellDef="let entityType">{{entityType.displayNamePath}}</td>
 			</ng-container>
 
-			<tr mat-header-row *matHeaderRowDef="displayedEntityColumns"></tr>
-			<tr mat-row *matRowDef="let entity; columns: displayedEntityColumns;"
-					[ngClass]="{'highlight': selectedEntity?.id === entity.id}"
-					(click)="selectEntity(entity)"
+			<tr mat-header-row *matHeaderRowDef="displayedEntityTypeColumns"></tr>
+			<tr mat-row *matRowDef="let entityType; columns: displayedEntityTypeColumns;"
+					[ngClass]="{'highlight': selectedEntityType?.id === entityType.id}"
+					(click)="selectEntityType(entityType)"
 			></tr>
 		</table>
-		<mat-paginator id="entitiesPaginator" #entitiesPaginator [length]="entities?.length" [pageSize]="5"></mat-paginator>
+		<mat-paginator id="entityTypesPaginator" #entityTypesPaginator [length]="entityTypes?.length" [pageSize]="5"></mat-paginator>
 	</div>
 
 	<div class="table-wrapper">
 		<div class="table-toolbar">
-			<span *ngIf="selectedEntity">Properties of {{selectedEntity?.name}}</span>
-			<span *ngIf="!selectedEntity">Please select an entity to manage its properties</span>
+			<span *ngIf="selectedEntityType">Properties of {{selectedEntityType?.name}}</span>
+			<span *ngIf="!selectedEntityType">Please select an entity type to manage its properties</span>
 			<mat-card-actions>
-				<button mat-icon-button (click)="addProperty()" [disabled]="!selectedEntity">
+				<button mat-icon-button (click)="addProperty()" [disabled]="!selectedEntityType">
 					<mat-icon color="primary">add</mat-icon>
 				</button>&nbsp;
-				<button mat-icon-button (click)="editProperty()" [disabled]="!selectedEntity || !selectedProperty">
+				<button mat-icon-button (click)="editProperty()" [disabled]="!selectedEntityType || !selectedProperty">
 					<mat-icon color="accent">edit</mat-icon>
 				</button>&nbsp;
-				<button mat-icon-button (click)="deleteProperty()" [disabled]="!selectedEntity || !selectedProperty">
+				<button mat-icon-button (click)="deleteProperty()" [disabled]="!selectedEntityType || !selectedProperty">
 					<mat-icon color="warn">delete</mat-icon>
 				</button>&nbsp;
 			</mat-card-actions>
@@ -100,9 +100,9 @@
 				<td mat-cell *matCellDef="let property">{{property.isNullable}}</td>
 			</ng-container>
 
-			<ng-container matColumnDef="dataTypeEntity">
-				<th mat-header-cell *matHeaderCellDef mat-sort-header>Data Type Entity</th>
-				<td mat-cell *matCellDef="let property">{{getEntityName(property.dataTypeEntityId)}}</td>
+			<ng-container matColumnDef="dataEntityType">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Data Entity Type</th>
+				<td mat-cell *matCellDef="let property">{{getEntityTypeName(property.dataEntityTypeId)}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="usage">

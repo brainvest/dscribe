@@ -18,9 +18,9 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public string ShortDescription { get; set; }
 		public string LongDescription { get; set; }
 
-		public int MainInputEntityId { get; set; }
-		[ForeignKey(nameof(MainInputEntityId))]
-		public Entity MainInputEntity { get; set; }
+		public int MainInputEntityTypeId { get; set; }
+		[ForeignKey(nameof(MainInputEntityTypeId))]
+		public EntityType MainInputEntityType { get; set; }
 
 		[ForeignKey(nameof(ActiveBody))]
 		public int? ActiveBodyId { get; set; }

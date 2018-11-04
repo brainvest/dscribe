@@ -86,14 +86,14 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		public async Task<ActionResult<IEnumerable<IdAndNameResponse>>> GetIdAndName([FromBody]IEnumerable<IdAndNameRequest> request)
 		{
 			var tasks = request
-				.Where(x => _permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, x.EntityType, ActionTypeEnum.Select)))
-				.Select(x => new { x.EntityType, Task = _entityHandler.GetIdAndName(x) }).ToList();
+				.Where(x => _permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, x.EntityTypeName, ActionTypeEnum.Select)))
+				.Select(x => new { x.EntityTypeName, Task = _entityHandler.GetIdAndName(x) }).ToList();
 			var results = new List<IdAndNameResponse>();
 			foreach (var task in tasks)
 			{
 				results.Add(new IdAndNameResponse
 				{
-					EntityType = task.EntityType,
+					EntityTypeName = task.EntityTypeName,
 					Names = await task.Task
 				});
 			}
@@ -103,37 +103,37 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult<IdAndNameResponse>> GetAutocompleteItems([FromBody]AutocompleteItemsRequest request)
 		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityType, ActionTypeEnum.Select)))
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
 			{
 				return Unauthorized();
 			}
 			var result = await _entityHandler.GetAutocomplteItems(request);
 			return new IdAndNameResponse
 			{
-				EntityType = request.EntityType,
+				EntityTypeName = request.EntityTypeName,
 				Names = result
 			};
 		}
 
 		public class AllIdAndNameRequest
 		{
-			public string EntityType { get; set; }
+			public string EntityTypeName { get; set; }
 		}
 
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable<NameResponseItem>>> GetAllIdAndName([FromBody]AllIdAndNameRequest request)
 		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityType, ActionTypeEnum.Select)))
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
 			{
 				return Unauthorized();
 			}
-			return new ActionResult<IEnumerable<NameResponseItem>>(await _entityHandler.GetIdAndName(new IdAndNameRequest { EntityType = request.EntityType, Ids = null }));
+			return new ActionResult<IEnumerable<NameResponseItem>>(await _entityHandler.GetIdAndName(new IdAndNameRequest { EntityTypeName = request.EntityTypeName, Ids = null }));
 		}
 
 		[HttpPost]
 		public async Task<ActionResult<object>> Add([FromBody]ManageEntityRequest request)
 		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityType, ActionTypeEnum.Insert)))
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Insert)))
 			{
 				return Unauthorized();
 			}
@@ -143,7 +143,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult<object>> Edit([FromBody]ManageEntityRequest request)
 		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityType, ActionTypeEnum.Update)))
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Update)))
 			{
 				return Unauthorized();
 			}
@@ -153,7 +153,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult<object>> Delete([FromBody]ManageEntityRequest request)
 		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityType, ActionTypeEnum.Delete)))
+			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Delete)))
 			{
 				return Unauthorized();
 			}

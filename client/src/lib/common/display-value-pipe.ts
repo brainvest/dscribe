@@ -21,7 +21,7 @@ export class DisplayValuePipe implements PipeTransform {
 			if (isNaN(id)) {
 				return of(value);
 			}
-			return this.dataHandlerService.getName(property.dataTypeEntity, id);
+			return this.dataHandlerService.getName(property.dataEntityTypeName, id);
 		}
 		if (property.dataType === DataTypes.Date) {
 			return of(value.toString().substr(0, 10));

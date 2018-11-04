@@ -80,8 +80,8 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 
 		public async Task<IEnumerable<NameResponseItem>> GetIdAndName(IdAndNameRequest request)
 		{
-			var entityType = _implementationsContainer.Reflector.GetType(request.EntityType);
-			var keyType = _implementationsContainer.Metadata[request.EntityType].GetPrimaryKey().GetDataType().GetClrType();
+			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
+			var keyType = _implementationsContainer.Metadata[request.EntityTypeName].GetPrimaryKey().GetDataType().GetClrType();
 			var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetIdAndNameInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType, keyType);
 			var awaitable = method.Invoke(_handlerInternal, new object[] { request.Ids }) as Task<IEnumerable<NameResponseItem>>;
 			return await awaitable;
@@ -89,8 +89,8 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 
 		public async Task<IEnumerable<NameResponseItem>> GetAutocomplteItems(AutocompleteItemsRequest request)
 		{
-			var entityType = _implementationsContainer.Reflector.GetType(request.EntityType);
-			var keyType = _implementationsContainer.Metadata[request.EntityType].GetPrimaryKey().GetDataType().GetClrType();
+			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
+			var keyType = _implementationsContainer.Metadata[request.EntityTypeName].GetPrimaryKey().GetDataType().GetClrType();
 			var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetAutocompleteItemsInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType, keyType);
 			var awaitable = method.Invoke(_handlerInternal, new object[] { request.QueryText }) as Task<IEnumerable<NameResponseItem>>;
 			return await awaitable;
@@ -113,7 +113,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 
 		private async Task<ActionResult<object>> CallMethod(ManageEntityRequest request, string internalMethodName)
 		{
-			var entityType = _implementationsContainer.Reflector.GetType(request.EntityType);
+			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 			var method = _handlerInternal.GetType().GetMethod(internalMethodName, BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 			object r = CreateGenericObject(request, entityType);
 			var awaitable = method.Invoke(_handlerInternal, new object[] { r }) as Task<ActionResult<object>>;

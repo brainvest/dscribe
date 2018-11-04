@@ -1,5 +1,5 @@
 <form class="form-horizontal">
-	<div *ngIf="entityMetadata">
+	<div *ngIf="entityTypeMetadata">
 		<dscribe-property-editor *ngFor="let property of properties"
 														 [property]="property"
 														 [entity]="entity">
@@ -10,7 +10,7 @@
 					<ng-template mat-tab-label>
 						{{prop.masterProperty.title || prop.masterProperty.name}}
 					</ng-template>
-					<dscribe-list [hideFilter]="true" [entity]="prop.masterProperty.entityType" [master]="prop">
+					<dscribe-list [hideFilter]="true" [entityType]="prop.masterProperty.entityType" [master]="prop">
 					</dscribe-list>
 				</mat-tab>
 			</mat-tab-group>

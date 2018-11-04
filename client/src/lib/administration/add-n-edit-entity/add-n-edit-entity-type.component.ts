@@ -1,34 +1,34 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { TypeBase } from '../../metadata/entity-base';
+import { EntityTypeBase } from '../../metadata/entity-type-base';
 import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
 import { MetadataManagementApiClient } from '../metadata-management-api-client';
 import { SnackBarService } from '../../common/notifications/snackbar.service';
 
 @Component({
-	selector: 'dscribe-add-n-edit-entity',
-	templateUrl: './add-n-edit-entity.component.html',
-	styleUrls: ['./add-n-edit-entity.component.css']
+	selector: 'dscribe-add-n-edit-entity-type',
+	templateUrl: './add-n-edit-entity-type.component.html',
+	styleUrls: ['./add-n-edit-entity-type.component.css']
 })
-export class AddNEditEntityComponent implements OnInit {
+export class AddNEditEntityTypeComponent implements OnInit {
 
-	entity: TypeBase = new TypeBase();
+	entityType: EntityTypeBase = new EntityTypeBase();
 
 	constructor(
-		private dialogRef: MatDialogRef<AddNEditEntityComponent>,
-		@Inject(MAT_DIALOG_DATA) public data: AddNEditEntityComponentData,
+		private dialogRef: MatDialogRef<AddNEditEntityTypeComponent>,
+		@Inject(MAT_DIALOG_DATA) public data: AddNEditEntityTypeComponentData,
 		private apiClient: MetadataManagementApiClient,
 		private snackbarService: SnackBarService) {
 	}
 
 	ngOnInit() {
-		this.entity = this.data.entity;
+		this.entityType = this.data.entityType;
 	}
 
 	save() {
 		const request = (this.data.isNew) ?
-			this.apiClient.addEntity(this.entity) :
-			this.apiClient.editEntity(this.entity);
+			this.apiClient.addEntityType(this.entityType) :
+			this.apiClient.editEntityType(this.entityType);
 		request.subscribe((data: any) => {
 			this.dialogRef.close('saved');
 		}, (errors: any) => {
@@ -42,9 +42,9 @@ export class AddNEditEntityComponent implements OnInit {
 
 }
 
-export class AddNEditEntityComponentData {
+export class AddNEditEntityTypeComponentData {
 	constructor(
-		public entity: TypeBase,
+		public entityType: EntityTypeBase,
 		public isNew: boolean,
 		public basicInfo: MetadataBasicInfoModel) {}
 

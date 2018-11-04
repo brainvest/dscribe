@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddNEditEntityComponent } from './add-n-edit-entity.component';
+import { AddNEditEntityTypeComponent } from './add-n-edit-entity-type.component';
 
-describe('AddNEditEntityComponent', () => {
-  let component: AddNEditEntityComponent;
-  let fixture: ComponentFixture<AddNEditEntityComponent>;
+describe('AddNEditEntityTypeComponent', () => {
+  let component: AddNEditEntityTypeComponent;
+  let fixture: ComponentFixture<AddNEditEntityTypeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddNEditEntityComponent ]
+      declarations: [ AddNEditEntityTypeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddNEditEntityComponent);
+    fixture = TestBed.createComponent(AddNEditEntityTypeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

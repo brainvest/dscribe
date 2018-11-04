@@ -1,14 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace Brainvest.Dscribe.Abstractions.Metadata
 {
-	public interface IMetadataCache : IEnumerable<IEntityMetadata>
+	public interface IMetadataCache : IEnumerable<IEntityTypeMetadata>
 	{
-		IEntityMetadata this[string entityTypeName] { get; }
-		IEntityMetadata TryGetEntity(string entityTypeName);
+		IEntityTypeMetadata this[string entityTypeName] { get; }
+		IEntityTypeMetadata TryGetEntity(string entityTypeName);
 		LambdaExpression GetExpression(string definitionIdentifier, IBusinessReflector reflector);
 	}
 }

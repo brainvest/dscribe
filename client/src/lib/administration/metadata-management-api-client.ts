@@ -1,10 +1,9 @@
-import { catchError } from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import {Observable} from 'rxjs';
 import {PropertyBase} from '../metadata/property-base';
 import {LocalFacetsModel} from '../metadata/facets/local-facet-model';
-import {TypeBase} from '../metadata/entity-base';
+import {EntityTypeBase} from '../metadata/entity-type-base';
 import {MetadataBasicInfoModel} from '../metadata/metadata-basic-info-model';
 import {AddNEditPropertyMetadataModel} from './models/add-n-edit-property-metadata-model';
 import {PropertyInfoModel} from './models/property-info-model';
@@ -19,14 +18,14 @@ export class MetadataManagementApiClient {
 	private managementAPI = this.dscribeService.url('api/ManageMetadata/');
 	private releaseAPI = this.dscribeService.url('api/ReleaseMetadata/');
 
-	private getTypesAPI = this.managementAPI + 'getTypes';
+	private getEntityTypesAPI = this.managementAPI + 'getEntityTypes';
 	private getPropertiesAPI = this.managementAPI + 'getProperties';
 	private getBasicInfoAPI = this.managementAPI + 'getBasicInfo';
-	private getTypeFacetsAPI = this.managementAPI + 'getTypeFacets';
+	private getEntityTypeFacetsAPI = this.managementAPI + 'getEntityTypeFacets';
 	private getPropertyFacetsAPI = this.managementAPI + 'getPropertyFacets';
 	private getAllPropertyNamesAPI = this.managementAPI + 'getAllPropertyNames';
-	private addEntityAPI = this.managementAPI + 'addEntity';
-	private editEntityAPI = this.managementAPI + 'editEntity';
+	private addEntityTypeAPI = this.managementAPI + 'addEntityType';
+	private editEntityTypeAPI = this.managementAPI + 'editEntityType';
 	private addPropertyAPI = this.managementAPI + 'addProperty';
 	private editPropertyAPI = this.managementAPI + 'editProperty';
 	private getPropertyForEditAPI = this.managementAPI + 'getPropertyForEdit';
@@ -35,18 +34,19 @@ export class MetadataManagementApiClient {
 	private generateCodeAPI = this.releaseAPI + 'generateCode';
 
 
-	constructor(private http: HttpClient, private dscribeService: DscribeService) {	}
-
-	addEntity(entity: TypeBase) {
-		return this.http.post<null>(this.addEntityAPI, entity);
+	constructor(private http: HttpClient, private dscribeService: DscribeService) {
 	}
 
-	editEntity(entity: TypeBase) {
-		return this.http.post<null>(this.editEntityAPI, entity);
+	addEntityType(entityType: EntityTypeBase) {
+		return this.http.post<null>(this.addEntityTypeAPI, entityType);
 	}
 
-	deleteEntity(entity: TypeBase): Observable<void> {
-		return this.http.post<void>(this.managementAPI + 'deleteEntity', entity);
+	editEntityType(entityType: EntityTypeBase) {
+		return this.http.post<null>(this.editEntityTypeAPI, entityType);
+	}
+
+	deleteEntityType(entityType: EntityTypeBase): Observable<void> {
+		return this.http.post<void>(this.managementAPI + 'deleteEntityType', entityType);
 	}
 
 	addProperty(property: AddNEditPropertyMetadataModel) {
@@ -66,20 +66,20 @@ export class MetadataManagementApiClient {
 		return this.http.post<MetadataBasicInfoModel>(this.getBasicInfoAPI, {});
 	}
 
-	getTypes(): Observable<TypeBase[]> {
-		return this.http.post<TypeBase[]>(this.getTypesAPI, {});
+	getEntityTypes(): Observable<EntityTypeBase[]> {
+		return this.http.post<EntityTypeBase[]>(this.getEntityTypesAPI, {});
 	}
 
-	manageTypes(action: string, type: TypeBase): Observable<void> {
+	manageEntityTypes(action: string, type: EntityTypeBase): Observable<void> {
 		return this.http.post<void>(this.managementAPI + action + 'Type', type);
 	}
 
-	getTypeFacets(): Observable<LocalFacetsModel> {
-		return this.http.post<LocalFacetsModel>(this.getTypeFacetsAPI, {});
+	getEntityTypeFacets(): Observable<LocalFacetsModel> {
+		return this.http.post<LocalFacetsModel>(this.getEntityTypeFacetsAPI, {});
 	}
 
-	getProperties(entityId: number): Observable<PropertyBase[]> {
-		return this.http.post<PropertyBase[]>(this.getPropertiesAPI, {entityId: entityId});
+	getProperties(entityTypeId: number): Observable<PropertyBase[]> {
+		return this.http.post<PropertyBase[]>(this.getPropertiesAPI, {entityTypeId: entityTypeId});
 	}
 
 	manageProperty(action: string, property: PropertyBase): Observable<void> {

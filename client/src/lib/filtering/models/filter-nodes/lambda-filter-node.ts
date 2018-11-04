@@ -1,6 +1,6 @@
 import {FilterNode} from './filter-node';
 import {ParameterInfo} from '../parameter-info';
-import {EntityMetadata} from '../../../metadata/entity-metadata';
+import {EntityTypeMetadata} from '../../../metadata/entity-type-metadata';
 import {HasTypeInfo} from '../../../metadata/property-metadata';
 import {DataTypes} from '../../../metadata/data-types';
 import {FilterNodeType} from '../filter-node-type';
@@ -10,7 +10,7 @@ export class LambdaFilterNode extends FilterNode {
 	parameter: ParameterInfo;
 	private _body: FilterNode;
 
-	constructor(parent: FilterNode, public entityType: EntityMetadata, private _isValueSelection) {
+	constructor(parent: FilterNode, public entityType: EntityTypeMetadata, private _isValueSelection) {
 		super(parent);
 		this.inputType = new HasTypeInfo(true, DataTypes.NavigationList, entityType);
 		this._body = FilterNode.factory.create(_isValueSelection ? FilterNodeType.Property : FilterNodeType.Comparison, this);

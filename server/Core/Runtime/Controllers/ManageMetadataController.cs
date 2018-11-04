@@ -4,7 +4,6 @@ using Brainvest.Dscribe.Abstractions.Models.ManageMetadata;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
 using Brainvest.Dscribe.Runtime.Validations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -34,7 +33,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<IEnumerable<EntityMetadataModel>>> GetTypes()
+		public async Task<ActionResult<IEnumerable<EntityTypeModel>>> GetEntityTypes()
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
@@ -48,11 +47,11 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			}
 
 			var appTypeId = _implementations.InstanceInfo.AppTypeId;
-			var types = await _dbContext.Entities.OrderBy(x => x.Name)
+			var entityTypes = await _dbContext.EntityTypes.OrderBy(x => x.Name)
 					.Where(x => x.AppTypeId == appTypeId)
-					.Select(x => new EntityMetadataModel
+					.Select(x => new EntityTypeModel
 					{
-						BaseEntityId = x.BaseEntityId,
+						BaseEntityTypeId = x.BaseEntityTypeId,
 						CodePath = x.CodePath,
 						DisplayNamePath = x.DisplayNamePath,
 						Id = x.Id,
@@ -61,73 +60,73 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 						SingularTitle = x.SingularTitle,
 						TableName = x.TableName,
 						PluralTitle = x.PluralTitle,
-						EntityGeneralUsageCategoryId = x.GeneralUsageCategoryId
+						EntityTypeGeneralUsageCategoryId = x.GeneralUsageCategoryId
 					})
 					.ToListAsync();
-			return types;
+			return entityTypes;
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> AddEntity(EntityMetadataModel model)
+		public async Task<ActionResult> AddEntityType(EntityTypeModel model)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
 				return Unauthorized();
 			}
 
-			var validationMessage = await MetadataValidationLogic.AddEntityValidation(model, _dbContext);
+			var validationMessage = await MetadataValidationLogic.AddEntityTypeValidation(model, _dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
 				return StatusCode(400, validationMessage);
 			}
 
-			var type = new Entity
+			var type = new EntityType
 			{
-				BaseEntityId = model.BaseEntityId,
+				BaseEntityTypeId = model.BaseEntityTypeId,
 				CodePath = model.CodePath,
 				DisplayNamePath = model.DisplayNamePath,
 				Name = model.Name,
 				SchemaName = model.SchemaName,
 				SingularTitle = model.SingularTitle,
 				PluralTitle = model.PluralTitle,
-				GeneralUsageCategoryId = model.EntityGeneralUsageCategoryId,
+				GeneralUsageCategoryId = model.EntityTypeGeneralUsageCategoryId,
 				AppTypeId = _implementations.InstanceInfo.AppTypeId,
 				TableName = model.TableName
 			};
-			_dbContext.Entities.Add(type);
+			_dbContext.EntityTypes.Add(type);
 			await _dbContext.SaveChangesAsync();
 			return Ok();
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> EditEntity(EntityMetadataModel model)
+		public async Task<ActionResult> EditEntityType(EntityTypeModel model)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
 				return Unauthorized();
 			}
-			var error = await MetadataValidationLogic.EditEntityValidation(model, _dbContext);
+			var error = await MetadataValidationLogic.EditEntityTypeValidation(model, _dbContext);
 			if (error != null)
 			{
 				return BadRequest(error);
 			}
 
-			var type = await _dbContext.Entities.FindAsync(model.Id);
-			type.BaseEntityId = model.BaseEntityId;
-			type.CodePath = model.CodePath;
-			type.DisplayNamePath = model.DisplayNamePath;
-			type.Name = model.Name;
-			type.SchemaName = model.SchemaName;
-			type.SingularTitle = model.SingularTitle;
-			type.PluralTitle = model.PluralTitle;
-			type.TableName = model.TableName;
-			type.GeneralUsageCategoryId = model.EntityGeneralUsageCategoryId;
+			var entityType = await _dbContext.EntityTypes.FindAsync(model.Id);
+			entityType.BaseEntityTypeId = model.BaseEntityTypeId;
+			entityType.CodePath = model.CodePath;
+			entityType.DisplayNamePath = model.DisplayNamePath;
+			entityType.Name = model.Name;
+			entityType.SchemaName = model.SchemaName;
+			entityType.SingularTitle = model.SingularTitle;
+			entityType.PluralTitle = model.PluralTitle;
+			entityType.TableName = model.TableName;
+			entityType.GeneralUsageCategoryId = model.EntityTypeGeneralUsageCategoryId;
 			await _dbContext.SaveChangesAsync();
 			return Ok();
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> DeleteEntity(EntityMetadataModel model)
+		public async Task<ActionResult> DeleteEntityType(EntityTypeModel model)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
@@ -138,14 +137,14 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return StatusCode(400, validationMessage);
 			}
-			var type = await _dbContext.Entities.FindAsync(model.Id);
-			_dbContext.Entities.Remove(type);
+			var entityType = await _dbContext.EntityTypes.FindAsync(model.Id);
+			_dbContext.EntityTypes.Remove(entityType);
 			await _dbContext.SaveChangesAsync();
 			return Ok();
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<IEnumerable<PropertyMetadataModel>>> GetProperties(PropertyMetadataRequestModel request)
+		public async Task<ActionResult<IEnumerable<PropertyModel>>> GetProperties(EntityTypeDetailsRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
@@ -159,24 +158,24 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			}
 
 			var properties = await _dbContext.Properties
-					.Where(x => x.EntityId == request.EntityId).OrderBy(x => x.Name)
-					.Select(x => new PropertyMetadataModel
+					.Where(x => x.OwnerEntityTypeId == request.EntityTypeId).OrderBy(x => x.Name)
+					.Select(x => new PropertyModel
 					{
 						DataTypeId = (int?)x.DataTypeId,
-						DataTypeEntityId = x.DataTypeEntityId,
+						DataEntityTypeId = x.DataEntityTypeId,
 						Id = x.Id,
 						IsNullable = x.IsNullable,
 						Name = x.Name,
 						Title = x.Title,
 						PropertyGeneralUsageCategoryId = x.GeneralUsageCategoryId,
-						OwnerEntityId = x.EntityId,
+						OwnerEntityTypeId = x.OwnerEntityTypeId,
 						ForeignKeyPropertyId = x.ForeignKeyPropertyId,
 						InversePropertyId = x.InversePropertyId
 					}).ToListAsync();
 			return properties;
 		}
 
-		public async Task<ActionResult<AddNEditPropertyMetadataModel>> GetPropertyForEdit(AddNEditPropertyInfoRequest request)
+		public async Task<ActionResult<AddNEditPropertyModel>> GetPropertyForEdit(PropertyDetailsRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
@@ -189,11 +188,11 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				return StatusCode(400, validationMessage);
 			}
 
-			var model = await _dbContext.Properties.Select(x => new AddNEditPropertyMetadataModel
+			var model = await _dbContext.Properties.Select(x => new AddNEditPropertyModel
 			{
-				DataTypeEntityId = x.DataTypeEntityId,
+				DataEntityTypeId = x.DataEntityTypeId,
 				DataTypeId = (int)x.DataTypeId,
-				OwnerEntityId = x.EntityId,
+				OwnerEntityTypeId = x.OwnerEntityTypeId,
 				ForeignKeyPropertyId = x.ForeignKeyPropertyId,
 				NewForeignKeyName = x.ForeignKeyProperty.Name,
 				Id = x.Id,
@@ -220,7 +219,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> AddProperty(AddNEditPropertyMetadataModel model)
+		public async Task<ActionResult> AddProperty(AddNEditPropertyModel model)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
@@ -238,12 +237,12 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				var property = new Property
 				{
 					DataTypeId = (DataTypeEnum?)model.DataTypeId,
-					DataTypeEntityId = model.DataTypeEntityId,
+					DataEntityTypeId = model.DataEntityTypeId,
 					IsNullable = model.IsNullable,
 					Name = model.Name,
 					Title = model.Title,
 					GeneralUsageCategoryId = model.PropertyGeneralUsageCategoryId,
-					EntityId = model.OwnerEntityId,
+					OwnerEntityTypeId = model.OwnerEntityTypeId,
 					InversePropertyId = model.InversePropertyId
 				};
 				if (property.DataTypeId == DataTypeEnum.NavigationEntity)
@@ -264,7 +263,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> EditProperty(AddNEditPropertyMetadataModel model)
+		public async Task<ActionResult> EditProperty(AddNEditPropertyModel model)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
@@ -278,7 +277,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 
 			var property = await _dbContext.Properties.FindAsync(model.Id);
 			property.DataTypeId = (DataTypeEnum?)model.DataTypeId;
-			property.DataTypeEntityId = model.DataTypeEntityId;
+			property.DataEntityTypeId = model.DataEntityTypeId;
 			property.IsNullable = model.IsNullable;
 			property.Name = model.Name;
 			property.Title = model.Title;
@@ -297,7 +296,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			return Ok();
 		}
 
-		private async Task HandleForeignKey(AddNEditPropertyMetadataModel model, Property property)
+		private async Task HandleForeignKey(AddNEditPropertyModel model, Property property)
 		{
 			switch (model.ForeignKeyAction)
 			{
@@ -314,8 +313,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					var newForeignKey = new Property
 					{
 						DataTypeId = DataTypeEnum.ForeignKey,
-						DataTypeEntityId = model.DataTypeEntityId,
-						EntityId = property.EntityId,
+						DataEntityTypeId = model.DataEntityTypeId,
+						OwnerEntityTypeId = property.OwnerEntityTypeId,
 						GeneralUsageCategoryId = (await _dbContext.PropertyGeneralUsageCategories.FirstAsync(x => x.Name.Contains("ForeignKey"))).Id,
 						IsNullable = model.IsNullable,
 						Name = model.NewForeignKeyName,
@@ -329,7 +328,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			}
 		}
 
-		private async Task HandleInvserseProperty(AddNEditPropertyMetadataModel model, Property property)
+		private async Task HandleInvserseProperty(AddNEditPropertyModel model, Property property)
 		{
 			switch (model.InversePropertyAction)
 			{
@@ -347,8 +346,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					var newInverseProperty = new Property
 					{
 						DataTypeId = DataTypeEnum.NavigationList,
-						DataTypeEntityId = model.OwnerEntityId,
-						EntityId = property.DataTypeEntityId.Value,
+						DataEntityTypeId = model.OwnerEntityTypeId,
+						OwnerEntityTypeId = property.DataEntityTypeId.Value,
 						GeneralUsageCategoryId = (await _dbContext.PropertyGeneralUsageCategories.FirstAsync(x => x.Name.Contains("NavigationList"))).Id,
 						Name = model.NewInversePropertyName,
 						Title = model.NewInversePropertyTitle
@@ -362,7 +361,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> DeleteProperty(PropertyMetadataModel model)
+		public async Task<ActionResult> DeleteProperty(PropertyModel model)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
@@ -404,7 +403,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					.ToListAsync())
 					.GroupBy(v => v.UsageCategoryName)
 					.ToDictionary(v => v.Key, v => v.ToDictionary(g => g.FacetName, g => g.DefaultValue)),
-				DefaultEntityFacetValues = (await _dbContext.EntityFacetDefaultValues
+				DefaultEntityTypeFacetValues = (await _dbContext.EntityTypeFacetDefaultValues
 					.Select(v => new
 					{
 						UsageCategoryName = v.GeneralUsageCategory.Name,
@@ -420,7 +419,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					Name = p.Name,
 					DataType = p.FacetType.Identifier
 				}).ToListAsync(),
-				EntityFacetDefinitions = await _dbContext.EntityFacetDefinitions.Select(p => new FacetDefinitionModel
+				EntityTypeFacetDefinitions = await _dbContext.EntityTypeFacetDefinitions.Select(p => new FacetDefinitionModel
 				{
 					Id = p.Id,
 					Name = p.Name,
@@ -431,7 +430,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					Id = u.Id,
 					Name = u.Name
 				}).ToListAsync(),
-				EntityGeneralUsageCategories = await _dbContext.EntityGeneralUsageCategories.Select(u => new GeneralUsageCategoryModel
+				EntityTypeGeneralUsageCategories = await _dbContext.EntityTypeGeneralUsageCategories.Select(u => new GeneralUsageCategoryModel
 				{
 					Id = u.Id,
 					Name = u.Name
@@ -467,10 +466,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			}
 			var result = new LocalFacetsModel()
 			{
-				LocalFacets = (await _dbContext.EntityFacetValues.Select(v => new
+				LocalFacets = (await _dbContext.EntityTypeFacetValues.Select(v => new
 				{
 					v.Id,
-					TypeName = v.Entity.Name,
+					TypeName = v.EntityType.Name,
 					FacetName = v.FacetDefinition.Name,
 					v.Value
 				}).ToListAsync())
@@ -481,22 +480,21 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<LocalFacetsModel>> GetPropertyFacets(PropertyFacetValuesRequest request)
+		public async Task<ActionResult<LocalFacetsModel>> GetPropertyFacets(EntityTypeDetailsRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementations, null, ActionTypeEnum.ManageMetadata)))
 			{
 				return Unauthorized();
 			}
 
-
-			var validationMessage = await MetadataValidationLogic.GetPropertyFacetsValidation(request,_dbContext);
+			var validationMessage = await MetadataValidationLogic.GetPropertyFacetsValidation(request, _dbContext);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
 				return StatusCode(400, validationMessage);
 			}
 			var result = new LocalFacetsModel()
 			{
-				LocalFacets = (await _dbContext.PropertyFacetValues.Where(x => x.Property.Entity.Name == request.EntityName)
+				LocalFacets = (await _dbContext.PropertyFacetValues.Where(x => x.Property.OwnerEntityTypeId == request.EntityTypeId)
 				.Select(v => new
 				{
 					v.Id,
@@ -523,28 +521,28 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return StatusCode(400, validationMessage);
 			}
-			var existing = await _dbContext.EntityFacetValues
+			var existing = await _dbContext.EntityTypeFacetValues
 				.Where(x =>
-					x.Entity.Name == request.EntityName
+					x.EntityType.Name == request.EntityTypeName
 					&& x.FacetDefinition.Name == request.FacetName)
 				.SingleOrDefaultAsync();
 			if (request.ClearLocalValue)
 			{
 				if (existing != null)
 				{
-					_dbContext.EntityFacetValues.Remove(existing);
+					_dbContext.EntityTypeFacetValues.Remove(existing);
 				}
 			}
 			else
 			{
 				if (existing == null)
 				{
-					existing = new EntityFacetValue
+					existing = new EntityTypeFacetValue
 					{
-						FacetDefinition = await _dbContext.EntityFacetDefinitions.SingleAsync(x => x.Name == request.FacetName),
-						Entity = await _dbContext.Entities.SingleAsync(x => x.Name == request.EntityName)
+						FacetDefinition = await _dbContext.EntityTypeFacetDefinitions.SingleAsync(x => x.Name == request.FacetName),
+						EntityType = await _dbContext.EntityTypes.SingleAsync(x => x.Name == request.EntityTypeName)
 					};
-					_dbContext.EntityFacetValues.Add(existing);
+					_dbContext.EntityTypeFacetValues.Add(existing);
 				}
 				existing.Value = request.Value;
 			}
@@ -566,7 +564,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			}
 			var existing = await _dbContext.PropertyFacetValues
 				.Where(x =>
-				x.Property.Entity.Name == request.EntityName
+				x.Property.OwnerEntityType.Name == request.EntityTypeName
 				&& x.Property.Name == request.PropertyName
 				&& x.FacetDefinition.Name == request.FacetName)
 				.SingleOrDefaultAsync();
@@ -584,7 +582,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					existing = new PropertyFacetValue
 					{
 						FacetDefinition = await _dbContext.PropertyFacetDefinitions.SingleAsync(x => x.Name == request.FacetName),
-						Property = await _dbContext.Properties.SingleAsync(x => x.Entity.Name == request.EntityName && x.Name == request.PropertyName)
+						Property = await _dbContext.Properties.SingleAsync(x => x.OwnerEntityType.Name == request.EntityTypeName && x.Name == request.PropertyName)
 					};
 					_dbContext.PropertyFacetValues.Add(existing);
 				}
@@ -607,14 +605,14 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				return StatusCode(400, validationMessage);
 			}
 			var appTypeId = _implementations.InstanceInfo.AppTypeId;
-			var names = await _dbContext.Properties.Where(x => x.Entity.AppTypeId == appTypeId)
+			var names = await _dbContext.Properties.Where(x => x.OwnerEntityType.AppTypeId == appTypeId)
 				.Select(x => new ManageMetadataPropertyInfoModel
 				{
 					Id = x.Id,
 					Name = x.Name,
-					DataTypeEntityId = x.DataTypeEntityId,
+					DataEntityTypeId = x.DataEntityTypeId,
 					DataTypeId = (int)x.DataTypeId,
-					OwnerEntityId = x.EntityId
+					OwnerEntityTypeId = x.OwnerEntityTypeId
 				}).ToListAsync();
 			return names;
 		}

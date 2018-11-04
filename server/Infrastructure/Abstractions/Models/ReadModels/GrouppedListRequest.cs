@@ -1,14 +1,11 @@
 using Brainvest.Dscribe.Abstractions.Models.Filtering;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
 {
-	public class GrouppedListRequest : IHasEntityName, IFilterModel, IOrderRequest, IGroupingRequest, IPageRequest
+	public class GrouppedListRequest : IHasEntityTypeName, IFilterModel, IOrderRequest, IGroupingRequest, IPageRequest
 	{
 		public string EntityTypeName { get; set; }
 		public FilterNodeModel[] Filters { get; set; }

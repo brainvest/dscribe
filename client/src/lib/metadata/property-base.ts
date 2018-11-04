@@ -4,8 +4,8 @@ export class PropertyBase {
 	isNullable: boolean;
 	name: string;
 	propertyGeneralUsageCategoryId: number;
-	ownerEntityId: number;
-	dataTypeEntityId: number;
+	ownerEntityTypeId: number;
+	dataEntityTypeId: number;
 	foreignKeyPropertyId: number;
 	inversePropertyId: number;
 	title: string;

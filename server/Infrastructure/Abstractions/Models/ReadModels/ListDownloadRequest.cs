@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
 {
-	public class ListDownloadRequest : IHasEntityName, IOrderRequest, IFilterModel, IDataDownloadRequest
+	public class ListDownloadRequest : IHasEntityTypeName, IOrderRequest, IFilterModel, IDataDownloadRequest
 	{
 		public string EntityTypeName { get; set; }
 

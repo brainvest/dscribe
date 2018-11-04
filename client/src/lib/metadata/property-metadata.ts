@@ -1,9 +1,9 @@
-import {EntityMetadata} from './entity-metadata';
+import {EntityTypeMetadata} from './entity-type-metadata';
 import {FacetContainer} from './facets/facet-container';
 import {DataTypes} from './data-types';
 
 export class HasTypeInfo {
-	constructor(public isNullable?: boolean, public dataType?: string, public entityType?: EntityMetadata) {
+	constructor(public isNullable?: boolean, public dataType?: string, public entityType?: EntityTypeMetadata) {
 
 	}
 }
@@ -14,7 +14,7 @@ export class PropertyMetadata extends HasTypeInfo {
 							public dataType?: string | null,
 							public entityTypeName?: string, public foreignKeyName?: string,
 							public inversePropertyName?: string, public validationErrors?: any[],
-							public entityType?: EntityMetadata,
+							public entityType?: EntityTypeMetadata,
 							public inverseProperty?: PropertyMetadata, public foreignKeyProperty?: PropertyMetadata,
 							public facetValues?: FacetContainer, public title?: string, public isNullable?: boolean,
 							public isExpression?: boolean) {

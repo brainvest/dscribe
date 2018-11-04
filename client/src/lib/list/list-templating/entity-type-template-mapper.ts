@@ -3,17 +3,17 @@
 // @dynamic
 import {Type} from '@angular/core';
 
-export class EntityTemplateMapper {
+export class EntityTypeTemplateMapper {
 	private static map: Map<string, {
 		component: Type<any>,
 		options?: any
 	}> = new Map();
 
 	static register(entityTypeName: string, data: { component: Type<any>, options?: any }) {
-		EntityTemplateMapper.map = EntityTemplateMapper.map.set(entityTypeName, data);
+		EntityTypeTemplateMapper.map = EntityTypeTemplateMapper.map.set(entityTypeName, data);
 	}
 
 	static get(entityTypeName: string) {
-		return EntityTemplateMapper.map.get(entityTypeName);
+		return EntityTypeTemplateMapper.map.get(entityTypeName);
 	}
 }

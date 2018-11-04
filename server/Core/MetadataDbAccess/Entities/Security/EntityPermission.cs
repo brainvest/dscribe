@@ -8,8 +8,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities.Security
 	{
 		public int Id { get; set; }
 
-		public int? EntityId { get; set; }
-		public Entity Entity { get; set; }
+		public int? EntityTypeId { get; set; }
+		public EntityType EntityType { get; set; }
 
 		public Guid? RoleId { get; set; }
 		public Role Role { get; set; }

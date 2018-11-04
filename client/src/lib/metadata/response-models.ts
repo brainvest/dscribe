@@ -1,8 +1,8 @@
-import {EntityMetadata} from './entity-metadata';
+import {EntityTypeMetadata} from './entity-type-metadata';
 import {FacetContainerResponse} from './facets/facet-container-response';
 
 export class DigestTypesResponse {
-	digestTypes: EntityMetadata[];
+	digestEntityTypes: EntityTypeMetadata[];
 	propertyDefaults: {
 		root: PropertyDefaultsResponse, [usageCategory: string]: PropertyDefaultsResponse
 	};
@@ -18,7 +18,7 @@ export class FacetResponse {
 	value: [boolean, number, string];
 }
 
-export class TypeResponse {
+export class EntityTypeResponse {
 	name: string;
 	code: string;
 	displayName: string;

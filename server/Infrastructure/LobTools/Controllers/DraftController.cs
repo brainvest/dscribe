@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace Brainvest.Dscribe.LobTools.Controllers
 {
 	[ApiController]
+	[Route("api/[controller]/[action]")]
 	public class DraftController : ControllerBase
 	{
 		private readonly IImplementationsContainer _implementationsContainer;

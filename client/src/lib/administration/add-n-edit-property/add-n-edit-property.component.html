@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>{{data.isNew ? 'New' : 'Edit'}} Property</h1>
 
 <mat-dialog-content>
-	<form #entityForm="ngForm">
+	<form #propertyForm="ngForm">
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Name</mat-label>
@@ -26,11 +26,11 @@
 		</mat-form-field>
 
 		<mat-form-field class="full-width" *ngIf="isNavigation" appearance="outline">
-			<mat-label>Data Type Entity</mat-label>
-			<mat-select name="dataTypeEntity" placeholder="Data Type Entity"
-									[(ngModel)]="property.dataTypeEntityId">
-				<mat-option *ngFor="let entity of entities" [value]="entity.id">
-					{{entity.name}}
+			<mat-label>Data Entity Type</mat-label>
+			<mat-select name="dataEntityType" placeholder="Data Type Entity"
+									[(ngModel)]="property.dataEntityTypeId">
+				<mat-option *ngFor="let entityType of entityTypes" [value]="entityType.id">
+					{{entityType.name}}
 				</mat-option>
 			</mat-select>
 		</mat-form-field>

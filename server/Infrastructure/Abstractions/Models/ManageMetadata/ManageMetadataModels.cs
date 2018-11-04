@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 {
-	public class EntityMetadataModel
+	public class EntityTypeModel
 	{
-		public int? BaseEntityId { get; set; }
+		public int? BaseEntityTypeId { get; set; }
 		public string CodePath { get; set; }
 		public string DisplayNamePath { get; set; }
 		public int Id { get; set; }
 		[Required]
-		[RegularExpression(@"^[\p{L}_][\p{L}\p{N}@$#_]{0,127}$", ErrorMessage = "Entity name is not in a correct format.")]
+		[RegularExpression(@"^[\p{L}_][\p{L}\p{N}@$#_]{0,127}$", ErrorMessage = "Entity type name is not in a correct format.")]
 		public string Name { get; set; }
 		[RegularExpression(@"^[a-zA-Z0-9]{0,29}$", ErrorMessage = "Schema is not in a correct format.")]
 		public string SchemaName { get; set; }
@@ -19,14 +19,14 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		[Required]
 		public string PluralTitle { get; set; }
 		[Required]
-		public int EntityGeneralUsageCategoryId { get; set; }
+		public int EntityTypeGeneralUsageCategoryId { get; set; }
 		public string TableName { get; set; }
 	}
 
-	public class PropertyMetadataModel
+	public class PropertyModel
 	{
 		public int? DataTypeId { get; set; }
-		public int? DataTypeEntityId { get; set; }
+		public int? DataEntityTypeId { get; set; }
 		public int? ForeignKeyPropertyId { get; set; }
 		public int Id { get; set; }
 		public int? InversePropertyId { get; set; }
@@ -37,10 +37,10 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		[Required]
 		public int PropertyGeneralUsageCategoryId { get; set; }
 		[Required]
-		public int OwnerEntityId { get; set; }
+		public int OwnerEntityTypeId { get; set; }
 	}
 
-	public class AddNEditPropertyMetadataModel : PropertyMetadataModel
+	public class AddNEditPropertyModel : PropertyModel
 	{
 		public RelatedPropertyAction ForeignKeyAction { get; set; }
 		public string NewForeignKeyName { get; set; }
@@ -60,12 +60,12 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		RenameExisting
 	}
 
-	public class PropertyMetadataRequestModel
+	public class EntityTypeDetailsRequest
 	{
-		public int EntityId { get; set; }
+		public int EntityTypeId { get; set; }
 	}
 
-	public class AddNEditPropertyInfoRequest
+	public class PropertyDetailsRequest
 	{
 		public int PropertyId { get; set; }
 	}
@@ -73,11 +73,11 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 	public class MetadataBasicInfoModel
 	{
 		public IEnumerable<FacetDefinitionModel> PropertyFacetDefinitions { get; set; }
-		public IEnumerable<FacetDefinitionModel> EntityFacetDefinitions { get; set; }
+		public IEnumerable<FacetDefinitionModel> EntityTypeFacetDefinitions { get; set; }
 		public Dictionary<string, Dictionary<string, string>> DefaultPropertyFacetValues { get; set; }
-		public Dictionary<string, Dictionary<string, string>> DefaultEntityFacetValues { get; set; }
+		public Dictionary<string, Dictionary<string, string>> DefaultEntityTypeFacetValues { get; set; }
 		public IEnumerable<GeneralUsageCategoryModel> PropertyGeneralUsageCategories { get; set; }
-		public IEnumerable<GeneralUsageCategoryModel> EntityGeneralUsageCategories { get; set; }
+		public IEnumerable<GeneralUsageCategoryModel> EntityTypeGeneralUsageCategories { get; set; }
 		public IEnumerable<DataTypeModel> DataTypes { get; set; }
 		public IEnumerable<FacetTypeModel> FacetTypes { get; set; }
 	}
@@ -92,16 +92,11 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 
 	public class SaveLocalFacetRequest
 	{
-		public string EntityName { get; set; }
+		public string EntityTypeName { get; set; }
 		public string PropertyName { get; set; }
 		public string FacetName { get; set; }
 		public string Value { get; set; }
 		public bool ClearLocalValue { get; set; }
-	}
-
-	public class PropertyFacetValuesRequest
-	{
-		public string EntityName { get; set; }
 	}
 
 	public class FacetDefinitionModel
@@ -136,7 +131,7 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public int DataTypeId { get; set; }
-		public int? DataTypeEntityId { get; set; }
-		public int OwnerEntityId { get; set; }
+		public int? DataEntityTypeId { get; set; }
+		public int OwnerEntityTypeId { get; set; }
 	}
 }

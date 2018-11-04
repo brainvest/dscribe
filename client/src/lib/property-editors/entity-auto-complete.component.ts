@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {DataHandlerService} from '../common/services/data-handler.service';
 import {PropertyMetadata} from '../metadata/property-metadata';
 import {map, mergeMap, share, startWith} from 'rxjs/operators';
-import {EntityMetadata} from '../metadata/entity-metadata';
+import {EntityTypeMetadata} from '../metadata/entity-type-metadata';
 import {ListAddNEditDialogComponent} from '../list/list-add-n-edit-dialog/list-add-n-edit-dialog.component';
 import {AddNEditResult} from '../common/models/add-n-edit-result';
 
@@ -122,7 +122,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			data: {
 				entity: {},
 				action: 'add',
-				entityType: this.property.entityType.name,
+				entityTypeName: this.property.entityType.name,
 				title: this.property.entityType.singularTitle,
 				master: null
 			}
@@ -145,10 +145,10 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 @Component({
 	template: `
 		<mat-dialog-content>
-			<h1 class="page-header">{{inputs.entity.pluralTitle}}</h1>
+			<h1 class="page-header">{{inputs.entityType.pluralTitle}}</h1>
 			<dscribe-list
 				[hideFilter]="false"
-				[entity]="inputs.entity"
+				[entityType]="inputs.entityType"
 				(selectionChanged)="listRowSelectionChanged($event)">
 			</dscribe-list>
 		</mat-dialog-content>
@@ -159,7 +159,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 })
 export class AutoCompleteMoreDialogComponent {
 	inputs: {
-		entity: EntityMetadata,
+		entityType: EntityTypeMetadata,
 		title: string,
 		selectedRow: any
 	};

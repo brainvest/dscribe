@@ -1,4 +1,4 @@
-export class DigestEntityInfo {
+export class DigestEntityType {
 	constructor(public name: string,
 							public singularTitle: string,
 							public pluralTitle: string,

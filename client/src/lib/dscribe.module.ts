@@ -56,8 +56,8 @@ import { FilterTreeManipulator } from './filtering/models/filter-tree-manipulato
 import { NavigationComponent } from './navigation/navigation.component';
 import { MetadataManagementComponent } from './administration/metadata-management/metadata-management.component';
 import { RouterModule } from '@angular/router';
-import { EntityGeneralUsageNamePipe } from './administration/helpers/entity-general-usage-name.pipe';
-import { AddNEditEntityComponent } from './administration/add-n-edit-entity/add-n-edit-entity.component';
+import { EntityTypeGeneralUsageNamePipe } from './administration/helpers/entity-type-general-usage-name.pipe';
+import { AddNEditEntityTypeComponent } from './administration/add-n-edit-entity/add-n-edit-entity-type.component';
 import { AddNEditPropertyComponent } from './administration/add-n-edit-property/add-n-edit-property.component';
 import { KeysPipe } from './helpers/keys.pipe';
 import { ConfirmationDialogComponent } from './common/confirmation-dialog/confirmation-dialog.component';
@@ -102,7 +102,7 @@ import { SnackBarService } from './common/notifications/snackbar.service';
 	declarations: [
 		ArithmeticFilterNodeComponent,
 		AddNEditComponent,
-		AddNEditEntityComponent,
+		AddNEditEntityTypeComponent,
 		AddNEditPropertyComponent,
 		AutoCompleteMoreDialogComponent,
 		BoolEditorComponent,
@@ -115,7 +115,7 @@ import { SnackBarService } from './common/notifications/snackbar.service';
 		DisplayValuePipe,
 		DscribeComponent,
 		EntityAutoCompleteComponent,
-		EntityGeneralUsageNamePipe,
+		EntityTypeGeneralUsageNamePipe,
 		EntityListEditorComponent,
 		EntitySelectComponent,
 		FilterNodeComponent,
@@ -145,7 +145,7 @@ import { SnackBarService } from './common/notifications/snackbar.service';
 	entryComponents: [
 		ListAddNEditDialogComponent,
 		ListDeleteDialogComponent,
-		AddNEditEntityComponent,
+		AddNEditEntityTypeComponent,
 		AddNEditPropertyComponent,
 		ConfirmationDialogComponent,
 		ReleaseMetadataSettingsComponent,

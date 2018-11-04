@@ -7,7 +7,7 @@ using Brainvest.Dscribe.MetadataDbAccess.Entities;
 
 namespace Brainvest.Dscribe.Metadata
 {
-	public class EntityMetadata : FacetOwner, IEntityMetadata
+	public class EntityTypeMetadata : FacetOwner, IEntityTypeMetadata
 	{
 		public EntityGeneralUsageCategoryStruct GeneralBehavior { get; private set; }
 		private Dictionary<string, PropertyMetadata> _properties = new Dictionary<string, PropertyMetadata>();
@@ -16,7 +16,7 @@ namespace Brainvest.Dscribe.Metadata
 		public string SingularTitle { get; private set; }
 		public string PluralTitle { get; private set; }
 		public string TableName { get; private set; }
-		public EntityMetadata BaseEntity { get; set; }
+		public EntityTypeMetadata BaseEntityType { get; set; }
 
 		public string DisplayNameProperty { get; set; }
 		public string CodeProperty { get; set; }
@@ -24,14 +24,14 @@ namespace Brainvest.Dscribe.Metadata
 		#region Facets
 		public static Dictionary<int, Facet> _facets { get; private set; } = new Dictionary<int, Facet>();
 
-		public static void DefineFacets(IEnumerable<EntityFacetDefinition> entityFacetDefinitions)
+		public static void DefineFacets(IEnumerable<EntityTypeFacetDefinition> entityFacetDefinitions)
 		{
-			ReflectionHelper.FillFacetsDictionary<EntityMetadata>(_facets, entityFacetDefinitions, typeof(EntityFacet<>));
+			ReflectionHelper.FillFacetsDictionary<EntityTypeMetadata>(_facets, entityFacetDefinitions, typeof(EntityFacet<>));
 		}
 
 		#endregion
 
-		public EntityMetadata(Entity dbMetadata, EntityMetadata baseEntity)
+		public EntityTypeMetadata(EntityType dbMetadata, EntityTypeMetadata baseEntityType)
 		{
 			Name = dbMetadata.Name;
 			SchemaName = dbMetadata.SchemaName;
@@ -39,7 +39,7 @@ namespace Brainvest.Dscribe.Metadata
 			TableName = dbMetadata.TableName;
 			DisplayNameProperty = dbMetadata.DisplayNamePath;
 			CodeProperty = dbMetadata.CodePath;
-			BaseEntity = baseEntity;
+			BaseEntityType = baseEntityType;
 		}
 
 		public IPropertyMetadata GetProperty(string propertyName)
@@ -48,11 +48,11 @@ namespace Brainvest.Dscribe.Metadata
 			{
 				return prop;
 			}
-			if (BaseEntity == null)
+			if (BaseEntityType == null)
 			{
 				return null;
 			}
-			return BaseEntity.GetProperty(propertyName);
+			return BaseEntityType.GetProperty(propertyName);
 		}
 
 		public IEnumerable<IPropertyMetadata> GetDirectProperties()
@@ -62,11 +62,11 @@ namespace Brainvest.Dscribe.Metadata
 
 		public IEnumerable<IPropertyMetadata> GetAllProperties()
 		{
-			if (BaseEntity == null)
+			if (BaseEntityType == null)
 			{
 				return GetDirectProperties();
 			}
-			return BaseEntity.GetAllProperties().Union(GetDirectProperties());
+			return BaseEntityType.GetAllProperties().Union(GetDirectProperties());
 		}
 
 		internal void AddProperty(PropertyMetadata propertyMetadata)

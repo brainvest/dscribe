@@ -16,7 +16,7 @@ namespace Brainvest.Dscribe.Runtime.AccessControl
 		{
 			public Dictionary<string, Guid> Roles { get; set; }
 			public IEnumerable<Permission> Permissions { get; set; }
-			public Dictionary<(string entityName, int appTypeId), int> EntityTypes { get; set; }
+			public Dictionary<(string entityTypeName, int appTypeId), int> EntityTypes { get; set; }
 		}
 
 		// TODO: in a large application this list might get large and searching it will be slow, better to be replaced with a faster data structure
@@ -41,7 +41,7 @@ namespace Brainvest.Dscribe.Runtime.AccessControl
 			{
 				var permissions = dbContext.Permissions.ToList();
 				var roles = dbContext.Roles.ToDictionary(x => x.Name, x => x.Id);
-				var entityTypes = dbContext.Entities
+				var entityTypes = dbContext.EntityTypes
 					.ToDictionary(x => (x.Name, x.AppTypeId), x => x.Id);
 				return new CachedInfo
 				{
@@ -78,7 +78,7 @@ namespace Brainvest.Dscribe.Runtime.AccessControl
 				(!x.ActionTypeId.HasValue || x.ActionTypeId == action.ActionType) &&
 				(string.IsNullOrWhiteSpace(x.ActionName) || x.ActionName == action.ActionName) &&
 				(!x.AppInstanceId.HasValue || x.AppInstanceId == action.AppInstanceId) &&
-				(!x.EntityId.HasValue || x.EntityId == entityTypeId));
+				(!x.EntityTypeId.HasValue || x.EntityTypeId == entityTypeId));
 			var any = false;
 			foreach (var permission in permissions)
 			{

@@ -1,13 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { AddNEditPropertyMetadataModel, RelatedPropertyAction } from '../models/add-n-edit-property-metadata-model';
-import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
-import { TypeBase } from '../../metadata/entity-base';
-import { DataTypeModel } from '../../metadata/data-type-model';
-import { PropertyBase } from '../../metadata/property-base';
-import { AddNEditEntityComponent } from '../add-n-edit-entity/add-n-edit-entity.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { MetadataManagementApiClient } from '../metadata-management-api-client';
-import { PropertyInfoModel } from '../models/property-info-model';
+import {Component, Inject, OnInit} from '@angular/core';
+import {AddNEditPropertyMetadataModel, RelatedPropertyAction} from '../models/add-n-edit-property-metadata-model';
+import {MetadataBasicInfoModel} from '../../metadata/metadata-basic-info-model';
+import {EntityTypeBase} from '../../metadata/entity-type-base';
+import {DataTypeModel} from '../../metadata/data-type-model';
+import {PropertyBase} from '../../metadata/property-base';
+import {AddNEditEntityTypeComponent} from '../add-n-edit-entity/add-n-edit-entity-type.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MetadataManagementApiClient} from '../metadata-management-api-client';
+import {PropertyInfoModel} from '../models/property-info-model';
 import {SnackBarService} from '../../common/notifications/snackbar.service';
 
 @Component({
@@ -19,20 +19,20 @@ export class AddNEditPropertyComponent implements OnInit {
 
 	property: AddNEditPropertyMetadataModel;
 	basicInfo: MetadataBasicInfoModel;
-	entities: TypeBase[];
+	entityTypes: EntityTypeBase[];
 	actions = RelatedPropertyAction;
 	thisTypeProperties: PropertyBase[];
 	allProperties: PropertyInfoModel[];
 
 	constructor(
-		private dialogRef: MatDialogRef<AddNEditEntityComponent>,
+		private dialogRef: MatDialogRef<AddNEditEntityTypeComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: AddNEditPropertyComponentData,
 		private apiClient: MetadataManagementApiClient,
 		private snackbarService: SnackBarService) {
 		this.property = data.property;
 		this.basicInfo = data.basicInfo;
-		this.entities = data.entities;
-		this.thisTypeProperties = data.thisTypeProperties;
+		this.entityTypes = data.entityTypes;
+		this.thisTypeProperties = data.thisEntityTypeProperties;
 		this.allProperties = data.allProperties;
 	}
 
@@ -54,21 +54,21 @@ export class AddNEditPropertyComponent implements OnInit {
 	get compatibleForeignKeys() {
 		return this.thisTypeProperties.filter(x =>
 			x.dataTypeId === DataTypeModel.NavigationalDataTypeIds.foreignKey &&
-			x.dataTypeEntityId === this.property.dataTypeEntityId
+			x.dataEntityTypeId === this.property.dataEntityTypeId
 		);
 	}
 
 	get compatibleInverseProperties() {
 		if (this.property.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationProperty) {
 			return this.allProperties.filter(x =>
-				x.ownerEntityId === this.property.dataTypeEntityId &&
+				x.ownerEntityTypeId === this.property.dataEntityTypeId &&
 				x.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationList &&
-				x.dataTypeEntityId === this.property.ownerEntityId);
+				x.dataEntityTypeId === this.property.ownerEntityTypeId);
 		}
 		return this.allProperties.filter(x =>
-			x.ownerEntityId === this.property.dataTypeEntityId &&
+			x.ownerEntityTypeId === this.property.dataEntityTypeId &&
 			x.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationProperty &&
-			x.dataTypeEntityId === this.property.ownerEntityId);
+			x.dataEntityTypeId === this.property.ownerEntityTypeId);
 	}
 
 	ngOnInit() {
@@ -96,8 +96,8 @@ export class AddNEditPropertyComponentData {
 		public property: AddNEditPropertyMetadataModel,
 		public isNew,
 		public basicInfo: MetadataBasicInfoModel,
-		public entities: TypeBase[],
-		public thisTypeProperties: PropertyBase[],
+		public entityTypes: EntityTypeBase[],
+		public thisEntityTypeProperties: PropertyBase[],
 		public allProperties: PropertyInfoModel[]) {
 	}
 }

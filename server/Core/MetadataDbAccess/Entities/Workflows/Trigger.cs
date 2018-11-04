@@ -10,7 +10,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities.Workflows
 		public Workflow Workflow { get; set; }
 
 		public int EntityTypeId { get; set; }
-		public Entity EntityType { get; set; }
+		public EntityType EntityType { get; set; }
 
 		public ActionTypeEnum ActionType { get; set; }
 

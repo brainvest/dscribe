@@ -1,14 +1,11 @@
 using Brainvest.Dscribe.Abstractions.Models.Filtering;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
 {
-	public class EntityListRequest : IHasEntityName, IOrderRequest, IPageRequest, IFilterModel
+	public class EntityListRequest : IHasEntityTypeName, IOrderRequest, IPageRequest, IFilterModel
 	{
 		public string EntityTypeName { get; set; }
 
