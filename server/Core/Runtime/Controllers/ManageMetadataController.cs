@@ -80,7 +80,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				return StatusCode(400, validationMessage);
 			}
 
-			var type = new EntityType
+			var entityType = new EntityType
 			{
 				BaseEntityTypeId = model.BaseEntityTypeId,
 				CodePath = model.CodePath,
@@ -93,7 +93,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				AppTypeId = _implementations.InstanceInfo.AppTypeId,
 				TableName = model.TableName
 			};
-			_dbContext.EntityTypes.Add(type);
+			_dbContext.EntityTypes.Add(entityType);
+			await ProcessEntityTypeLocalFacets(model, false, entityType);
 			await _dbContext.SaveChangesAsync();
 			return Ok();
 		}
@@ -121,8 +122,44 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			entityType.PluralTitle = model.PluralTitle;
 			entityType.TableName = model.TableName;
 			entityType.GeneralUsageCategoryId = model.EntityTypeGeneralUsageCategoryId;
+			await ProcessEntityTypeLocalFacets(model, true, entityType);
 			await _dbContext.SaveChangesAsync();
 			return Ok();
+		}
+
+		public async Task ProcessEntityTypeLocalFacets(EntityTypeModel model, bool isEdit, EntityType entityType)
+		{
+			List<EntityTypeFacetValue> existing;
+			var definitions = await _dbContext.EntityTypeFacetDefinitions.ToListAsync();
+			if (isEdit)
+			{
+				existing = await _dbContext.EntityTypeFacetValues.Where(x => x.EntityTypeId == model.Id).ToListAsync();
+			}
+			else
+			{
+				existing = new List<EntityTypeFacetValue>();
+			}
+			if (model.LocalFacets != null)
+			{
+				foreach (var localFacet in model.LocalFacets)
+				{
+					var facet = existing.FirstOrDefault(x => x.FacetDefinition.Name == localFacet.FacetName);
+					if (facet == null)
+					{
+						facet = new EntityTypeFacetValue
+						{
+							EntityType = entityType,
+							FacetDefinition = definitions.Single(x => x.Name == localFacet.FacetName)
+						};
+						_dbContext.EntityTypeFacetValues.Add(facet);
+					}
+					if (facet.Value != localFacet.Value)
+					{
+						facet.Value = localFacet.Value;
+					}
+				}
+				_dbContext.EntityTypeFacetValues.RemoveRange(existing.Where(x => !model.LocalFacets.Any(l => l.FacetName == x.FacetDefinition.Name)));
+			}
 		}
 
 		[HttpPost]
@@ -138,6 +175,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				return StatusCode(400, validationMessage);
 			}
 			var entityType = await _dbContext.EntityTypes.FindAsync(model.Id);
+			var localFacets = await _dbContext.EntityTypeFacetValues.Where(x => x.EntityTypeId == model.Id).ToListAsync();
+			_dbContext.EntityTypeFacetValues.RemoveRange(localFacets);
 			_dbContext.EntityTypes.Remove(entityType);
 			await _dbContext.SaveChangesAsync();
 			return Ok();
@@ -256,6 +295,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					property.InversePropertyId = model.NewInversePropertyId;
 				}
 				_dbContext.Properties.Add(property);
+				await ProcessPropertyLocalFacets(model, false, property);
 				await _dbContext.SaveChangesAsync();
 				transaction.Commit();
 			}
@@ -292,8 +332,44 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				property.ForeignKeyPropertyId = model.NewForeignKeyId;
 				property.InversePropertyId = model.NewInversePropertyId;
 			}
+			await ProcessPropertyLocalFacets(model, true, property);
 			await _dbContext.SaveChangesAsync();
 			return Ok();
+		}
+
+		public async Task ProcessPropertyLocalFacets(PropertyModel model, bool isEdit, Property property)
+		{
+			List<PropertyFacetValue> existing;
+			var definitions = await _dbContext.PropertyFacetDefinitions.ToListAsync();
+			if (isEdit)
+			{
+				existing = await _dbContext.PropertyFacetValues.Where(x => x.PropertyId == model.Id).ToListAsync();
+			}
+			else
+			{
+				existing = new List<PropertyFacetValue>();
+			}
+			if (model.LocalFacets != null)
+			{
+				foreach (var localFacet in model.LocalFacets)
+				{
+					var facet = existing.FirstOrDefault(x => x.FacetDefinition.Name == localFacet.FacetName);
+					if (facet == null)
+					{
+						facet = new PropertyFacetValue
+						{
+							Property = property,
+							FacetDefinition = definitions.Single(x => x.Name == localFacet.FacetName)
+						};
+						_dbContext.PropertyFacetValues.Add(facet);
+					}
+					if (facet.Value != localFacet.Value)
+					{
+						facet.Value = localFacet.Value;
+					}
+				}
+				_dbContext.PropertyFacetValues.RemoveRange(existing.Where(x => !model.LocalFacets.Any(l => l.FacetName == x.FacetDefinition.Name)));
+			}
 		}
 
 		private async Task HandleForeignKey(AddNEditPropertyModel model, Property property)
@@ -373,6 +449,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				return StatusCode(400, validationMessage);
 			}
 			var property = await _dbContext.Properties.FindAsync(model.Id);
+			var localFacets = await _dbContext.PropertyFacetValues.Where(x => x.PropertyId == model.Id).ToListAsync();
+			_dbContext.PropertyFacetValues.RemoveRange(localFacets);
 			_dbContext.Properties.Remove(property);
 			await _dbContext.SaveChangesAsync();
 			return Ok();

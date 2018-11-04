@@ -21,6 +21,8 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		[Required]
 		public int EntityTypeGeneralUsageCategoryId { get; set; }
 		public string TableName { get; set; }
+
+		public IEnumerable<LocalFacetModel> LocalFacets { get; set; }
 	}
 
 	public class PropertyModel
@@ -38,6 +40,8 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public int PropertyGeneralUsageCategoryId { get; set; }
 		[Required]
 		public int OwnerEntityTypeId { get; set; }
+
+		public IEnumerable<LocalFacetModel> LocalFacets { get; set; }
 	}
 
 	public class AddNEditPropertyModel : PropertyModel
@@ -88,6 +92,12 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		/// Key to first Dictionary is: Type/Property Name, Key to the second is: FacetName
 		/// </summary>
 		public Dictionary<string, Dictionary<string, string>> LocalFacets { get; set; }
+	}
+
+	public class LocalFacetModel
+	{
+		public string FacetName { get; set; }
+		public string Value { get; set; }
 	}
 
 	public class SaveLocalFacetRequest
