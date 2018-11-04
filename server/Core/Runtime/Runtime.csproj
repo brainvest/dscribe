@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Abstractions\Abstractions.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\LobTools\LobTools.csproj" />
     <ProjectReference Include="..\MetadataDbAccess\MetadataDbAccess.csproj" />
     <ProjectReference Include="..\Metadata\Metadata.csproj" />
   </ItemGroup>

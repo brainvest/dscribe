@@ -17,7 +17,7 @@ namespace Brainvest.Dscribe.Metadata
 	public class MetadataModel : IMetadataModel
 	{
 		public Dictionary<string, IPropertyGeneralUsageCategory> PropertyDefaults { get; private set; }
-		public IDictionary<string, IEntityMetadataModel> Entities { get; private set; }
+		public IDictionary<string, IEntityTypeMetadataModel> EntityTypes { get; private set; }
 
 		public MetadataModel(MetadataBundle bundle)
 		{
@@ -30,7 +30,7 @@ namespace Brainvest.Dscribe.Metadata
 						.Select(y => PropertyFacet.Create(y))
 						.ToDictionary(y => y.Name, y => y)
 				}).ToDictionary(x => x.Name, x => x as IPropertyGeneralUsageCategory);
-			Entities = bundle.Entities.Select(x =>
+			EntityTypes = bundle.EntityTypes.Select(x =>
 				new EntityMetadata
 				{
 					Name = x.Name,
@@ -47,7 +47,7 @@ namespace Brainvest.Dscribe.Metadata
 					Name = p.Name,
 					GeneralUsage = p.GeneralUsageCategory.Name,
 					DataType = p.DataType.Identifier,
-					EntityTypeName = p.DataTypeEntity?.Name,
+					EntityTypeName = p.DataEntityType?.Name,
 					LocalFacets = p.PropertyFacetValues
 						?.Select(v => PropertyFacet.Create(v))
 						?.ToDictionary(v => v.Name, v => v),
@@ -57,7 +57,7 @@ namespace Brainvest.Dscribe.Metadata
 					IsNullable = p.IsNullable,
 					IsExpression = p.IsExpression
 				}).ToDictionary(p => p.Name, p => p)
-				}).ToDictionary(x => x.Name, x => x as IEntityMetadataModel);
+				}).ToDictionary(x => x.Name, x => x as IEntityTypeMetadataModel);
 		}
 
 		public abstract class PropertyFacet
@@ -128,7 +128,7 @@ namespace Brainvest.Dscribe.Metadata
 			public bool IsExpression { get; set; }
 		}
 
-		public class EntityMetadata : IEntityMetadataModel
+		public class EntityMetadata : IEntityTypeMetadataModel
 		{
 			public string Name { get; set; }
 			public string SchemaName { get; set; }

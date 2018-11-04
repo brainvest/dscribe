@@ -1,37 +1,37 @@
-<h1 mat-dialog-title>{{data.isNew ? 'New' : 'Edit'}} Entity</h1>
+<h1 mat-dialog-title>{{data.isNew ? 'New' : 'Edit'}} Entity Type</h1>
 
 <mat-dialog-content>
-	<form #entityForm="ngForm">
+	<form #entityTypeForm="ngForm">
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Name</mat-label>
-			<input matInput type="text" placeholder="Name" name="name" [(ngModel)]="entity.name" required>
+			<input matInput type="text" placeholder="Name" name="name" [(ngModel)]="entityType.name" required>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Table Name</mat-label>
-			<input matInput type="text" placeholder="Table Name" name="tableName" [(ngModel)]="entity.tableName">
+			<input matInput type="text" placeholder="Table Name" name="tableName" [(ngModel)]="entityType.tableName">
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Singular Title</mat-label>
-			<input matInput type="text" placeholder="Singular Title" name="singular" [(ngModel)]="entity.singularTitle" required>
+			<input matInput type="text" placeholder="Singular Title" name="singular" [(ngModel)]="entityType.singularTitle" required>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Plural Title</mat-label>
-			<input matInput type="text" placeholder="Plural Title" name="plural" [(ngModel)]="entity.pluralTitle" required>
+			<input matInput type="text" placeholder="Plural Title" name="plural" [(ngModel)]="entityType.pluralTitle" required>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Schema</mat-label>
-			<input matInput type="text" placeholder="Schema" name="schema" [(ngModel)]="entity.schemaName">
+			<input matInput type="text" placeholder="Schema" name="schema" [(ngModel)]="entityType.schemaName">
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>General Usage Category</mat-label>
-			<mat-select name="usage" placeholder="General Usage Category" [(ngModel)]="entity.entityGeneralUsageCategoryId"
+			<mat-select name="usage" placeholder="General Usage Category" [(ngModel)]="entityType.entityTypeGeneralUsageCategoryId"
 			 [required]="true">
-				<mat-option *ngFor="let category of data.basicInfo.entityGeneralUsageCategories" [value]="category.id">
+				<mat-option *ngFor="let category of data.basicInfo.entityTypeGeneralUsageCategories" [value]="category.id">
 					{{category.name}}
 				</mat-option>
 			</mat-select>
@@ -39,12 +39,12 @@
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Code Path</mat-label>
-			<input matInput type="text" placeholder="Code Path" name="code" [(ngModel)]="entity.codePath">
+			<input matInput type="text" placeholder="Code Path" name="code" [(ngModel)]="entityType.codePath">
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Display Name Path</mat-label>
-			<input matInput type="text" placeholder="Display Name Path" name="displayName" [(ngModel)]="entity.displayNamePath">
+			<input matInput type="text" placeholder="Display Name Path" name="displayName" [(ngModel)]="entityType.displayNamePath">
 		</mat-form-field>
 
 	</form>

@@ -4,6 +4,6 @@ export class ListColumn {
 		public title: string,
 		public jsName: string,
 		public dataType: string,
-		public dataTypeEntity: string) {
+		public dataEntityTypeName: string) {
 	}
 }

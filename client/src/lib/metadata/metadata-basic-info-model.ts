@@ -4,10 +4,10 @@ import {DataTypeModel} from './data-type-model';
 
 export class MetadataBasicInfoModel {
 	propertyFacetDefinitions: FacetDefinitionModel[];
-	entityFacetDefinitions: FacetDefinitionModel[];
+	entityTypeFacetDefinitions: FacetDefinitionModel[];
 	propertyGeneralUsageCategories: GeneralUsageCategoryModel[];
 	dataTypes: DataTypeModel[];
-	entityGeneralUsageCategories: GeneralUsageCategoryModel[];
+	entityTypeGeneralUsageCategories: GeneralUsageCategoryModel[];
 	defaultPropertyFacetValues: [string, [string, string]][];
-	defaultEntityFacetValues: [string, [string, string]][];
+	defaultEntityTypeFacetValues: [string, [string, string]][];
 }

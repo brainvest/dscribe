@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { EntityMetadata } from '../metadata/entity-metadata';
+import { EntityTypeMetadata } from '../metadata/entity-type-metadata';
 import { MasterReference } from '../list/models/master-reference';
 import { PropertyMetadata } from '../metadata/property-metadata';
 import { MetadataService } from '../common/services/metadata.service';
@@ -16,10 +16,10 @@ import { AddNEditResult } from '../common/models/add-n-edit-result';
 })
 export class AddNEditComponent implements OnInit {
 
-	entityMetadata: EntityMetadata;
+	entityTypeMetadata: EntityTypeMetadata;
 	@Input() entity: any;
 	@Input() action: string;
-	@Input() entityType: string;
+	@Input() entityTypeName: string;
 	@Input() master: MasterReference;
 	@Output() entitySaved = new EventEmitter<AddNEditResult>();
 	@Output() canceled = new EventEmitter();
@@ -35,10 +35,10 @@ export class AddNEditComponent implements OnInit {
 
 	ngOnInit() {
 		this.metadataService
-			.getTypeByName(this.entityType)
+			.getEntityTypeByName(this.entityTypeName)
 			.subscribe(
 				(metadata: any) => {
-					this.entityMetadata = metadata;
+					this.entityTypeMetadata = metadata;
 					this.createPropertyEditors();
 				},
 				(errors: any) => {
@@ -48,9 +48,9 @@ export class AddNEditComponent implements OnInit {
 
 	private createPropertyEditors() {
 		this.properties = [];
-		for (const propertyName in this.entityMetadata.properties) {
-			if (this.entityMetadata.properties.hasOwnProperty(propertyName)) {
-				const prop = this.entityMetadata.properties[propertyName];
+		for (const propertyName in this.entityTypeMetadata.properties) {
+			if (this.entityTypeMetadata.properties.hasOwnProperty(propertyName)) {
+				const prop = this.entityTypeMetadata.properties[propertyName];
 				if (prop.facetValues[KnownFacets.HideInEdit]) {
 					continue;
 				}
@@ -64,7 +64,7 @@ export class AddNEditComponent implements OnInit {
 					if (!this.detailLists) {
 						this.detailLists = [];
 					}
-					this.detailLists.push(new MasterReference(this.entity, prop, this.entityMetadata));
+					this.detailLists.push(new MasterReference(this.entity, prop, this.entityTypeMetadata));
 					continue;
 				}
 				this.properties.push(prop);
@@ -77,7 +77,7 @@ export class AddNEditComponent implements OnInit {
 	}
 
 	saveEntity() {
-		this.dataHandler.manageEntity(this.entity, this.entityType, this.action).subscribe(
+		this.dataHandler.manageEntity(this.entity, this.entityTypeName, this.action).subscribe(
 			(res: any) => {
 				this.processSaveResponse(res, this.action);
 			},

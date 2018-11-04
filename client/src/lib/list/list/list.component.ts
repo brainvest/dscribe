@@ -13,7 +13,7 @@ import {
 import { MatDialog, MatPaginator, MatSort } from '@angular/material';
 import { MetadataService } from '../../common/services/metadata.service';
 import { DataHandlerService } from '../../common/services/data-handler.service';
-import { EntityMetadata } from '../../metadata/entity-metadata';
+import { EntityTypeMetadata } from '../../metadata/entity-type-metadata';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { merge, of } from 'rxjs';
 import { EntityListRequest } from '../../common/models/entity-list-request';
@@ -32,7 +32,7 @@ import { FilterNodeFactory } from '../../filtering/models/filter-node-factory';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DataTypes } from '../../metadata/data-types';
 import { TableTemplateComponent } from '../list-templating/table-template/table-template.component';
-import { EntityTemplateMapper } from '../list-templating/entity-template-mapper';
+import { EntityTypeTemplateMapper } from '../list-templating/entity-type-template-mapper';
 import { DscribeService } from '../../dscribe.service';
 import { DscribeFeatureArea } from '../../models/dscribe-feature-area.enum';
 import { DscribeCommand } from '../../models/dscribe-command';
@@ -51,7 +51,7 @@ export class ListComponent implements OnInit, OnChanges {
 	allowMultiSelect = false;
 	selection = new SelectionModel<any>(this.allowMultiSelect, this.initialSelection);
 
-	@Input() entity: EntityMetadata;
+	@Input() entityType: EntityTypeMetadata;
 	@Input() master: MasterReference;
 	@Input() hideFilter: boolean;
 	@Output() selectionChanged = new EventEmitter<any>();
@@ -61,7 +61,7 @@ export class ListComponent implements OnInit, OnChanges {
 	columns: ListColumn[] = [];
 	data = [];
 	totalCount = 0;
-	private displayedEntityType: string;
+	private displayedEntityTypeName: string;
 	isLoadingResults = false;
 	isDataConnected = false;
 	userRefresh: EventEmitter<null> = new EventEmitter<null>();
@@ -105,11 +105,11 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if (this.entity) {
-			if (this.entity.name === this.displayedEntityType) {
+		if (this.entityType) {
+			if (this.entityType.name === this.displayedEntityTypeName) {
 				return;
 			}
-			this.customTemplate = EntityTemplateMapper.get(this.entity.name);
+			this.customTemplate = EntityTypeTemplateMapper.get(this.entityType.name);
 			if (this.customTemplate) {
 				this.displayMode = 'card';
 			} else {
@@ -121,21 +121,21 @@ export class ListComponent implements OnInit, OnChanges {
 				this.sort = new MatSort();
 			}
 			this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-			this.displayedEntityType = this.entity.name;
+			this.displayedEntityTypeName = this.entityType.name;
 			this.refreshData();
-			this.createColumns(this.entity);
+			this.createColumns(this.entityType);
 		}
 	}
 
-	createColumns(entity: EntityMetadata) {
+	createColumns(entityType: EntityTypeMetadata) {
 		this.detailLists = [];
 		this.columns = [];
 		this.displayedColumns = [];
-		for (const propertyName in entity.properties) {
-			if (!entity.properties.hasOwnProperty(propertyName)) {
+		for (const propertyName in entityType.properties) {
+			if (!entityType.properties.hasOwnProperty(propertyName)) {
 				continue;
 			}
-			const prop = entity.properties[propertyName];
+			const prop = entityType.properties[propertyName];
 			if (prop.dataType === DataTypes.NavigationList) {
 				if (prop && prop.facetValues && prop.facetValues[KnownFacets.HideInList]) {
 					continue;
@@ -143,7 +143,7 @@ export class ListComponent implements OnInit, OnChanges {
 				if (this.master) {
 					continue;
 				}
-				this.detailLists.push(new MasterReference(null, prop, entity));
+				this.detailLists.push(new MasterReference(null, prop, entityType));
 				continue;
 			}
 			this.columns.push(new ListColumn(
@@ -180,7 +180,7 @@ export class ListComponent implements OnInit, OnChanges {
 
 	getCurrentFilters(): StorageFilterNode[] {
 		const filters: StorageFilterNode[] = [];
-		const masterDetail = LambdaHelper.getMasterDetailFilter(this.master, this.entity);
+		const masterDetail = LambdaHelper.getMasterDetailFilter(this.master, this.entityType);
 		if (masterDetail) {
 			filters.push(masterDetail.getStorageNode());
 		}
@@ -195,7 +195,7 @@ export class ListComponent implements OnInit, OnChanges {
 		this.paginator.pageIndex = 0;
 		this.data = [];
 		this.connectData();
-		this.dataHandler.countByFilter(new EntityListRequest(this.entity.name, this.getCurrentFilters()))
+		this.dataHandler.countByFilter(new EntityListRequest(this.entityType.name, this.getCurrentFilters()))
 			.subscribe(
 				(data: any) => {
 					this.totalCount = data;
@@ -222,7 +222,7 @@ export class ListComponent implements OnInit, OnChanges {
 					}
 					return this.dataHandler.getByFilter(
 						new EntityListRequest(
-							this.entity.name,
+							this.entityType.name,
 							this.getCurrentFilters(),
 							this.paginator.pageIndex * this.pageSize,
 							this.pageSize, sort));
@@ -277,8 +277,8 @@ export class ListComponent implements OnInit, OnChanges {
 			data: {
 				entity: instance,
 				action: action,
-				entityType: this.entity.name,
-				title: this.entity.singularTitle,
+				entityTypeName: this.entityType.name,
+				title: this.entityType.singularTitle,
 				master: this.master
 			}
 		});
@@ -302,8 +302,8 @@ export class ListComponent implements OnInit, OnChanges {
 			width: '300px'
 		});
 		deleteDialogRef.componentInstance.inputs = {
-			entityType: this.entity.name,
-			title: this.entity.singularTitle,
+			entityTypeName: this.entityType.name,
+			title: this.entityType.singularTitle,
 			selectedRow: this.selection.selected[0]
 		};
 
@@ -336,7 +336,7 @@ export class ListComponent implements OnInit, OnChanges {
 
 	set filterVisible(value) {
 		if (value) {
-			this.filterLambda = new LambdaFilterNode(null, this.entity, false);
+			this.filterLambda = new LambdaFilterNode(null, this.entityType, false);
 		} else {
 			this.filterLambda = null;
 			this.userDefinedFilter = null;

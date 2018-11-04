@@ -2,6 +2,7 @@ using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Metadata;
 using Brainvest.Dscribe.MetadataDbAccess;
+using Brainvest.Dscribe.LobTools.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -68,13 +69,16 @@ namespace Brainvest.Dscribe.Runtime
 				var dbContextType = bridge.BusinessDbContextFactory.GetType().Assembly.GetTypes().Single(x => x.IsSubclassOf(typeof(DbContext)));
 				reflector.RegisterAssembly(dbContextType.Assembly);
 				var dbContextOptionsBuilder = Activator.CreateInstance(typeof(DbContextOptionsBuilder<>).MakeGenericType(dbContextType)) as DbContextOptionsBuilder;
+				var lobToolsDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext>();
 				switch (instanceInfo.Provider)
 				{
 					case DatabaseProviderEnum.MySql:
 						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseMySql(instanceInfo.ConnectionString).Options;
+						implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseMySql(instanceInfo.ConnectionString).Options;
 						break;
 					case DatabaseProviderEnum.SqlServer:
 						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.ConnectionString).Options;
+						implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseSqlServer(instanceInfo.ConnectionString).Options;
 						break;
 					default:
 						throw new NotImplementedException($"The provider {instanceInfo.Provider} is not implemented");
@@ -88,11 +92,22 @@ namespace Brainvest.Dscribe.Runtime
 		private BusinessAssemblyBridge BusinessAssemblyBridge { get; set; }
 		public IBusinessReflector Reflector { get; private set; }
 		public IInstanceInfo InstanceInfo { get; private set; }
+
+		private DbContextOptions<LobToolsDbContext> _lobToolsDbContextOptions;
+
 		public Func<object> RepositoryFactory
 		{
 			get
 			{
 				return () => BusinessAssemblyBridge.BusinessDbContextFactory.GetDbContext(_dbContextOptions);
+			}
+		}
+
+		public Func<DbContext> LobToolsRepositoryFactory
+		{
+			get
+			{
+				return () => new LobToolsDbContext(_lobToolsDbContextOptions);
 			}
 		}
 

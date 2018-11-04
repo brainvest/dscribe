@@ -7,9 +7,9 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 	{
 		public int Id { get; set; }
 
-		public int InputEntityId { get; set; }
-		[ForeignKey(nameof(InputEntityId))]
-		public Entity InputEntity { get; set; }
+		public int InputEntityTypeId { get; set; }
+		[ForeignKey(nameof(InputEntityTypeId))]
+		public EntityType InputEntityType { get; set; }
 
 		[Required]
 		public string Title { get; set; }

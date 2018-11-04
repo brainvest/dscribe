@@ -30,9 +30,9 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 			modelBuilder.Entity<AppInstance>().HasIndex(x => x.Title).IsUnique();
 			modelBuilder.Entity<AppType>().HasIndex(x => x.Name).IsUnique();
 			modelBuilder.Entity<AppType>().HasIndex(x => x.Title).IsUnique();
-			modelBuilder.Entity<Entity>().HasIndex(x => new { x.AppTypeId, x.Name }).IsUnique();
+			modelBuilder.Entity<EntityType>().HasIndex(x => new { x.AppTypeId, x.Name }).IsUnique();
 			modelBuilder.Entity<ExpressionDefinition>().HasIndex(x => new { x.AppTypeId, x.Identifier }).IsUnique();
-			modelBuilder.Entity<Property>().HasIndex(x => new { x.EntityId, x.Name }).IsUnique();
+			modelBuilder.Entity<Property>().HasIndex(x => new { x.OwnerEntityTypeId, x.Name }).IsUnique();
 			#endregion
 
 			#region data
@@ -59,10 +59,10 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 				new ExpressionFormat { Id = ExpressionFormatEnum.Json, Identifier = "Json", Title = "Json" },
 				new ExpressionFormat { Id = ExpressionFormatEnum.CSharp, Identifier = "C#", Title = "C#" }
 			);
-			modelBuilder.Entity<EntityGeneralUsageCategory>().HasData(
-				new EntityGeneralUsageCategory { Id = 1, Name = "WorkingData" },
-				new EntityGeneralUsageCategory { Id = 2, Name = "BasicInfo" },
-				new EntityGeneralUsageCategory { Id = 3, Name = "Model" }
+			modelBuilder.Entity<EntityTypeGeneralUsageCategory>().HasData(
+				new EntityTypeGeneralUsageCategory { Id = 1, Name = "WorkingData" },
+				new EntityTypeGeneralUsageCategory { Id = 2, Name = "BasicInfo" },
+				new EntityTypeGeneralUsageCategory { Id = 3, Name = "Model" }
 			);
 			modelBuilder.Entity<FacetType>().HasData(
 				new FacetType { Id = FacetDataType.Bool, Identifier = "bool", Name = "Boolean" },
@@ -142,11 +142,11 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 		public DbSet<PropertyFacetValue> PropertyFacetValues { get; set; }
 		public DbSet<PropertyGeneralUsageCategory> PropertyGeneralUsageCategories { get; set; }
 		public DbSet<Property> Properties { get; set; }
-		public DbSet<EntityFacetDefaultValue> EntityFacetDefaultValues { get; set; }
-		public DbSet<EntityFacetDefinition> EntityFacetDefinitions { get; set; }
-		public DbSet<EntityFacetValue> EntityFacetValues { get; set; }
-		public DbSet<EntityGeneralUsageCategory> EntityGeneralUsageCategories { get; set; }
-		public DbSet<Entity> Entities { get; set; }
+		public DbSet<EntityTypeFacetDefaultValue> EntityTypeFacetDefaultValues { get; set; }
+		public DbSet<EntityTypeFacetDefinition> EntityTypeFacetDefinitions { get; set; }
+		public DbSet<EntityTypeFacetValue> EntityTypeFacetValues { get; set; }
+		public DbSet<EntityTypeGeneralUsageCategory> EntityTypeGeneralUsageCategories { get; set; }
+		public DbSet<EntityType> EntityTypes { get; set; }
 
 		public DbSet<ExpressionDefinition> ExpressionDefinitions { get; set; }
 		public DbSet<ExpressionBody> ExpressionBodies { get; set; }
@@ -154,7 +154,6 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 
 		public DbSet<SavedFilter> SavedFilters { get; set; }
 
-		public DbSet<User> Users { get; set; }
 		public DbSet<Role> Roles { get; set; }
 		public DbSet<EntityActionType> EntityActionTypes { get; set; }
 		public DbSet<Permission> Permissions { get; set; }

@@ -14,7 +14,7 @@ namespace Brainvest.Dscribe.Metadata
 		public string Name { get; set; }
 		public string Title { get; set; }
 
-		public EntityMetadata Owner { get; set; }
+		public EntityTypeMetadata Owner { get; set; }
 		public DataTypes DataType { get; set; }
 		public bool IsNullable { get; set; }
 		public bool IsExpression { get; set; }
@@ -65,7 +65,7 @@ namespace Brainvest.Dscribe.Metadata
 		}
 		#endregion
 		private IMetadataCache _cache;
-		public PropertyMetadata(IMetadataCache cache, string name, EntityMetadata owner, PropertyGeneralUsageCategoryStruct generalBehavior
+		public PropertyMetadata(IMetadataCache cache, string name, EntityTypeMetadata owner, PropertyGeneralUsageCategoryStruct generalBehavior
 			, DataType dataType, bool isNullable, bool isExpression, string title, string expressionDefinitionIdentifier)
 		{
 			_cache = cache;

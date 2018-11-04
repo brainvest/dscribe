@@ -1,8 +1,8 @@
-import { EntityGeneralUsageNamePipe } from './entity-general-usage-name.pipe';
+import { EntityTypeGeneralUsageNamePipe } from './entity-type-general-usage-name.pipe';
 
-describe('EntityGeneralUsageNamePipe', () => {
+describe('EntityTypeGeneralUsageNamePipe', () => {
   it('create an instance', () => {
-    const pipe = new EntityGeneralUsageNamePipe();
+    const pipe = new EntityTypeGeneralUsageNamePipe();
     expect(pipe).toBeTruthy();
   });
 });

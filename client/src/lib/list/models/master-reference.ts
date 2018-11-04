@@ -1,6 +1,6 @@
 import {ListComponent} from '../list/list.component';
 import {PropertyMetadata} from '../../metadata/property-metadata';
-import {EntityMetadata} from '../../metadata/entity-metadata';
+import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
 
 export class MasterReference {
 	public childList: ListComponent;
@@ -8,7 +8,7 @@ export class MasterReference {
 
 	constructor(public master: any,
 							public masterProperty: PropertyMetadata,
-							public masterEntity: EntityMetadata) {
+							public masterEntityType: EntityTypeMetadata) {
 	}
 
 }

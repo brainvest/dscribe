@@ -7,9 +7,9 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 	{
 		public int Id { get; set; }
 
-		public int EntityId { get; set; }
-		[ForeignKey(nameof(EntityId))]
-		public Entity Entity { get; set; }
+		public int OwnerEntityTypeId { get; set; }
+		[ForeignKey(nameof(OwnerEntityTypeId))]
+		public EntityType OwnerEntityType { get; set; }
 
 		[Column(TypeName = "varchar(200)")]
 		public string Name { get; set; }
@@ -27,9 +27,9 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public int? ExpressionDefinitionId { get; set; }
 		public ExpressionDefinition ExpressionDefinition { get; set; }
 
-		public int? DataTypeEntityId { get; set; }
-		[ForeignKey(nameof(DataTypeEntityId))]
-		public Entity DataTypeEntity { get; set; }
+		public int? DataEntityTypeId { get; set; }
+		[ForeignKey(nameof(DataEntityTypeId))]
+		public EntityType DataEntityType { get; set; }
 
 		public bool IsNullable { get; set; }
 		public ICollection<PropertyFacetValue> PropertyFacetValues { get; set; }

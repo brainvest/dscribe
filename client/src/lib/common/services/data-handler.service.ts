@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { HasIdName } from '../models/has-id-name';
-import { IdAndName } from '../models/id-and-name';
-import { EntityListRequest } from '../models/entity-list-request';
-import { EntityBase } from '../models/entity-base';
-import { GroupListRequest } from '../models/groupping/group-list-request';
-import { catchError, map, share } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {HasIdName} from '../models/has-id-name';
+import {IdAndName} from '../models/id-and-name';
+import {EntityListRequest} from '../models/entity-list-request';
+import {EntityBase} from '../models/entity-base';
+import {GroupListRequest} from '../models/groupping/group-list-request';
+import {map, share} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 import {DscribeService} from '../../dscribe.service';
 
 
@@ -15,7 +15,8 @@ import {DscribeService} from '../../dscribe.service';
 })
 export class DataHandlerService {
 
-	constructor(private http: HttpClient, private dscribeService: DscribeService) { 	}
+	constructor(private http: HttpClient, private dscribeService: DscribeService) {
+	}
 
 	private filterAPI = this.dscribeService.url('api/entity/getByFilter');
 	private filterCountAPI = this.dscribeService.url('api/entity/countByFilter');
@@ -31,8 +32,8 @@ export class DataHandlerService {
 	private getFilterTextApi = this.dscribeService.url('api/entity/GetFilterText');
 
 	private cache: { [id: string]: IdAndNameCacheEntry; } = {};
-	private cache2: { [entityName: string]: EntityIdAndNames; } = {};
-	private uploadQueue: { [entityName: string]: { [id: number]: number }; } = {};
+	private cache2: { [entityTypeName: string]: EntityIdAndNames; } = {};
+	private uploadQueue: { [entityTypeName: string]: { [id: number]: number }; } = {};
 	private firstAddTime: Date;
 	private queueSize = 0;
 	private nameResponse: BehaviorSubject<any> = new BehaviorSubject<any>(1);
@@ -43,20 +44,20 @@ export class DataHandlerService {
 	private expressionValueResponse: BehaviorSubject<any> = new BehaviorSubject<any>(1);
 
 
-	getName(entityType: string, id: number): Observable<string> {
+	getName(entityTypeName: string, id: number): Observable<string> {
 		if (id === null || id === undefined || id.toString().length === 0) {
 			return null;
 		}
-		let existing = this.cache2[entityType];
+		let existing = this.cache2[entityTypeName];
 		if (!existing) {
 			existing = new EntityIdAndNames();
-			this.cache2[entityType] = existing;
+			this.cache2[entityTypeName] = existing;
 		}
 		const name = existing[id];
 		if (name !== undefined) {
 			return of(name);
 		}
-		this.enqueueForName(entityType, id);
+		this.enqueueForName(entityTypeName, id);
 		return Observable.create(observer => {
 			observer.next('Loading...');
 			this.nameResponse.subscribe(() => {
@@ -69,11 +70,11 @@ export class DataHandlerService {
 		});
 	}
 
-	private enqueueForName(entityType: string, id: number) {
-		let existing = this.uploadQueue[entityType];
+	private enqueueForName(entityTypeName: string, id: number) {
+		let existing = this.uploadQueue[entityTypeName];
 		if (!existing) {
 			existing = [];
-			this.uploadQueue[entityType] = existing;
+			this.uploadQueue[entityTypeName] = existing;
 		}
 		if (existing[id]) {
 			return;
@@ -94,13 +95,13 @@ export class DataHandlerService {
 		if (!this.queueSize) {
 			return;
 		}
-		const request: { entityType: string; ids: number[] }[] = [];
-		for (const entityType in this.uploadQueue) {
-			if (!this.uploadQueue.hasOwnProperty(entityType)) {
+		const request: { entityTypeName: string; ids: number[] }[] = [];
+		for (const entityTypeName in this.uploadQueue) {
+			if (!this.uploadQueue.hasOwnProperty(entityTypeName)) {
 				continue;
 			}
 			const ids: number[] = [];
-			const array = this.uploadQueue[entityType];
+			const array = this.uploadQueue[entityTypeName];
 			for (const id in array) {
 				if (array.hasOwnProperty(id) && array[id] === -1) {
 					ids.push(+id);
@@ -108,7 +109,7 @@ export class DataHandlerService {
 				}
 			}
 			request.push({
-				entityType: entityType,
+				entityTypeName: entityTypeName,
 				ids: ids
 			});
 		}
@@ -117,18 +118,18 @@ export class DataHandlerService {
 		this.http.post<IdAndNameResponse[]>(this.displayNameAPI, request)
 			.subscribe(result => {
 				for (const item of result) {
-					const existing = this.cache2[item.entityType];
+					const existing = this.cache2[item.entityTypeName];
 					for (const id of item.names) {
 						existing[id.id] = id.displayName;
-						delete (this.uploadQueue[item.entityType])[id.id];
+						delete (this.uploadQueue[item.entityTypeName])[id.id];
 					}
 				}
 				this.nameResponse.next({});
 			});
 	}
 
-	getIdAndNames(entityType: string): Observable<HasIdName[]> {
-		const existing = this.cache[entityType];
+	getIdAndNames(entityTypeName: string): Observable<HasIdName[]> {
+		const existing = this.cache[entityTypeName];
 		if (existing) {
 			if (existing.data) {
 				return of(existing.data);
@@ -136,30 +137,30 @@ export class DataHandlerService {
 				return existing.observable;
 			}
 		}
-		const download = this.http.post<HasIdName[]>(this.allIdAndNameAPI, { entityType: entityType })
+		const download = this.http.post<HasIdName[]>(this.allIdAndNameAPI, {entityTypeName: entityTypeName})
 			.pipe(share());
-		this.cache[entityType] = new IdAndNameCacheEntry;
-		this.cache[entityType].observable = download;
+		this.cache[entityTypeName] = new IdAndNameCacheEntry;
+		this.cache[entityTypeName].observable = download;
 		download.subscribe(res => {
-			this.cache[entityType].data = res;
-			this.cache[entityType].observable = null;
+			this.cache[entityTypeName].data = res;
+			this.cache[entityTypeName].observable = null;
 		});
 		return download;
 	}
 
-	getAutocompleteItems(entityType: string, queryText: string): Observable<IdAndName> {
+	getAutocompleteItems(entityTypeName: string, queryText: string): Observable<IdAndName> {
 		return this.http.post<IdAndName>(this.autocompeleteIdNameAPI, {
-			entityType: entityType,
+			entityTypeName: entityTypeName,
 			queryText: queryText
 		});
 	}
 
 	countByFilter(request: EntityListRequest): Observable<number> {
-		return this.http.post<number>(this.filterCountAPI , request.getRequestObject());
+		return this.http.post<number>(this.filterCountAPI, request.getRequestObject());
 	}
 
 	getByFilter(request: EntityListRequest): Observable<EntityBase[]> {
-		return this.http.post<EntityBase[]>(this.filterAPI , request.getRequestObject());
+		return this.http.post<EntityBase[]>(this.filterAPI, request.getRequestObject());
 	}
 
 	getGroupCount(request: GroupListRequest): Observable<number> {
@@ -170,16 +171,16 @@ export class DataHandlerService {
 		return this.http.post<any[]>(this.groupAPI, request.getRequestObject());
 	}
 
-	manageEntity(entity: EntityBase, entityType: string, action: string): Observable<EntityBase> {
+	manageEntity(entity: EntityBase, entityTypeName: string, action: string): Observable<EntityBase> {
 		return this.http.post<EntityBase>(this.managementURL + action, {
-			entityType: entityType,
+			entityTypeName: entityTypeName,
 			entity: entity
 		});
 	}
 
-	deleteEntity(entityType: string, entity: EntityBase): Observable<EntityBase> {
+	deleteEntity(entityTypeName: string, entity: EntityBase): Observable<EntityBase> {
 		return this.http.post<EntityBase>(this.managementURL + 'delete', {
-			entityType: entityType,
+			entityTypeName: entityTypeName,
 			entity: entity
 		});
 	}
@@ -213,7 +214,7 @@ class IdAndNameModel {
 }
 
 class IdAndNameResponse {
-	entityType: string;
+	entityTypeName: string;
 	names: IdAndNameModel[];
 }
 

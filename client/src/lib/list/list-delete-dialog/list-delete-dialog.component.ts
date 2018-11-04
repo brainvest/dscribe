@@ -11,7 +11,7 @@ import {SnackBarService} from '../../common/notifications/snackbar.service';
 export class ListDeleteDialogComponent {
 
 	inputs: {
-		entityType: string,
+		entityTypeName: string,
 		title: string,
 		selectedRow: any
 	};
@@ -23,7 +23,7 @@ export class ListDeleteDialogComponent {
 	}
 
 	deleteEntity() {
-		this.dataHandler.deleteEntity(this.inputs.entityType, this.inputs.selectedRow).subscribe(
+		this.dataHandler.deleteEntity(this.inputs.entityTypeName, this.inputs.selectedRow).subscribe(
 			(res: any) => {
 				this.afterDelete(res);
 			},

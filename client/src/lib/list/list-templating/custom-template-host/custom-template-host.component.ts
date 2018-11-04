@@ -1,6 +1,6 @@
 import {Component, ComponentFactoryResolver, EventEmitter, Input, Output, ViewChild, ViewContainerRef} from '@angular/core';
 import {DscribeTemplateComponent} from '../dscribe-template-component';
-import {EntityTemplateMapper} from '../entity-template-mapper';
+import {EntityTypeTemplateMapper} from '../entity-type-template-mapper';
 
 @Component({
 	selector: 'dscribe-custom-template-host',
@@ -52,7 +52,7 @@ export class CustomTemplateHostComponent {
 	}
 
 	loadComponent() {
-		const cardData = EntityTemplateMapper.get(this._entityTypeName);
+		const cardData = EntityTypeTemplateMapper.get(this._entityTypeName);
 		const componentFactory = this.componentFactoryResolver.resolveComponentFactory(cardData.component);
 		this.host.clear();
 		const componentRef = this.host.createComponent(componentFactory);

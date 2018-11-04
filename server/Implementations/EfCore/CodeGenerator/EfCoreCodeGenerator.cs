@@ -122,7 +122,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			return new CodeDomBusinessCode { Code = compileUnit };
 		}
 
-		private static void AddTypeToDbContext(IEntityMetadata type, CodeTypeDeclaration codeDbContext)
+		private static void AddTypeToDbContext(IEntityTypeMetadata type, CodeTypeDeclaration codeDbContext)
 		{
 			var snippet = new CodeSnippetTypeMember
 			{

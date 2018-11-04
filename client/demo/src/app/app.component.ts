@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {AuthService} from './auth/auth.service';
-import {EntityMetadata} from '../../../src/lib/metadata/entity-metadata';
+import {EntityTypeMetadata} from '../../../src/lib/metadata/entity-type-metadata';
 import {DscribeService} from '../../../src/lib/dscribe.service';
 import {DscribeFeatureArea} from '../../../src/lib/models/dscribe-feature-area.enum';
 import {DscribeCommandCallbackInput} from '../../../src/lib/models/dscribe-command-callback-input';
@@ -13,7 +13,7 @@ import {DscribeCommandDisplayPredicate} from '../../../src/lib/models/dscribe-co
 	styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-	entity: EntityMetadata;
+	entityType: EntityTypeMetadata;
 
 	constructor(public authService: AuthService, private dscribeService: DscribeService) {
 		this.setupDscribe();

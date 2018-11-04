@@ -1,25 +1,21 @@
+using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Abstractions.Metadata;
+using Brainvest.Dscribe.Helpers;
+using Brainvest.Dscribe.MetadataDbAccess;
+using Brainvest.Dscribe.MetadataDbAccess.Entities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using Newtonsoft.Json;
-using Brainvest.Dscribe.Abstractions.Metadata;
-using Brainvest.Dscribe.MetadataDbAccess.Entities;
-using Brainvest.Dscribe.MetadataDbAccess;
-using Brainvest.Dscribe.Abstractions;
-using Brainvest.Dscribe.Helpers;
 
 namespace Brainvest.Dscribe.Metadata
 {
-	public class MetadataCache : IEnumerable<IEntityMetadata>, IMetadataCache
+	public class MetadataCache : IEnumerable<IEntityTypeMetadata>, IMetadataCache
 	{
 		private static bool _facetsDefined = false;
 
-		private Dictionary<string, EntityMetadata> _entitiesByName = new Dictionary<string, EntityMetadata>();
+		private Dictionary<string, EntityTypeMetadata> _entityTypesByName = new Dictionary<string, EntityTypeMetadata>();
 		private Dictionary<string, Facet> _propertyFacets = new Dictionary<string, Facet>();
 		private Dictionary<string, Facet> _entityFacets = new Dictionary<string, Facet>();
 		private Dictionary<int, PropertyGeneralUsageCategoryStruct> _propertyGeneralUsageCategories;
@@ -36,7 +32,7 @@ namespace Brainvest.Dscribe.Metadata
 			if (!_facetsDefined)
 			{
 				_facetsDefined = true;
-				EntityMetadata.DefineFacets(bundle.EntityFacetDefinitions);
+				EntityTypeMetadata.DefineFacets(bundle.EntityTypeFacetDefinitions);
 				PropertyMetadata.DefineFacets(bundle.PropertyFacetDefinitions);
 
 				foreach (var defaultValue in bundle.PropertyFacetDefaultValues)
@@ -45,28 +41,28 @@ namespace Brainvest.Dscribe.Metadata
 					.AddDefaultValue(GetPropertyGeneralUsageCategory(defaultValue.GeneralUsageCategoryId), defaultValue.DefaultValue);
 				}
 
-				foreach (var defaultValue in bundle.EntityFacetDefaultValues)
+				foreach (var defaultValue in bundle.EntityTypeFacetDefaultValues)
 				{
-					(EntityMetadata._facets[defaultValue.GeneralUsageCategoryId] as IMetadataFacet<EntityGeneralUsageCategoryStruct>)
+					(EntityTypeMetadata._facets[defaultValue.GeneralUsageCategoryId] as IMetadataFacet<EntityGeneralUsageCategoryStruct>)
 						.AddDefaultValue(GetEntityGeneralUsageCategory(defaultValue.GeneralUsageCategoryId), defaultValue.DefaultValue);
 				}
 			}
 
 			var map = new Dictionary<int, PropertyMetadata>();
 
-			foreach (var dbEntityMetadata in bundle.Entities)
+			foreach (var dbEntityMetadata in bundle.EntityTypes)
 			{
-				var entityMetadata = new EntityMetadata(dbEntityMetadata, null);
+				var entityTypeMetadata = new EntityTypeMetadata(dbEntityMetadata, null);
 				foreach (var dbPropertyMetadata in dbEntityMetadata.Properties ?? Enumerable.Empty<Property>())
 				{
-					var propertyMetadata = new PropertyMetadata(this, dbPropertyMetadata.Name, entityMetadata, new PropertyGeneralUsageCategoryStruct
+					var propertyMetadata = new PropertyMetadata(this, dbPropertyMetadata.Name, entityTypeMetadata, new PropertyGeneralUsageCategoryStruct
 					{
 						PropertyGeneralUsageCategoryId = dbPropertyMetadata.GeneralUsageCategoryId,
 						Name = dbPropertyMetadata.GeneralUsageCategory.Name
 					}, dbPropertyMetadata.DataType, dbPropertyMetadata.IsNullable, dbPropertyMetadata.IsExpression, dbPropertyMetadata.Title,
 					dbPropertyMetadata.ExpressionDefinition?.Identifier)
 					{
-						EntityTypeName = dbPropertyMetadata.DataTypeEntity?.Name
+						EntityTypeName = dbPropertyMetadata.DataEntityType?.Name
 					};
 					map.Add(dbPropertyMetadata.Id, propertyMetadata);
 
@@ -84,15 +80,15 @@ namespace Brainvest.Dscribe.Metadata
 				{
 					foreach (var facetValue in dbEntityMetadata.FacetValues)
 					{
-						dynamic facet = EntityMetadata._facets[facetValue.FacetDefinitionId];
-						entityMetadata.SetValue(facet, facetValue.Value);
+						dynamic facet = EntityTypeMetadata._facets[facetValue.FacetDefinitionId];
+						entityTypeMetadata.SetValue(facet, facetValue.Value);
 					}
 				}
 
-				_entitiesByName.Add(dbEntityMetadata.Name, entityMetadata);
+				_entityTypesByName.Add(dbEntityMetadata.Name, entityTypeMetadata);
 			}
 
-			foreach (var property in bundle.Entities.Where(x => x.Properties != null).SelectMany(x => x.Properties))
+			foreach (var property in bundle.EntityTypes.Where(x => x.Properties != null).SelectMany(x => x.Properties))
 			{
 				if (property.ForeignKeyPropertyId.HasValue)
 				{
@@ -104,9 +100,9 @@ namespace Brainvest.Dscribe.Metadata
 				}
 			}
 
-			foreach (var entity in bundle.Entities.Where(x => x.BaseEntityId.HasValue))
+			foreach (var entityType in bundle.EntityTypes.Where(x => x.BaseEntityTypeId.HasValue))
 			{
-				_entitiesByName[entity.Name].BaseEntity = _entitiesByName[entity.BaseEntity.Name];
+				_entityTypesByName[entityType.Name].BaseEntityType = _entityTypesByName[entityType.BaseEntityType.Name];
 			}
 
 			_expressions = new Dictionary<string, ExpressionInfo>();
@@ -114,7 +110,7 @@ namespace Brainvest.Dscribe.Metadata
 			{
 				_expressions.Add(expressionDefiniction.Identifier, new ExpressionInfo
 				{
-					MainInputEntityName = expressionDefiniction.MainInputEntity.Name
+					MainInputEntityTypeName = expressionDefiniction.MainInputEntityType.Name
 				});
 			}
 
@@ -131,7 +127,7 @@ namespace Brainvest.Dscribe.Metadata
 
 		private void LoadEntityGeneralUsageCategories(MetadataBundle bundle)
 		{
-			_entityGeneralUsageCategories = bundle.EntityGeneralUsageCategories.ToDictionary
+			_entityGeneralUsageCategories = bundle.EntityTypeGeneralUsageCategories.ToDictionary
 				(
 				x => x.Id,
 				x => new EntityGeneralUsageCategoryStruct
@@ -170,17 +166,17 @@ namespace Brainvest.Dscribe.Metadata
 			return _dataTypesByIndetifier[identifier];
 		}
 
-		public IEntityMetadata this[string entityName]
+		public IEntityTypeMetadata this[string entityTypeName]
 		{
 			get
 			{
-				return _entitiesByName[entityName];
+				return _entityTypesByName[entityTypeName];
 			}
 		}
 
-		public IEnumerator<IEntityMetadata> GetEnumerator()
+		public IEnumerator<IEntityTypeMetadata> GetEnumerator()
 		{
-			foreach (var entity in _entitiesByName.Values)
+			foreach (var entity in _entityTypesByName.Values)
 			{
 				yield return entity;
 			}
@@ -199,7 +195,7 @@ namespace Brainvest.Dscribe.Metadata
 			}
 			if (info.Format == ExpressionFormatEnum.SimplePath)
 			{
-				var entityType = reflector.GetType(info.MainInputEntityName);
+				var entityType = reflector.GetType(info.MainInputEntityTypeName);
 				var parameter = Expression.Parameter(entityType);
 				return ExpressionBuilder.Path(definitionIdentifier, parameter);
 			}
@@ -212,9 +208,9 @@ namespace Brainvest.Dscribe.Metadata
 			throw new NotImplementedException();
 		}
 
-		public IEntityMetadata TryGetEntity(string entityName)
+		public IEntityTypeMetadata TryGetEntity(string entityTypeName)
 		{
-			if (_entitiesByName.TryGetValue(entityName, out var entity))
+			if (_entityTypesByName.TryGetValue(entityTypeName, out var entity))
 			{
 				return entity;
 			}

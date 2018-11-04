@@ -2,18 +2,18 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {DscribeService} from '../../dscribe.service';
 import {Observable, ReplaySubject} from 'rxjs';
-import {EntityMetadata} from '../../metadata/entity-metadata';
+import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
 import {CompleteMetadataModel} from '../../metadata/complete-metadata-model';
 import {map} from 'rxjs/operators';
-import {PropertyResponse, TypeResponse} from '../../metadata/response-models';
+import {PropertyResponse, EntityTypeResponse} from '../../metadata/response-models';
 import {PropertyMetadata} from '../../metadata/property-metadata';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class MetadataService {
-	types$: ReplaySubject<EntityMetadata[]> = new ReplaySubject<EntityMetadata[]>(1);
-	private currentTypes: EntityMetadata[];
+	entityTypes$: ReplaySubject<EntityTypeMetadata[]> = new ReplaySubject<EntityTypeMetadata[]>(1);
+	private currentEntityTypes: EntityTypeMetadata[];
 
 	constructor(private http: HttpClient, private config: DscribeService) {
 		console.log('new instance');
@@ -23,27 +23,27 @@ export class MetadataService {
 	getComplete(): void {
 		this.http.get<CompleteMetadataModel>(this.config.url('api/metadata/getComplete'))
 			.subscribe(x => {
-				this.currentTypes = this.extractTypeSemantics(x.entities, x.propertyDefaults);
+				this.currentEntityTypes = this.extractEntityTypeMetadata(x.entityTypes, x.propertyDefaults);
 				this.fixUpRelationships();
-				this.types$.next(this.currentTypes);
+				this.entityTypes$.next(this.currentEntityTypes);
 			}, console.error);
 	}
 
-	getTypeByName(typeName: string): Observable<EntityMetadata> {
-		return this.types$.pipe(map(types => types.find(x => x.name === typeName)));
+	getEntityTypeByName(entityTypeName: string): Observable<EntityTypeMetadata> {
+		return this.entityTypes$.pipe(map(types => types.find(x => x.name === entityTypeName)));
 	}
 
-	private extractTypeSemantics(types: TypeResponse[], allDefaultFacets): EntityMetadata[] {
-		const result: EntityMetadata[] = [];
-		for (const tName in types) {
-			if (!(tName in types)) {
+	private extractEntityTypeMetadata(entityTypes: EntityTypeResponse[], allDefaultFacets): EntityTypeMetadata[] {
+		const result: EntityTypeMetadata[] = [];
+		for (const entityTypeName in entityTypes) {
+			if (!(entityTypeName in entityTypes)) {
 				continue;
 			}
-			const t = types[tName];
-			const type = new EntityMetadata(t.name, t.singularTitle, t.pluralTitle,
+			const t = entityTypes[entityTypeName];
+			const entityTypeMetadata = new EntityTypeMetadata(t.name, t.singularTitle, t.pluralTitle,
 				t.typeGeneralUsageCategoryId);
-			type.properties = {};
-			type.propertyNames = [];
+			entityTypeMetadata.properties = {};
+			entityTypeMetadata.propertyNames = [];
 			for (const propertyName in t.properties) {
 				if (t.properties.hasOwnProperty(propertyName)) {
 					const oldProperty: PropertyResponse = t.properties[propertyName];
@@ -82,27 +82,27 @@ export class MetadataService {
 					newProperty.title = oldProperty.title;
 					newProperty.isNullable = oldProperty.isNullable;
 					newProperty.isExpression = oldProperty.isExpression;
-					type.properties[propertyName] = newProperty;
-					type.propertyNames.push(propertyName);
+					entityTypeMetadata.properties[propertyName] = newProperty;
+					entityTypeMetadata.propertyNames.push(propertyName);
 				}
 			}
-			result.push(type);
+			result.push(entityTypeMetadata);
 		}
 		return result;
 	}
 
 	private fixUpRelationships() {
-		this.currentTypes.forEach(type => {
+		this.currentEntityTypes.forEach(type => {
 			for (const propertyName in type.properties) {
 				if (type.properties.hasOwnProperty(propertyName)) {
 					const prop = type.properties[propertyName];
 					if (prop.entityTypeName) {
-						prop.entityType = this.currentTypes.find(x => x.name === prop.entityTypeName);
+						prop.entityType = this.currentEntityTypes.find(x => x.name === prop.entityTypeName);
 					}
 					if (prop.foreignKeyName) {
 						prop.foreignKeyProperty = type.properties[prop.foreignKeyName];
 					}
-					if (prop.inversePropertyName && prop.entityType && prop.entityType.properties) {
+					if (prop.inversePropertyName && prop.entityTypeName && prop.entityType.properties) {
 						prop.inverseProperty = prop.entityType.properties[prop.inversePropertyName];
 					}
 				}

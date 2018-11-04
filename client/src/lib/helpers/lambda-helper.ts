@@ -1,6 +1,6 @@
 import {LambdaFilterNode} from '../filtering/models/filter-nodes/lambda-filter-node';
 import {MasterReference} from '../list/models/master-reference';
-import {EntityMetadata} from '../metadata/entity-metadata';
+import {EntityTypeMetadata} from '../metadata/entity-type-metadata';
 import {ParameterInfo} from '../filtering/models/parameter-info';
 import {ComparisonFilterNode} from '../filtering/models/filter-nodes/comparison-filter-node';
 import {PropertyFilterNode} from '../filtering/models/filter-nodes/property-filter-node';
@@ -9,16 +9,16 @@ import {ConstantFilterNode} from '../filtering/models/filter-nodes/constant-filt
 
 export class LambdaHelper {
 
-	public static getMasterDetailFilter(master: MasterReference, entity: EntityMetadata): LambdaFilterNode | null {
+	public static getMasterDetailFilter(master: MasterReference, entityType: EntityTypeMetadata): LambdaFilterNode | null {
 		if (!master) {
 			return null;
 		}
-		const lambda = new LambdaFilterNode(null, entity, false);
-		lambda.parameter = new ParameterInfo(entity.name[0].toLowerCase(), entity.name);
+		const lambda = new LambdaFilterNode(null, entityType, false);
+		lambda.parameter = new ParameterInfo(entityType.name[0].toLowerCase(), entityType.name);
 
 		const body = lambda.children[0] as ComparisonFilterNode;
 		const left = body.children[0] as PropertyFilterNode;
-		left.property = entity.getPropertiesForFilter()
+		left.property = entityType.getPropertiesForFilter()
 			.find(x => x.foreignKeyName === master.masterProperty.inverseProperty.foreignKeyName)
 			.foreignKeyProperty;
 		body.operator = body.operators.find(x => x && x.name === 'Equal');

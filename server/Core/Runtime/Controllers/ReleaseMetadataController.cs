@@ -118,36 +118,36 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			}
 			//var errors = new List<string>();
 			var errors = new MetadataValidationResponse();
-			var duplicateTypes = await _dbContext.Entities.Where(x => x.AppTypeId == _implementationContainer.InstanceInfo.AppTypeId)
+			var duplicateTypes = await _dbContext.EntityTypes.Where(x => x.AppTypeId == _implementationContainer.InstanceInfo.AppTypeId)
 				.GroupBy(x => x.Name).Where(g => g.Count() > 1).ToListAsync();
 			if (duplicateTypes.Count() > 0)
 				errors.Errors.AddRange(duplicateTypes.Select(g => $"Entity {g.Key} has repeated more than once"));
 
-			var entities = await _dbContext.Entities.Where(x => x.AppTypeId == _implementationContainer.InstanceInfo.AppTypeId).ToListAsync();
-			foreach (var entity in entities)
+			var entityTypes = await _dbContext.EntityTypes.Where(x => x.AppTypeId == _implementationContainer.InstanceInfo.AppTypeId).ToListAsync();
+			foreach (var entityType in entityTypes)
 			{
-				var properties = await _dbContext.Properties.Where(x => x.EntityId == entity.Id).ToListAsync();
+				var properties = await _dbContext.Properties.Where(x => x.OwnerEntityTypeId == entityType.Id).ToListAsync();
 
 				var duplicateProperties = properties.GroupBy(x => x.Name).Where(g => g.Count() > 1).ToList();
 				if (duplicateProperties.Count() > 0)
-					errors.Errors.AddRange(duplicateProperties.Select(g => $"Properties { g.Key } of entity {entity.Name} has repeated more than once"));
+					errors.Errors.AddRange(duplicateProperties.Select(g => $"Properties { g.Key } of entity {entityType.Name} has repeated more than once"));
 
 
 				var noPrimaryKey = !properties.Any(x => x.GeneralUsageCategoryId == 2);
 				if (noPrimaryKey)
-					errors.Warnings.Add($"There is no primary key in the entity {entity.Name}");
+					errors.Warnings.Add($"There is no primary key in the entity {entityType.Name}");
 				else
 				{
 					var primaryKeyDuplicate = properties.Where(x => x.GeneralUsageCategoryId == 2)
 													.GroupBy(g => g.GeneralUsageCategoryId)
 													.Where(x => x.Count() > 1).ToList();
 					if (primaryKeyDuplicate.Count() > 0)
-						errors.Errors.Add($"Primary key has repeated more than once in entity { entity.Name }");
+						errors.Errors.Add($"Primary key has repeated more than once in entity { entityType.Name }");
 					else
 					{
 						var primaryKeyNullable = properties.Where(x => x.GeneralUsageCategoryId == 2 && x.IsNullable).ToList();
 						if (primaryKeyNullable.Count() > 0)
-							errors.Errors.Add($"Primary key can't be nullable type {entity.Name}");
+							errors.Errors.Add($"Primary key can't be nullable type {entityType.Name}");
 					}
 				}
 
@@ -156,7 +156,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					string propertyName = properties.Where(x => x.DataTypeId == DataTypeEnum.ForeignKey).FirstOrDefault().Name;
 					var propertyLastDigits = propertyName.Substring(propertyName.Length - 2);
 					if (propertyLastDigits != "Id")
-						errors.Warnings.Add($"Foreign key should end with Id keyword in entity {entity.Name}");
+						errors.Warnings.Add($"Foreign key should end with Id keyword in entity {entityType.Name}");
 				}
 
 			}

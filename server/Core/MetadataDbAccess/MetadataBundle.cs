@@ -15,32 +15,32 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 		public static async Task<MetadataBundle> FromDbWithoutNavigations(MetadataDbContext dbContext, int appTypeId, int appInstanceId)
 		{
 			var dataTypes = await dbContext.DataTypes.AsNoTracking().ToListAsync();
-			var entities = await dbContext.Entities.AsNoTracking().Where(x => x.AppTypeId == appTypeId).ToListAsync();
-			var entityFacetDefaultValues = await dbContext.EntityFacetDefaultValues.AsNoTracking()
+			var entityTypes = await dbContext.EntityTypes.AsNoTracking().Where(x => x.AppTypeId == appTypeId).ToListAsync();
+			var entityTypeFacetDefaultValues = await dbContext.EntityTypeFacetDefaultValues.AsNoTracking()
 						.Where(x => (x.AppTypeId ?? appTypeId) == appTypeId && (x.AppInstanceId ?? appInstanceId) == appInstanceId).ToListAsync();
-			var entityFacetDefinitions = await dbContext.EntityFacetDefinitions.AsNoTracking().ToListAsync();
-			var entityFacetValues = await dbContext.EntityFacetValues.AsNoTracking().Where(x => x.Entity.AppTypeId == appTypeId).ToListAsync();
-			var entityGeneralUsageCategories = await dbContext.EntityGeneralUsageCategories.AsNoTracking().ToListAsync();
+			var entityTypeFacetDefinitions = await dbContext.EntityTypeFacetDefinitions.AsNoTracking().ToListAsync();
+			var entityTypeFacetValues = await dbContext.EntityTypeFacetValues.AsNoTracking().Where(x => x.EntityType.AppTypeId == appTypeId).ToListAsync();
+			var entityTypeGeneralUsageCategories = await dbContext.EntityTypeGeneralUsageCategories.AsNoTracking().ToListAsync();
 			var enumTypes = await dbContext.EnumTypes.AsNoTracking().ToListAsync();
 			var enumValues = await dbContext.EnumValues.AsNoTracking().ToListAsync();
 			var expressionDefinitions = await dbContext.ExpressionDefinitions.AsNoTracking().Where(x => x.AppTypeId == appTypeId).ToListAsync();
 			var expressionBodies = await dbContext.ExpressionBodies.AsNoTracking().Where(x => x.Definition.AppTypeId == appTypeId && x.IsActive).ToListAsync();
 			var facetTypes = await dbContext.FacetTypes.AsNoTracking().ToListAsync();
-			var properties = await dbContext.Properties.AsNoTracking().Where(x => x.Entity.AppTypeId == appTypeId).ToListAsync();
+			var properties = await dbContext.Properties.AsNoTracking().Where(x => x.OwnerEntityType.AppTypeId == appTypeId).ToListAsync();
 			var propertyFacetDefaultValues = await dbContext.PropertyFacetDefaultValues.AsNoTracking()
 						.Where(x => (x.AppTypeId ?? appTypeId) == appTypeId && (x.AppInstanceId ?? appInstanceId) == appInstanceId).ToListAsync();
 			var propertyFacetDefinitions = await dbContext.PropertyFacetDefinitions.AsNoTracking().ToListAsync();
-			var propertyFacetValues = await dbContext.PropertyFacetValues.AsNoTracking().Where(x => x.Property.Entity.AppTypeId == appTypeId).ToListAsync();
+			var propertyFacetValues = await dbContext.PropertyFacetValues.AsNoTracking().Where(x => x.Property.OwnerEntityType.AppTypeId == appTypeId).ToListAsync();
 			var propertyGeneralUsageCategories = await dbContext.PropertyGeneralUsageCategories.AsNoTracking().ToListAsync();
 
 			return new MetadataBundle
 			{
 				DataTypes = dataTypes,
-				Entities = entities,
-				EntityFacetDefaultValues = entityFacetDefaultValues,
-				EntityFacetDefinitions = entityFacetDefinitions,
-				EntityFacetValues = entityFacetValues,
-				EntityGeneralUsageCategories = entityGeneralUsageCategories,
+				EntityTypes = entityTypes,
+				EntityTypeFacetDefaultValues = entityTypeFacetDefaultValues,
+				EntityTypeFacetDefinitions = entityTypeFacetDefinitions,
+				EntityTypeFacetValues = entityTypeFacetValues,
+				EntityTypeGeneralUsageCategories = entityTypeGeneralUsageCategories,
 				EnumTypes = enumTypes,
 				EnumValues = enumValues,
 				ExpressionDefinitions = expressionDefinitions,
@@ -56,12 +56,12 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 
 		public void FixupRelationships()
 		{
-			var entities = Entities.ToDictionary(x => x.Id);
+			var entityTypes = EntityTypes.ToDictionary(x => x.Id);
 			var dataTypes = DataTypes.ToDictionary(x => x.Id);
-			var entityFacetDefaultValues = EntityFacetDefaultValues.ToDictionary(x => x.Id);
-			var entityFacetDefinitions = EntityFacetDefinitions.ToDictionary(x => x.Id);
-			var entityFacetValues = EntityFacetValues.ToDictionary(x => x.Id);
-			var entityGeneralUsageCategories = EntityGeneralUsageCategories.ToDictionary(x => x.Id);
+			var entityTypeFacetDefaultValues = EntityTypeFacetDefaultValues.ToDictionary(x => x.Id);
+			var entityTypeFacetDefinitions = EntityTypeFacetDefinitions.ToDictionary(x => x.Id);
+			var entityTypeFacetValues = EntityTypeFacetValues.ToDictionary(x => x.Id);
+			var entityTypeGeneralUsageCategories = EntityTypeGeneralUsageCategories.ToDictionary(x => x.Id);
 			var enumTypes = EnumTypes.ToDictionary(x => x.Id);
 			var enumValues = EnumValues.ToDictionary(x => x.Id);
 			var expressionDefinitions = ExpressionDefinitions.ToDictionary(x => x.Id);
@@ -82,32 +82,32 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 			Fixup(PropertyFacetDefaultValues, propertyFacetDefinitions, nameof(PropertyFacetDefaultValue.FacetDefinitionId), nameof(PropertyFacetDefaultValue.FacetDefinition));
 			Fixup(PropertyFacetDefaultValues, propertyGeneralUsageCategories, nameof(PropertyFacetDefaultValue.GeneralUsageCategoryId), nameof(PropertyFacetDefaultValue.GeneralUsageCategory));
 
-			Fixup(Properties, entities, nameof(Property.EntityId), nameof(Property.Entity), nameof(Entity.Properties));
+			Fixup(Properties, entityTypes, nameof(Property.OwnerEntityTypeId), nameof(Property.OwnerEntityType), nameof(EntityType.Properties));
 			Fixup(Properties, propertyGeneralUsageCategories, nameof(Property.GeneralUsageCategoryId), nameof(Property.GeneralUsageCategory));
 			Fixup(Properties, dataTypes, nameof(Property.DataTypeId), nameof(Property.DataType));
 			Fixup(Properties, expressionDefinitions, nameof(Property.ExpressionDefinitionId), nameof(Property.ExpressionDefinition));
-			Fixup(Properties, entities, nameof(Property.DataTypeEntityId), nameof(Property.DataTypeEntity));
+			Fixup(Properties, entityTypes, nameof(Property.DataEntityTypeId), nameof(Property.DataEntityType));
 			Fixup(Properties, properties, nameof(Property.ForeignKeyPropertyId), nameof(Property.ForeignKeyProperty), nameof(Property.Unused1));
 			Fixup(Properties, properties, nameof(Property.InversePropertyId), nameof(Property.InverseProperty), nameof(Property.Unused2));
 
-			Fixup(ExpressionDefinitions, entities, nameof(ExpressionDefinition.MainInputEntityId), nameof(ExpressionDefinition.MainInputEntity));
+			Fixup(ExpressionDefinitions, entityTypes, nameof(ExpressionDefinition.MainInputEntityTypeId), nameof(ExpressionDefinition.MainInputEntityType));
 			Fixup(ExpressionDefinitions, expressionBodies, nameof(ExpressionDefinition.ActiveBodyId), nameof(ExpressionDefinition.ActiveBody));
 
 			Fixup(ExpressionBodies, expressionDefinitions, nameof(ExpressionBody.DefinitionId), nameof(ExpressionBody.Definition), nameof(ExpressionDefinition.Bodies));
 
 			Fixup(EnumValues, enumTypes, nameof(EnumValue.EnumTypeId), nameof(EnumValue.EnumType), nameof(EnumType.Values));
 
-			Fixup(Entities, entityGeneralUsageCategories, nameof(Entity.GeneralUsageCategoryId), nameof(Entity.GeneralUsageCategory));
-			Fixup(Entities, entities, nameof(Entity.BaseEntityId), nameof(Entity.BaseEntity));
+			Fixup(EntityTypes, entityTypeGeneralUsageCategories, nameof(EntityType.GeneralUsageCategoryId), nameof(EntityType.GeneralUsageCategory));
+			Fixup(EntityTypes, entityTypes, nameof(EntityType.BaseEntityTypeId), nameof(EntityType.BaseEntityType));
 
-			Fixup(EntityFacetValues, entities, nameof(EntityFacetValue.EntityId), nameof(EntityFacetValue.Entity), nameof(Entity.FacetValues));
-			Fixup(EntityFacetValues, entityFacetDefinitions, nameof(EntityFacetValue.FacetDefinitionId), nameof(EntityFacetValue.FacetDefinition));
+			Fixup(EntityTypeFacetValues, entityTypes, nameof(EntityTypeFacetValue.EntityTypeId), nameof(EntityTypeFacetValue.EntityType), nameof(EntityType.FacetValues));
+			Fixup(EntityTypeFacetValues, entityTypeFacetDefinitions, nameof(EntityTypeFacetValue.FacetDefinitionId), nameof(EntityTypeFacetValue.FacetDefinition));
 
-			Fixup(EntityFacetDefinitions, facetTypes, nameof(EntityFacetDefinition.FacetTypeId), nameof(EntityFacetDefinition.FacetType));
-			Fixup(EntityFacetDefinitions, enumTypes, nameof(EntityFacetDefinition.EnumTypeId), nameof(EntityFacetDefinition.EnumType));
+			Fixup(EntityTypeFacetDefinitions, facetTypes, nameof(EntityTypeFacetDefinition.FacetTypeId), nameof(EntityTypeFacetDefinition.FacetType));
+			Fixup(EntityTypeFacetDefinitions, enumTypes, nameof(EntityTypeFacetDefinition.EnumTypeId), nameof(EntityTypeFacetDefinition.EnumType));
 
-			Fixup(EntityFacetDefaultValues, entityFacetDefinitions, nameof(EntityFacetDefaultValue.FacetDefinitionId), nameof(EntityFacetDefaultValue.FacetDefinition));
-			Fixup(EntityFacetDefaultValues, entityGeneralUsageCategories, nameof(EntityFacetDefaultValue.GeneralUsageCategoryId), nameof(EntityFacetDefaultValue.GeneralUsageCategory));
+			Fixup(EntityTypeFacetDefaultValues, entityTypeFacetDefinitions, nameof(EntityTypeFacetDefaultValue.FacetDefinitionId), nameof(EntityTypeFacetDefaultValue.FacetDefinition));
+			Fixup(EntityTypeFacetDefaultValues, entityTypeGeneralUsageCategories, nameof(EntityTypeFacetDefaultValue.GeneralUsageCategoryId), nameof(EntityTypeFacetDefaultValue.GeneralUsageCategory));
 		}
 
 		private void Fixup<Entity1, Entity2, Key2>(IEnumerable<Entity1> list, IDictionary<Key2, Entity2> dictionary, string foreignKeyPropertyName, string navigationPropertyName, string listPropertyName = null)
@@ -138,12 +138,12 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 			}
 		}
 
-		public List<Entity> Entities { get; set; }
+		public List<EntityType> EntityTypes { get; set; }
 		public List<DataType> DataTypes { get; set; }
-		public List<EntityFacetDefaultValue> EntityFacetDefaultValues { get; set; }
-		public List<EntityFacetDefinition> EntityFacetDefinitions { get; set; }
-		public List<EntityFacetValue> EntityFacetValues { get; set; }
-		public List<EntityGeneralUsageCategory> EntityGeneralUsageCategories { get; set; }
+		public List<EntityTypeFacetDefaultValue> EntityTypeFacetDefaultValues { get; set; }
+		public List<EntityTypeFacetDefinition> EntityTypeFacetDefinitions { get; set; }
+		public List<EntityTypeFacetValue> EntityTypeFacetValues { get; set; }
+		public List<EntityTypeGeneralUsageCategory> EntityTypeGeneralUsageCategories { get; set; }
 		public List<EnumType> EnumTypes { get; set; }
 		public List<EnumValue> EnumValues { get; set; }
 		public List<ExpressionDefinition> ExpressionDefinitions { get; set; }

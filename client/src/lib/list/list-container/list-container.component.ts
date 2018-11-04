@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MetadataService} from '../../common/services/metadata.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {flatMap, map} from 'rxjs/operators';
-import {EntityMetadata} from '../../metadata/entity-metadata';
+import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
 import {Observable, of} from 'rxjs';
 
 @Component({
@@ -11,45 +11,45 @@ import {Observable, of} from 'rxjs';
 	styleUrls: ['./list-container.component.scss']
 })
 export class ListContainerComponent implements OnInit {
-	entity: EntityMetadata;
-	entities: EntityMetadata[];
+	entityType: EntityTypeMetadata;
+	entityTypes: EntityTypeMetadata[];
 
-	private entityName: string;
+	private entityTypeName: string;
 
 	constructor(private metadata: MetadataService, private route: ActivatedRoute,
 							private router: Router) {
 	}
 
 	ngOnInit() {
-		this.metadata.types$.subscribe(entities => {
-			this.entities = entities;
+		this.metadata.entityTypes$.subscribe(entityTypes => {
+			this.entityTypes = entityTypes;
 		});
 
 		this.route.params.pipe(flatMap(params => {
-			this.entityName = params['entity'];
-			return this.getCurrentEntity();
+			this.entityTypeName = params['entityTypeName'];
+			return this.getCurrentEntityType();
 		})).subscribe(type => {
 			if (!type) {
-				this.router.navigate([this.entityName], {relativeTo: this.route});
+				this.router.navigate([this.entityTypeName], {relativeTo: this.route});
 				return;
 			}
-			this.entity = type;
+			this.entityType = type;
 		}, err => console.log(err));
 	}
 
-	private getCurrentEntity(): Observable<EntityMetadata> {
-		const firstEntity$ = this.metadata.types$.pipe(map(allEntities => {
-			this.entityName = allEntities[0].name;
+	private getCurrentEntityType(): Observable<EntityTypeMetadata> {
+		const firstEntityType$ = this.metadata.entityTypes$.pipe(map(allEntityTypes => {
+			this.entityTypeName = allEntityTypes[0].name;
 			return null;
 		}));
-		if (!this.entityName) {
-			return firstEntity$;
+		if (!this.entityTypeName) {
+			return firstEntityType$;
 		}
-		return this.metadata.getTypeByName(this.entityName).pipe(flatMap(entity => {
-			if (entity) {
-				return of(entity);
+		return this.metadata.getEntityTypeByName(this.entityTypeName).pipe(flatMap(entityType => {
+			if (entityType) {
+				return of(entityType);
 			}
-			return firstEntity$;
+			return firstEntityType$;
 		}));
 	}
 

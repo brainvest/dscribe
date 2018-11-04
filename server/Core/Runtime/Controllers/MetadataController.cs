@@ -21,15 +21,15 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult<IEntityMetadataModel> GetEntityByName(string entityTypeName)
+		public ActionResult<IEntityTypeMetadataModel> GetEntityByName(string entityTypeName)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, null, ActionTypeEnum.GetMetadata)))
 			{
 				return Unauthorized();
 			}
-			if (_implementationsContainer.MetadataModel.Entities.TryGetValue(entityTypeName, out var typeInfo))
+			if (_implementationsContainer.MetadataModel.EntityTypes.TryGetValue(entityTypeName, out var typeInfo))
 			{
-				return new ActionResult<IEntityMetadataModel>(typeInfo);
+				return new ActionResult<IEntityTypeMetadataModel>(typeInfo);
 			}
 			return BadRequest($"Type {entityTypeName} not found");
 		}
@@ -44,7 +44,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var result = new MetadataModel
 			{
 				PropertyDefaults = _implementationsContainer.MetadataModel.PropertyDefaults,
-				Entities = _implementationsContainer.MetadataModel.Entities.ToDictionary(x => x.Key, x => x.Value as IEntityMetadataModel)
+				EntityTypes = _implementationsContainer.MetadataModel.EntityTypes.ToDictionary(x => x.Key, x => x.Value as IEntityTypeMetadataModel)
 			};
 			return result;
 		}

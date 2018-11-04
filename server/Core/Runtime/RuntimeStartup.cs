@@ -19,6 +19,7 @@ namespace Brainvest.Dscribe.Runtime
 			});
 			services.AddScoped<EntityHelper, EntityHelper>();
 			services.AddSingleton<IPermissionService, PermissionCache>();
+			services.AddSingleton<IUsersService, UsersCache>();
 			services.Configure<GlobalConfiguration>(configuration.GetSection(nameof(GlobalConfiguration)));
 		}
 

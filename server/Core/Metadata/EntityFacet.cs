@@ -2,10 +2,10 @@ using System;
 
 namespace Brainvest.Dscribe.Metadata
 {
-	public class EntityFacet<TData> : MetadataFacet<EntityMetadata, TData, EntityGeneralUsageCategoryStruct>
+	public class EntityFacet<TData> : MetadataFacet<EntityTypeMetadata, TData, EntityGeneralUsageCategoryStruct>
 		where TData : IConvertible
 	{
-		public delegate TData DefaultValueGenerator(EntityMetadata entityMetadata);
+		public delegate TData DefaultValueGenerator(EntityTypeMetadata entityMetadata);
 		private DefaultValueGenerator _defaultValueGenerator;
 		internal EntityFacet(string facetName, TData defaultValue, DefaultValueGenerator defaultValueGenerator)
 			: base(facetName, defaultValue)
@@ -13,7 +13,7 @@ namespace Brainvest.Dscribe.Metadata
 			_defaultValueGenerator = defaultValueGenerator;
 		}
 
-		protected override TData GetDefaultValue(EntityMetadata owner)
+		protected override TData GetDefaultValue(EntityTypeMetadata owner)
 		{
 			if (_defaultValues != null && _defaultValues.TryGetValue(owner.GeneralBehavior, out TData data))
 			{
