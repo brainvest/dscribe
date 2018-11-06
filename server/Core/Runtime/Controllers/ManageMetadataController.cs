@@ -127,7 +127,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			return Ok();
 		}
 
-		public async Task ProcessEntityTypeLocalFacets(EntityTypeModel model, bool isEdit, EntityType entityType)
+		private async Task ProcessEntityTypeLocalFacets(EntityTypeModel model, bool isEdit, EntityType entityType)
 		{
 			List<EntityTypeFacetValue> existing;
 			var definitions = await _dbContext.EntityTypeFacetDefinitions.ToListAsync();
@@ -337,7 +337,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			return Ok();
 		}
 
-		public async Task ProcessPropertyLocalFacets(PropertyModel model, bool isEdit, Property property)
+		private async Task ProcessPropertyLocalFacets(PropertyModel model, bool isEdit, Property property)
 		{
 			List<PropertyFacetValue> existing;
 			var definitions = await _dbContext.PropertyFacetDefinitions.ToListAsync();
