@@ -88,7 +88,7 @@ export class ListComponent implements OnInit, OnChanges {
 				this.selectDetails(x.added[0]);
 			}
 		}, (errors: any) => {
-			this.snackbarService.open(errors);
+			// this.snackbarService.open(errors);
 		});
 	}
 
@@ -232,14 +232,14 @@ export class ListComponent implements OnInit, OnChanges {
 					return data;
 				}),
 				catchError((errors: any) => {
-					this.snackbarService.open(errors);
+					// this.snackbarService.open(errors);
 					this.isLoadingResults = false;
 					return of([]);
 				})
 			).subscribe((data: any) => {
 				this.data = data;
 			}, (errors: any) => {
-				this.snackbarService.open(errors);
+				// this.snackbarService.open(errors);
 			});
 	}
 
@@ -288,7 +288,7 @@ export class ListComponent implements OnInit, OnChanges {
 					this.refreshData();
 				}
 			}, (errors: any) => {
-				this.snackbarService.open(errors);
+				// this.snackbarService.open(errors);
 			}
 		);
 	}
@@ -312,7 +312,7 @@ export class ListComponent implements OnInit, OnChanges {
 				this.refreshData();
 			}
 		}, (errors: any) => {
-			this.snackbarService.open(errors);
+			// this.snackbarService.open(errors);
 		});
 	}
 

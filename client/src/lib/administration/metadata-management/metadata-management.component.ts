@@ -233,9 +233,9 @@ export class MetadataManagementComponent implements OnInit {
 		this.apiClient.generateCode()
 			.subscribe(x => {
 				if (x.success) {
-					alert('done');
+					this.snackbarService.open('Code has generated successful.');
 				} else {
-					alert('errors occured please see the validation errors');
+					this.snackbarService.open('errors occured please see the validation errors');
 				}
 			},  (errors: any) => {
 				this.snackbarService.open(errors);

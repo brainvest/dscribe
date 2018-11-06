@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { EntityTypeBase } from '../../metadata/entity-type-base';
@@ -13,6 +14,7 @@ import { SnackBarService } from '../../common/notifications/snackbar.service';
 export class AddNEditEntityTypeComponent implements OnInit {
 
 	entityType: EntityTypeBase = new EntityTypeBase();
+	entityTypeError: EntityTypeBase;
 
 	constructor(
 		private dialogRef: MatDialogRef<AddNEditEntityTypeComponent>,
@@ -31,8 +33,9 @@ export class AddNEditEntityTypeComponent implements OnInit {
 			this.apiClient.editEntityType(this.entityType);
 		request.subscribe((data: any) => {
 			this.dialogRef.close('saved');
-		}, (errors: any) => {
-			this.snackbarService.open(errors);
+		}, (error: HttpErrorResponse) => {
+			this.entityTypeError = error.error;
+			this.snackbarService.open(error.statusText);
 		});
 	}
 

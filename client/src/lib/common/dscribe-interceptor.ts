@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 export class DscribeInterceptor implements HttpInterceptor {
 	constructor(private config: DscribeService) { }
 
-	
+
 	intercept(req: HttpRequest<any>, next: HttpHandler):
 		Observable<HttpEvent<any>> {
 		let headers = req.headers || new HttpHeaders();
@@ -26,10 +26,12 @@ export class DscribeInterceptor implements HttpInterceptor {
 	}
 
 	private handleError(error: HttpErrorResponse) {
-		if (error.status === 400 && typeof error.error === 'string') {
+		if (error.status === 500) {
 			return throwError(error.error);
+		} else if (error.status === 400) {
+			return throwError(error);
+		} else {
+			return throwError(error.statusText);
 		}
-		return throwError(error.statusText);
 	}
 }
- 
