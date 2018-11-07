@@ -8,6 +8,9 @@
 				Administration
 			</a>
 		</div>
+		<a mat-button href="/setting" routerLink="/setting" routerLinkActive="active">
+			<mat-icon>settings</mat-icon>
+		</a>
 		<button mat-button [matMenuTriggerFor]="menu">
 			{{selectedAppInstance && selectedAppInstance.title}}
 			<mat-icon>keyboard_arrow_down</mat-icon>

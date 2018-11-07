@@ -1,0 +1,11 @@
+<div class="list-wrapper">
+    <div class="list-container">
+      <nav class="secondary-nav mat-elevation-z4">
+        <a class="secondary-nav-item" *ngFor="let settingItem of settingItems" [routerLink]="settingItem.url"
+           routerLinkActive="active">
+          {{settingItem.name}}
+        </a>
+      </nav>
+    </div>
+  </div>
+  

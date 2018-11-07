@@ -67,6 +67,8 @@ import { TableTemplateComponent } from './list/list-templating/table-template/ta
 import { CustomTemplateHostComponent } from './list/list-templating/custom-template-host/custom-template-host.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { SnackBarService } from './common/notifications/snackbar.service';
+import { SettingsComponent } from './administration/settings/settings.component';
+import { AppInstanceManagementComponent } from './administration/settings/app-instance-management/app-instance-management.component';
 
 @NgModule({
 	imports: [
@@ -97,7 +99,7 @@ import { SnackBarService } from './common/notifications/snackbar.service';
 		MatTabsModule,
 		MatProgressSpinnerModule,
 		ReactiveFormsModule,
-		MatSnackBarModule
+		MatSnackBarModule,
 	],
 	declarations: [
 		ArithmeticFilterNodeComponent,
@@ -134,7 +136,9 @@ import { SnackBarService } from './common/notifications/snackbar.service';
 		PropertyFilterNodeComponent,
 		ReleaseMetadataSettingsComponent,
 		TableTemplateComponent,
-		TextEditorComponent
+		TextEditorComponent,
+		SettingsComponent,
+		AppInstanceManagementComponent,
 	],
 	exports: [DscribeComponent, ListComponent, DisplayValuePipe],
 	providers: [
