@@ -23,3 +23,9 @@ dscribe-navigation {
 	right: 0;
 	z-index: 2;
 }
+
+.form-error-message {
+    color: red;
+    font-size: 11px;
+	margin-bottom: -7px;
+}

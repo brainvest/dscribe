@@ -106,10 +106,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
-			var error = await MetadataValidationLogic.EditEntityTypeValidation(model, _dbContext);
-			if (error != null)
+			var validationMessage = await MetadataValidationLogic.EditEntityTypeValidation(model, _dbContext);
+			if (!string.IsNullOrEmpty(validationMessage))
 			{
-				return BadRequest(error);
+				return BadRequest(validationMessage);
 			}
 
 			var entityType = await _dbContext.EntityTypes.FindAsync(model.Id);

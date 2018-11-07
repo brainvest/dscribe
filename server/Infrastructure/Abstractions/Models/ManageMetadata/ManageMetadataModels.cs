@@ -20,6 +20,7 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string PluralTitle { get; set; }
 		[Required]
 		public int EntityTypeGeneralUsageCategoryId { get; set; }
+		[Required]
 		public string TableName { get; set; }
 
 		public IEnumerable<LocalFacetModel> LocalFacets { get; set; }
@@ -27,6 +28,7 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 
 	public class PropertyModel
 	{
+		[Required]
 		public int? DataTypeId { get; set; }
 		public int? DataEntityTypeId { get; set; }
 		public int? ForeignKeyPropertyId { get; set; }
@@ -34,9 +36,12 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public int? InversePropertyId { get; set; }
 		public bool IsNullable { get; set; }
 		[MaxLength(200 , ErrorMessage = "Maximom length of Name is 200")]
+		[Required]
 		public string Name { get; set; }
 		public string Title { get; set; }
 		[Required]
+		[Range(1, int.MaxValue, ErrorMessage = "The General usage category field is required.")]
+		// NOTICE. ANOTHER SOLUTION FOR THIS VALIDATION IS TO MAKE FIELD NULLABLE. 
 		public int PropertyGeneralUsageCategoryId { get; set; }
 		[Required]
 		public int OwnerEntityTypeId { get; set; }

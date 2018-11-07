@@ -1,14 +1,15 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {AddNEditPropertyMetadataModel, RelatedPropertyAction} from '../models/add-n-edit-property-metadata-model';
-import {MetadataBasicInfoModel} from '../../metadata/metadata-basic-info-model';
-import {EntityTypeBase} from '../../metadata/entity-type-base';
-import {DataTypeModel} from '../../metadata/data-type-model';
-import {PropertyBase} from '../../metadata/property-base';
-import {AddNEditEntityTypeComponent} from '../add-n-edit-entity/add-n-edit-entity-type.component';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {MetadataManagementApiClient} from '../metadata-management-api-client';
-import {PropertyInfoModel} from '../models/property-info-model';
-import {SnackBarService} from '../../common/notifications/snackbar.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
+import { AddNEditPropertyMetadataModel, RelatedPropertyAction } from '../models/add-n-edit-property-metadata-model';
+import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
+import { EntityTypeBase } from '../../metadata/entity-type-base';
+import { DataTypeModel } from '../../metadata/data-type-model';
+import { PropertyBase } from '../../metadata/property-base';
+import { AddNEditEntityTypeComponent } from '../add-n-edit-entity/add-n-edit-entity-type.component';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MetadataManagementApiClient } from '../metadata-management-api-client';
+import { PropertyInfoModel } from '../models/property-info-model';
+import { SnackBarService } from '../../common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-add-n-edit-property',
@@ -18,6 +19,7 @@ import {SnackBarService} from '../../common/notifications/snackbar.service';
 export class AddNEditPropertyComponent implements OnInit {
 
 	property: AddNEditPropertyMetadataModel;
+	propertyError: AddNEditPropertyMetadataModel;
 	basicInfo: MetadataBasicInfoModel;
 	entityTypes: EntityTypeBase[];
 	actions = RelatedPropertyAction;
@@ -80,8 +82,9 @@ export class AddNEditPropertyComponent implements OnInit {
 			this.apiClient.editProperty(this.property);
 		request.subscribe((result: any) => {
 			this.dialogRef.close('saved');
-		}, (errors: any) => {
-			this.snackbarService.open(errors);
+		}, (error: HttpErrorResponse) => {
+			this.propertyError = error.error;
+			this.snackbarService.open(error.statusText);
 		});
 	}
 

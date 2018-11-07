@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Newtonsoft.Json.Serialization;
 
 namespace Brainvest.Dscribe.Host
 {
@@ -51,7 +52,9 @@ namespace Brainvest.Dscribe.Host
 			LobToolsStartup.ConfigureServices(services, Configuration);
 			services.RegisterEfCore();
 
-			services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+			services.AddMvc()
+				.AddJsonOptions(options => options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
+				.SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 
 			services.AddAuthentication("Bearer")
 					.AddIdentityServerAuthentication(options =>
