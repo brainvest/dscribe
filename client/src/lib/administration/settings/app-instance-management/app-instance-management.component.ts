@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { MatPaginator } from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'dscribe-host-app-instance-management',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppInstanceManagementComponent implements OnInit {
 
+  displayedAppInstanceColumns = ['name', 'usage', 'singular', 'plural', 'code', 'displayName'];
+  @ViewChild('entitiyTypesPaginator') AppInstancePaginator: MatPaginator;
+
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
+  getAppInstances() {
+
+  }
 }
