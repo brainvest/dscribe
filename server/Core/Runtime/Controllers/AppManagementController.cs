@@ -1,3 +1,5 @@
+using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.AppManagement;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
@@ -17,15 +19,16 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	{
 		MetadataDbContext _dbContext;
 
-
-		public AppManagementController(MetadataDbContext dbContext)
+		public AppManagementController(
+			MetadataDbContext dbContext
+			)
 		{
 			_dbContext = dbContext;
 		}
 
 		[HttpPost]
-		public async Task<IEnumerable<AppInstanceInfoModel>> GetAppInstancesInfo()
-		{
+		public async Task<ActionResult<IEnumerable<AppInstanceInfoModel>>> GetAppInstancesInfo()
+		{ 
 			return await _dbContext.AppInstances.Select(x =>
 			new AppInstanceInfoModel
 			{

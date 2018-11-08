@@ -1,3 +1,5 @@
+import { ConnectionStringModel } from "./connection-string.model";
+
 export class AppInstanceInfoModel {
 	Id: number;
 	AppTypeId: number;

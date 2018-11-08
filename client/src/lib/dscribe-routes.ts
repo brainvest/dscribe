@@ -3,6 +3,7 @@ import { ListContainerComponent } from './list/list-container/list-container.com
 import { MetadataManagementComponent } from './administration/metadata-management/metadata-management.component';
 import { SettingsComponent } from './administration/settings/settings.component';
 import { AppInstanceManagementComponent } from './administration/settings/app-instance-management/app-instance-management.component';
+import { AppTypeManagementComponent } from './administration/settings/app-type-management/app-type-management.component';
 
 export const DSCRIBE_ROUTES = [
 	{
@@ -13,6 +14,7 @@ export const DSCRIBE_ROUTES = [
 			{ path: 'administration', component: MetadataManagementComponent },
 			{ path: 'setting', component: SettingsComponent },
 			{ path: 'setting/app-instance-management', component: AppInstanceManagementComponent },
+			{ path: 'setting/app-type-management', component: AppTypeManagementComponent },
 			{ path: '', redirectTo: 'entity', pathMatch: 'full' }
 		]
 	},
