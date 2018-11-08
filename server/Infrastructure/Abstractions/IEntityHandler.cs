@@ -16,8 +16,9 @@ namespace Brainvest.Dscribe.Abstractions
 		Task<IEnumerable> GetGroupped(GrouppedListRequest request);
 		Task<IEnumerable<NameResponseItem>> GetIdAndName(IdAndNameRequest request);
 		Task<IEnumerable<NameResponseItem>> GetAutocomplteItems(AutocompleteItemsRequest request);
-		Task<ActionResult<object>> Edit(ManageEntityRequest request);
-		Task<ActionResult<object>> Add(ManageEntityRequest request);
-		Task<ActionResult<object>> Delete(ManageEntityRequest request);
+		Task<ActionResult<object>> Edit(ManageEntityRequest request, object businessRepository);
+		Task<ActionResult<object>> Add(ManageEntityRequest request, object businessRepository);
+		Task<ActionResult<object>> Delete(ManageEntityRequest request, object businessRepository);
+		Task<ActionResult> SaveChanges(object businessRepository);
 	}
 }

@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Runtime\Runtime.csproj" />
     <ProjectReference Include="..\..\..\Infrastructure\Abstractions\Abstractions.csproj" />
     <ProjectReference Include="..\..\..\Infrastructure\Helpers\Helpers.csproj" />
   </ItemGroup>

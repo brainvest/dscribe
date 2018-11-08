@@ -1,8 +1,6 @@
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Brainvest.Dscribe.Abstractions
 {
@@ -12,7 +10,7 @@ namespace Brainvest.Dscribe.Abstractions
 		IMetadataModel MetadataModel { get; }
 		IBusinessReflector Reflector { get; }
 		IMetadataCache Metadata { get; }
-		Func<object> RepositoryFactory { get; }
+		Func<IDisposable> RepositoryFactory { get; }
 		Func<DbContext> LobToolsRepositoryFactory { get; }
 		bool MigrationsExecuted { get; set; }
 	}
