@@ -69,6 +69,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SnackBarService } from './common/notifications/snackbar.service';
 import { SettingsComponent } from './administration/settings/settings.component';
 import { AppInstanceManagementComponent } from './administration/settings/app-instance-management/app-instance-management.component';
+import { AppTypeManagementComponent } from './administration/settings/app-type-management/app-type-management.component';
 
 @NgModule({
 	imports: [
@@ -139,6 +140,7 @@ import { AppInstanceManagementComponent } from './administration/settings/app-in
 		TextEditorComponent,
 		SettingsComponent,
 		AppInstanceManagementComponent,
+		AppTypeManagementComponent,
 	],
 	exports: [DscribeComponent, ListComponent, DisplayValuePipe],
 	providers: [

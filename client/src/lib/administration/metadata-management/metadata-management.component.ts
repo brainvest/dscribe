@@ -10,8 +10,8 @@ import { AddNEditPropertyMetadataModel } from '../models/add-n-edit-property-met
 import { ConfirmationDialogComponent } from '../../common/confirmation-dialog/confirmation-dialog.component';
 import { PropertyInfoModel } from '../models/property-info-model';
 import { ReleaseMetadataSettingsComponent } from '../release-metadata-settings/release-metadata-settings.component';
-import {DscribeService} from '../../dscribe.service';
-import {SnackBarService} from '../../common/notifications/snackbar.service';
+import { DscribeService } from '../../dscribe.service';
+import { SnackBarService } from '../../common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -41,8 +41,8 @@ export class MetadataManagementComponent implements OnInit {
 		private apiClient: MetadataManagementApiClient,
 		private dialog: MatDialog,
 		private snackbarService: SnackBarService,
-    private dscribeService: DscribeService) { }
-  
+		private dscribeService: DscribeService) { }
+
 	ngOnInit() {
 		this.entityTypesDataSource.paginator = this.entityTypesPaginator;
 		this.propertiesDataSource.paginator = this.propertiesPaginator;
@@ -52,8 +52,8 @@ export class MetadataManagementComponent implements OnInit {
 				this.basicInfo = data;
 				this.refreshEntityTypes();
 			}, (errors: any) => {
-					this.snackbarService.open(errors);
-				}));
+				this.snackbarService.open(errors);
+			}));
 	}
 
 	refreshEntityTypes() {
@@ -217,7 +217,7 @@ export class MetadataManagementComponent implements OnInit {
 				if (result !== undefined) {
 					this.refreshProperties();
 				}
-			},  (errors: any) => {
+			}, (errors: any) => {
 				this.snackbarService.open(errors);
 			}
 		);
@@ -237,7 +237,7 @@ export class MetadataManagementComponent implements OnInit {
 				} else {
 					this.snackbarService.open('errors occured please see the validation errors');
 				}
-			},  (errors: any) => {
+			}, (errors: any) => {
 				this.snackbarService.open(errors);
 			});
 	}
