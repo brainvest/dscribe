@@ -7,6 +7,7 @@ namespace Brainvest.Dscribe.Abstractions.Models.AppManagement
 	{
 		public int Id { get; set; }
 		[Required]
+		[Range(1, int.MaxValue, ErrorMessage = "The {0} field is required")]
 		public int AppTypeId { get; set; }
 		public string AppTypeName { get; set; }
 		public string AppTypeTitle { get; set; }

@@ -12,9 +12,11 @@ export const DSCRIBE_ROUTES = [
 			{ path: 'entity/:entityTypeName', component: ListContainerComponent },
 			{ path: 'entity', component: ListContainerComponent },
 			{ path: 'administration', component: MetadataManagementComponent },
-			{ path: 'setting', component: SettingsComponent,
-				children:[
+			{
+				path: 'setting', component: SettingsComponent,
+				children: [
 					{ path: 'app-instance-management', component: AppInstanceManagementComponent },
+					{ path: 'app-type-management', component: AppTypeManagementComponent },
 				]
 			},
 			{ path: '', redirectTo: 'entity', pathMatch: 'full' }

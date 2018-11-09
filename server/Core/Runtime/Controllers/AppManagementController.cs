@@ -1,5 +1,3 @@
-using Brainvest.Dscribe.Abstractions;
-using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.AppManagement;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
@@ -28,7 +26,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable<AppInstanceInfoModel>>> GetAppInstancesInfo()
-		{ 
+		{
 			return await _dbContext.AppInstances.Select(x =>
 			new AppInstanceInfoModel
 			{
@@ -44,7 +42,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				Name = x.Name,
 				GeneratedCodeNamespace = x.GeneratedCodeNamespace,
 				Title = x.Title,
-				UseUnreleasedMetadata = x.UseUnreleasedMetadata
+				UseUnreleasedMetadata = x.UseUnreleasedMetadata,
+				// DataConnectionString = Dese(x.DataConnectionString)
 			}).ToListAsync();
 		}
 
@@ -111,7 +110,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			return Ok();
 		}
 
-		[HttpPost]
+		[HttpGet]
 		public async Task<ActionResult<IEnumerable<AppTypeModel>>> GetAppTypes()
 		{
 			return await _dbContext.AppTypes.Select(x =>
@@ -172,6 +171,16 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			return Ok();
 		}
 
+		[HttpGet]
+		public async Task<IEnumerable<DatabaseProvider>> GetDatabaseProviders()
+		{
+			return await _dbContext.DatabaseProviders
+				.Select(x => new DatabaseProvider
+				{
+					Id = x.Id,
+					Name = x.Name
+				}).ToListAsync();
+		}
 		public string GenerateConnectionString(DataConnectionStringModel model)
 		{
 			return model.Server + ";" +
@@ -181,5 +190,13 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					model.User + ";" +
 					model.Password;
 		}
+
+		//public DataConnectionStringModel DeserializeConnectionString(string connectionString)
+		//{
+		//	//var cnnBuilder = new DbConnectionStringBuilder(connectionString);
+		//	//var result = new DataConnectionStringModel();
+		//	//result.Server = 
+		//	//return JsonConvert.DeserializeObject<DataConnectionStringModel>(connectionString);
+		//}
 	}
 }

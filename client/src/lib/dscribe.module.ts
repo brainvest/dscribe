@@ -70,6 +70,8 @@ import { SnackBarService } from './common/notifications/snackbar.service';
 import { SettingsComponent } from './administration/settings/settings.component';
 import { AppInstanceManagementComponent } from './administration/settings/app-instance-management/app-instance-management.component';
 import { AppTypeManagementComponent } from './administration/settings/app-type-management/app-type-management.component';
+import { AddNEditAppTypeComponent } from './administration/settings/add-n-edit-app-type/add-n-edit-app-type.component';
+import { AddNEditAppInstanceComponent } from './administration/settings/add-n-edit-app-instance/add-n-edit-app-instancecomponent';
 
 @NgModule({
 	imports: [
@@ -141,6 +143,8 @@ import { AppTypeManagementComponent } from './administration/settings/app-type-m
 		SettingsComponent,
 		AppInstanceManagementComponent,
 		AppTypeManagementComponent,
+		AddNEditAppTypeComponent,
+		AddNEditAppInstanceComponent,
 	],
 	exports: [DscribeComponent, ListComponent, DisplayValuePipe],
 	providers: [
@@ -155,7 +159,9 @@ import { AppTypeManagementComponent } from './administration/settings/app-type-m
 		AddNEditPropertyComponent,
 		ConfirmationDialogComponent,
 		ReleaseMetadataSettingsComponent,
-		AutoCompleteMoreDialogComponent
+		AutoCompleteMoreDialogComponent,
+		AddNEditAppTypeComponent,
+		AddNEditAppInstanceComponent,
 	]
 })
 export class DscribeModule {

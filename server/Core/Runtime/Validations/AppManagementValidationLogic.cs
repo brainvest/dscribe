@@ -41,6 +41,10 @@ namespace Brainvest.Dscribe.Runtime.Validations
 
 		public static async Task<string> DeleteAppTypeValidation(AppTypeModel model, MetadataDbContext dbContext)
 		{
+			if (await dbContext.AppInstances.AnyAsync(x => x.AppTypeId == model.Id))
+			{
+				return "This app type is refered to one or more app instances.";
+			}
 			return await Task.FromResult(string.Empty);
 		}
 	}

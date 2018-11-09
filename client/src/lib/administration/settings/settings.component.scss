@@ -15,6 +15,15 @@
 	flex-direction: row;
 }
 
+.router-outlet {
+	margin-left: 240px;
+	width: 100%;
+	&[dir=rtl] {
+		margin-left: unset;
+		margin-right: 240px;
+	}
+}
+
 .secondary-nav {
 	transition: width 300ms;
 	padding: 24px 0;
@@ -52,4 +61,16 @@
 	color: #4fc3f7 !important;
 	border-left: #3F51B5 solid 4px;
 	margin-left: 0;
+}
+
+.secondary-nav.open {
+	width: 240px;
+	min-width: 240px;
+	position: fixed;
+	bottom: 0;
+	top: 51px;
+}
+
+.secondary-nav.close {
+	width: 0;
 }
