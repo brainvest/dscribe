@@ -1,4 +1,4 @@
-import { ConnectionStringModel } from "./connection-string.model";
+import { ConnectionStringModel } from './connection-string.model';
 
 export class AppInstanceInfoModel {
 	Id: number;
@@ -14,3 +14,4 @@ export class AppInstanceInfoModel {
 	Title: string;
 	UseUnreleasedMetadata: boolean;
 }
+

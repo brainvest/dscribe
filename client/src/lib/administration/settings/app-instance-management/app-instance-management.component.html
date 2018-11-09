@@ -3,16 +3,16 @@
 		<div class="table-toolbar">
 			<span>AppInstances</span>
 			<div>
-				<button mat-icon-button (click)="addEntityType()">
+				<button mat-icon-button (click)="addAppInstance()">
 					<mat-icon color="primary">add</mat-icon>
 				</button>
 				<button mat-icon-button (click)="getAppInstances()">
 					<mat-icon color="primary">refresh</mat-icon>
 				</button>
-				<button mat-icon-button (click)="editEntityType()" [disabled]="!selectedAppInstance">
+				<button mat-icon-button (click)="editAppInstance()" [disabled]="!selectedAppInstance">
 					<mat-icon color="accent">edit</mat-icon>
 				</button>
-				<button mat-icon-button (click)="deleteEntityType()" [disabled]="!selectedAppInstance">
+				<button mat-icon-button (click)="deleteAppInstance()" [disabled]="!selectedAppInstance">
 					<mat-icon color="warn">delete</mat-icon>
 				</button>
 			</div>

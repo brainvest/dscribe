@@ -89,8 +89,6 @@ export class MetadataManagementComponent implements OnInit {
 			.subscribe(props => {
 				this.propertiesDataSource.data = this.properties = props;
 				this.propertiesAreLoading = false;
-			}, (errors: any) => {
-				this.snackbarService.open(errors);
 			});
 	}
 
