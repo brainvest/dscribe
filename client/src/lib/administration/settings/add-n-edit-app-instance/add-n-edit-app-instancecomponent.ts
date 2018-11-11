@@ -69,6 +69,7 @@ export class AddNEditAppInstanceComponent implements OnInit {
 			this.dialogRef.close('saved');
 		}, (error: HttpErrorResponse) => {
 			this.appInstanceError = error.error;
+			console.log(this.appInstanceError);
 			this.snackbarService.open(error.statusText);
 		});
 	}

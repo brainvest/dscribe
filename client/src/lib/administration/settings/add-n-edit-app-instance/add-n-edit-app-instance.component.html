@@ -43,39 +43,50 @@
 			</p>
 		</mat-form-field>
 
-		<mat-form-field class="full-width" appearance="outline">
-			<mat-label>Server name</mat-label>
-			<input matInput type="text" placeholder="Server name" name="serverName" [(ngModel)]="appInstance.dataConnectionString.server"
-			 required>
-			<p class="form-error-message" *ngFor="let e of appInstanceError?.dataConnectionString?.Server">
-				{{e}}
-			</p>
-		</mat-form-field>
+		<mat-card style="margin-bottom: 10px">
+			<h5 style="color:gray">Connection string</h5>
+			<mat-form-field class="full-width" appearance="outline">
+				<mat-label>Server name</mat-label>
+				<input matInput type="text" placeholder="Server name" name="serverName" [(ngModel)]="appInstance.dataConnectionString.server"
+				 required>
+				<p class="form-error-message" *ngFor="let e of appInstanceError['dataConnectionString.Server']">
+					{{e}}
+				</p>
+			</mat-form-field>
 
-		<mat-form-field class="full-width" appearance="outline">
-			<mat-label>Database name</mat-label>
-			<input matInput type="text" placeholder="Database name" name="databaseName" [(ngModel)]="appInstance.dataConnectionString.database"
-			 required>
-			<p class="form-error-message" *ngFor="let e of appInstanceError?.dataConnectionString?.Database">
-				{{e}}
-			</p>
-		</mat-form-field>
+			<mat-form-field class="full-width" appearance="outline">
+				<mat-label>Database name</mat-label>
+				<input matInput type="text" placeholder="Database name" name="databaseName" [(ngModel)]="appInstance.dataConnectionString.database"
+				 required>
+				 <p class="form-error-message" *ngFor="let e of appInstanceError['dataConnectionString.Database']">
+						{{e}}
+				</p>
+			</mat-form-field>
 
-		<mat-form-field class="full-width" appearance="outline">
-			<mat-label>User name</mat-label>
-			<input matInput type="text" placeholder="User name" name="userName" [(ngModel)]="appInstance.dataConnectionString.user">
-			<p class="form-error-message" *ngFor="let e of appInstanceError?.dataConnectionString?.User">
-				{{e}}
-			</p>
-		</mat-form-field>
+			<mat-form-field class="full-width" appearance="outline">
+				<mat-label>User name</mat-label>
+				<input matInput type="text" placeholder="User name" name="userName" [(ngModel)]="appInstance.dataConnectionString.user">
+				<p class="form-error-message" *ngFor="let e of appInstanceError['dataConnectionString.User']">
+						{{e}}
+				</p>
+			</mat-form-field>
 
-		<mat-form-field class="full-width" appearance="outline">
-			<mat-label>Password</mat-label>
-			<input matInput type="password" placeholder="Password" name="password" [(ngModel)]="appInstance.dataConnectionString.password">
-			<p class="form-error-message" *ngFor="let e of appInstanceError?.dataConnectionString?.Password">
-				{{e}}
-			</p>
-		</mat-form-field>
+			<mat-form-field class="full-width" appearance="outline">
+				<mat-label>Password</mat-label>
+				<input matInput type="password" placeholder="Password" name="password" [(ngModel)]="appInstance.dataConnectionString.password">
+				<p class="form-error-message" *ngFor="let e of appInstanceError['dataConnectionString.Password']">
+						{{e}}
+				</p>
+			</mat-form-field>
+			<div>
+				<mat-checkbox name="trusted_Connection" [(ngModel)]="appInstance.dataConnectionString.trusted_Connection">Truested
+					connection</mat-checkbox>
+			</div>
+			<div>
+				<mat-checkbox name="multipleActiveResultSets" [(ngModel)]="appInstance.dataConnectionString.multipleActiveResultSets">Multiple
+					active resultSet</mat-checkbox>
+			</div>
+		</mat-card>
 
 		<div>
 			<mat-checkbox name="isEnabled" [(ngModel)]="appInstance.isEnabled">Is Enable</mat-checkbox>

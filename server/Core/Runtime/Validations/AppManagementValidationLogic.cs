@@ -45,6 +45,11 @@ namespace Brainvest.Dscribe.Runtime.Validations
 			{
 				return "This app type is refered to one or more app instances.";
 			}
+
+			if (await dbContext.EntityTypes.AnyAsync(x => x.AppTypeId == model.Id))
+			{
+				return "This app type is refered to one or more entities.";
+			}
 			return await Task.FromResult(string.Empty);
 		}
 	}
