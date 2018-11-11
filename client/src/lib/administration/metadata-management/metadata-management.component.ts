@@ -34,7 +34,7 @@ export class MetadataManagementComponent implements OnInit {
 	displayedEntityTypeColumns = ['name', 'usage', 'singular', 'plural', 'code', 'displayName'];
 	displayedPropertyColumns = ['name', 'title', 'dataType', 'nullable', 'dataEntityType', 'usage', 'foreignKey', 'inverse'];
 
-	@ViewChild('entitiyTypesPaginator') entityTypesPaginator: MatPaginator;
+	@ViewChild('entityTypesPaginator') entityTypesPaginator: MatPaginator;
 	@ViewChild('propertiesPaginator') propertiesPaginator: MatPaginator;
 
 	constructor(

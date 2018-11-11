@@ -8,6 +8,8 @@ import {GroupListRequest} from '../models/groupping/group-list-request';
 import {map, share} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {DscribeService} from '../../dscribe.service';
+import {ManageEntityModes} from '../../add-n-edit/models/manage-entity-modes';
+import {AddNEditHelper} from '../../add-n-edit/add-n-edit-helper';
 
 
 @Injectable({
@@ -171,8 +173,8 @@ export class DataHandlerService {
 		return this.http.post<any[]>(this.groupAPI, request.getRequestObject());
 	}
 
-	manageEntity(entity: EntityBase, entityTypeName: string, action: string): Observable<EntityBase> {
-		return this.http.post<EntityBase>(this.managementURL + action, {
+	manageEntity(entity: EntityBase, entityTypeName: string, action: ManageEntityModes): Observable<EntityBase> {
+		return this.http.post<EntityBase>(this.managementURL + AddNEditHelper.actionName(action), {
 			entityTypeName: entityTypeName,
 			entity: entity
 		});

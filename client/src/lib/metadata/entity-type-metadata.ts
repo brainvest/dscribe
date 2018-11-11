@@ -1,6 +1,8 @@
 import {DigestEntityType} from './digest-entity-type';
 import {PropertyMetadata} from './property-metadata';
 import {SelectionContainer} from '../common/models/selection-container';
+import {ManageEntityModes} from '../add-n-edit/models/manage-entity-modes';
+import {KnownFacets} from './facets/known-facet';
 
 export class EntityTypeMetadata extends DigestEntityType {
 	properties: { [name: string]: PropertyMetadata };
@@ -20,6 +22,19 @@ export class EntityTypeMetadata extends DigestEntityType {
 			}
 		}
 		return null;
+	}
+
+	getPropertiesForManage(mode: ManageEntityModes): PropertyMetadata[] {
+		const hideFacet = mode === ManageEntityModes.Insert ? KnownFacets.HideInInsert : KnownFacets.HideInEdit;
+		let props: PropertyMetadata[] = [];
+		for (const propertyName of this.propertyNames) {
+			const property = this.properties[propertyName];
+			if (property.facetValues[hideFacet]) {
+				continue;
+			}
+			props.push(property);
+		}
+		return props;
 	}
 
 	getPropertiesForFilter(): PropertyMetadata[] {

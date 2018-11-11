@@ -21,6 +21,10 @@ export class PropertyMetadata extends HasTypeInfo {
 		super(isNullable, dataType);
 	}
 
+	getJsName(){
+		return this.jsName || this.name;
+	}
+
 	getConstantType() {
 		let type = this.dataType;
 		if (type === DataTypes.ForeignKey || type === DataTypes.NavigationEntity) {
