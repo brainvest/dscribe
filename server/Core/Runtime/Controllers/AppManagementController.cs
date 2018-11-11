@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Runtime.Controllers
@@ -43,7 +44,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				GeneratedCodeNamespace = x.GeneratedCodeNamespace,
 				Title = x.Title,
 				UseUnreleasedMetadata = x.UseUnreleasedMetadata,
-				// DataConnectionString = Dese(x.DataConnectionString)
+				DataConnectionString = DeserializeConnectionString(x.DataConnectionString),
+				DatabaseProviderId = x.DatabaseProviderId
 			}).ToListAsync();
 		}
 
@@ -183,20 +185,35 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 		public string GenerateConnectionString(DataConnectionStringModel model)
 		{
-			return model.Server + ";" +
-					model.Database + ";" +
-					model.Trusted_Connection + ";" +
-					model.MultipleActiveResultSets + ";" +
-					model.User + ";" +
-					model.Password;
+			var result = "Server=" + model.Server + ";" +
+   						 "Database=" + model.Database + ";" +
+   						 "Trusted_Connection=" + model.Trusted_Connection + ";" +
+   						 "MultipleActiveResultSets=" + model.MultipleActiveResultSets + ";" +
+   						 "user=" + model.User + ";" +
+   						 "password=" + model.Password;
+
+			return result;
 		}
 
-		//public DataConnectionStringModel DeserializeConnectionString(string connectionString)
-		//{
-		//	//var cnnBuilder = new DbConnectionStringBuilder(connectionString);
-		//	//var result = new DataConnectionStringModel();
-		//	//result.Server = 
-		//	//return JsonConvert.DeserializeObject<DataConnectionStringModel>(connectionString);
-		//}
+		public DataConnectionStringModel DeserializeConnectionString(string connectionString)
+		{
+			var result = new DataConnectionStringModel();
+			Match server = Regex.Match(connectionString, @"server=([^;]*)", RegexOptions.IgnoreCase);
+			Match Database = Regex.Match(connectionString, @"Database=([^;]*)", RegexOptions.IgnoreCase);
+			Match Trusted_Connection = Regex.Match(connectionString, @"Trusted_Connection=([^;]*)", RegexOptions.IgnoreCase);
+			Match MultipleActiveResultSets = Regex.Match(connectionString, @"MultipleActiveResultSets=([^;]*)", RegexOptions.IgnoreCase);
+			Match user = Regex.Match(connectionString, @"user=([^;]*)", RegexOptions.IgnoreCase);
+			Match password = Regex.Match(connectionString, @"password=([^;]*)", RegexOptions.IgnoreCase);
+
+			result.Server = server.Success ? server.Groups[1].Value : null;
+			result.Database = Database.Success ? Database.Groups[1].Value : null;
+			result.Trusted_Connection = Trusted_Connection.Success ? bool.Parse(Trusted_Connection.Groups[1].Value) : false;
+			result.MultipleActiveResultSets = MultipleActiveResultSets.Success ? bool.Parse(MultipleActiveResultSets.Groups[1].Value) : false;
+			result.MultipleActiveResultSets = MultipleActiveResultSets.Success ? bool.Parse(MultipleActiveResultSets.Groups[1].Value) : false;
+			result.User = user.Success ? user.Groups[1].Value : null;
+			result.Password = password.Success ? password.Groups[1].Value : null;
+
+			return result;
+		}
 	}
 }

@@ -67,6 +67,7 @@ export class AppInstanceManagementComponent implements OnInit {
 	openAddNEditAppInstanceDialog(instance: any, isNew: boolean) {
 		const dialogRef = this.dialog.open(AddNEditAppInstanceComponent, {
 			width: '800px',
+			disableClose: true,
 			data: new AddNEditAppInstanceComponentData(instance, isNew)
 		});
 		dialogRef.afterClosed().subscribe(
