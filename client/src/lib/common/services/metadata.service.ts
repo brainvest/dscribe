@@ -5,7 +5,7 @@ import {Observable, ReplaySubject} from 'rxjs';
 import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
 import {CompleteMetadataModel} from '../../metadata/complete-metadata-model';
 import {map} from 'rxjs/operators';
-import {PropertyResponse, EntityTypeResponse} from '../../metadata/response-models';
+import {PropertyResponse} from '../../metadata/response-models';
 import {PropertyMetadata} from '../../metadata/property-metadata';
 
 @Injectable({
@@ -23,67 +23,67 @@ export class MetadataService {
 	getComplete(): void {
 		this.http.get<CompleteMetadataModel>(this.config.url('api/metadata/getComplete'))
 			.subscribe(x => {
-				this.currentEntityTypes = this.extractEntityTypeMetadata(x.entityTypes, x.propertyDefaults);
+				this.currentEntityTypes = MetadataService.extractEntityTypeMetadata(x.EntityTypes, x.PropertyDefaults);
 				this.fixUpRelationships();
 				this.entityTypes$.next(this.currentEntityTypes);
 			}, console.error);
 	}
 
 	getEntityTypeByName(entityTypeName: string): Observable<EntityTypeMetadata> {
-		return this.entityTypes$.pipe(map(types => types.find(x => x.name === entityTypeName)));
+		return this.entityTypes$.pipe(map(types => types.find(x => x.Name === entityTypeName)));
 	}
 
-	private extractEntityTypeMetadata(entityTypes: EntityTypeResponse[], allDefaultFacets): EntityTypeMetadata[] {
+	private static extractEntityTypeMetadata(
+		entityTypes: { [key: string]: any },
+		allDefaultFacets: { [key: string]: any }): EntityTypeMetadata[] {
 		const result: EntityTypeMetadata[] = [];
 		for (const entityTypeName in entityTypes) {
 			if (!(entityTypeName in entityTypes)) {
 				continue;
 			}
 			const t = entityTypes[entityTypeName];
-			const entityTypeMetadata = new EntityTypeMetadata(t.name, t.singularTitle, t.pluralTitle,
-				t.typeGeneralUsageCategoryId);
-			entityTypeMetadata.properties = {};
-			entityTypeMetadata.propertyNames = [];
-			for (const propertyName in t.properties) {
-				if (t.properties.hasOwnProperty(propertyName)) {
-					const oldProperty: PropertyResponse = t.properties[propertyName];
-					const defaultFacets = allDefaultFacets[oldProperty.generalUsage];
+			const entityTypeMetadata = new EntityTypeMetadata(t.Name, t.SingularTitle, t.PluralTitle,
+				t.TypeGeneralUsageCategoryId);
+			entityTypeMetadata.Properties = {};
+			entityTypeMetadata.PropertyNames = [];
+			for (const propertyName in t.Properties) {
+				if (t.Properties.hasOwnProperty(propertyName)) {
+					const oldProperty: PropertyResponse = t.Properties[propertyName];
+					const defaultFacets = allDefaultFacets[oldProperty.GeneralUsage];
 					const newProperty = new PropertyMetadata();
-					newProperty.facetValues = {};
+					newProperty.FacetValues = {};
 
 					if (defaultFacets) {
-						for (const dfName in defaultFacets.defaults) {
-							if (defaultFacets.defaults.hasOwnProperty(dfName)) {
-								if (oldProperty.localFacets && oldProperty.localFacets[dfName]) {
-									newProperty.facetValues[dfName] =
-										oldProperty.localFacets[dfName].value;
-									delete oldProperty.localFacets[dfName];
+						for (const dfName in defaultFacets.Defaults) {
+							if (defaultFacets.Defaults.hasOwnProperty(dfName)) {
+								if (oldProperty.LocalFacets && oldProperty.LocalFacets[dfName]) {
+									newProperty.FacetValues[dfName] =
+										oldProperty.LocalFacets[dfName].Value;
+									delete oldProperty.LocalFacets[dfName];
 								} else {
-									newProperty.facetValues[dfName] =
-										defaultFacets.defaults[dfName].value;
+									newProperty.FacetValues[dfName] = defaultFacets.Defaults[dfName].Value;
 								}
 							}
 						}
 					}
 
-					for (const dfName in oldProperty.localFacets) {
-						if (oldProperty.localFacets.hasOwnProperty(dfName)) {
-							newProperty.facetValues[dfName] = oldProperty.localFacets[dfName].value;
+					for (const dfName in oldProperty.LocalFacets) {
+						if (oldProperty.LocalFacets.hasOwnProperty(dfName)) {
+							newProperty.FacetValues[dfName] = oldProperty.LocalFacets[dfName].Value;
 						}
 					}
 
-					newProperty.name = oldProperty.name;
-					newProperty.dataType = oldProperty.dataType;
-					newProperty.entityTypeName = oldProperty.entityTypeName;
-					newProperty.foreignKeyName = oldProperty.foreignKeyName;
-					newProperty.generalUsage = oldProperty.generalUsage;
-					newProperty.inversePropertyName = oldProperty.inversePropertyName;
-					newProperty.jsName = oldProperty.jsName;
-					newProperty.title = oldProperty.title;
-					newProperty.isNullable = oldProperty.isNullable;
-					newProperty.isExpression = oldProperty.isExpression;
-					entityTypeMetadata.properties[propertyName] = newProperty;
-					entityTypeMetadata.propertyNames.push(propertyName);
+					newProperty.Name = oldProperty.Name;
+					newProperty.DataType = oldProperty.DataType;
+					newProperty.EntityTypeName = oldProperty.EntityTypeName;
+					newProperty.ForeignKeyName = oldProperty.ForeignKeyName;
+					newProperty.GeneralUsage = oldProperty.GeneralUsage;
+					newProperty.InversePropertyName = oldProperty.InversePropertyName;
+					newProperty.Title = oldProperty.Title;
+					newProperty.IsNullable = oldProperty.IsNullable;
+					newProperty.IsExpression = oldProperty.IsExpression;
+					entityTypeMetadata.Properties[propertyName] = newProperty;
+					entityTypeMetadata.PropertyNames.push(propertyName);
 				}
 			}
 			result.push(entityTypeMetadata);
@@ -93,17 +93,17 @@ export class MetadataService {
 
 	private fixUpRelationships() {
 		this.currentEntityTypes.forEach(type => {
-			for (const propertyName in type.properties) {
-				if (type.properties.hasOwnProperty(propertyName)) {
-					const prop = type.properties[propertyName];
-					if (prop.entityTypeName) {
-						prop.entityType = this.currentEntityTypes.find(x => x.name === prop.entityTypeName);
+			for (const propertyName in type.Properties) {
+				if (type.Properties.hasOwnProperty(propertyName)) {
+					const prop = type.Properties[propertyName];
+					if (prop.EntityTypeName) {
+						prop.EntityType = this.currentEntityTypes.find(x => x.Name === prop.EntityTypeName);
 					}
-					if (prop.foreignKeyName) {
-						prop.foreignKeyProperty = type.properties[prop.foreignKeyName];
+					if (prop.ForeignKeyName) {
+						prop.ForeignKeyProperty = type.Properties[prop.ForeignKeyName];
 					}
-					if (prop.inversePropertyName && prop.entityTypeName && prop.entityType.properties) {
-						prop.inverseProperty = prop.entityType.properties[prop.inversePropertyName];
+					if (prop.InversePropertyName && prop.EntityTypeName && prop.EntityType.Properties) {
+						prop.InverseProperty = prop.EntityType.Properties[prop.InversePropertyName];
 					}
 				}
 			}

@@ -36,13 +36,13 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (this.entity) {
-			const id = this.entity[this.overridePropertyName || this.property.jsName];
+			const id = this.entity[this.overridePropertyName || this.property.Name];
 			if (!id) {
 				this.selection = null;
 				this.inputCtrl.setValue(this.selection);
 				return;
 			}
-			this.dataHandler.getName(this.property.entityTypeName, id)
+			this.dataHandler.getName(this.property.EntityTypeName, id)
 				.subscribe(result => {
 					this.selection = {displayName: result, id: id};
 					this.inputCtrl.setValue(this.selection);
@@ -65,7 +65,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 		if (name) {
 			this.trigger.autocompleteDisabled = false;
 		}
-		return this.dataHandler.getAutoCompleteItems(this.property.entityTypeName, name);
+		return this.dataHandler.getAutoCompleteItems(this.property.EntityTypeName, name);
 	}
 
 	displayFn(): string {
@@ -74,7 +74,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 
 	selectionChange(item) {
 		this.selection = item;
-		this.entity[this.overridePropertyName || this.property.jsName] = item && item.id;
+		this.entity[this.overridePropertyName || this.property.Name] = item && item.id;
 		this.inputCtrl.setValue(item);
 	}
 
@@ -96,7 +96,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 
 	selectFromList() {
 		const data = {
-			entity: this.property.entityType,
+			entity: this.property.EntityType,
 			selectedRow: null
 		};
 		this.dialog.open(AutoCompleteMoreDialogComponent, {
@@ -106,7 +106,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			if (!x) {
 				return;
 			}
-			this.dataHandler.getName(this.property.entityTypeName, data.selectedRow.id)
+			this.dataHandler.getName(this.property.EntityTypeName, data.selectedRow.id)
 				.subscribe(y => {
 					this.selectionChange({
 						id: data.selectedRow.id,
@@ -122,15 +122,15 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			data: {
 				entity: {},
 				action: 'add',
-				entityTypeName: this.property.entityType.name,
-				title: this.property.entityType.singularTitle,
+				entityTypeName: this.property.EntityType.Name,
+				title: this.property.EntityType.SingularTitle,
 				master: null
 			}
 		}).afterClosed().subscribe((x: AddNEditResult) => {
 			if (!x) {
 				return;
 			}
-			this.dataHandler.getName(this.property.entityTypeName, x.instance.id)
+			this.dataHandler.getName(this.property.EntityTypeName, x.instance.id)
 				.subscribe(y => {
 					this.selectionChange({
 						id: x.instance.id,

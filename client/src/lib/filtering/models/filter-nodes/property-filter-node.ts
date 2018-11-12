@@ -12,7 +12,7 @@ export class PropertyFilterNode extends FilterNode {
 
 	constructor(parent: FilterNode) {
 		super(parent);
-		this.properties = this.parent.childInputType.entityType.getPropertiesForFilter();
+		this.properties = this.parent.childInputType.EntityType.getPropertiesForFilter();
 	}
 
 	get property(): PropertyMetadata {
@@ -27,14 +27,14 @@ export class PropertyFilterNode extends FilterNode {
 			this.parent.childOutputTypeChanged(this);
 			return;
 		}
-		this.outputType = value.dataType === DataTypes.NavigationList ?
+		this.outputType = value.DataType === DataTypes.NavigationList ?
 			new HasTypeInfo(false, DataTypes.bool, null) :
-			new HasTypeInfo(value.isNullable, value.dataType, value.entityType);
-		if (value.dataType === DataTypes.NavigationList) {
+			new HasTypeInfo(value.IsNullable, value.DataType, value.EntityType);
+		if (value.DataType === DataTypes.NavigationList) {
 			const child = new NavigationListFilterNode(this);
 			child.property = value;
 			this.child = child;
-		} else if (value.dataType === DataTypes.NavigationEntity) {
+		} else if (value.DataType === DataTypes.NavigationEntity) {
 			this.child = new PropertyFilterNode(this);
 		} else {
 			this.child = null;
@@ -49,8 +49,8 @@ export class PropertyFilterNode extends FilterNode {
 		if (!this._property) {
 			return null;
 		}
-		if (this._property.dataType === DataTypes.NavigationEntity) {
-			return this._property.foreignKeyProperty;
+		if (this._property.DataType === DataTypes.NavigationEntity) {
+			return this._property.ForeignKeyProperty;
 		}
 		return this._property;
 	}
@@ -59,18 +59,17 @@ export class PropertyFilterNode extends FilterNode {
 	}
 
 	setStorageNodeProperties(storage: StorageFilterNode) {
-		if (this._property && this.property.dataType === DataTypes.NavigationEntity && !(this.child as PropertyFilterNode)._property) {
-			storage.propertyName = this._property.foreignKeyName;
+		if (this._property && this.property.DataType === DataTypes.NavigationEntity && !(this.child as PropertyFilterNode)._property) {
+			storage.propertyName = this._property.ForeignKeyName;
 		} else {
-			storage.propertyName = this.property.name;
+			storage.propertyName = this.property.Name;
 		}
 	}
 
 	applyStorageNode(storage: StorageFilterNode) {
-		const property = this.properties.find(x => x.name === storage.propertyName
-			|| x.foreignKeyName === storage.propertyName);
-		if (property.dataType === DataTypes.ForeignKey) {
-			this.property = this.properties.find(x => x.foreignKeyName === storage.propertyName);
+		const property = this.properties.find(x => x.Name === storage.propertyName || x.ForeignKeyName === storage.propertyName);
+		if (property.DataType === DataTypes.ForeignKey) {
+			this.property = this.properties.find(x => x.ForeignKeyName === storage.propertyName);
 		} else {
 			this.property = property;
 		}
@@ -99,7 +98,7 @@ export class PropertyFilterNode extends FilterNode {
 		if (this.isEmpty()) {
 			return true;
 		}
-		if (this.property.dataType === DataTypes.NavigationList) {
+		if (this.property.DataType === DataTypes.NavigationList) {
 			return this.child.isValid();
 		}
 		return true;

@@ -14,13 +14,13 @@ export class LambdaHelper {
 			return null;
 		}
 		const lambda = new LambdaFilterNode(null, entityType, false);
-		lambda.parameter = new ParameterInfo(entityType.name[0].toLowerCase(), entityType.name);
+		lambda.parameter = new ParameterInfo(entityType.Name[0].toLowerCase(), entityType.Name);
 
 		const body = lambda.children[0] as ComparisonFilterNode;
 		const left = body.children[0] as PropertyFilterNode;
 		left.property = entityType.getPropertiesForFilter()
-			.find(x => x.foreignKeyName === master.masterProperty.inverseProperty.foreignKeyName)
-			.foreignKeyProperty;
+			.find(x => x.ForeignKeyName === master.masterProperty.InverseProperty.ForeignKeyName)
+			.ForeignKeyProperty;
 		body.operator = body.operators.find(x => x && x.name === 'Equal');
 		const masterId = master.master ? (master.master as HasId).id : -1;
 		const right = body.children[1] as ConstantFilterNode;

@@ -5,19 +5,19 @@ import {ManageEntityModes} from '../add-n-edit/models/manage-entity-modes';
 import {KnownFacets} from './facets/known-facet';
 
 export class EntityTypeMetadata extends DigestEntityType {
-	properties: { [name: string]: PropertyMetadata };
-	propertyNames: string[];
+	Properties: { [Name: string]: PropertyMetadata };
+	PropertyNames: string[];
 	private _parentProperty: PropertyMetadata;
 
-	constructor(public name: string, singularTitle: string, pluralTitle: string,
+	constructor(public Name: string, singularTitle: string, pluralTitle: string,
 							typeGeneralUsageCategoryId: number) {
-		super(name, singularTitle, pluralTitle, typeGeneralUsageCategoryId);
+		super(Name, singularTitle, pluralTitle, typeGeneralUsageCategoryId);
 	}
 
 	getPrimaryKey(): PropertyMetadata {
-		for (const propertyName of this.propertyNames) {
-			const property = this.properties[propertyName];
-			if (property.generalUsage === 'PrimaryKey') {
+		for (const propertyName of this.PropertyNames) {
+			const property = this.Properties[propertyName];
+			if (property.GeneralUsage === 'PrimaryKey') {
 				return property;
 			}
 		}
@@ -26,10 +26,10 @@ export class EntityTypeMetadata extends DigestEntityType {
 
 	getPropertiesForManage(mode: ManageEntityModes): PropertyMetadata[] {
 		const hideFacet = mode === ManageEntityModes.Insert ? KnownFacets.HideInInsert : KnownFacets.HideInEdit;
-		let props: PropertyMetadata[] = [];
-		for (const propertyName of this.propertyNames) {
-			const property = this.properties[propertyName];
-			if (property.facetValues[hideFacet]) {
+		const props: PropertyMetadata[] = [];
+		for (const propertyName of this.PropertyNames) {
+			const property = this.Properties[propertyName];
+			if (property.FacetValues[hideFacet]) {
 				continue;
 			}
 			props.push(property);
@@ -47,16 +47,16 @@ export class EntityTypeMetadata extends DigestEntityType {
 		//     null, this, null, null, null, 'تعداد', false));
 		// }
 
-		for (const propertyName of this.propertyNames) {
-			const property = this.properties[propertyName];
-			if (property.dataType === 'ForeignKey') {
-				if (!props.find(x => x.foreignKeyProperty === property)) {
+		for (const propertyName of this.PropertyNames) {
+			const property = this.Properties[propertyName];
+			if (property.DataType === 'ForeignKey') {
+				if (!props.find(x => x.ForeignKeyProperty === property)) {
 					fks.push(property);
 				}
 				continue;
 			}
-			if (property.dataType === 'NavigationEntity') {
-				const index = fks.indexOf(property.foreignKeyProperty);
+			if (property.DataType === 'NavigationEntity') {
+				const index = fks.indexOf(property.ForeignKeyProperty);
 				if (index !== -1) {
 					fks.splice(index, 1);
 				}
@@ -69,9 +69,9 @@ export class EntityTypeMetadata extends DigestEntityType {
 
 	getPropertiesForGrouping(): SelectionContainer<PropertyMetadata>[] {
 		const props: SelectionContainer<PropertyMetadata>[] = [];
-		for (const propertyName of this.propertyNames) {
-			const property = this.properties[propertyName];
-			if (!property.facetValues.HideInList) {
+		for (const propertyName of this.PropertyNames) {
+			const property = this.Properties[propertyName];
+			if (!property.FacetValues.HideInList) {
 				props.push(new SelectionContainer<PropertyMetadata>(property, false));
 			}
 		}

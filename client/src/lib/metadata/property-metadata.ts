@@ -3,34 +3,30 @@ import {FacetContainer} from './facets/facet-container';
 import {DataTypes} from './data-types';
 
 export class HasTypeInfo {
-	constructor(public isNullable?: boolean, public dataType?: string, public entityType?: EntityTypeMetadata) {
+	constructor(public IsNullable?: boolean, public DataType?: string, public EntityType?: EntityTypeMetadata) {
 
 	}
 }
 
 export class PropertyMetadata extends HasTypeInfo {
 
-	constructor(public name?: string, public jsName?: string, public generalUsage?: string,
-							public dataType?: string | null,
-							public entityTypeName?: string, public foreignKeyName?: string,
-							public inversePropertyName?: string, public validationErrors?: any[],
-							public entityType?: EntityTypeMetadata,
-							public inverseProperty?: PropertyMetadata, public foreignKeyProperty?: PropertyMetadata,
-							public facetValues?: FacetContainer, public title?: string, public isNullable?: boolean,
-							public isExpression?: boolean) {
-		super(isNullable, dataType);
-	}
-
-	getJsName(){
-		return this.jsName || this.name;
+	constructor(public Name?: string, public GeneralUsage?: string,
+							public DataType?: string | null,
+							public EntityTypeName?: string, public ForeignKeyName?: string,
+							public InversePropertyName?: string, public ValidationErrors?: any[],
+							public EntityType?: EntityTypeMetadata,
+							public InverseProperty?: PropertyMetadata, public ForeignKeyProperty?: PropertyMetadata,
+							public FacetValues?: FacetContainer, public Title?: string, public IsNullable?: boolean,
+							public IsExpression?: boolean) {
+		super(IsNullable, DataType);
 	}
 
 	getConstantType() {
-		let type = this.dataType;
+		let type = this.DataType;
 		if (type === DataTypes.ForeignKey || type === DataTypes.NavigationEntity) {
-			type = this.entityType ? this.entityType.getPrimaryKey().dataType : null;
+			type = this.EntityType ? this.EntityType.getPrimaryKey().DataType : null;
 		}
-		if (this.isNullable) {
+		if (this.IsNullable) {
 			type += '?';
 		}
 		return type;

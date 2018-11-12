@@ -5,40 +5,40 @@
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Name</mat-label>
-			<input matInput type="text" placeholder="Name" name="name" [(ngModel)]="property.name">
-			<p class="form-error-message" *ngFor="let e of propertyError?.name">
+			<input matInput type="text" placeholder="Name" name="name" [(ngModel)]="property.Name">
+			<p class="form-error-message" *ngFor="let e of propertyError?.Name">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Title</mat-label>
-			<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="property.title">
-			<p class="form-error-message" *ngFor="let e of propertyError?.title">
+			<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="property.Title">
+			<p class="form-error-message" *ngFor="let e of propertyError?.Title">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Data Type</mat-label>
-			<mat-select name="dataType" placeholder="Data Type" [(ngModel)]="property.dataTypeId">
-				<mat-option *ngFor="let dataType of data.basicInfo.dataTypes" [value]="dataType.id">
-					{{dataType.name}}
+			<mat-select name="dataType" placeholder="Data Type" [(ngModel)]="property.DataTypeId">
+				<mat-option *ngFor="let dataType of data.basicInfo.DataTypes" [value]="dataType.Id">
+					{{dataType.Name}}
 				</mat-option>
 			</mat-select>
-			<p class="form-error-message" *ngFor="let e of propertyError?.dataTypeId">
+			<p class="form-error-message" *ngFor="let e of propertyError?.DataTypeId">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" *ngIf="isNavigation" appearance="outline">
 			<mat-label>Data Entity Type</mat-label>
-			<mat-select name="dataEntityType" placeholder="Data Type Entity" [(ngModel)]="property.dataEntityTypeId">
-				<mat-option *ngFor="let entityType of entityTypes" [value]="entityType.id">
-					{{entityType.name}}
+			<mat-select name="dataEntityType" placeholder="Data Type Entity" [(ngModel)]="property.DataEntityTypeId">
+				<mat-option *ngFor="let entityType of entityTypes" [value]="entityType.Id">
+					{{entityType.Name}}
 				</mat-option>
 			</mat-select>
-			<p class="form-error-message" *ngFor="let e of propertyError?.dataEntityTypeId">
+			<p class="form-error-message" *ngFor="let e of propertyError?.DataEntityTypeId">
 				{{e}}
 			</p>
 		</mat-form-field>
@@ -46,33 +46,33 @@
 		<div class="form-group" *ngIf="isNavigationProperty">
 			<mat-form-field class="full-width" appearance="outline">
 				<mat-label>Foreign Key Action</mat-label>
-				<mat-select name="foreignKeyAction" placeholder="Foreign Key Action" [(ngModel)]="property.foreignKeyAction">
+				<mat-select name="foreignKeyAction" placeholder="Foreign Key Action" [(ngModel)]="property.ForeignKeyAction">
 					<mat-option *ngFor="let action of actions | keys" [value]="action.key">
 						{{action.value}}
 					</mat-option>
 				</mat-select>
-				<p class="form-error-message" *ngFor="let e of propertyError?.foreignKeyAction">
+				<p class="form-error-message" *ngFor="let e of propertyError?.ForeignKeyAction">
 					{{e}}
 				</p>
 			</mat-form-field>
 
-			<mat-form-field *ngIf="property.foreignKeyAction == actions.CreateNewByName || property.foreignKeyAction == actions.RenameExisting"
+			<mat-form-field *ngIf="property.ForeignKeyAction == actions.CreateNewByName || property.ForeignKeyAction == actions.RenameExisting"
 			 class="full-width" appearance="outline">
 				<mat-label>Foreign Key Name</mat-label>
-				<input matInput type="text" placeholder="Foreign Key Name" name="foreignKeyName" [(ngModel)]="property.newForeignKeyName">
-				<p class="form-error-message" *ngFor="let e of propertyError?.newForeignKeyName">
+				<input matInput type="text" placeholder="Foreign Key Name" name="foreignKeyName" [(ngModel)]="property.NewForeignKeyName">
+				<p class="form-error-message" *ngFor="let e of propertyError?.NewForeignKeyName">
 					{{e}}
 				</p>
 			</mat-form-field>
 
-			<mat-form-field *ngIf="property.foreignKeyAction == actions.ChooseExistingById" class="full-width" appearance="outline">
+			<mat-form-field *ngIf="property.ForeignKeyAction == actions.ChooseExistingById" class="full-width" appearance="outline">
 				<mat-label>Foreign Key</mat-label>
-				<mat-select name="foreignKeyId" placeholder="Choose Foreign Key" [(ngModel)]="property.newForeignKeyId">
+				<mat-select name="foreignKeyId" placeholder="Choose Foreign Key" [(ngModel)]="property.NewForeignKeyId">
 					<mat-option *ngFor="let prop of compatibleForeignKeys" [value]="prop.id">
 						{{prop.name}}
 					</mat-option>
 				</mat-select>
-				<p class="form-error-message" *ngFor="let e of propertyError?.newForeignKeyId">
+				<p class="form-error-message" *ngFor="let e of propertyError?.NewForeignKeyId">
 					{{e}}
 				</p>
 			</mat-form-field>
@@ -82,42 +82,42 @@
 			<mat-form-field class="full-width" appearance="outline">
 
 				<mat-label>Inverse Property Action</mat-label>
-				<mat-select name="inversePropertyAction" placeholder="Inverse Property Action" [(ngModel)]="property.inversePropertyAction">
+				<mat-select name="inversePropertyAction" placeholder="Inverse Property Action" [(ngModel)]="property.InversePropertyAction">
 					<mat-option *ngFor="let action of actions | keys" [value]="action.key">
 						{{action.value}}
 					</mat-option>
 				</mat-select>
-				<p class="form-error-message" *ngFor="let e of propertyError?.inversePropertyAction">
+				<p class="form-error-message" *ngFor="let e of propertyError?.InversePropertyAction">
 					{{e}}
 				</p>
 			</mat-form-field>
 
-			<mat-form-field *ngIf="property.inversePropertyAction === actions.CreateNewByName || property.inversePropertyAction == actions.RenameExisting"
+			<mat-form-field *ngIf="property.InversePropertyAction === actions.CreateNewByName || property.InversePropertyAction == actions.RenameExisting"
 			 class="full-width" appearance="outline">
 				<mat-label>Inverse Property Name</mat-label>
-				<input matInput type="text" placeholder="Inverse Property Name" name="inversePropertyName" [(ngModel)]="property.newInversePropertyName">
-				<p class="form-error-message" *ngFor="let e of propertyError?.newInversePropertyName">
+				<input matInput type="text" placeholder="Inverse Property Name" name="inversePropertyName" [(ngModel)]="property.NewInversePropertyName">
+				<p class="form-error-message" *ngFor="let e of propertyError?.NewInversePropertyName">
 					{{e}}
 				</p>
 			</mat-form-field>
 
-			<mat-form-field *ngIf="property.inversePropertyAction === actions.CreateNewByName || property.inversePropertyAction == actions.RenameExisting"
+			<mat-form-field *ngIf="property.InversePropertyAction === actions.CreateNewByName || property.InversePropertyAction == actions.RenameExisting"
 			 class="full-width" appearance="outline">
 				<mat-label>Inverse Property Title</mat-label>
-				<input matInput type="text" placeholder="Inverse Property Title" name="inversePropertyTitle" [(ngModel)]="property.newInversePropertyTitle">
-				<p class="form-error-message" *ngFor="let e of propertyError?.newInversePropertyTitle">
+				<input matInput type="text" placeholder="Inverse Property Title" name="inversePropertyTitle" [(ngModel)]="property.NewInversePropertyTitle">
+				<p class="form-error-message" *ngFor="let e of propertyError?.NewInversePropertyTitle">
 					{{e}}
 				</p>
 			</mat-form-field>
 
-			<mat-form-field *ngIf="property.inversePropertyAction == actions.ChooseExistingById" class="full-width" appearance="outline">
+			<mat-form-field *ngIf="property.InversePropertyAction == actions.ChooseExistingById" class="full-width" appearance="outline">
 				<mat-label>Inverse Property</mat-label>
-				<mat-select name="inversePropertyId" placeholder="Choose Inverse Property" [(ngModel)]="property.newInversePropertyId">
+				<mat-select name="inversePropertyId" placeholder="Choose Inverse Property" [(ngModel)]="property.NewInversePropertyId">
 					<mat-option *ngFor="let prop of compatibleInverseProperties" [value]="prop.id">
 						{{prop.name}}
 					</mat-option>
 				</mat-select>
-				<p class="form-error-message" *ngFor="let e of propertyError?.newInversePropertyId">
+				<p class="form-error-message" *ngFor="let e of propertyError?.NewInversePropertyId">
 					{{e}}
 				</p>
 			</mat-form-field>
@@ -125,17 +125,17 @@
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>General Usage Category</mat-label>
-			<mat-select name="usage" placeholder="General Usage Category" [(ngModel)]="property.propertyGeneralUsageCategoryId">
-				<mat-option *ngFor="let category of data.basicInfo.propertyGeneralUsageCategories" [value]="category.id">
-					{{category.name}}
+			<mat-select name="usage" placeholder="General Usage Category" [(ngModel)]="property.PropertyGeneralUsageCategoryId">
+				<mat-option *ngFor="let category of data.basicInfo.PropertyGeneralUsageCategories" [value]="category.Id">
+					{{category.Name}}
 				</mat-option>
 			</mat-select>
-			<p class="form-error-message" *ngFor="let e of propertyError?.propertyGeneralUsageCategoryId">
+			<p class="form-error-message" *ngFor="let e of propertyError?.PropertyGeneralUsageCategoryId">
 				{{e}}
 			</p>
 		</mat-form-field>
 
-		<mat-checkbox name="isNullable" [(ngModel)]="property.isNullable">Is Nullable</mat-checkbox>
+		<mat-checkbox name="isNullable" [(ngModel)]="property.IsNullable">Is Nullable</mat-checkbox>
 
 	</form>
 

@@ -1,14 +1,14 @@
 import {PropertyBase} from '../../metadata/property-base';
 
 export class AddNEditPropertyMetadataModel extends PropertyBase {
-	foreignKeyAction: RelatedPropertyAction;
-	newForeignKeyName: string;
-	newForeignKeyId: number;
+	ForeignKeyAction: RelatedPropertyAction;
+	NewForeignKeyName: string;
+	NewForeignKeyId: number;
 
-	inversePropertyAction: RelatedPropertyAction;
-	newInversePropertyName: string;
-	newInversePropertyTitle: string;
-	newInversePropertyId: number;
+	InversePropertyAction: RelatedPropertyAction;
+	NewInversePropertyName: string;
+	NewInversePropertyTitle: string;
+	NewInversePropertyId: number;
 }
 
 export enum RelatedPropertyAction {

@@ -15,15 +15,15 @@ export class AddNEditStructureLogic {
 			componentType: EditorComponentTypes.FlatPropertiesEditor
 		};
 		const allProperties = entityTypeMetaData.getPropertiesForManage(mode);
-		const navProps = allProperties.filter(x => x.dataType === DataTypes.NavigationEntity || x.dataType === DataTypes.NavigationList);
+		const navProps = allProperties.filter(x => x.DataType === DataTypes.NavigationEntity || x.DataType === DataTypes.NavigationList);
 		for (const nav of navProps) {
-			let subEntity = entity[nav.getJsName()];
+			let subEntity = entity[nav.Name];
 			if (!subEntity) {
 				subEntity = {};
-				entity[nav.getJsName()] = subEntity;
+				entity[nav.Name] = subEntity;
 			}
-			const navStructure = AddNEditStructureLogic.getStructure(subEntity, nav.entityType, mode, masters
-				, Helper.joinPath(path, nav.name), Helper.joinPath(pathTitle, nav.title));
+			const navStructure = AddNEditStructureLogic.getStructure(subEntity, nav.EntityType, mode, masters
+				, Helper.joinPath(path, nav.Name), Helper.joinPath(pathTitle, nav.Title));
 			navStructure.parentEntity = entity;
 			navStructure.masterReferences = masters;
 			if (structure.children) {
@@ -33,12 +33,12 @@ export class AddNEditStructureLogic {
 			}
 		}
 
-		for (const prop of allProperties.filter(x => x.dataType !== DataTypes.NavigationList && x.dataType !== DataTypes.NavigationEntity)) {
+		for (const prop of allProperties.filter(x => x.DataType !== DataTypes.NavigationList && x.DataType !== DataTypes.NavigationEntity)) {
 			if (masters &&
 				masters.find(m =>
 					m.masterProperty
-					&& m.masterProperty.inverseProperty
-					&& m.masterProperty.inverseProperty.foreignKeyProperty === prop)) {
+					&& m.masterProperty.InverseProperty
+					&& m.masterProperty.InverseProperty.ForeignKeyProperty === prop)) {
 				continue;
 			}
 			if (structure.directProperties) {

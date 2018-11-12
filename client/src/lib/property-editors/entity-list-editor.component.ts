@@ -22,7 +22,7 @@ export class EntityListEditorComponent implements OnInit, OnChanges {
 
 
 	ngOnInit(): void {
-		this.dataHandlerService.getIdAndNames(this.property.entityTypeName).subscribe(
+		this.dataHandlerService.getIdAndNames(this.property.EntityTypeName).subscribe(
 			(res: any) => {
 				this.items = res;
 			},

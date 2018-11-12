@@ -77,8 +77,8 @@ export class AddNEditComponent implements OnInit {
 		if (error.modelState) {
 			for (let i = 0; i < this.structure.directProperties.length; i++) {
 				const prop = this.structure.directProperties[i];
-				if (prop.name && error.modelState[prop.name]) {
-					this.structure.directProperties[i].validationErrors = error.modelState[prop.name].errors;
+				if (prop.Name && error.modelState[prop.Name]) {
+					this.structure.directProperties[i].ValidationErrors = error.modelState[prop.Name].errors;
 				}
 			}
 		}
@@ -86,7 +86,7 @@ export class AddNEditComponent implements OnInit {
 
 	private processSaveResponse(res: EntityBase, action: ManageEntityModes) {
 		for (const prop of this.structure.directProperties) {
-			prop.validationErrors = [];
+			prop.ValidationErrors = [];
 		}
 		if (this.structure.children) {
 			for (const detail of this.structure.children) {

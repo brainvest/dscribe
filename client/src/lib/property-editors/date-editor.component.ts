@@ -13,6 +13,6 @@ export class DateEditorComponent {
 	@Input() isFilter: boolean;
 
 	onModelChange(event: any) {
-		this.entity[this.overridePropertyName || this.property.jsName] = event.toISOString();
+		this.entity[this.overridePropertyName || this.property.Name] = event.toISOString();
 	}
 }
