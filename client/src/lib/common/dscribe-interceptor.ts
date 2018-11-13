@@ -15,7 +15,7 @@ export class DscribeInterceptor implements HttpInterceptor {
 		// TODO: this should not be hardcoded
 		headers = headers.set('Content-Type', 'application/json');
 		if (this.config.appInstance) {
-			headers = headers.set('AppInstance', String(this.config.appInstance.id));
+			headers = headers.set('AppInstance', String(this.config.appInstance.Id));
 		}
 		if (this.config.authHeaderFetcher()) {
 			headers = headers.set('Authorization', this.config.authHeaderFetcher());
