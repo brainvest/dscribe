@@ -8,6 +8,7 @@ import {map, mergeMap, share, startWith} from 'rxjs/operators';
 import {EntityTypeMetadata} from '../metadata/entity-type-metadata';
 import {ListAddNEditDialogComponent} from '../list/list-add-n-edit-dialog/list-add-n-edit-dialog.component';
 import {AddNEditResult} from '../common/models/add-n-edit-result';
+import {ManageEntityModes} from '../add-n-edit/models/manage-entity-modes';
 
 @Component({
 	selector: 'dscribe-entity-auto-complete-component',
@@ -22,9 +23,9 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 	@Input() isFilter: boolean;
 
 	inputCtrl = new FormControl();
-	filteredOptions: Observable<{ displayName: string, id: number }[]>;
+	filteredOptions: Observable<{ DisplayName: string, Id: number }[]>;
 	listRefresher = true;
-	selection: { displayName: string, id: number };
+	selection: { DisplayName: string, Id: number };
 	loading = false;
 	isAutoCompleteOpen: boolean;
 
@@ -44,7 +45,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			}
 			this.dataHandler.getName(this.property.EntityTypeName, id)
 				.subscribe(result => {
-					this.selection = {displayName: result, id: id};
+					this.selection = {DisplayName: result, Id: id};
 					this.inputCtrl.setValue(this.selection);
 				});
 		}
@@ -61,7 +62,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 				, share());
 	}
 
-	filter(name: string): Observable<{ displayName: string, id: number }[]> {
+	filter(name: string): Observable<{ DisplayName: string, Id: number }[]> {
 		if (name) {
 			this.trigger.autocompleteDisabled = false;
 		}
@@ -69,12 +70,12 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 	}
 
 	displayFn(): string {
-		return this.selection ? this.selection.displayName : '';
+		return this.selection ? this.selection.DisplayName : '';
 	}
 
 	selectionChange(item) {
 		this.selection = item;
-		this.entity[this.overridePropertyName || this.property.Name] = item && item.id;
+		this.entity[this.overridePropertyName || this.property.Name] = item && item.Id;
 		this.inputCtrl.setValue(item);
 	}
 
@@ -97,7 +98,8 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 	selectFromList() {
 		const data = {
 			entity: this.property.EntityType,
-			selectedRow: null
+			selectedRow: null,
+			entityType: this.property.EntityType
 		};
 		this.dialog.open(AutoCompleteMoreDialogComponent, {
 			width: '800px',
@@ -106,11 +108,11 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			if (!x) {
 				return;
 			}
-			this.dataHandler.getName(this.property.EntityTypeName, data.selectedRow.id)
+			this.dataHandler.getName(this.property.EntityTypeName, data.selectedRow.Id)
 				.subscribe(y => {
 					this.selectionChange({
-						id: data.selectedRow.id,
-						displayName: y
+						Id: data.selectedRow.Id,
+						DisplayName: y
 					});
 				});
 		});
@@ -121,7 +123,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			width: '800px',
 			data: {
 				entity: {},
-				action: 'add',
+				action: ManageEntityModes.Insert,
 				entityTypeName: this.property.EntityType.Name,
 				title: this.property.EntityType.SingularTitle,
 				master: null
@@ -130,11 +132,11 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			if (!x) {
 				return;
 			}
-			this.dataHandler.getName(this.property.EntityTypeName, x.instance.id)
+			this.dataHandler.getName(this.property.EntityTypeName, x.instance.Id)
 				.subscribe(y => {
 					this.selectionChange({
-						id: x.instance.id,
-						displayName: y
+						Id: x.instance.Id,
+						DisplayName: y
 					});
 				});
 		});
@@ -145,7 +147,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 @Component({
 	template: `
 		<mat-dialog-content>
-			<h1 class="page-header">{{inputs.entityType.pluralTitle}}</h1>
+			<h1 class="page-header">{{inputs.entityType.PluralTitle}}</h1>
 			<dscribe-list
 				[hideFilter]="false"
 				[entityType]="inputs.entityType"

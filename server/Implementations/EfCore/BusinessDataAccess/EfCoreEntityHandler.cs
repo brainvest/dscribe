@@ -1,6 +1,7 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
+using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.Helpers.FilterNodeConverter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -116,7 +117,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 		{
 			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 			var method = _handlerInternal.GetType().GetMethod(internalMethodName, BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
-			object r = CreateGenericObject(request, entityType);
+			object r = EntityHelper.CreateGenericObject(request, entityType);
 			var awaitable = method.Invoke(_handlerInternal, new object[] { r, businessRepository }) as Task<ActionResult<object>>;
 			return await awaitable;
 		}
@@ -143,21 +144,6 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				GroupBy = request.GroupBy,
 				Filters = request.Filters?.Select(x => FilterNodeConverter.ToExpression(x, _implementationsContainer.Reflector)).Cast<Expression<Func<TEntity, bool>>>().ToArray()
 			};
-		}
-
-		private object CreateGenericObject(ManageEntityRequest request, Type entityType)
-		{
-			var jEntity = request.Entity as JObject;
-			if (jEntity == null)
-			{
-				jEntity = JObject.Parse(JsonConvert.SerializeObject(request.Entity));
-			}
-			var toObjectMethod = typeof(JObject).GetMethods(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public)
-				.Single(x => x.Name == nameof(JObject.ToObject) && x.GetGenericArguments().Length == 1 && x.GetParameters().Length == 0);
-			toObjectMethod = toObjectMethod.MakeGenericMethod(entityType);
-			var entity = toObjectMethod.Invoke(jEntity, null);
-			var r = typeof(ManageEntityRequest<>).MakeGenericType(entityType).GetConstructors().First().Invoke(new object[] { entity });
-			return r;
 		}
 
 		public async Task<ActionResult> SaveChanges(object businessRepository)

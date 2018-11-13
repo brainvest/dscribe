@@ -8,7 +8,7 @@ export class AddNEditHelper {
 			case ManageEntityModes.Update:
 				return 'Edit';
 			default:
-				throw 'Unknown action mode: ' + action;
+				throw new Error('Unknown action mode: ' + action);
 		}
 	}
 

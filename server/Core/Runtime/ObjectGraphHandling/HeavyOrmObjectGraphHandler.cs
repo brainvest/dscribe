@@ -2,6 +2,7 @@ using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Abstractions.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -78,8 +79,7 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 				{
 					continue;
 				}
-				var property = request.Entity.GetType().GetProperty(propertyMetadata.Name);
-				var value = property.GetValue(request.Entity);
+				var value = (request.Entity as JObject)[propertyMetadata.Name];
 				if (propertyMetadata.DataType == DataTypes.NavigationEntity)
 				{
 					var relatedEntity = await AddRecursive(new ManageEntityRequest
