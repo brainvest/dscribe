@@ -13,5 +13,6 @@ export class AppInstanceInfoModel {
 	Name: string;
 	Title: string;
 	UseUnreleasedMetadata: boolean;
+	DataConnectionString: ConnectionStringModel;
 }
 

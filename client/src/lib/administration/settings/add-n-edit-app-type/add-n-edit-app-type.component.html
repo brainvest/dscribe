@@ -4,16 +4,16 @@
 	<form #entityTypeForm="ngForm">
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Name</mat-label>
-			<input matInput type="text" placeholder="Name" name="name" [(ngModel)]="appType.name" required>
-			<p class="form-error-message" *ngFor="let e of appTypeError?.name">
+			<input matInput type="text" placeholder="Name" name="name" [(ngModel)]="appType.Name" required>
+			<p class="form-error-message" *ngFor="let e of appTypeError?.Name">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Title</mat-label>
-			<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="appType.title">
-			<p class="form-error-message" *ngFor="let e of appTypeError?.title">
+			<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="appType.Title">
+			<p class="form-error-message" *ngFor="let e of appTypeError?.Title">
 				{{e}}
 			</p>
 		</mat-form-field>

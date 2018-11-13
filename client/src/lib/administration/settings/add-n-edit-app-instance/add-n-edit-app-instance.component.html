@@ -4,41 +4,41 @@
 	<form #entityTypeForm="ngForm">
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Name</mat-label>
-			<input matInput type="text" placeholder="Name" name="name" [(ngModel)]="appInstance.name" required>
-			<p class="form-error-message" *ngFor="let e of appInstanceError?.name">
+			<input matInput type="text" placeholder="Name" name="name" [(ngModel)]="appInstance.Name" required>
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.Name">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Title</mat-label>
-			<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="appInstance.title">
-			<p class="form-error-message" *ngFor="let e of appInstanceError?.title">
+			<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="appInstance.Title">
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.Title">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>App type</mat-label>
-			<mat-select name="appType" placeholder="App Type" [(ngModel)]="appInstance.appTypeId" [required]="true">
-				<mat-option *ngFor="let appType of appTypes" [value]="appType.id">
-					{{appType.name}}
+			<mat-select name="appType" placeholder="App Type" [(ngModel)]="appInstance.AppTypeId" [required]="true">
+				<mat-option *ngFor="let appType of appTypes" [value]="appType.Id">
+					{{appType.Name}}
 				</mat-option>
 			</mat-select>
-			<p class="form-error-message" *ngFor="let e of appInstanceError?.appTypeId">
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.AppTypeId">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Database Provider</mat-label>
-			<mat-select name="databaseProvider" placeholder="Database provider" [(ngModel)]="appInstance.databaseProviderId"
+			<mat-select name="databaseProvider" placeholder="Database provider" [(ngModel)]="appInstance.DatabaseProviderId"
 			 [required]="true">
-				<mat-option *ngFor="let databaseProvider of databaseProviders" [value]="databaseProvider.id">
-					{{databaseProvider.name}}
+				<mat-option *ngFor="let databaseProvider of databaseProviders" [value]="databaseProvider.Id">
+					{{databaseProvider.Name}}
 				</mat-option>
 			</mat-select>
-			<p class="form-error-message" *ngFor="let e of appInstanceError?.appTypeId">
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.DatabaseProviderId">
 				{{e}}
 			</p>
 		</mat-form-field>
@@ -47,52 +47,52 @@
 			<h5 style="color:gray">Connection string</h5>
 			<mat-form-field class="full-width" appearance="outline">
 				<mat-label>Server name</mat-label>
-				<input matInput type="text" placeholder="Server name" name="serverName" [(ngModel)]="appInstance.dataConnectionString.server"
+				<input matInput type="text" placeholder="Server name" name="serverName" [(ngModel)]="appInstance.DataConnectionString.Server"
 				 required>
-				<p class="form-error-message" *ngFor="let e of appInstanceError['dataConnectionString.Server']">
+				<p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.Server']">
 					{{e}}
 				</p>
 			</mat-form-field>
 
 			<mat-form-field class="full-width" appearance="outline">
 				<mat-label>Database name</mat-label>
-				<input matInput type="text" placeholder="Database name" name="databaseName" [(ngModel)]="appInstance.dataConnectionString.database"
+				<input matInput type="text" placeholder="Database name" name="databaseName" [(ngModel)]="appInstance.DataConnectionString.Database"
 				 required>
-				 <p class="form-error-message" *ngFor="let e of appInstanceError['dataConnectionString.Database']">
+				 <p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.Database']">
 						{{e}}
 				</p>
 			</mat-form-field>
 
 			<mat-form-field class="full-width" appearance="outline">
 				<mat-label>User name</mat-label>
-				<input matInput type="text" placeholder="User name" name="userName" [(ngModel)]="appInstance.dataConnectionString.user">
-				<p class="form-error-message" *ngFor="let e of appInstanceError['dataConnectionString.User']">
+				<input matInput type="text" placeholder="User name" name="userName" [(ngModel)]="appInstance.DataConnectionString.User">
+				<p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.User']">
 						{{e}}
 				</p>
 			</mat-form-field>
 
 			<mat-form-field class="full-width" appearance="outline">
 				<mat-label>Password</mat-label>
-				<input matInput type="password" placeholder="Password" name="password" [(ngModel)]="appInstance.dataConnectionString.password">
-				<p class="form-error-message" *ngFor="let e of appInstanceError['dataConnectionString.Password']">
+				<input matInput type="password" placeholder="Password" name="password" [(ngModel)]="appInstance.DataConnectionString.Password">
+				<p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.Password']">
 						{{e}}
 				</p>
 			</mat-form-field>
 			<div>
-				<mat-checkbox name="trusted_Connection" [(ngModel)]="appInstance.dataConnectionString.trusted_Connection">Truested
+				<mat-checkbox name="trusted_Connection" [(ngModel)]="appInstance.DataConnectionString.Trusted_Connection">Truested
 					connection</mat-checkbox>
 			</div>
 			<div>
-				<mat-checkbox name="multipleActiveResultSets" [(ngModel)]="appInstance.dataConnectionString.multipleActiveResultSets">Multiple
+				<mat-checkbox name="multipleActiveResultSets" [(ngModel)]="appInstance.DataConnectionString.MultipleActiveResultSets">Multiple
 					active resultSet</mat-checkbox>
 			</div>
 		</mat-card>
 
 		<div>
-			<mat-checkbox name="isEnabled" [(ngModel)]="appInstance.isEnabled">Is Enable</mat-checkbox>
+			<mat-checkbox name="isEnabled" [(ngModel)]="appInstance.IsEnabled">Is Enable</mat-checkbox>
 		</div>
 		<div>
-			<mat-checkbox name="isProduction" [(ngModel)]="appInstance.isProduction">Is Production</mat-checkbox>
+			<mat-checkbox name="isProduction" [(ngModel)]="appInstance.IsProduction">Is Production</mat-checkbox>
 		</div>
 
 
