@@ -27,12 +27,12 @@ export class AddNEditAppInstanceComponent implements OnInit {
 		private appManagementService: AppManagementService,
 		private snackbarService: SnackBarService) {
 		this.appInstanceError = new AppInstanceInfoModel();
-		this.appInstanceError.dataConnectionString = new ConnectionStringModel();
+		this.appInstanceError.DataConnectionString = new ConnectionStringModel();
 	}
 	ngOnInit() {
 		this.appInstance = JSON.parse(JSON.stringify(this.data.appInstance));
-		if (!this.appInstance.dataConnectionString) {
-			this.appInstance.dataConnectionString = new ConnectionStringModel();
+		if (!this.appInstance.DataConnectionString) {
+			this.appInstance.DataConnectionString = new ConnectionStringModel();
 		}
 
 		this.getAppTypes();
