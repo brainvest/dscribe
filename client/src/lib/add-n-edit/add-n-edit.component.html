@@ -8,9 +8,9 @@
 			<mat-tab-group>
 				<mat-tab *ngFor="let related of structure.children">
 					<ng-template mat-tab-label>
-						{{related.entityTypeMetadata.SingularTitle || related.entityTypeMetadata.Name}}
+						{{related.pathTitle}}
 					</ng-template>
-					<dscribe-property-editor *ngFor="let property of properties"
+					<dscribe-property-editor *ngFor="let property of related.directProperties"
 																	 [property]="property"
 																	 [entity]="entity">
 					</dscribe-property-editor>
