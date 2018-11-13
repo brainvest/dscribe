@@ -19,5 +19,6 @@ namespace Brainvest.Dscribe.Abstractions.Metadata
 		IDataTypeInfo GetDataType();
 		bool IsReadOnlyInEdit();
 		bool IsRequired();
+		bool HideInInsert();
 	}
 }

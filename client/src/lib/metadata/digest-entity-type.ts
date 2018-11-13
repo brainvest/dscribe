@@ -1,7 +1,7 @@
 export class DigestEntityType {
-	constructor(public name: string,
-							public singularTitle: string,
-							public pluralTitle: string,
-							public typeGeneralUsageCategoryId: number) {
+	constructor(public Name: string,
+							public SingularTitle: string,
+							public PluralTitle: string,
+							public TypeGeneralUsageCategoryId: number) {
 	}
 }

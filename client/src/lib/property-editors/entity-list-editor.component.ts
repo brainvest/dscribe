@@ -22,7 +22,7 @@ export class EntityListEditorComponent implements OnInit, OnChanges {
 
 
 	ngOnInit(): void {
-		this.dataHandlerService.getIdAndNames(this.property.entityTypeName).subscribe(
+		this.dataHandlerService.getIdAndNames(this.property.EntityTypeName).subscribe(
 			(res: any) => {
 				this.items = res;
 			},
@@ -30,13 +30,13 @@ export class EntityListEditorComponent implements OnInit, OnChanges {
 			}
 		);
 		// TODO: Will cause exception
-		this.master = new MasterReference(this.entity, this.property, null);
+		this.master = new MasterReference(this.entity, this.property);
 	}
 
 	ngOnChanges(): void {
 		if (!this.master) {
 			// TODO: Will cause exception
-			this.master = new MasterReference(this.entity, this.property, null);
+			this.master = new MasterReference(this.entity, this.property);
 		}
 		this.master.master = this.entity;
 		this.master.masterProperty = this.property;

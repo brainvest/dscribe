@@ -1,4 +1,9 @@
 using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Abstractions.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Brainvest.Dscribe.Helpers
@@ -35,6 +40,30 @@ namespace Brainvest.Dscribe.Helpers
 			//TODO: this is not fast (or is it?) and does not handle composite PKs
 			var pkName = _implementationsContainer.Metadata[typeof(TEntity).Name].GetPrimaryKey().Name;
 			return entity.GetType().GetTypeInfo().GetProperty(pkName).GetValue(entity);
+		}
+
+		public static object CreateGenericObject(ManageEntityRequest request, Type entityType)
+		{
+			var entity = ConvertDeserializedObjectToStaticType(request.Entity, entityType);
+			var r = typeof(ManageEntityRequest<>).MakeGenericType(entityType).GetConstructors().First().Invoke(new object[] { entity });
+			return r;
+		}
+
+		public static object ConvertDeserializedObjectToStaticType(object deserialized, Type entityType)
+		{
+			if (entityType.IsAssignableFrom(deserialized.GetType()))
+			{
+				return deserialized;
+			}
+			if (!(deserialized is JObject jEntity))
+			{
+				jEntity = JObject.Parse(JsonConvert.SerializeObject(deserialized));
+			}
+			var toObjectMethod = typeof(JObject).GetMethods(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public)
+				.Single(x => x.Name == nameof(JObject.ToObject) && x.GetGenericArguments().Length == 1 && x.GetParameters().Length == 0);
+			toObjectMethod = toObjectMethod.MakeGenericMethod(entityType);
+			var entity = toObjectMethod.Invoke(jEntity, null);
+			return entity;
 		}
 	}
 }

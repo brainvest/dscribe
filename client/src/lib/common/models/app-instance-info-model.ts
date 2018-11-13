@@ -20,4 +20,3 @@ export class AppInstanceInfoModel {
 		this.DataConnectionString = new ConnectionStringModel();
 	}
 }
-

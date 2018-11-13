@@ -13,6 +13,7 @@ import { ReleaseMetadataSettingsComponent } from '../release-metadata-settings/r
 import { DscribeService } from '../../dscribe.service';
 import { SnackBarService } from '../../common/notifications/snackbar.service';
 
+
 @Component({
 	selector: 'dscribe-metadata-management',
 	templateUrl: './metadata-management.component.html',
@@ -34,7 +35,7 @@ export class MetadataManagementComponent implements OnInit {
 	displayedEntityTypeColumns = ['name', 'usage', 'singular', 'plural', 'code', 'displayName'];
 	displayedPropertyColumns = ['name', 'title', 'dataType', 'nullable', 'dataEntityType', 'usage', 'foreignKey', 'inverse'];
 
-	@ViewChild('entitiyTypesPaginator') entityTypesPaginator: MatPaginator;
+	@ViewChild('entityTypesPaginator') entityTypesPaginator: MatPaginator;
 	@ViewChild('propertiesPaginator') propertiesPaginator: MatPaginator;
 
 	constructor(
@@ -42,6 +43,7 @@ export class MetadataManagementComponent implements OnInit {
 		private dialog: MatDialog,
 		private snackbarService: SnackBarService,
 		private dscribeService: DscribeService) { }
+
 
 	ngOnInit() {
 		this.entityTypesDataSource.paginator = this.entityTypesPaginator;
@@ -85,7 +87,7 @@ export class MetadataManagementComponent implements OnInit {
 		this.propertiesAreLoading = true;
 		this.apiClient.getAllPropertiesInfo()
 			.subscribe(info => this.allPropertiesInfo = info);
-		this.apiClient.getProperties(this.selectedEntityType.id)
+		this.apiClient.getProperties(this.selectedEntityType.Id)
 			.subscribe(props => {
 				this.propertiesDataSource.data = this.properties = props;
 				this.propertiesAreLoading = false;
@@ -93,31 +95,31 @@ export class MetadataManagementComponent implements OnInit {
 	}
 
 	getEntityTypeUsageName(id: number) {
-		return this.basicInfo.entityTypeGeneralUsageCategories.find(x => x.id === id)!.name;
+		return this.basicInfo.EntityTypeGeneralUsageCategories.find(x => x.Id === id)!.Name;
 	}
 
 	getPropertyUsageName(id: number) {
-		return this.basicInfo.propertyGeneralUsageCategories.find(x => x.id === id)!.name;
+		return this.basicInfo.PropertyGeneralUsageCategories.find(x => x.Id === id)!.Name;
 	}
 
 	getDataTypeName(id: number) {
-		return this.basicInfo.dataTypes.find(x => x.id === id)!.name;
+		return this.basicInfo.DataTypes.find(x => x.Id === id)!.Name;
 	}
 
 	getEntityTypeName(id: number) {
 		if (!id) {
 			return null;
 		}
-		return this.entityTypes.find(x => x.id === id)!.name;
+		return this.entityTypes.find(x => x.Id === id)!.Name;
 	}
 
 	getPropertyName(id: number) {
 		if (!id) {
 			return;
 		}
-		const prop = this.properties.find(x => x.id === id);
+		const prop = this.properties.find(x => x.Id === id);
 		if (prop) {
-			return prop.name;
+			return prop.Name;
 		}
 		return this.allPropertiesInfo.find(x => x.id === id).name;
 	}
@@ -168,7 +170,7 @@ export class MetadataManagementComponent implements OnInit {
 
 	addProperty() {
 		const instance = new AddNEditPropertyMetadataModel();
-		instance.ownerEntityTypeId = this.selectedEntityType.id;
+		instance.OwnerEntityTypeId = this.selectedEntityType.Id;
 		this.openAddNEditPropertyDialog(instance, true);
 	}
 
@@ -176,7 +178,7 @@ export class MetadataManagementComponent implements OnInit {
 		if (!this.selectedProperty) {
 			return;
 		}
-		this.apiClient.getPropertyForEdit(this.selectedProperty.id)
+		this.apiClient.getPropertyForEdit(this.selectedProperty.Id)
 			.subscribe(property => {
 				this.openAddNEditPropertyDialog(property, false);
 			}, (errors: any) => {

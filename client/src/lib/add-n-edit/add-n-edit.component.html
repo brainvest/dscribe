@@ -1,17 +1,27 @@
 <form class="form-horizontal">
 	<div *ngIf="entityTypeMetadata">
-		<dscribe-property-editor *ngFor="let property of properties"
+		<dscribe-property-editor *ngFor="let property of structure?.directProperties"
 														 [property]="property"
 														 [entity]="entity">
 		</dscribe-property-editor>
-		<mat-card *ngIf="detailLists && detailLists.length">
+		<mat-card *ngIf="structure?.children">
 			<mat-tab-group>
+				<mat-tab *ngFor="let related of structure.children">
+					<ng-template mat-tab-label>
+						{{related.entityTypeMetadata.SingularTitle || related.entityTypeMetadata.Name}}
+					</ng-template>
+					<dscribe-property-editor *ngFor="let property of properties"
+																	 [property]="property"
+																	 [entity]="entity">
+					</dscribe-property-editor>
+					<dscribe-list *ngIf="related.componentType === componentTypes.List"
+						[hideFilter]="true" [entityType]="prop.masterProperty.EntityType" [master]="prop">
+					</dscribe-list>
+				</mat-tab>
 				<mat-tab *ngFor="let prop of detailLists">
 					<ng-template mat-tab-label>
-						{{prop.masterProperty.title || prop.masterProperty.name}}
+						{{prop.masterProperty.Title || prop.masterProperty.Name}}
 					</ng-template>
-					<dscribe-list [hideFilter]="true" [entityType]="prop.masterProperty.entityType" [master]="prop">
-					</dscribe-list>
 				</mat-tab>
 			</mat-tab-group>
 		</mat-card>

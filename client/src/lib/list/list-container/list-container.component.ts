@@ -22,7 +22,17 @@ export class ListContainerComponent implements OnInit {
 
 	ngOnInit() {
 		this.metadata.entityTypes$.subscribe(entityTypes => {
-			this.entityTypes = entityTypes;
+			this.entityTypes = entityTypes.sort(function (a, b) {
+				const n = a.PluralTitle || a.SingularTitle || a.Name;
+				const m = b.PluralTitle || b.SingularTitle || b.Name;
+				if (n < m) {
+					return -1;
+				}
+				if (n > m) {
+					return 1;
+				}
+				return 0;
+			});
 		});
 
 		this.route.params.pipe(flatMap(params => {
@@ -39,7 +49,7 @@ export class ListContainerComponent implements OnInit {
 
 	private getCurrentEntityType(): Observable<EntityTypeMetadata> {
 		const firstEntityType$ = this.metadata.entityTypes$.pipe(map(allEntityTypes => {
-			this.entityTypeName = allEntityTypes[0].name;
+			this.entityTypeName = allEntityTypes[0].Name;
 			return null;
 		}));
 		if (!this.entityTypeName) {

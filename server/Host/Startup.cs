@@ -1,14 +1,14 @@
 using Brainvest.Dscribe.Implementations.EfCore.All;
+using Brainvest.Dscribe.LobTools;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.Runtime;
-using Brainvest.Dscribe.LobTools;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using Newtonsoft.Json.Serialization;
+using System;
 
 namespace Brainvest.Dscribe.Host
 {
@@ -53,7 +53,7 @@ namespace Brainvest.Dscribe.Host
 			services.RegisterEfCore();
 
 			services.AddMvc()
-				.AddJsonOptions(options => options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
+				.AddJsonOptions(opt => opt.SerializerSettings.ContractResolver = new DefaultContractResolver())
 				.SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 
 			services.AddAuthentication("Bearer")

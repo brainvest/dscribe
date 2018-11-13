@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Brainvest.Dscribe.Metadata
 {
@@ -24,12 +23,13 @@ namespace Brainvest.Dscribe.Metadata
 		public IPropertyMetadata InverseProperty { get; set; }
 
 		#region Facets
+		public static PropertyFacet<bool> HideInInsertFacet { get; private set; }
 		public static PropertyFacet<string> FriendlyNameFacet { get; private set; }
 		public static PropertyFacet<bool> IsRequiredFacet { get; private set; }
 		public static PropertyFacet<bool> ReadOnlyInEditFacet { get; private set; }
 		public static Dictionary<int, Facet> _facets { get; private set; } = new Dictionary<int, Facet>();
 
-		private string _expressionDefinitionIdentifier;
+		private readonly string _expressionDefinitionIdentifier;
 		private LambdaExpression _definitionExpression;
 		public LambdaExpression GetDefiningExpression(IBusinessReflector reflector)
 		{
@@ -43,13 +43,14 @@ namespace Brainvest.Dscribe.Metadata
 
 		public static void DefineFacets(IEnumerable<PropertyFacetDefinition> propertyFacetDefinitions)
 		{
+			HideInInsertFacet = new PropertyFacet<bool>(nameof(HideInInsertFacet), false, null);
 			FriendlyNameFacet = new PropertyFacet<string>(nameof(FriendlyNameFacet), null, source => source.Name.SmartSeparate());
 			IsRequiredFacet = new PropertyFacet<bool>(nameof(IsRequiredFacet), false, source => !source.IsNullable);
 			ReadOnlyInEditFacet = new PropertyFacet<bool>(nameof(ReadOnlyInEditFacet), false, null);
 			ReflectionHelper.FillFacetsDictionary<PropertyMetadata>(_facets, propertyFacetDefinitions, typeof(PropertyFacet<>));
 		}
 
-		private IDataTypeInfo _dataTypeInfo;
+		private readonly IDataTypeInfo _dataTypeInfo;
 		public IDataTypeInfo GetDataType()
 		{
 			return _dataTypeInfo;
@@ -59,11 +60,18 @@ namespace Brainvest.Dscribe.Metadata
 		{
 			return GetFacetValue<bool>(ReadOnlyInEditFacet);
 		}
+
 		public bool IsRequired()
 		{
 			return GetFacetValue<bool>(IsRequiredFacet);
 		}
+
+		public bool HideInInsert()
+		{
+			return GetFacetValue(HideInInsertFacet);
+		}
 		#endregion
+
 		private IMetadataCache _cache;
 		public PropertyMetadata(IMetadataCache cache, string name, EntityTypeMetadata owner, PropertyGeneralUsageCategoryStruct generalBehavior
 			, DataType dataType, bool isNullable, bool isExpression, string title, string expressionDefinitionIdentifier)

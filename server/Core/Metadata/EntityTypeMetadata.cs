@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Brainvest.Dscribe.Metadata
 {
@@ -22,11 +21,18 @@ namespace Brainvest.Dscribe.Metadata
 		public string CodeProperty { get; set; }
 
 		#region Facets
+		public static EntityFacet<bool> NotMappedFacet { get; private set; }
 		public static Dictionary<int, Facet> _facets { get; private set; } = new Dictionary<int, Facet>();
 
 		public static void DefineFacets(IEnumerable<EntityTypeFacetDefinition> entityFacetDefinitions)
 		{
+			NotMappedFacet = new EntityFacet<bool>(nameof(NotMappedFacet), false, null);
 			ReflectionHelper.FillFacetsDictionary<EntityTypeMetadata>(_facets, entityFacetDefinitions, typeof(EntityFacet<>));
+		}
+
+		public bool NotMapped()
+		{
+			return GetFacetValue(NotMappedFacet);
 		}
 
 		#endregion

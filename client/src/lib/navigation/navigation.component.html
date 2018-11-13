@@ -12,14 +12,14 @@
 			<mat-icon>settings</mat-icon>
 		</a>
 		<button mat-button [matMenuTriggerFor]="menu">
-			{{selectedAppInstance && selectedAppInstance.title}}
+			{{selectedAppInstance && selectedAppInstance.Title}}
 			<mat-icon>keyboard_arrow_down</mat-icon>
 		</button>
 	</mat-toolbar>
 </nav>
 <mat-menu #menu="matMenu">
 	<button *ngFor="let appInstance of appInstances" mat-menu-item (click)="appInstanceSelected(appInstance)">
-		{{appInstance.title}}
+		{{appInstance.Title}}
 	</button>
 </mat-menu>
 

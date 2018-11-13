@@ -8,6 +8,8 @@ import {GroupListRequest} from '../models/groupping/group-list-request';
 import {map, share} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {DscribeService} from '../../dscribe.service';
+import {ManageEntityModes} from '../../add-n-edit/models/manage-entity-modes';
+import {AddNEditHelper} from '../../add-n-edit/add-n-edit-helper';
 
 
 @Injectable({
@@ -118,10 +120,10 @@ export class DataHandlerService {
 		this.http.post<IdAndNameResponse[]>(this.displayNameAPI, request)
 			.subscribe(result => {
 				for (const item of result) {
-					const existing = this.cache2[item.entityTypeName];
-					for (const id of item.names) {
-						existing[id.id] = id.displayName;
-						delete (this.uploadQueue[item.entityTypeName])[id.id];
+					const existing = this.cache2[item.EntityTypeName];
+					for (const id of item.Names) {
+						existing[id.Id] = id.DisplayName;
+						delete (this.uploadQueue[item.EntityTypeName])[id.Id];
 					}
 				}
 				this.nameResponse.next({});
@@ -171,8 +173,8 @@ export class DataHandlerService {
 		return this.http.post<any[]>(this.groupAPI, request.getRequestObject());
 	}
 
-	manageEntity(entity: EntityBase, entityTypeName: string, action: string): Observable<EntityBase> {
-		return this.http.post<EntityBase>(this.managementURL + action, {
+	manageEntity(entity: EntityBase, entityTypeName: string, action: ManageEntityModes): Observable<EntityBase> {
+		return this.http.post<EntityBase>(this.managementURL + AddNEditHelper.actionName(action), {
 			entityTypeName: entityTypeName,
 			entity: entity
 		});
@@ -185,14 +187,14 @@ export class DataHandlerService {
 		});
 	}
 
-	getAutoCompleteItems(entityTypeName: string, searchTerm: string): Observable<{ displayName: string, id: number }[]> {
+	getAutoCompleteItems(entityTypeName: string, searchTerm: string): Observable<{ DisplayName: string, Id: number }[]> {
 		return this.getAutocompleteItems(entityTypeName, searchTerm)
 			.pipe(map(res => {
 				if (!searchTerm || typeof searchTerm === 'number') {
-					return res.names;
+					return res.Names;
 				}
 				const regExp = new RegExp(this.escapeRegExp(searchTerm), 'i');
-				return res.names.filter(name => regExp.test(name.displayName));
+				return res.Names.filter(name => regExp.test(name.DisplayName));
 			}));
 	}
 
@@ -209,13 +211,13 @@ class IdAndNameCacheEntry {
 }
 
 class IdAndNameModel {
-	id: number;
-	displayName: string;
+	Id: number;
+	DisplayName: string;
 }
 
 class IdAndNameResponse {
-	entityTypeName: string;
-	names: IdAndNameModel[];
+	EntityTypeName: string;
+	Names: IdAndNameModel[];
 }
 
 class EntityIdAndNames {

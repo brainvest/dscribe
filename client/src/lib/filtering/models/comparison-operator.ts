@@ -15,8 +15,8 @@ export class ComparisonOperator {
 	static Operators = [
 		new ComparisonOperator('Equal', 'Equals', 2, 2, true),
 		new ComparisonOperator('NotEqual', 'Not Equals', 2, 2, true),
-		new ComparisonOperator('IsNull', 'Is Null', 1, 1, false, p => p.isNullable),
-		new ComparisonOperator('IsNotNull', 'Is Not Null', 1, 1, false, p => p.isNullable),
+		new ComparisonOperator('IsNull', 'Is Null', 1, 1, false, p => p.IsNullable),
+		new ComparisonOperator('IsNotNull', 'Is Not Null', 1, 1, false, p => p.IsNullable),
 		new ComparisonOperator('LessThan', 'Less than', 2, 2, false),
 		new ComparisonOperator('GreaterThan', 'Greater than', 2, 2, false),
 		new ComparisonOperator('LessThanOrEqual', 'Less than or equal', 2, 2, false),

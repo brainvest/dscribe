@@ -1,4 +1,5 @@
 using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Runtime.ObjectGraphHandling;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
@@ -10,6 +11,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			services.AddScoped<IEntityValidator, EfCoreEntityValidator>();
 			services.AddScoped<IEntityHandler, EfCoreEntityHandler>();
 			services.AddScoped<EfCoreEntityHandlerInternal, EfCoreEntityHandlerInternal>();
+			services.AddScoped<IObjectGraphHandler, HeavyOrmObjectGraphHandler>();
 			return services;
 		}
 	}
