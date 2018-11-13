@@ -21,7 +21,7 @@ export class PropertyEditorComponent implements OnChanges {
 
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['property'] && changes['property'].currentValue !== changes['property'].previousValue) {
-			switch (this.property && this.property.dataType) {
+			switch (this.property && this.property.DataType) {
 				case DataTypes.bool:
 					this.inputType = 'checkbox';
 					break;

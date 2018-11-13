@@ -1,4 +1,4 @@
 export class IdAndName {
-	public entityType: string;
-	public names: { displayName: string, id: number }[];
+	public EntityType: string;
+	public Names: { DisplayName: string, Id: number }[];
 }

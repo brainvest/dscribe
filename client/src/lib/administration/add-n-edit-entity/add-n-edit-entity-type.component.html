@@ -4,70 +4,70 @@
 	<form #entityTypeForm="ngForm">
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Name</mat-label>
-			<input matInput type="text" placeholder="Name" name="name" [(ngModel)]="entityType.name" required>
-			<p class="form-error-message" *ngFor="let e of entityTypeError?.name">
+			<input matInput type="text" placeholder="Name" name="name" [(ngModel)]="entityType.Name" required>
+			<p class="form-error-message" *ngFor="let e of entityTypeError?.Name">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Table Name</mat-label>
-			<input matInput type="text" placeholder="Table Name" name="tableName" [(ngModel)]="entityType.tableName">
-			<p class="form-error-message" *ngFor="let e of entityTypeError?.tableName">
+			<input matInput type="text" placeholder="Table Name" name="tableName" [(ngModel)]="entityType.TableName">
+			<p class="form-error-message" *ngFor="let e of entityTypeError?.TableName">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Singular Title</mat-label>
-			<input matInput type="text" placeholder="Singular Title" name="singular" [(ngModel)]="entityType.singularTitle"
+			<input matInput type="text" placeholder="Singular Title" name="singular" [(ngModel)]="entityType.SingularTitle"
 			 required>
-			<p class="form-error-message" *ngFor="let e of entityTypeError?.singularTitle">
+			<p class="form-error-message" *ngFor="let e of entityTypeError?.SingularTitle">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Plural Title</mat-label>
-			<input matInput type="text" placeholder="Plural Title" name="plural" [(ngModel)]="entityType.pluralTitle" required>
-			<p class="form-error-message" *ngFor="let e of entityTypeError?.pluralTitle">
+			<input matInput type="text" placeholder="Plural Title" name="plural" [(ngModel)]="entityType.PluralTitle" required>
+			<p class="form-error-message" *ngFor="let e of entityTypeError?.PluralTitle">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Schema</mat-label>
-			<input matInput type="text" placeholder="Schema" name="schema" [(ngModel)]="entityType.schemaName">
-			<p class="form-error-message" *ngFor="let e of entityTypeError?.schemaName">
+			<input matInput type="text" placeholder="Schema" name="schema" [(ngModel)]="entityType.SchemaName">
+			<p class="form-error-message" *ngFor="let e of entityTypeError?.SchemaName">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>General Usage Category</mat-label>
-			<mat-select name="usage" placeholder="General Usage Category" [(ngModel)]="entityType.entityTypeGeneralUsageCategoryId"
+			<mat-select name="usage" placeholder="General Usage Category" [(ngModel)]="entityType.EntityTypeGeneralUsageCategoryId"
 			 [required]="true">
-				<mat-option *ngFor="let category of data.basicInfo.entityTypeGeneralUsageCategories" [value]="category.id">
-					{{category.name}}
+				<mat-option *ngFor="let category of data.basicInfo.EntityTypeGeneralUsageCategories" [value]="category.Id">
+					{{category.Name}}
 				</mat-option>
 			</mat-select>
-			<p class="form-error-message" *ngFor="let e of entityTypeError?.entityTypeGeneralUsageCategoryId">
+			<p class="form-error-message" *ngFor="let e of entityTypeError?.EntityTypeGeneralUsageCategoryId">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Code Path</mat-label>
-			<input matInput type="text" placeholder="Code Path" name="code" [(ngModel)]="entityType.codePath">
-			<p class="form-error-message" *ngFor="let e of entityTypeError?.codePath">
+			<input matInput type="text" placeholder="Code Path" name="code" [(ngModel)]="entityType.CodePath">
+			<p class="form-error-message" *ngFor="let e of entityTypeError?.CodePath">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Display Name Path</mat-label>
-			<input matInput type="text" placeholder="Display Name Path" name="displayName" [(ngModel)]="entityType.displayNamePath">
-			<p class="form-error-message" *ngFor="let e of entityTypeError?.displayNamePath">
+			<input matInput type="text" placeholder="Display Name Path" name="displayName" [(ngModel)]="entityType.DisplayNamePath">
+			<p class="form-error-message" *ngFor="let e of entityTypeError?.DisplayNamePath">
 				{{e}}
 			</p>
 		</mat-form-field>

@@ -9,36 +9,35 @@ export class DigestTypesResponse {
 }
 
 export class PropertyDefaultsResponse {
-	name: string;
-	defaults: FacetContainerResponse;
+	Name: string;
+	Defaults: FacetContainerResponse;
 }
 
 export class FacetResponse {
-	name: string;
-	value: [boolean, number, string];
+	Name: string;
+	Value: [boolean, number, string];
 }
 
 export class EntityTypeResponse {
-	name: string;
-	code: string;
-	displayName: string;
-	primaryKey: string;
-	singularTitle: string;
-	pluralTitle: string;
-	typeGeneralUsageCategoryId: number;
-	properties: { [propertyName: string]: PropertyResponse };
+	Name: string;
+	Code: string;
+	DisplayName: string;
+	PrimaryKey: string;
+	SingularTitle: string;
+	PluralTitle: string;
+	TypeGeneralUsageCategoryId: number;
+	Properties: { [propertyName: string]: PropertyResponse };
 }
 
 export class PropertyResponse {
-	name: string;
-	jsName: string;
-	generalUsage: string;
-	dataType: string;
-	entityTypeName: string;
-	localFacets: FacetContainerResponse;
-	inversePropertyName: string;
-	foreignKeyName: string;
-	title: string;
-	isNullable: boolean;
-	isExpression: boolean;
+	Name: string;
+	GeneralUsage: string;
+	DataType: string;
+	EntityTypeName: string;
+	LocalFacets: FacetContainerResponse;
+	InversePropertyName: string;
+	ForeignKeyName: string;
+	Title: string;
+	IsNullable: boolean;
+	IsExpression: boolean;
 }

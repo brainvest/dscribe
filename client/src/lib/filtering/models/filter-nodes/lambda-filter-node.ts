@@ -14,12 +14,12 @@ export class LambdaFilterNode extends FilterNode {
 		super(parent);
 		this.inputType = new HasTypeInfo(true, DataTypes.NavigationList, entityType);
 		this._body = FilterNode.factory.create(_isValueSelection ? FilterNodeType.Property : FilterNodeType.Comparison, this);
-		this.parameter = new ParameterInfo(this.findParameterName(), entityType.name);
+		this.parameter = new ParameterInfo(this.findParameterName(), entityType.Name);
 	}
 
 	private findParameterName(): string {
 		const existingParameters = this.getTreeParameters();
-		const name = this.entityType.name[0].toLowerCase();
+		const name = this.entityType.Name[0].toLowerCase();
 		if (!existingParameters.find(x => x.name === name)) {
 			return name;
 		}

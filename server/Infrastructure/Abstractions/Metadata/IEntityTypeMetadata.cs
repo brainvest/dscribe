@@ -13,5 +13,7 @@ namespace Brainvest.Dscribe.Abstractions.Metadata
 		IEnumerable<IPropertyMetadata> GetDirectProperties();
 		IEnumerable<IPropertyMetadata> GetAllProperties();
 		IPropertyMetadata GetProperty(string propertyName);
+
+		bool NotMapped();
 	}
 }

@@ -1,14 +1,14 @@
 export class AppInstanceInfoModel {
-	id: number;
-	appTypeId: number;
-	appTypeName: string;
-	appTypeTitle: string;
-	isEnabled: boolean;
-	isProduction: boolean;
-	metadataReleaseReleaseTime: string;
-	metadataReleaseVersion: string;
-	metadataReleaseVersionCode: number;
-	name: string;
-	title: string;
-	useUnreleasedMetadata: boolean;
+	Id: number;
+	AppTypeId: number;
+	AppTypeName: string;
+	AppTypeTitle: string;
+	IsEnabled: boolean;
+	IsProduction: boolean;
+	MetadataReleaseReleaseTime: string;
+	MetadataReleaseVersion: string;
+	MetadataReleaseVersionCode: number;
+	Name: string;
+	Title: string;
+	UseUnreleasedMetadata: boolean;
 }

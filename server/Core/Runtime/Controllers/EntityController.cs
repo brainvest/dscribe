@@ -17,15 +17,18 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		private readonly IEntityHandler _entityHandler;
 		private readonly IImplementationsContainer _implementationsContainer;
 		private readonly IPermissionService _permissionService;
+		private readonly IObjectGraphHandler _objectGraphHandler;
 
 		public EntityController(
 			IEntityHandler entityHandler,
 			IImplementationsContainer implementationsContainer,
-			IPermissionService permissionService)
+			IPermissionService permissionService,
+			IObjectGraphHandler objectGraphHandler)
 		{
 			_entityHandler = entityHandler;
 			_implementationsContainer = implementationsContainer;
 			_permissionService = permissionService;
+			_objectGraphHandler = objectGraphHandler;
 		}
 
 		[HttpPost]
@@ -137,7 +140,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
-			return await _entityHandler.Add(request);
+			return await _objectGraphHandler.Add(request);
 		}
 
 		[HttpPost]
@@ -147,7 +150,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
-			return await _entityHandler.Edit(request);
+			return await _objectGraphHandler.Edit(request);
 		}
 
 		[HttpPost]
@@ -157,7 +160,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return Unauthorized();
 			}
-			return await _entityHandler.Delete(request);
+			return await _objectGraphHandler.Delete(request);
 		}
 
 	}

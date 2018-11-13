@@ -1,44 +1,35 @@
-import {
-	Component,
-	EventEmitter,
-	Input,
-	OnChanges,
-	OnInit,
-	Output,
-	SimpleChanges,
-	Type,
-	ViewChild,
-	ViewEncapsulation
-} from '@angular/core';
-import { MatDialog, MatPaginator, MatSort } from '@angular/material';
-import { MetadataService } from '../../common/services/metadata.service';
-import { DataHandlerService } from '../../common/services/data-handler.service';
-import { EntityTypeMetadata } from '../../metadata/entity-type-metadata';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { merge, of } from 'rxjs';
-import { EntityListRequest } from '../../common/models/entity-list-request';
-import { SortItem } from '../../common/models/sort-item';
-import { ListColumn } from '../models/list-column';
-import { KnownFacets } from '../../metadata/facets/known-facet';
-import { MasterReference } from '../models/master-reference';
-import { HasId } from '../../common/models/has-id';
-import { ListAddNEditDialogComponent } from '../list-add-n-edit-dialog/list-add-n-edit-dialog.component';
-import { ListDeleteDialogComponent } from '../list-delete-dialog/list-delete-dialog.component';
-import { LambdaFilterNode } from '../../filtering/models/filter-nodes/lambda-filter-node';
-import { StorageFilterNode } from '../../filtering/models/storage-filter-node';
-import { LambdaHelper } from '../../helpers/lambda-helper';
-import { FilterNode } from '../../filtering/models/filter-nodes/filter-node';
-import { FilterNodeFactory } from '../../filtering/models/filter-node-factory';
-import { SelectionModel } from '@angular/cdk/collections';
-import { DataTypes } from '../../metadata/data-types';
-import { TableTemplateComponent } from '../list-templating/table-template/table-template.component';
-import { EntityTypeTemplateMapper } from '../list-templating/entity-type-template-mapper';
-import { DscribeService } from '../../dscribe.service';
-import { DscribeFeatureArea } from '../../models/dscribe-feature-area.enum';
-import { DscribeCommand } from '../../models/dscribe-command';
-import { DscribeCommandCallbackInput } from '../../models/dscribe-command-callback-input';
-import { DscribeCommandDisplayPredicate } from '../../models/dscribe-command-display-predicate';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
+import {MatDialog, MatPaginator, MatSort} from '@angular/material';
+import {MetadataService} from '../../common/services/metadata.service';
+import {DataHandlerService} from '../../common/services/data-handler.service';
+import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
+import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+import {merge, of} from 'rxjs';
+import {EntityListRequest} from '../../common/models/entity-list-request';
+import {SortItem} from '../../common/models/sort-item';
+import {ListColumn} from '../models/list-column';
+import {KnownFacets} from '../../metadata/facets/known-facet';
+import {MasterReference} from '../models/master-reference';
+import {HasId} from '../../common/models/has-id';
+import {ListAddNEditDialogComponent} from '../list-add-n-edit-dialog/list-add-n-edit-dialog.component';
+import {ListDeleteDialogComponent} from '../list-delete-dialog/list-delete-dialog.component';
+import {LambdaFilterNode} from '../../filtering/models/filter-nodes/lambda-filter-node';
+import {StorageFilterNode} from '../../filtering/models/storage-filter-node';
+import {LambdaHelper} from '../../helpers/lambda-helper';
+import {FilterNode} from '../../filtering/models/filter-nodes/filter-node';
+import {FilterNodeFactory} from '../../filtering/models/filter-node-factory';
+import {SelectionModel} from '@angular/cdk/collections';
+import {DataTypes} from '../../metadata/data-types';
+import {TableTemplateComponent} from '../list-templating/table-template/table-template.component';
+import {EntityTypeTemplateMapper} from '../list-templating/entity-type-template-mapper';
+import {DscribeService} from '../../dscribe.service';
+import {DscribeFeatureArea} from '../../models/dscribe-feature-area.enum';
+import {DscribeCommand} from '../../models/dscribe-command';
+import {DscribeCommandCallbackInput} from '../../models/dscribe-command-callback-input';
+import {DscribeCommandDisplayPredicate} from '../../models/dscribe-command-display-predicate';
 import {SnackBarService} from '../../common/notifications/snackbar.service';
+import {ManageEntityModes} from '../../add-n-edit/models/manage-entity-modes';
+import {AddNEditResult} from '../../common/models/add-n-edit-result';
 
 @Component({
 	selector: 'dscribe-list',
@@ -106,10 +97,10 @@ export class ListComponent implements OnInit, OnChanges {
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (this.entityType) {
-			if (this.entityType.name === this.displayedEntityTypeName) {
+			if (this.entityType.Name === this.displayedEntityTypeName) {
 				return;
 			}
-			this.customTemplate = EntityTypeTemplateMapper.get(this.entityType.name);
+			this.customTemplate = EntityTypeTemplateMapper.get(this.entityType.Name);
 			if (this.customTemplate) {
 				this.displayMode = 'card';
 			} else {
@@ -121,7 +112,7 @@ export class ListComponent implements OnInit, OnChanges {
 				this.sort = new MatSort();
 			}
 			this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-			this.displayedEntityTypeName = this.entityType.name;
+			this.displayedEntityTypeName = this.entityType.Name;
 			this.refreshData();
 			this.createColumns(this.entityType);
 		}
@@ -131,41 +122,39 @@ export class ListComponent implements OnInit, OnChanges {
 		this.detailLists = [];
 		this.columns = [];
 		this.displayedColumns = [];
-		for (const propertyName in entityType.properties) {
-			if (!entityType.properties.hasOwnProperty(propertyName)) {
+		for (const propertyName in entityType.Properties) {
+			if (!entityType.Properties.hasOwnProperty(propertyName)) {
 				continue;
 			}
-			const prop = entityType.properties[propertyName];
-			if (prop.dataType === DataTypes.NavigationList) {
-				if (prop && prop.facetValues && prop.facetValues[KnownFacets.HideInList]) {
+			const prop = entityType.Properties[propertyName];
+			if (prop.DataType === DataTypes.NavigationList) {
+				if (prop && prop.FacetValues && prop.FacetValues[KnownFacets.HideInList]) {
 					continue;
 				}
 				if (this.master) {
 					continue;
 				}
-				this.detailLists.push(new MasterReference(null, prop, entityType));
+				this.detailLists.push(new MasterReference(null, prop));
 				continue;
 			}
 			this.columns.push(new ListColumn(
-				prop.name,
-				prop.title,
-				prop.jsName,
-				prop.dataType,
-				prop.entityTypeName
+				prop.Name,
+				prop.Title,
+				prop.DataType,
+				prop.EntityTypeName
 			));
-			if (prop && prop.facetValues && prop.facetValues[KnownFacets.HideInList]) {
+			if (prop && prop.FacetValues && prop.FacetValues[KnownFacets.HideInList]) {
 				continue;
 			}
 			if (this.master) {
 				this.master.childList = this;
 				if (this.master.masterProperty
-					&& this.master.masterProperty.inverseProperty
-					&& this.master.masterProperty.inverseProperty.foreignKeyName
-					=== prop.name) {
+					&& this.master.masterProperty.InverseProperty
+					&& this.master.masterProperty.InverseProperty.ForeignKeyName === prop.Name) {
 					continue;
 				}
 			}
-			this.displayedColumns.push(prop.name);
+			this.displayedColumns.push(prop.Name);
 		}
 	}
 
@@ -195,7 +184,7 @@ export class ListComponent implements OnInit, OnChanges {
 		this.paginator.pageIndex = 0;
 		this.data = [];
 		this.connectData();
-		this.dataHandler.countByFilter(new EntityListRequest(this.entityType.name, this.getCurrentFilters()))
+		this.dataHandler.countByFilter(new EntityListRequest(this.entityType.Name, this.getCurrentFilters()))
 			.subscribe(
 				(data: any) => {
 					this.totalCount = data;
@@ -222,7 +211,7 @@ export class ListComponent implements OnInit, OnChanges {
 					}
 					return this.dataHandler.getByFilter(
 						new EntityListRequest(
-							this.entityType.name,
+							this.entityType.Name,
 							this.getCurrentFilters(),
 							this.paginator.pageIndex * this.pageSize,
 							this.pageSize, sort));
@@ -237,10 +226,10 @@ export class ListComponent implements OnInit, OnChanges {
 					return of([]);
 				})
 			).subscribe((data: any) => {
-				this.data = data;
-			}, (errors: any) => {
-				// this.snackbarService.open(errors);
-			});
+			this.data = data;
+		}, (errors: any) => {
+			// this.snackbarService.open(errors);
+		});
 	}
 
 	onMasterChanged() {
@@ -252,9 +241,9 @@ export class ListComponent implements OnInit, OnChanges {
 		if (this.master
 			&& this.master.master
 			&& this.master.masterProperty
-			&& this.master.masterProperty.inverseProperty
-			&& this.master.masterProperty.inverseProperty.foreignKeyName) {
-			newEntity[this.master.masterProperty.inverseProperty.foreignKeyName] = (this.master.master as HasId).id;
+			&& this.master.masterProperty.InverseProperty
+			&& this.master.masterProperty.InverseProperty.ForeignKeyName) {
+			newEntity[this.master.masterProperty.InverseProperty.ForeignKeyName] = (this.master.master as HasId).id;
 		}
 		this.openAddNEditDialog(newEntity, true);
 	}
@@ -271,19 +260,19 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	openAddNEditDialog(instance: any, isNew: boolean) {
-		const action = isNew ? 'add' : 'edit';
+		const action = isNew ? ManageEntityModes.Insert : ManageEntityModes.Update;
 		const dialogRef = this.dialog.open(ListAddNEditDialogComponent, {
 			width: '800px',
 			data: {
 				entity: instance,
 				action: action,
-				entityTypeName: this.entityType.name,
-				title: this.entityType.singularTitle,
+				entityTypeName: this.entityType.Name,
+				title: this.entityType.SingularTitle,
 				master: this.master
 			}
 		});
 		dialogRef.afterClosed().subscribe(
-			(result: any) => {
+			(result: AddNEditResult) => {
 				if (result && result.action === action) {
 					this.refreshData();
 				}
@@ -302,8 +291,8 @@ export class ListComponent implements OnInit, OnChanges {
 			width: '300px'
 		});
 		deleteDialogRef.componentInstance.inputs = {
-			entityTypeName: this.entityType.name,
-			title: this.entityType.singularTitle,
+			entityTypeName: this.entityType.Name,
+			title: this.entityType.SingularTitle,
 			selectedRow: this.selection.selected[0]
 		};
 
@@ -358,7 +347,7 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	shouldDisplayCommand(command: DscribeCommand) {
-		return !command.displayPredicate || command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{ component: this });
+		return !command.displayPredicate || command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
 	}
 
 }

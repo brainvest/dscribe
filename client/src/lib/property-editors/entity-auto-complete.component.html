@@ -1,18 +1,18 @@
 <mat-form-field class="full-width" *ngIf="listRefresher && !isFilter" appearance="outline">
-	<mat-label>{{property.title || property.jsName}}</mat-label>
-	<input matInput [placeholder]="property.title || property.jsName" [attr.id]="property.name"
-				 [attr.aria-label]="property.name"
+	<mat-label>{{property.Title || property.Name}}</mat-label>
+	<input matInput [placeholder]="property.Title || property.Name" [attr.id]="property.Name"
+				 [attr.aria-label]="property.Name"
 				 [formControl]="inputCtrl" [matAutocomplete]="auto" [matAutocompleteDisabled]="true">
 	<div matSuffix class="dropdown-actions-container">
 		<button mat-icon-button (click)="toggleDropDown()" matTooltip="{{isAutoCompleteOpen ? 'Hide' : 'Show'}} DropDown" tabindex="-1">
 			<mat-icon>arrow_drop_down</mat-icon>
 		</button>
 		<button mat-icon-button (click)="selectFromList()" tabindex="-1"
-						matTooltip="Select a {{property?.entityType?.singularTitle || property?.entityType?.name}} from list">
+						matTooltip="Select a {{property?.EntityType?.SingularTitle || property?.EntityType?.Name}} from list">
 			<mat-icon>menu</mat-icon>
 		</button>
 		<button mat-icon-button (click)="addNew()" tabindex="-1"
-						matTooltip="Add a new {{property?.entityType?.singularTitle || property?.entityType?.name}}">
+						matTooltip="Add a new {{property?.EntityType?.SingularTitle || property?.EntityType?.Name}}">
 			<mat-icon>add</mat-icon>
 		</button>
 		<button mat-icon-button (click)="clean()" matTooltip="Clear the value" tabindex="-1">
@@ -21,20 +21,20 @@
 	</div>
 	<i *ngIf="loading" class="fa fa-spinner" matSuffix></i>
 	<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
-		<mat-option *ngFor="let item of filteredOptions | async" [value]="item.id"
+		<mat-option *ngFor="let item of filteredOptions | async" [value]="item.Id"
 								(onSelectionChange)="selectionChange(item)">
-			{{ item.displayName ? item.displayName : '' }}
+			{{ item.DisplayName ? item.DisplayName : '' }}
 		</mat-option>
 	</mat-autocomplete>
 </mat-form-field>
 
-<input *ngIf="isFilter" [placeholder]="property.title || overridePropertyName || property.jsName"
-			 [attr.id]="property.name"
-			 [attr.aria-label]="property.name" [formControl]="inputCtrl" [matAutocomplete]="auto">
+<input *ngIf="isFilter" [placeholder]="property.Title || overridePropertyName || property.Name"
+			 [attr.id]="property.Name"
+			 [attr.aria-label]="property.Name" [formControl]="inputCtrl" [matAutocomplete]="auto">
 <i *ngIf="loading" class="fa fa-spinner" matSuffix></i>
 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
-	<mat-option *ngFor="let item of filteredOptions | async" [value]="item.id"
+	<mat-option *ngFor="let item of filteredOptions | async" [value]="item.Id"
 							(onSelectionChange)="selectionChange(item)">
-		{{ item.displayName ? item.displayName : '' }}
+		{{ item.DisplayName ? item.DisplayName : '' }}
 	</mat-option>
 </mat-autocomplete>

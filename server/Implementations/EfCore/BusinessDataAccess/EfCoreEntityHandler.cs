@@ -1,8 +1,10 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
+using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.Helpers.FilterNodeConverter;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -96,27 +98,27 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			return await awaitable;
 		}
 
-		public async Task<ActionResult<object>> Edit(ManageEntityRequest request)
+		public async Task<ActionResult<object>> Edit(ManageEntityRequest request, object businessRepository)
 		{
-			return await CallMethod(request, nameof(EfCoreEntityHandlerInternal.EditInternal));
+			return await CallMethod(nameof(EfCoreEntityHandlerInternal.EditInternal), request, businessRepository);
 		}
 
-		public async Task<ActionResult<object>> Add(ManageEntityRequest request)
+		public async Task<ActionResult<object>> Add(ManageEntityRequest request, object businessRepository)
 		{
-			return await CallMethod(request, nameof(EfCoreEntityHandlerInternal.AddInternal));
+			return await CallMethod(nameof(EfCoreEntityHandlerInternal.AddInternal), request, businessRepository);
 		}
 
-		public async Task<ActionResult<object>> Delete(ManageEntityRequest request)
+		public async Task<ActionResult<object>> Delete(ManageEntityRequest request, object businessRepository)
 		{
-			return await CallMethod(request, nameof(EfCoreEntityHandlerInternal.DeleteInternal));
+			return await CallMethod(nameof(EfCoreEntityHandlerInternal.DeleteInternal), request, businessRepository);
 		}
 
-		private async Task<ActionResult<object>> CallMethod(ManageEntityRequest request, string internalMethodName)
+		private async Task<ActionResult<object>> CallMethod(string internalMethodName, ManageEntityRequest request, object businessRepository)
 		{
 			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 			var method = _handlerInternal.GetType().GetMethod(internalMethodName, BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
-			object r = CreateGenericObject(request, entityType);
-			var awaitable = method.Invoke(_handlerInternal, new object[] { r }) as Task<ActionResult<object>>;
+			object r = EntityHelper.CreateGenericObject(request, entityType);
+			var awaitable = method.Invoke(_handlerInternal, new object[] { r, businessRepository }) as Task<ActionResult<object>>;
 			return await awaitable;
 		}
 
@@ -144,19 +146,10 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			};
 		}
 
-		private object CreateGenericObject(ManageEntityRequest request, Type entityType)
+		public async Task<ActionResult> SaveChanges(object businessRepository)
 		{
-			var jEntity = request.Entity as JObject;
-			if (jEntity == null)
-			{
-				jEntity = JObject.Parse(JsonConvert.SerializeObject(request.Entity));
-			}
-			var toObjectMethod = typeof(JObject).GetMethods(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public)
-				.Single(x => x.Name == nameof(JObject.ToObject) && x.GetGenericArguments().Length == 1 && x.GetParameters().Length == 0);
-			toObjectMethod = toObjectMethod.MakeGenericMethod(entityType);
-			var entity = toObjectMethod.Invoke(jEntity, null);
-			var r = typeof(ManageEntityRequest<>).MakeGenericType(entityType).GetConstructors().First().Invoke(new object[] { entity });
-			return r;
+			await (businessRepository as DbContext).SaveChangesAsync();
+			return new OkResult();
 		}
 	}
 }

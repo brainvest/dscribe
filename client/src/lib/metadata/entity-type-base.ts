@@ -1,32 +1,30 @@
 export class EntityTypeBase {
 	public static fields = [
-		{ jsName: 'name', title: 'Name', name: 'Name', dataType: 'string' },
-		{ jsName: 'schemaName', title: 'Schema', name: 'Schema Name', dataType: 'string' },
-		{ jsName: 'pluralTitle', title: 'Plural Title', name: 'Plural Title', dataType: 'string' },
-		{ jsName: 'singularTitle', title: 'Singular Title', name: 'Singular Title', dataType: 'string' },
+		{ title: 'Name', name: 'Name', dataType: 'string' },
+		{ title: 'Schema', name: 'SchemaName', dataType: 'string' },
+		{ title: 'Plural Title', name: 'PluralTitle', dataType: 'string' },
+		{ title: 'Singular Title', name: 'SingularTitle', dataType: 'string' },
 		{
-			jsName: 'entityTypeGeneralUsageCategoryId',
 			title: 'Usage Category',
-			name: 'General Usage Category',
+			name: 'EntityTypeGeneralUsageCategoryId',
 			dataType: 'entityCategory'
 		},
-		{ jsName: 'codePath', title: 'Code Path', name: 'Code Path', dataType: 'string' },
+		{ title: 'Code Path', name: 'CodePath', dataType: 'string' },
 		{
-			jsName: 'displayNamePath',
 			title: 'Display Name Path',
-			name: 'Display Name Path',
+			name: 'DisplayNamePath',
 			dataType: 'string'
 		},
 
 	];
 
-	public codePath: string;
-	public displayNamePath: string;
-	public id: number;
-	public name: string;
-	public schemaName: string;
-	public pluralTitle: string;
-	public singularTitle: string;
-	public entityTypeGeneralUsageCategoryId: number;
-	public tableName: string;
+	public CodePath: string;
+	public DisplayNamePath: string;
+	public Id: number;
+	public Name: string;
+	public SchemaName: string;
+	public PluralTitle: string;
+	public SingularTitle: string;
+	public EntityTypeGeneralUsageCategoryId: number;
+	public TableName: string;
 }

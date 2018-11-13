@@ -47,7 +47,7 @@ export class NavigationListFilterNode extends FilterNode {
 		}
 		const type = this.aggregationSelection && this.aggregationSelection.outputType;
 		if (type) {
-			return new HasTypeInfo(true, this.operator.dataTypeMap[type.dataType]);
+			return new HasTypeInfo(true, this.operator.dataTypeMap[type.DataType]);
 		}
 	}
 
@@ -59,7 +59,7 @@ export class NavigationListFilterNode extends FilterNode {
 		this._operator = value;
 		if (this.hasAggregationSelection) {
 			if (!this.aggregationSelection) {
-				this.aggregationSelection = new LambdaFilterNode(this, this.property.entityType, true);
+				this.aggregationSelection = new LambdaFilterNode(this, this.property.EntityType, true);
 			}
 		} else if (this.aggregationSelection) {
 			this.aggregationSelection = null;
@@ -67,7 +67,7 @@ export class NavigationListFilterNode extends FilterNode {
 
 		if (this.hasFiltering) {
 			if (!this.filterSubNode) {
-				this.filterSubNode = new LambdaFilterNode(this, this.property.entityType, false);
+				this.filterSubNode = new LambdaFilterNode(this, this.property.EntityType, false);
 				this.filterSubNode.title = 'Condition on members';
 			}
 		} else if (this.filterSubNode) {

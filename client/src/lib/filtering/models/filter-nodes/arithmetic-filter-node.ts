@@ -44,7 +44,7 @@ export class ArithmeticFilterNode extends FilterNode {
 		}
 		this._operandType = child.outputType;
 		const type = child.outputType;
-		if (!type || !type.dataType) {
+		if (!type || !type.DataType) {
 			this.operators = ArithmeticOperator.Operators;
 			if (!this.operator || this.operators.indexOf(this.operator) === -1) {
 				this.operator = this.operators[0];
@@ -53,7 +53,7 @@ export class ArithmeticFilterNode extends FilterNode {
 		}
 		this.operators = ArithmeticOperator.Operators
 			.filter(x => !x || ((!x.condition || x.condition(type)) &&
-				(!x.dataTypes || x.dataTypes.indexOf(type.dataType) !== -1)));
+				(!x.dataTypes || x.dataTypes.indexOf(type.DataType) !== -1)));
 		if (!this.operator || this.operators.indexOf(this.operator) === -1) {
 			this.operator = this.operators[0];
 		}
@@ -93,9 +93,9 @@ export class ArithmeticFilterNode extends FilterNode {
 		if (!this._operator) {
 			return;
 		}
-		const outputType = this._operandType && this.operator.dataTypeMap(this._operandType.dataType);
-		if (!this._outputType || this.outputType.dataType !== outputType) {
-			this.outputType = new HasTypeInfo(this._operandType && this._operandType.isNullable,
+		const outputType = this._operandType && this.operator.dataTypeMap(this._operandType.DataType);
+		if (!this._outputType || this.outputType.DataType !== outputType) {
+			this.outputType = new HasTypeInfo(this._operandType && this._operandType.IsNullable,
 				outputType, null);
 		}
 	}

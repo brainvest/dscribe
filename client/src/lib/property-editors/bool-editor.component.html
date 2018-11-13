@@ -1,11 +1,11 @@
-<mat-checkbox *ngIf="!isFilter" class="full-width" [(ngModel)]="entity[overridePropertyName || property.jsName]">
-	{{property.title || overridePropertyName || property.jsName}}
+<mat-checkbox *ngIf="!isFilter" class="full-width" [(ngModel)]="entity[overridePropertyName || property.Name]">
+	{{property.Title || overridePropertyName || property.Name}}
 </mat-checkbox>
 
-<input type="checkbox" *ngIf="isFilter" [(ngModel)]="entity[overridePropertyName || property.jsName]">
+<input type="checkbox" *ngIf="isFilter" [(ngModel)]="entity[overridePropertyName || property.Name]">
 
-<div *ngIf="property.validationErrors">
-	<p *ngFor="let validationError of property.validationErrors" class="error-message">
+<div *ngIf="property.ValidationErrors">
+	<p *ngFor="let validationError of property.ValidationErrors" class="error-message">
 		{{validationError.errorMessage}}
 	</p>
 </div>
