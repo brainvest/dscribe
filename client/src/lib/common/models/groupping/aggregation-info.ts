@@ -8,7 +8,7 @@ export class AggregationInfo {
 	}
 
 	getResultName(): string {
-		return AggregationHelper.getPersianTitle(this.aggregate) + ' ' + ((this.sourceProperty && this.sourceProperty.title) || '');
+		return AggregationHelper.getPersianTitle(this.aggregate) + ' ' + ((this.sourceProperty && this.sourceProperty.Title) || '');
 	}
 
 	getDataType() {

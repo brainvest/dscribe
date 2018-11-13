@@ -3,8 +3,6 @@ using Brainvest.Dscribe.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Metadata
 {
@@ -23,7 +21,7 @@ namespace Brainvest.Dscribe.Metadata
 			}
 		}
 
-		private static Dictionary<FacetDataType, Type> _facetTypeMap = new Dictionary<FacetDataType, Type>
+		private static readonly Dictionary<FacetDataType, Type> _facetTypeMap = new Dictionary<FacetDataType, Type>
 		{
 			{ FacetDataType.Bool, typeof(bool) },
 			{ FacetDataType.Int, typeof(int) },

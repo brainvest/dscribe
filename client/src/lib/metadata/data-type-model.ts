@@ -1,11 +1,11 @@
 export class DataTypeModel {
-	id: number;
-	name: string;
-	identifier: string;
+	Id: number;
+	Name: string;
+	Identifier: string;
 
-	static NavigationalDataTypeIds: { [key: string]: number } = {
-		foreignKey: 7,
-		navigationProperty: 8,
-		navigationList: 10
+	static NavigationalDataTypeIds: { [Key: string]: number } = {
+		ForeignKey: 7,
+		NavigationProperty: 8,
+		NavigationList: 10
 	};
 }

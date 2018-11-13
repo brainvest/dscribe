@@ -20,12 +20,12 @@ export class GroupListRequest {
 			order: this.order,
 			groupBy: this.groupBy.map(x => {
 				return {
-					propertyName: x.property.name
+					propertyName: x.property.Name
 				};
 			}),
 			aggregations: this.aggregations.map(x => {
 				return {
-					sourcePropertyName: x.sourceProperty && x.sourceProperty.name,
+					sourcePropertyName: x.sourceProperty && x.sourceProperty.Name,
 					aggregate: x.aggregate
 				};
 			}),

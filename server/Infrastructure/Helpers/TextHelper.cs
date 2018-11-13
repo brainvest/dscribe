@@ -67,13 +67,5 @@ namespace Brainvest.Dscribe.Helpers
 			return builder.ToString();
 		}
 
-		public static string ToCamelCase(this string text)
-		{
-			if (string.IsNullOrWhiteSpace(text))
-			{
-				return text;
-			}
-			return Char.ToLower(text[0]) + text.Substring(1);
-		}
 	}
 }

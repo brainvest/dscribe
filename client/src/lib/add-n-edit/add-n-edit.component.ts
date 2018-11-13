@@ -1,13 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { EntityTypeMetadata } from '../metadata/entity-type-metadata';
-import { MasterReference } from '../list/models/master-reference';
-import { PropertyMetadata } from '../metadata/property-metadata';
-import { MetadataService } from '../common/services/metadata.service';
-import { DataHandlerService } from '../common/services/data-handler.service';
-import { KnownFacets } from '../metadata/facets/known-facet';
-import { EntityBase } from '../common/models/entity-base';
-import { SnackBarService } from '../common/notifications/snackbar.service';
-import { AddNEditResult } from '../common/models/add-n-edit-result';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {EntityTypeMetadata} from '../metadata/entity-type-metadata';
+import {MasterReference} from '../list/models/master-reference';
+import {MetadataService} from '../common/services/metadata.service';
+import {DataHandlerService} from '../common/services/data-handler.service';
+import {EntityBase} from '../common/models/entity-base';
+import {SnackBarService} from '../common/notifications/snackbar.service';
+import {AddNEditResult} from '../common/models/add-n-edit-result';
+import {AddNEditStructure, EditorComponentTypes} from './models/add-n-edit-structure';
+import {ManageEntityModes} from './models/manage-entity-modes';
+import {AddNEditStructureLogic} from './add-n-edit-structure-logic';
 
 @Component({
 	selector: 'dscribe-add-n-edit',
@@ -18,14 +19,14 @@ export class AddNEditComponent implements OnInit {
 
 	entityTypeMetadata: EntityTypeMetadata;
 	@Input() entity: any;
-	@Input() action: string;
+	@Input() action: ManageEntityModes;
 	@Input() entityTypeName: string;
 	@Input() master: MasterReference;
 	@Output() entitySaved = new EventEmitter<AddNEditResult>();
 	@Output() canceled = new EventEmitter();
 
-	properties: PropertyMetadata[];
-	detailLists: MasterReference[];
+	structure: AddNEditStructure;
+	componentTypes = EditorComponentTypes;
 
 	constructor(
 		private metadataService: MetadataService,
@@ -39,40 +40,19 @@ export class AddNEditComponent implements OnInit {
 			.subscribe(
 				(metadata: any) => {
 					this.entityTypeMetadata = metadata;
-					this.createPropertyEditors();
+					this.createEditorStructure();
 				},
 				(errors: any) => {
 					this.snackbarService.open(errors);
 				});
 	}
 
-	private createPropertyEditors() {
-		this.properties = [];
-		for (const propertyName in this.entityTypeMetadata.properties) {
-			if (this.entityTypeMetadata.properties.hasOwnProperty(propertyName)) {
-				const prop = this.entityTypeMetadata.properties[propertyName];
-				if (prop.facetValues[KnownFacets.HideInEdit]) {
-					continue;
-				}
-				if (this.master
-					&& this.master.masterProperty
-					&& this.master.masterProperty.inverseProperty
-					&& this.master.masterProperty.inverseProperty.foreignKeyProperty === prop) {
-					continue;
-				}
-				if (prop.dataType === 'NavigationList') {
-					if (!this.detailLists) {
-						this.detailLists = [];
-					}
-					this.detailLists.push(new MasterReference(this.entity, prop, this.entityTypeMetadata));
-					continue;
-				}
-				this.properties.push(prop);
-			}
-		}
+	private createEditorStructure() {
+		const masters = this.master ? [this.master] : null;
+		this.structure = AddNEditStructureLogic.getStructure(this.entity, this.entityTypeMetadata, this.action, masters, '', '');
 	}
 
-	private afterEntitySaved(action: string, entity: any) {
+	private afterEntitySaved(action: ManageEntityModes, entity: any) {
 		this.entitySaved.emit(new AddNEditResult(action, entity));
 	}
 
@@ -86,7 +66,7 @@ export class AddNEditComponent implements OnInit {
 				this.snackbarService.open(errors);
 			}
 		)
-			;
+		;
 	}
 
 	cancel() {
@@ -95,24 +75,24 @@ export class AddNEditComponent implements OnInit {
 
 	processFailure(error: any) {
 		if (error.modelState) {
-			for (let i = 0; i < this.properties.length; i++) {
-				const prop = this.properties[i];
-				if (prop.name && error.modelState[prop.name]) {
-					this.properties[i].validationErrors = error.modelState[prop.name].errors;
+			for (let i = 0; i < this.structure.directProperties.length; i++) {
+				const prop = this.structure.directProperties[i];
+				if (prop.Name && error.modelState[prop.Name]) {
+					this.structure.directProperties[i].ValidationErrors = error.modelState[prop.Name].errors;
 				}
 			}
 		}
 	}
 
-	private processSaveResponse(res: EntityBase, action: string) {
-		for (const prop of this.properties) {
-			prop.validationErrors = [];
+	private processSaveResponse(res: EntityBase, action: ManageEntityModes) {
+		for (const prop of this.structure.directProperties) {
+			prop.ValidationErrors = [];
 		}
-		if (this.detailLists && this.detailLists.length) {
-			for (const detail of this.detailLists) {
-				detail.master = res;
-				if (detail.childList) {
-					detail.childList.onMasterChanged();
+		if (this.structure.children) {
+			for (const detail of this.structure.children) {
+				detail.masterReferences[0].master = res;
+				if (detail.masterReferences[0].childList) {
+					detail.masterReferences[0].childList.onMasterChanged();
 				}
 			}
 		}

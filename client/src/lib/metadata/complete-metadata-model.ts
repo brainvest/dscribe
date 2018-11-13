@@ -1,3 +1,4 @@
 export class CompleteMetadataModel {
-	[key: string]: any;
+	EntityTypes: { [key: string]: any };
+	PropertyDefaults: { [key: string]: any };
 }

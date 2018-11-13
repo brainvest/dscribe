@@ -51,7 +51,7 @@ export class ComparisonFilterNode extends FilterNode {
 		}
 		this.operators = ComparisonOperator.Operators
 			.filter(x => !x || ((!x.condition || x.condition(type)) &&
-				(!x.dataTypes || x.dataTypes.indexOf(type.dataType) !== -1)));
+				(!x.dataTypes || x.dataTypes.indexOf(type.DataType) !== -1)));
 		if (this.operator && this.operators.indexOf(this.operator) === -1) {
 			this.operator = this.operators[0];
 		}
@@ -92,8 +92,8 @@ export class ComparisonFilterNode extends FilterNode {
 			return;
 		}
 		const outputType = DataTypes.bool;
-		if (!this._outputType || this.outputType.dataType !== outputType) {
-			this.outputType = new HasTypeInfo(this._operandType && this._operandType.isNullable, outputType, null);
+		if (!this._outputType || this.outputType.DataType !== outputType) {
+			this.outputType = new HasTypeInfo(this._operandType && this._operandType.IsNullable, outputType, null);
 		}
 	}
 
@@ -123,7 +123,7 @@ export class ComparisonFilterNode extends FilterNode {
 			return true;
 		}
 		if (!this._operator) {
-			return this.children.length === 1 && this.children[0].isValid() && this.children[0].outputType.dataType === DataTypes.bool;
+			return this.children.length === 1 && this.children[0].isValid() && this.children[0].outputType.DataType === DataTypes.bool;
 		}
 		return !(this._children.find(x => !x.isValid()));
 	}

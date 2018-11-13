@@ -95,7 +95,7 @@ namespace Brainvest.Dscribe.Runtime
 
 		private DbContextOptions<LobToolsDbContext> _lobToolsDbContextOptions;
 
-		public Func<object> RepositoryFactory
+		public Func<IDisposable> RepositoryFactory
 		{
 			get
 			{

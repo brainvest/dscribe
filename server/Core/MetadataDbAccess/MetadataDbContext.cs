@@ -69,6 +69,9 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 				new FacetType { Id = FacetDataType.Int, Identifier = "int", Name = "Integer" },
 				new FacetType { Id = FacetDataType.String, Identifier = "string", Name = "String" }
 			);
+			modelBuilder.Entity<EntityTypeFacetDefinition>().HasData(
+				new EntityTypeFacetDefinition { Id = 1, Name = "NotMapped", FacetTypeId = FacetDataType.Bool }
+			);
 			modelBuilder.Entity<PropertyFacetDefinition>().HasData(
 				new PropertyFacetDefinition { Id = 1, Name = "HideInInsert", FacetTypeId = FacetDataType.Bool },
 				new PropertyFacetDefinition { Id = 2, Name = "HideInEdit", FacetTypeId = FacetDataType.Bool },

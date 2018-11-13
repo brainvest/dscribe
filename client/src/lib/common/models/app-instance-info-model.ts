@@ -1,23 +1,22 @@
 import { ConnectionStringModel } from './connection-string.model';
 
 export class AppInstanceInfoModel {
-	id: number;
-	appTypeId: number;
-	appTypeName: string;
-	appTypeTitle: string;
-	isEnabled: boolean;
-	isProduction: boolean;
-	metadataReleaseReleaseTime: string;
-	metadataReleaseVersion: string;
-	metadataReleaseVersionCode: number;
-	name: string;
-	title: string;
-	useUnreleasedMetadata: boolean;
-	dataConnectionString: ConnectionStringModel;
+	Id: number;
+	AppTypeId: number;
+	AppTypeName: string;
+	AppTypeTitle: string;
+	IsEnabled: boolean;
+	IsProduction: boolean;
+	MetadataReleaseReleaseTime: string;
+	MetadataReleaseVersion: string;
+	MetadataReleaseVersionCode: number;
+	Name: string;
+	Title: string;
+	UseUnreleasedMetadata: boolean;
+	DataConnectionString: ConnectionStringModel;
 
 	constructor() {
-		this.isEnabled = true;
-		this.dataConnectionString = new ConnectionStringModel();
+		this.IsEnabled = true;
+		this.DataConnectionString = new ConnectionStringModel();
 	}
 }
-

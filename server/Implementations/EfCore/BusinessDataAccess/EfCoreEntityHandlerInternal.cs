@@ -228,7 +228,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			}
 		}
 
-		internal async Task<ActionResult<object>> DeleteInternal<TEntity>(ManageEntityRequest<TEntity> request)
+		internal async Task<ActionResult<object>> DeleteInternal<TEntity>(ManageEntityRequest<TEntity> request, DbContext dbContext)
 		where TEntity : class
 		{
 			try
@@ -238,14 +238,10 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				{
 					return new BadRequestObjectResult(validationResult);
 				}
-				using (var context = GetWriteBusinessDbContext())
-				{
-					var set = context.Set<TEntity>();
-					var entity = await set.FindAsync(_entityHelper.GetPrimaryKey(request.Entity));
-					set.Remove(entity);
-					await context.SaveChangesAsync();
-					return request.Entity;
-				}
+				var set = dbContext.Set<TEntity>();
+				var entity = await set.FindAsync(_entityHelper.GetPrimaryKey(request.Entity));
+				set.Remove(entity);
+				return request.Entity;
 			}
 			catch
 			{
@@ -253,7 +249,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			}
 		}
 
-		internal async Task<ActionResult<object>> AddInternal<TEntity>(ManageEntityRequest<TEntity> request)
+		internal async Task<ActionResult<object>> AddInternal<TEntity>(ManageEntityRequest<TEntity> request, DbContext dbContext)
 			where TEntity : class
 		{
 			try
@@ -264,13 +260,9 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 					return new BadRequestObjectResult(validationResult);
 				}
 
-				using (var context = GetWriteBusinessDbContext())
-				{
-					var set = context.Set<TEntity>();
-					set.Add(request.Entity);
-					await context.SaveChangesAsync();
-					return request.Entity;
-				}
+				var set = dbContext.Set<TEntity>();
+				await set.AddAsync(request.Entity);
+				return request.Entity;
 			}
 			catch
 			{
@@ -278,7 +270,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			}
 		}
 
-		internal async Task<ActionResult<object>> EditInternal<TEntity>(ManageEntityRequest<TEntity> request)
+		internal async Task<ActionResult<object>> EditInternal<TEntity>(ManageEntityRequest<TEntity> request, DbContext dbContext)
 			where TEntity : class
 		{
 			try
@@ -289,14 +281,10 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 					return new BadRequestObjectResult(validationResult);
 				}
 
-				using (var context = GetWriteBusinessDbContext())
-				{
-					var set = context.Set<TEntity>();
-					var existing = await set.FindAsync(_entityHelper.GetPrimaryKey(request.Entity));
-					_entityHelper.CopyPropertyValues(request.Entity, existing);
-					await context.SaveChangesAsync();
-					return existing;
-				}
+				var set = dbContext.Set<TEntity>();
+				var existing = await set.FindAsync(_entityHelper.GetPrimaryKey(request.Entity));
+				_entityHelper.CopyPropertyValues(request.Entity, existing);
+				return existing;
 			}
 			catch
 			{

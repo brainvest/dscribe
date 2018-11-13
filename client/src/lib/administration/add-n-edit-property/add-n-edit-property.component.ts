@@ -39,38 +39,38 @@ export class AddNEditPropertyComponent implements OnInit {
 	}
 
 	get isNavigation() {
-		return this.property.dataTypeId === DataTypeModel.NavigationalDataTypeIds.foreignKey ||
-			this.property.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationProperty ||
-			this.property.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationList;
+		return this.property.DataTypeId === DataTypeModel.NavigationalDataTypeIds.ForeignKey ||
+			this.property.DataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationProperty ||
+			this.property.DataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationList;
 	}
 
 	get isNavigationProperty() {
-		return this.property.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationProperty;
+		return this.property.DataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationProperty;
 	}
 
 	get hasInverseProperty() {
-		return this.property.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationProperty ||
-			this.property.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationList;
+		return this.property.DataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationProperty ||
+			this.property.DataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationList;
 	}
 
 	get compatibleForeignKeys() {
 		return this.thisTypeProperties.filter(x =>
-			x.dataTypeId === DataTypeModel.NavigationalDataTypeIds.foreignKey &&
-			x.dataEntityTypeId === this.property.dataEntityTypeId
+			x.DataTypeId === DataTypeModel.NavigationalDataTypeIds.ForeignKey &&
+			x.DataEntityTypeId === this.property.DataEntityTypeId
 		);
 	}
 
 	get compatibleInverseProperties() {
-		if (this.property.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationProperty) {
+		if (this.property.DataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationProperty) {
 			return this.allProperties.filter(x =>
-				x.ownerEntityTypeId === this.property.dataEntityTypeId &&
-				x.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationList &&
-				x.dataEntityTypeId === this.property.ownerEntityTypeId);
+				x.ownerEntityTypeId === this.property.DataEntityTypeId &&
+				x.dataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationList &&
+				x.dataEntityTypeId === this.property.OwnerEntityTypeId);
 		}
 		return this.allProperties.filter(x =>
-			x.ownerEntityTypeId === this.property.dataEntityTypeId &&
-			x.dataTypeId === DataTypeModel.NavigationalDataTypeIds.navigationProperty &&
-			x.dataEntityTypeId === this.property.ownerEntityTypeId);
+			x.ownerEntityTypeId === this.property.DataEntityTypeId &&
+			x.dataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationProperty &&
+			x.dataEntityTypeId === this.property.OwnerEntityTypeId);
 	}
 
 	ngOnInit() {

@@ -1,4 +1,4 @@
 export class GeneralUsageCategoryModel {
-	id: number;
-	name: string;
+	Id: number;
+	Name: string;
 }

@@ -3,11 +3,11 @@ import {GeneralUsageCategoryModel} from './general-usage-category-model';
 import {DataTypeModel} from './data-type-model';
 
 export class MetadataBasicInfoModel {
-	propertyFacetDefinitions: FacetDefinitionModel[];
-	entityTypeFacetDefinitions: FacetDefinitionModel[];
-	propertyGeneralUsageCategories: GeneralUsageCategoryModel[];
-	dataTypes: DataTypeModel[];
-	entityTypeGeneralUsageCategories: GeneralUsageCategoryModel[];
-	defaultPropertyFacetValues: [string, [string, string]][];
-	defaultEntityTypeFacetValues: [string, [string, string]][];
+	PropertyFacetDefinitions: FacetDefinitionModel[];
+	EntityTypeFacetDefinitions: FacetDefinitionModel[];
+	PropertyGeneralUsageCategories: GeneralUsageCategoryModel[];
+	DataTypes: DataTypeModel[];
+	EntityTypeGeneralUsageCategories: GeneralUsageCategoryModel[];
+	DefaultPropertyFacetValues: [string, [string, string]][];
+	DefaultEntityTypeFacetValues: [string, [string, string]][];
 }

@@ -116,7 +116,6 @@ namespace Brainvest.Dscribe.Metadata
 		public class PropertyMetadata
 		{
 			public string Name { get; set; }
-			public string JsName { get { return Name.ToCamelCase(); } }
 			public string GeneralUsage { get; set; }
 			public string DataType { get; set; }
 			public string EntityTypeName { get; set; }
@@ -138,9 +137,9 @@ namespace Brainvest.Dscribe.Metadata
 			public string DisplayNamePath { get; set; }
 			[JsonIgnore]
 			public string PrimaryKeyPath { get; set; }
-			public string Code { get { return CodePath.ToCamelCase(); } }
-			public string DisplayName { get { return DisplayNamePath.ToCamelCase(); } }
-			public string PrimaryKey { get { return PrimaryKeyPath.ToCamelCase(); } }
+			public string Code { get { return CodePath; } }
+			public string DisplayName { get { return DisplayNamePath; } }
+			public string PrimaryKey { get { return PrimaryKeyPath; } }
 			public Dictionary<string, PropertyMetadata> Properties { get; set; }
 			public string SingularTitle { get; set; }
 			public string PluralTitle { get; set; }

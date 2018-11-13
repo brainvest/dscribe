@@ -25,46 +25,49 @@
 
 			<ng-container matColumnDef="name">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-				<td mat-cell *matCellDef="let entityType">{{entityType.name}}</td>
+				<td mat-cell *matCellDef="let entityType">{{entityType.Name}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="usage">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Usage</th>
-				<td mat-cell *matCellDef="let entityType">{{getEntityTypeUsageName(entityType.entityTypeGeneralUsageCategoryId)}}</td>
+				<td mat-cell *matCellDef="let entityType">
+					{{getEntityTypeUsageName(entityType.EntityTypeGeneralUsageCategoryId)}}
+				</td>
 			</ng-container>
 
 			<ng-container matColumnDef="singular">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Singular</th>
-				<td mat-cell *matCellDef="let entityType">{{entityType.singularTitle}}</td>
+				<td mat-cell *matCellDef="let entityType">{{entityType.SingularTitle}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="plural">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Plural</th>
-				<td mat-cell *matCellDef="let entityType">{{entityType.pluralTitle}}</td>
+				<td mat-cell *matCellDef="let entityType">{{entityType.PluralTitle}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="code">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
-				<td mat-cell *matCellDef="let entityType">{{entityType.codePath}}</td>
+				<td mat-cell *matCellDef="let entityType">{{entityType.CodePath}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="displayName">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Display Name</th>
-				<td mat-cell *matCellDef="let entityType">{{entityType.displayNamePath}}</td>
+				<td mat-cell *matCellDef="let entityType">{{entityType.DisplayNamePath}}</td>
 			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedEntityTypeColumns"></tr>
 			<tr mat-row *matRowDef="let entityType; columns: displayedEntityTypeColumns;"
-					[ngClass]="{'highlight': selectedEntityType?.id === entityType.id}"
+					[ngClass]="{'highlight': selectedEntityType?.Id === entityType.Id}"
 					(click)="selectEntityType(entityType)"
 			></tr>
 		</table>
-		<mat-paginator id="entityTypesPaginator" #entityTypesPaginator [length]="entityTypes?.length" [pageSize]="5"></mat-paginator>
+		<mat-paginator id="entityTypesPaginator" #entityTypesPaginator [length]="entityTypes?.length"
+									 [pageSize]="5"></mat-paginator>
 	</div>
 
 	<div class="table-wrapper">
 		<div class="table-toolbar">
-			<span *ngIf="selectedEntityType">Properties of {{selectedEntityType?.name}}</span>
+			<span *ngIf="selectedEntityType">Properties of {{selectedEntityType?.Name}}</span>
 			<span *ngIf="!selectedEntityType">Please select an entity type to manage its properties</span>
 			<mat-card-actions>
 				<button mat-icon-button (click)="addProperty()" [disabled]="!selectedEntityType">
@@ -82,47 +85,47 @@
 
 			<ng-container matColumnDef="name">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-				<td mat-cell *matCellDef="let property">{{property.name}}</td>
+				<td mat-cell *matCellDef="let property">{{property.Name}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="title">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
-				<td mat-cell *matCellDef="let property">{{property.title}}</td>
+				<td mat-cell *matCellDef="let property">{{property.Title}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="dataType">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Data Type</th>
-				<td mat-cell *matCellDef="let property">{{getDataTypeName(property.dataTypeId)}}</td>
+				<td mat-cell *matCellDef="let property">{{getDataTypeName(property.DataTypeId)}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="nullable">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Nullable</th>
-				<td mat-cell *matCellDef="let property">{{property.isNullable}}</td>
+				<td mat-cell *matCellDef="let property">{{property.IsNullable}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="dataEntityType">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Data Entity Type</th>
-				<td mat-cell *matCellDef="let property">{{getEntityTypeName(property.dataEntityTypeId)}}</td>
+				<td mat-cell *matCellDef="let property">{{getEntityTypeName(property.DataEntityTypeId)}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="usage">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Usage</th>
-				<td mat-cell *matCellDef="let property">{{getPropertyUsageName(property.propertyGeneralUsageCategoryId)}}</td>
+				<td mat-cell *matCellDef="let property">{{getPropertyUsageName(property.PropertyGeneralUsageCategoryId)}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="foreignKey">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Foreign Key</th>
-				<td mat-cell *matCellDef="let property">{{getPropertyName(property.foreignKeyPropertyId)}}</td>
+				<td mat-cell *matCellDef="let property">{{getPropertyName(property.ForeignKeyPropertyId)}}</td>
 			</ng-container>
 
 			<ng-container matColumnDef="inverse">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Inverse Property</th>
-				<td mat-cell *matCellDef="let property">{{getPropertyName(property.inversePropertyId)}}</td>
+				<td mat-cell *matCellDef="let property">{{getPropertyName(property.InversePropertyId)}}</td>
 			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedPropertyColumns"></tr>
 			<tr mat-row *matRowDef="let property; columns: displayedPropertyColumns;"
-					[ngClass]="{'highlight': selectedProperty?.id === property.id}"
+					[ngClass]="{'highlight': selectedProperty?.Id === property.Id}"
 					(click)="selectProperty(property)"
 			></tr>
 		</table>
