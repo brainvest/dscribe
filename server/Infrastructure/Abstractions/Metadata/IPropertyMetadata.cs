@@ -20,5 +20,6 @@ namespace Brainvest.Dscribe.Abstractions.Metadata
 		bool IsReadOnlyInEdit();
 		bool IsRequired();
 		bool HideInInsert();
+		bool HideInEdit();
 	}
 }

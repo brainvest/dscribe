@@ -1,4 +1,5 @@
 using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Abstractions.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -27,7 +28,9 @@ namespace Brainvest.Dscribe.Helpers
 					continue;
 				}
 				var prop = dest.GetType().GetTypeInfo().GetProperty(property.Name);
-				if (prop == null || !prop.CanWrite || !prop.CanRead || property.IsReadOnlyInEdit())
+				if (prop == null || !prop.CanWrite || !prop.CanRead || property.IsReadOnlyInEdit() 
+					|| (property.HideInEdit() &&
+					(property.DataType == DataTypes.NavigationList || property.DataType == DataTypes.NavigationEntity)))
 				{
 					continue;
 				}

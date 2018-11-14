@@ -24,6 +24,7 @@ namespace Brainvest.Dscribe.Metadata
 
 		#region Facets
 		public static PropertyFacet<bool> HideInInsertFacet { get; private set; }
+		public static PropertyFacet<bool> HideInEditFacet { get; private set; }
 		public static PropertyFacet<string> FriendlyNameFacet { get; private set; }
 		public static PropertyFacet<bool> IsRequiredFacet { get; private set; }
 		public static PropertyFacet<bool> ReadOnlyInEditFacet { get; private set; }
@@ -44,6 +45,7 @@ namespace Brainvest.Dscribe.Metadata
 		public static void DefineFacets(IEnumerable<PropertyFacetDefinition> propertyFacetDefinitions)
 		{
 			HideInInsertFacet = new PropertyFacet<bool>(nameof(HideInInsertFacet), false, null);
+			HideInEditFacet = new PropertyFacet<bool>(nameof(HideInEditFacet), false, null);
 			FriendlyNameFacet = new PropertyFacet<string>(nameof(FriendlyNameFacet), null, source => source.Name.SmartSeparate());
 			IsRequiredFacet = new PropertyFacet<bool>(nameof(IsRequiredFacet), false, source => !source.IsNullable);
 			ReadOnlyInEditFacet = new PropertyFacet<bool>(nameof(ReadOnlyInEditFacet), false, null);
@@ -69,6 +71,11 @@ namespace Brainvest.Dscribe.Metadata
 		public bool HideInInsert()
 		{
 			return GetFacetValue(HideInInsertFacet);
+		}
+
+		public bool HideInEdit()
+		{
+			return GetFacetValue(HideInEditFacet);
 		}
 		#endregion
 
