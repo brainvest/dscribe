@@ -43,9 +43,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				Name = x.Name,
 				GeneratedCodeNamespace = x.GeneratedCodeNamespace,
 				Title = x.Title,
-				UseUnreleasedMetadata = x.UseUnreleasedMetadata,
-				DataConnectionString = DeserializeConnectionString(x.DataConnectionString),
-				DatabaseProviderId = x.DatabaseProviderId
+				UseUnreleasedMetadata = x.UseUnreleasedMetadata
 			}).ToListAsync();
 		}
 
