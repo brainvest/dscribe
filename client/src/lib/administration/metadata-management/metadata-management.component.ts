@@ -25,7 +25,7 @@ export class MetadataManagementComponent implements OnInit {
 	entityTypesDataSource = new MatTableDataSource<EntityTypeBase>(this.entityTypes);
 	selectedEntityType: EntityTypeBase;
 	entityTypesAreLoading = false;
-
+	generateCodeLoading = false;
 	properties: PropertyBase[];
 	allPropertiesInfo: PropertyInfoModel[];
 	propertiesDataSource = new MatTableDataSource<PropertyBase>();
@@ -153,6 +153,7 @@ export class MetadataManagementComponent implements OnInit {
 	openAddNEditEntityTypeDialog(instance: any, isNew: boolean) {
 		const dialogRef = this.dialog.open(AddNEditEntityTypeComponent, {
 			width: '800px',
+			disableClose: true,
 			data: new AddNEditEntityTypeComponentData(instance, isNew, this.basicInfo)
 		});
 		dialogRef.afterClosed().subscribe(
@@ -228,14 +229,17 @@ export class MetadataManagementComponent implements OnInit {
 	}
 
 	generateCode() {
+		this.generateCodeLoading = true;
 		this.apiClient.generateCode()
-			.subscribe(x => {
-				if (x.success) {
+			.subscribe((x: any) => {
+				this.generateCodeLoading = false;
+				if (x.Success) {
 					this.snackbarService.open('Code has generated successful.');
 				} else {
 					this.snackbarService.open('errors occured please see the validation errors');
 				}
 			}, (errors: any) => {
+				this.generateCodeLoading = false;
 				this.snackbarService.open(errors);
 			});
 	}

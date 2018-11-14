@@ -15,9 +15,13 @@
 				<button mat-icon-button (click)="openReleaseSettings()" matTooltip="Release Metadata">
 					<mat-icon color="warn">new_releases</mat-icon>
 				</button>
-				<button mat-icon-button (click)="generateCode()" matTooltip="Generate Code">
+				<button mat-icon-button (click)="generateCode()" matTooltip="Generate Code" *ngIf="!generateCodeLoading">
 					<mat-icon color="warn">code</mat-icon>
 				</button>
+				<button mat-icon-button matTooltip="Generate Code Loading" *ngIf="generateCodeLoading" style="margin-top: -26px;">
+					<mat-spinner strokeWidth="3" [diameter]="20" color="accent"></mat-spinner>
+				</button>
+
 			</div>
 		</div>
 
