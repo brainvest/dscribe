@@ -1,0 +1,39 @@
+<div class="page-content">
+	<div class="table-wrapper">
+		<div class="table-toolbar">
+			<span>AppType</span>
+			<div>
+				<button mat-icon-button (click)="addAppType()">
+					<mat-icon color="primary">add</mat-icon>
+				</button>
+				<button mat-icon-button (click)="getAppTypes()">
+					<mat-icon color="primary">refresh</mat-icon>
+				</button>
+				<button mat-icon-button (click)="editAppType()" [disabled]="!selectedAppType">
+					<mat-icon color="accent">edit</mat-icon>
+				</button>
+				<button mat-icon-button (click)="deleteAppType()" [disabled]="!selectedAppType">
+					<mat-icon color="warn">delete</mat-icon>
+				</button>
+			</div>
+		</div>
+
+		<table mat-table [dataSource]="appTypesDataSource" matSort>
+
+			<ng-container matColumnDef="name">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+				<td mat-cell *matCellDef="let appType">{{appType.Name}}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="title">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+				<td mat-cell *matCellDef="let appType">{{appType.Title}}</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedAppTypeColumns"></tr>
+			<tr mat-row *matRowDef="let appType; columns: displayedAppTypeColumns;" [ngClass]="{'highlight': selectedEntityType?.id === appType.id}"
+			 (click)="selectAppType(appType)"></tr>
+		</table>
+		<mat-paginator id="AppTypePaginator" #AppTypePaginator [length]="appTypes?.length" [pageSize]="5"></mat-paginator>
+	</div>
+</div>

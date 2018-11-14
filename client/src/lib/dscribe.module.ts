@@ -67,6 +67,11 @@ import { TableTemplateComponent } from './list/list-templating/table-template/ta
 import { CustomTemplateHostComponent } from './list/list-templating/custom-template-host/custom-template-host.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { SnackBarService } from './common/notifications/snackbar.service';
+import { SettingsComponent } from './administration/settings/settings.component';
+import { AppInstanceManagementComponent } from './administration/settings/app-instance-management/app-instance-management.component';
+import { AppTypeManagementComponent } from './administration/settings/app-type-management/app-type-management.component';
+import { AddNEditAppTypeComponent } from './administration/settings/add-n-edit-app-type/add-n-edit-app-type.component';
+import { AddNEditAppInstanceComponent } from './administration/settings/add-n-edit-app-instance/add-n-edit-app-instancecomponent';
 
 @NgModule({
 	imports: [
@@ -97,7 +102,7 @@ import { SnackBarService } from './common/notifications/snackbar.service';
 		MatTabsModule,
 		MatProgressSpinnerModule,
 		ReactiveFormsModule,
-		MatSnackBarModule
+		MatSnackBarModule,
 	],
 	declarations: [
 		ArithmeticFilterNodeComponent,
@@ -134,7 +139,12 @@ import { SnackBarService } from './common/notifications/snackbar.service';
 		PropertyFilterNodeComponent,
 		ReleaseMetadataSettingsComponent,
 		TableTemplateComponent,
-		TextEditorComponent
+		TextEditorComponent,
+		SettingsComponent,
+		AppInstanceManagementComponent,
+		AppTypeManagementComponent,
+		AddNEditAppTypeComponent,
+		AddNEditAppInstanceComponent,
 	],
 	exports: [DscribeComponent, ListComponent, DisplayValuePipe],
 	providers: [
@@ -149,7 +159,9 @@ import { SnackBarService } from './common/notifications/snackbar.service';
 		AddNEditPropertyComponent,
 		ConfirmationDialogComponent,
 		ReleaseMetadataSettingsComponent,
-		AutoCompleteMoreDialogComponent
+		AutoCompleteMoreDialogComponent,
+		AddNEditAppTypeComponent,
+		AddNEditAppInstanceComponent,
 	]
 })
 export class DscribeModule {

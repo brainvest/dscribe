@@ -1,12 +1,11 @@
 <div class="list-wrapper">
 	<div class="list-container">
 		<nav class="secondary-nav mat-elevation-z4">
-			<a class="secondary-nav-item" *ngFor="let entityType of entityTypes" routerLink="/entity/{{entityType.Name}}"
-				 routerLinkActive="active">
-				{{entityType.PluralTitle || entityType.Name}}
+			<a class="secondary-nav-item" *ngFor="let entityType of entityTypes" routerLink="/entity/{{entityType.name}}"
+			 routerLinkActive="active">
+			 {{entityType.PluralTitle || entityType.Name}}
 			</a>
 		</nav>
-
 		<dscribe-list [entityType]="entityType"></dscribe-list>
 	</div>
 </div>

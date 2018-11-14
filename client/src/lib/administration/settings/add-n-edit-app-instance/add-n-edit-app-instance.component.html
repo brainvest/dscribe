@@ -1,0 +1,111 @@
+<h1 mat-dialog-title>{{data.isNew ? 'New' : 'Edit'}} App Type</h1>
+
+<mat-dialog-content>
+	<form #entityTypeForm="ngForm">
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>Name</mat-label>
+			<input matInput type="text" placeholder="Name" name="name" [(ngModel)]="appInstance.Name" required>
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.Name">
+				{{e}}
+			</p>
+		</mat-form-field>
+
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>Title</mat-label>
+			<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="appInstance.Title">
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.Title">
+				{{e}}
+			</p>
+		</mat-form-field>
+
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>App type</mat-label>
+			<mat-select name="appType" placeholder="App Type" [(ngModel)]="appInstance.AppTypeId" [required]="true">
+				<mat-option *ngFor="let appType of appTypes" [value]="appType.Id">
+					{{appType.Name}}
+				</mat-option>
+			</mat-select>
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.AppTypeId">
+				{{e}}
+			</p>
+		</mat-form-field>
+
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>Database Provider</mat-label>
+			<mat-select name="databaseProvider" placeholder="Database provider" [(ngModel)]="appInstance.DatabaseProviderId"
+			 [required]="true">
+				<mat-option *ngFor="let databaseProvider of databaseProviders" [value]="databaseProvider.Id">
+					{{databaseProvider.Name}}
+				</mat-option>
+			</mat-select>
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.DatabaseProviderId">
+				{{e}}
+			</p>
+		</mat-form-field>
+
+		<mat-card style="margin-bottom: 10px">
+			<h5 style="color:gray">Connection string</h5>
+			<mat-form-field class="full-width" appearance="outline">
+				<mat-label>Server name</mat-label>
+				<input matInput type="text" placeholder="Server name" name="serverName" [(ngModel)]="appInstance.DataConnectionString.Server"
+				 required>
+				<p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.Server']">
+					{{e}}
+				</p>
+			</mat-form-field>
+
+			<mat-form-field class="full-width" appearance="outline">
+				<mat-label>Database name</mat-label>
+				<input matInput type="text" placeholder="Database name" name="databaseName" [(ngModel)]="appInstance.DataConnectionString.Database"
+				 required>
+				 <p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.Database']">
+						{{e}}
+				</p>
+			</mat-form-field>
+
+			<mat-form-field class="full-width" appearance="outline">
+				<mat-label>User name</mat-label>
+				<input matInput type="text" placeholder="User name" name="userName" [(ngModel)]="appInstance.DataConnectionString.User">
+				<p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.User']">
+						{{e}}
+				</p>
+			</mat-form-field>
+
+			<mat-form-field class="full-width" appearance="outline">
+				<mat-label>Password</mat-label>
+				<input matInput type="password" placeholder="Password" name="password" [(ngModel)]="appInstance.DataConnectionString.Password">
+				<p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.Password']">
+						{{e}}
+				</p>
+			</mat-form-field>
+			<div>
+				<mat-checkbox name="trusted_Connection" [(ngModel)]="appInstance.DataConnectionString.Trusted_Connection">Truested
+					connection</mat-checkbox>
+			</div>
+			<div>
+				<mat-checkbox name="multipleActiveResultSets" [(ngModel)]="appInstance.DataConnectionString.MultipleActiveResultSets">Multiple
+					active resultSet</mat-checkbox>
+			</div>
+		</mat-card>
+
+		<div>
+			<mat-checkbox name="isEnabled" [(ngModel)]="appInstance.IsEnabled">Is Enable</mat-checkbox>
+		</div>
+		<div>
+			<mat-checkbox name="isProduction" [(ngModel)]="appInstance.IsProduction">Is Production</mat-checkbox>
+		</div>
+
+
+
+	</form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<button mat-icon-button (click)="save()">
+		<mat-icon color="primary">save</mat-icon>
+	</button>
+	<button mat-icon-button (click)="cancel()">
+		<mat-icon color="warn">cancel</mat-icon>
+	</button>
+</mat-dialog-actions>
