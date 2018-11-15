@@ -134,7 +134,16 @@
 				{{e}}
 			</p>
 		</mat-form-field>
-
+		<mat-card style="margin-bottom: 10px">
+			<h5 style="color:gray">Facets</h5>
+			<div *ngFor="let facetType of basicInfo.PropertyFacetDefinitions">
+				<!-- <mat-checkbox name="isNullable">{{facetType.Name}}</mat-checkbox>	 -->
+				<button mat-icon-button (click)="cancel()">
+					<mat-icon color="warn">{{setFacetCheckIcon(facetType)}}</mat-icon>
+					{{getFacetName(facetType)}}
+				</button>
+			</div>
+		</mat-card>
 		<mat-checkbox name="isNullable" [(ngModel)]="property.IsNullable">Is Nullable</mat-checkbox>
 
 	</form>
