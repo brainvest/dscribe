@@ -12,6 +12,7 @@
 		[action]="data?.action"
 		[entity]="data?.entity"
 		[masters]="data?.masters"
+		[parentStructure]="data?.addNEditStructure"
 		(entitySaved)="afterEntitySaved($event)"
 		(canceled)="canceledByUser()">
 	</dscribe-add-n-edit>

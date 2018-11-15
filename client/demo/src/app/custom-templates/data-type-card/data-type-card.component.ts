@@ -1,10 +1,9 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DscribeListTemplate} from '../../../../../src/lib/list/list-templating/dscribe-list-template.decorator';
 import {DscribeTemplateComponent} from '../../../../../src/lib/list/list-templating/dscribe-template-component';
-import {Router} from '@angular/router';
 
 @DscribeListTemplate({
-	entityTypeName: 'Product',
+	entityTypeName: 'Producty',
 	options: {
 		perRow: 4
 	}

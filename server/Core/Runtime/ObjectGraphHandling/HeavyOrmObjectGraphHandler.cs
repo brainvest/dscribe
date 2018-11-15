@@ -80,14 +80,14 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 					continue;
 				}
 				var value = (request.Entity as JObject)[propertyMetadata.Name];
-				if (propertyMetadata.DataType == DataTypes.NavigationEntity)
-				{
-					var relatedEntity = await AddRecursive(new ManageEntityRequest
-					{
-						EntityTypeName = propertyMetadata.EntityTypeName,
-						Entity = value
-					}, repository, map, propertyPath);
-				}
+				//if (propertyMetadata.DataType == DataTypes.NavigationEntity)
+				//{
+				//	var relatedEntity = await AddRecursive(new ManageEntityRequest
+				//	{
+				//		EntityTypeName = propertyMetadata.EntityTypeName,
+				//		Entity = value
+				//	}, repository, map, propertyPath);
+				//}
 				if (propertyMetadata.DataType == DataTypes.NavigationList)
 				{
 					map.Add(propertyPath, Activator.CreateInstance(typeof(HashSet<>).MakeGenericType(_implementations.Reflector.GetType(propertyMetadata.EntityTypeName))));

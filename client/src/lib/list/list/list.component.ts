@@ -30,6 +30,7 @@ import {DscribeCommandDisplayPredicate} from '../../models/dscribe-command-displ
 import {SnackBarService} from '../../common/notifications/snackbar.service';
 import {ManageEntityModes} from '../../add-n-edit/models/manage-entity-modes';
 import {AddNEditResult} from '../../common/models/add-n-edit-result';
+import {AddNEditStructure, ListBehaviors} from '../../add-n-edit/models/add-n-edit-structure';
 
 @Component({
 	selector: 'dscribe-list',
@@ -46,6 +47,7 @@ export class ListComponent implements OnInit, OnChanges {
 	@Input() masters: MasterReference[];
 	@Input() hideFilter: boolean;
 	@Output() selectionChanged = new EventEmitter<any>();
+	@Input() addNEditStructure: AddNEditStructure;
 
 	detailLists?: MasterReference[];
 	displayedColumns = [];
@@ -182,6 +184,12 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	refreshData() {
+		if (this.addNEditStructure && this.addNEditStructure.listBehavior === ListBehaviors.SaveInObject) {
+			this.data = [...this.addNEditStructure.currentEntity];
+			this.paginator.pageIndex = 0;
+			this.totalCount = this.data.length;
+			return;
+		}
 		this.isLoadingResults = true;
 		this.paginator.pageIndex = 0;
 		this.data = [];
@@ -273,7 +281,8 @@ export class ListComponent implements OnInit, OnChanges {
 				action: action,
 				entityTypeName: this.entityType.Name,
 				title: this.entityType.SingularTitle,
-				masters: this.masters
+				masters: this.masters,
+				addNEditStructure: this.addNEditStructure
 			}
 		});
 		dialogRef.afterClosed().subscribe(

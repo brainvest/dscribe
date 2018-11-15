@@ -17,24 +17,30 @@ export class AddNEditStructureLogic {
 		const allProperties = entityTypeMetaData.getPropertiesForManage(mode);
 		const navProps = allProperties.filter(x => x.DataType === DataTypes.NavigationEntity || x.DataType === DataTypes.NavigationList);
 		for (const nav of navProps) {
-			let subEntity = entity[nav.Name];
-			if (!subEntity) {
-				subEntity = {};
-				entity[nav.Name] = subEntity;
-			}
 			const childMasters = masters ? [...masters, new MasterReference(entity, nav)] : [new MasterReference(entity, nav)];
 			let navStructure: AddNEditStructure;
 			if (nav.DataType === DataTypes.NavigationEntity) {
+				let subEntity = entity[nav.Name];
+				if (!subEntity) {
+					subEntity = {};
+					entity[nav.Name] = subEntity;
+				}
 				navStructure = AddNEditStructureLogic.getStructure(subEntity, nav.EntityType, mode, childMasters
 					, Helper.joinPath(path, nav.Name), Helper.joinPath(pathTitle, nav.Title));
 				navStructure.parentEntity = entity;
 				navStructure.masterReferences = childMasters;
 			} else {
+				let list = entity[nav.Name];
+				if (!list) {
+					list = [];
+					entity[nav.Name] = list;
+				}
 				navStructure = {
 					componentType: EditorComponentTypes.List,
 					entityTypeMetadata: nav.EntityType,
 					listBehavior: ListBehaviors.SaveInObject,
 					masterReferences: childMasters,
+					currentEntity: list,
 					parentEntity: entity,
 					path: Helper.joinPath(path, nav.Name),
 					pathTitle: Helper.joinPath(pathTitle, nav.Title),

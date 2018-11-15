@@ -16,7 +16,7 @@
 					</dscribe-property-editor>
 					<dscribe-list *ngIf="related.componentType === componentTypes.List"
 												[hideFilter]="true" [entityType]="related.entityTypeMetadata"
-												[masters]="related.masterReferences">
+												[masters]="related.masterReferences" [addNEditStructure]="related">
 					</dscribe-list>
 				</mat-tab>
 			</mat-tab-group>

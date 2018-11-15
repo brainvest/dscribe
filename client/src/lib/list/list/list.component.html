@@ -1,17 +1,17 @@
 <div class="page-content">
 	<div class="table mat-elevation-z4">
 		<div class="table-actions">
-			<span>{{entityType?.pluralTitle || entityType?.name}}</span>
+			<span>{{entityType?.PluralTitle || entityType?.Name}}</span>
 			<div>
-				<button mat-icon-button (click)="addNew()" color="primary" matTooltip="Add New {{entityType?.singularTitle}}">
+				<button mat-icon-button (click)="addNew()" color="primary" matTooltip="Add New {{entityType?.SingularTitle}}">
 					<mat-icon>add</mat-icon>
 				</button>
 				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="editSelectedRow()" color="primary"
-								matTooltip="Edit Selected {{entityType?.singularTitle}}">
+								matTooltip="Edit Selected {{entityType?.SingularTitle}}">
 					<mat-icon>edit</mat-icon>
 				</button>
 				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="deleteSelected()" color="warn"
-								matTooltip="Delete selected {{entityType?.singularTitle}}">
+								matTooltip="Delete selected {{entityType?.SingularTitle}}">
 					<mat-icon>delete</mat-icon>
 				</button>
 				<span *ngIf="!hideFilter">

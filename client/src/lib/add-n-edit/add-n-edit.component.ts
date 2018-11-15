@@ -6,7 +6,7 @@ import {DataHandlerService} from '../common/services/data-handler.service';
 import {EntityBase} from '../common/models/entity-base';
 import {SnackBarService} from '../common/notifications/snackbar.service';
 import {AddNEditResult} from '../common/models/add-n-edit-result';
-import {AddNEditStructure, EditorComponentTypes} from './models/add-n-edit-structure';
+import {AddNEditStructure, EditorComponentTypes, ListBehaviors} from './models/add-n-edit-structure';
 import {ManageEntityModes} from './models/manage-entity-modes';
 import {AddNEditStructureLogic} from './add-n-edit-structure-logic';
 
@@ -24,6 +24,7 @@ export class AddNEditComponent implements OnInit {
 	@Input() masters: MasterReference[];
 	@Output() entitySaved = new EventEmitter<AddNEditResult>();
 	@Output() canceled = new EventEmitter();
+	@Input() parentStructure: AddNEditStructure;
 
 	structure: AddNEditStructure;
 	componentTypes = EditorComponentTypes;
@@ -56,6 +57,12 @@ export class AddNEditComponent implements OnInit {
 	}
 
 	saveEntity() {
+		if (this.parentStructure && this.parentStructure.listBehavior === ListBehaviors.SaveInObject) {
+			this.parentStructure.currentEntity.push(this.entity);
+			this.afterEntitySaved(this.action, this.entity);
+			return;
+		}
+
 		this.dataHandler.manageEntity(this.entity, this.entityTypeName, this.action).subscribe(
 			(res: any) => {
 				this.processSaveResponse(res, this.action);
