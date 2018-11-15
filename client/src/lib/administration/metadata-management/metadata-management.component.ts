@@ -35,7 +35,7 @@ export class MetadataManagementComponent implements OnInit {
 	selectedProperty: PropertyBase;
 	propertiesAreLoading = false;
 	displayedEntityTypeColumns = ['name', 'usage', 'singular', 'plural', 'code', 'displayName'];
-	displayedPropertyColumns = ['name', 'title', 'dataType', 'nullable', 'dataEntityType', 'usage', 'foreignKey', 'inverse'];
+	displayedPropertyColumns = ['Name', 'title', 'dataType', 'nullable', 'dataEntityType', 'usage', 'foreignKey', 'inverse'];
 
 	@ViewChild('entityTypesPaginator') entityTypesPaginator: MatPaginator;
 	@ViewChild('propertiesPaginator') propertiesPaginator: MatPaginator;
@@ -122,7 +122,7 @@ export class MetadataManagementComponent implements OnInit {
 		if (prop) {
 			return prop.Name;
 		}
-		return this.allPropertiesInfo.find(x => x.id === id).name;
+		return this.allPropertiesInfo!.find(x => x.id === id).name;
 	}
 
 	addEntityType() {
@@ -152,6 +152,8 @@ export class MetadataManagementComponent implements OnInit {
 							this.snackbarService.open(error.error);
 							this.deleteEntityLoading = false;
 						});
+				} else {
+					this.deleteEntityLoading = false;
 				}
 			});
 	}
@@ -198,7 +200,6 @@ export class MetadataManagementComponent implements OnInit {
 		}
 		ConfirmationDialogComponent.Ask(this.dialog, 'Are you sure you want to delete this property?', 'This action cannot be undone.')
 			.subscribe(x => {
-				this.deletePropertyLoading = false;
 				if (x) {
 					this.apiClient.deleteProperty(this.selectedProperty).subscribe(
 						() => {
@@ -207,6 +208,8 @@ export class MetadataManagementComponent implements OnInit {
 						(errors: any) => {
 							this.snackbarService.open(errors);
 						});
+				} else {
+					this.deletePropertyLoading = false;
 				}
 			}, (errors: any) => {
 				this.snackbarService.open(errors);
