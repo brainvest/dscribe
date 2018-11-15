@@ -1,3 +1,5 @@
+import { FacetDefinitionModel } from './../../metadata/facets/facet-definition-model';
+import { element } from 'protractor';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { AddNEditPropertyMetadataModel, RelatedPropertyAction } from '../models/add-n-edit-property-metadata-model';
@@ -37,6 +39,23 @@ export class AddNEditPropertyComponent implements OnInit {
 		this.entityTypes = data.entityTypes;
 		this.thisTypeProperties = data.thisEntityTypeProperties;
 		this.allProperties = data.allProperties;
+
+		// BECAUSE OF API MISSBEHAVIOUR
+		this.basicInfo.PropertyFacetDefinitions.forEach((x: FacetDefinitionModel) => {
+			x.Default = false;
+		});
+	}
+
+	getFacetName(facetType: FacetDefinitionModel) {
+		return facetType.Name;
+	}
+
+	setFacetCheckIcon(facetType: FacetDefinitionModel) {
+		if (facetType.Default) {
+			return 'check_box_outline_blank';
+		} else if (!facetType.Default) {
+			return 'check_box';
+		}
 	}
 
 	get isNavigation() {
