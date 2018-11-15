@@ -5,7 +5,7 @@ import {MasterReference} from '../../list/models/master-reference';
 export interface AddNEditStructure {
 	path: string;
 	pathTitle: string;
-	currentEntity: any;
+	currentEntity?: any;
 	componentType: EditorComponentTypes;
 	parentEntity?: any;
 	entityTypeMetadata?: EntityTypeMetadata;

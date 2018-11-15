@@ -64,14 +64,14 @@ export class AddNEditPropertyComponent implements OnInit {
 	get compatibleInverseProperties() {
 		if (this.property.DataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationProperty) {
 			return this.allProperties.filter(x =>
-				x.ownerEntityTypeId === this.property.DataEntityTypeId &&
-				x.dataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationList &&
-				x.dataEntityTypeId === this.property.OwnerEntityTypeId);
+				x.OwnerEntityTypeId === this.property.DataEntityTypeId &&
+				x.DataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationList &&
+				x.DataEntityTypeId === this.property.OwnerEntityTypeId);
 		}
 		return this.allProperties.filter(x =>
-			x.ownerEntityTypeId === this.property.DataEntityTypeId &&
-			x.dataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationProperty &&
-			x.dataEntityTypeId === this.property.OwnerEntityTypeId);
+			x.OwnerEntityTypeId === this.property.DataEntityTypeId &&
+			x.DataTypeId === DataTypeModel.NavigationalDataTypeIds.NavigationProperty &&
+			x.DataEntityTypeId === this.property.OwnerEntityTypeId);
 	}
 
 	ngOnInit() {

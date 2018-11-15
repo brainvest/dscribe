@@ -1,7 +1,7 @@
 export class PropertyInfoModel {
-	id: number;
-	name: string;
-	dataTypeId: number;
-	dataEntityTypeId: number;
-	ownerEntityTypeId: number;
+	Id: number;
+	Name: string;
+	DataTypeId: number;
+	DataEntityTypeId: number;
+	OwnerEntityTypeId: number;
 }

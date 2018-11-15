@@ -1,18 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MetadataManagementApiClient } from '../metadata-management-api-client';
-import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
-import { EntityTypeBase } from '../../metadata/entity-type-base';
-import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
-import { PropertyBase } from '../../metadata/property-base';
-import { AddNEditEntityTypeComponent, AddNEditEntityTypeComponentData } from '../add-n-edit-entity/add-n-edit-entity-type.component';
-import { AddNEditPropertyComponent, AddNEditPropertyComponentData } from '../add-n-edit-property/add-n-edit-property.component';
-import { AddNEditPropertyMetadataModel } from '../models/add-n-edit-property-metadata-model';
-import { ConfirmationDialogComponent } from '../../common/confirmation-dialog/confirmation-dialog.component';
-import { PropertyInfoModel } from '../models/property-info-model';
-import { ReleaseMetadataSettingsComponent } from '../release-metadata-settings/release-metadata-settings.component';
-import { DscribeService } from '../../dscribe.service';
-import { SnackBarService } from '../../common/notifications/snackbar.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MetadataManagementApiClient} from '../metadata-management-api-client';
+import {MetadataBasicInfoModel} from '../../metadata/metadata-basic-info-model';
+import {EntityTypeBase} from '../../metadata/entity-type-base';
+import {MatDialog, MatPaginator, MatTableDataSource} from '@angular/material';
+import {PropertyBase} from '../../metadata/property-base';
+import {AddNEditEntityTypeComponent, AddNEditEntityTypeComponentData} from '../add-n-edit-entity/add-n-edit-entity-type.component';
+import {AddNEditPropertyComponent, AddNEditPropertyComponentData} from '../add-n-edit-property/add-n-edit-property.component';
+import {AddNEditPropertyMetadataModel} from '../models/add-n-edit-property-metadata-model';
+import {ConfirmationDialogComponent} from '../../common/confirmation-dialog/confirmation-dialog.component';
+import {PropertyInfoModel} from '../models/property-info-model';
+import {ReleaseMetadataSettingsComponent} from '../release-metadata-settings/release-metadata-settings.component';
+import {DscribeService} from '../../dscribe.service';
+import {SnackBarService} from '../../common/notifications/snackbar.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -44,7 +44,8 @@ export class MetadataManagementComponent implements OnInit {
 		private apiClient: MetadataManagementApiClient,
 		private dialog: MatDialog,
 		private snackbarService: SnackBarService,
-		private dscribeService: DscribeService) { }
+		private dscribeService: DscribeService) {
+	}
 
 	ngOnInit() {
 		this.entityTypesDataSource.paginator = this.entityTypesPaginator;
@@ -118,7 +119,8 @@ export class MetadataManagementComponent implements OnInit {
 		if (!id) {
 			return;
 		}
-		let prop = this.properties.find(x => x.Id === id);
+		let prop: PropertyInfoModel;
+		prop = this.properties.find(x => x.Id === id);
 		if (prop) {
 			return prop.Name;
 		}

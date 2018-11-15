@@ -10,7 +10,7 @@ import {ConstantFilterNode} from '../filtering/models/filter-nodes/constant-filt
 export class LambdaHelper {
 
 	public static getMasterDetailFilter(masters: MasterReference[], entityType: EntityTypeMetadata): LambdaFilterNode | null {
-		if (!master || !masters.length) {
+		if (!masters || !masters.length) {
 			return null;
 		}
 		const master = masters[0]; // TODO: ignoring other possible masters
