@@ -209,7 +209,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 						PropertyGeneralUsageCategoryId = x.GeneralUsageCategoryId,
 						OwnerEntityTypeId = x.OwnerEntityTypeId,
 						ForeignKeyPropertyId = x.ForeignKeyPropertyId,
-						InversePropertyId = x.InversePropertyId
+						InversePropertyId = x.InversePropertyId,
+						// LocalFacets = 
 					}).ToListAsync();
 			return properties;
 		}
