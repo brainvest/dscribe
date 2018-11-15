@@ -65,6 +65,7 @@ export class AppTypeManagementComponent implements OnInit {
 	openAddNEditAppTypeDialog(instance: any, isNew: boolean) {
 		const dialogRef = this.dialog.open(AddNEditAppTypeComponent, {
 			width: '800px',
+			disableClose: true,
 			data: new AddNEditAppTypeComponentData(instance, isNew)
 		});
 		dialogRef.afterClosed().subscribe(

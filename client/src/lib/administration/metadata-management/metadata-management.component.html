@@ -9,8 +9,11 @@
 				<button mat-icon-button (click)="editEntityType()" [disabled]="!selectedEntityType">
 					<mat-icon color="accent">edit</mat-icon>
 				</button>
-				<button mat-icon-button (click)="deleteEntityType()" [disabled]="!selectedEntityType">
+				<button mat-icon-button (click)="deleteEntityType()" [disabled]="!selectedEntityType" *ngIf="!deleteEntityLoading">
 					<mat-icon color="warn">delete</mat-icon>
+				</button>
+				<button mat-icon-button matTooltip="Delete loading" *ngIf="deleteEntityLoading" style="margin-top: -26px;">
+					<mat-spinner strokeWidth="3" [diameter]="20" color="accent"></mat-spinner>
 				</button>
 				<button mat-icon-button (click)="openReleaseSettings()" matTooltip="Release Metadata">
 					<mat-icon color="warn">new_releases</mat-icon>
@@ -80,8 +83,11 @@
 				<button mat-icon-button (click)="editProperty()" [disabled]="!selectedEntityType || !selectedProperty">
 					<mat-icon color="accent">edit</mat-icon>
 				</button>&nbsp;
-				<button mat-icon-button (click)="deleteProperty()" [disabled]="!selectedEntityType || !selectedProperty">
+				<button mat-icon-button (click)="deleteProperty()" [disabled]="!selectedEntityType || !selectedProperty" *ngIf="!deletePropertyLoading">
 					<mat-icon color="warn">delete</mat-icon>
+				</button>
+				<button mat-icon-button matTooltip="Delete loading" *ngIf="deletePropertyLoading" style="margin-top: -26px;">
+					<mat-spinner strokeWidth="3" [diameter]="20" color="accent"></mat-spinner>
 				</button>&nbsp;
 			</mat-card-actions>
 		</div>

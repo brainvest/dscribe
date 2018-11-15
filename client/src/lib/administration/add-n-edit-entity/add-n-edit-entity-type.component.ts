@@ -15,6 +15,7 @@ export class AddNEditEntityTypeComponent implements OnInit {
 
 	entityType: EntityTypeBase = new EntityTypeBase();
 	entityTypeError: EntityTypeBase;
+	submitLoading = false;
 
 	constructor(
 		private dialogRef: MatDialogRef<AddNEditEntityTypeComponent>,
@@ -28,14 +29,17 @@ export class AddNEditEntityTypeComponent implements OnInit {
 	}
 
 	save() {
+		this.submitLoading = true;
 		const request = (this.data.isNew) ?
 			this.apiClient.addEntityType(this.entityType) :
 			this.apiClient.editEntityType(this.entityType);
 		request.subscribe((data: any) => {
 			this.dialogRef.close('saved');
+			this.submitLoading = false;
 		}, (error: HttpErrorResponse) => {
 			this.entityTypeError = error.error;
 			this.snackbarService.open(error.statusText);
+			this.submitLoading = false;
 		});
 	}
 
@@ -49,7 +53,7 @@ export class AddNEditEntityTypeComponentData {
 	constructor(
 		public entityType: EntityTypeBase,
 		public isNew: boolean,
-		public basicInfo: MetadataBasicInfoModel) {}
+		public basicInfo: MetadataBasicInfoModel) { }
 
 	get action() {
 		return this.isNew ? 'Add' : 'Edit';

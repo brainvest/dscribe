@@ -1,4 +1,4 @@
-export class PropertyInfoModel{
+export class PropertyInfoModel {
 	id: number;
 	name: string;
 	dataTypeId: number;

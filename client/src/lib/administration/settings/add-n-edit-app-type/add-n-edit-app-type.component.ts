@@ -15,7 +15,7 @@ export class AddNEditAppTypeComponent implements OnInit {
 
 	appType: AppTypeModel = new AppTypeModel();
 	appTypeError: AppTypeModel;
-
+	submitLoading = false;
 	constructor(
 		private dialogRef: MatDialogRef<AddNEditAppTypeComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: AddNEditAppTypeComponentData,
@@ -27,14 +27,17 @@ export class AddNEditAppTypeComponent implements OnInit {
 	}
 
 	save() {
+		this.submitLoading = true;
 		const request = (this.data.isNew) ?
 			this.appManagementService.addAppType(this.appType) :
 			this.appManagementService.editAppType(this.appType);
 		request.subscribe((data: any) => {
+			this.submitLoading = false;
 			this.dialogRef.close('saved');
 		}, (error: HttpErrorResponse) => {
 			this.appTypeError = error.error;
 			this.snackbarService.open(error.statusText);
+			this.submitLoading = false;
 		});
 	}
 

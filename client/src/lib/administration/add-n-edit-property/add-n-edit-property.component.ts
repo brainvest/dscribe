@@ -25,6 +25,7 @@ export class AddNEditPropertyComponent implements OnInit {
 	actions = RelatedPropertyAction;
 	thisTypeProperties: PropertyBase[];
 	allProperties: PropertyInfoModel[];
+	submitLoading = false;
 
 	constructor(
 		private dialogRef: MatDialogRef<AddNEditEntityTypeComponent>,
@@ -77,14 +78,17 @@ export class AddNEditPropertyComponent implements OnInit {
 	}
 
 	save() {
+		this.submitLoading = true;
 		const request = this.data.isNew ?
 			this.apiClient.addProperty(this.property) :
 			this.apiClient.editProperty(this.property);
 		request.subscribe((result: any) => {
 			this.dialogRef.close('saved');
+			this.submitLoading = false;
 		}, (error: HttpErrorResponse) => {
 			this.propertyError = error.error;
 			this.snackbarService.open(error.statusText);
+			this.submitLoading = false;
 		});
 	}
 
