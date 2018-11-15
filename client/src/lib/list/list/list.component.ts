@@ -43,7 +43,7 @@ export class ListComponent implements OnInit, OnChanges {
 	selection = new SelectionModel<any>(this.allowMultiSelect, this.initialSelection);
 
 	@Input() entityType: EntityTypeMetadata;
-	@Input() master: MasterReference;
+	@Input() masters: MasterReference[];
 	@Input() hideFilter: boolean;
 	@Output() selectionChanged = new EventEmitter<any>();
 
@@ -131,7 +131,7 @@ export class ListComponent implements OnInit, OnChanges {
 				if (prop && prop.FacetValues && prop.FacetValues[KnownFacets.HideInList]) {
 					continue;
 				}
-				if (this.master) {
+				if (this.masters && this.masters.length) {
 					continue;
 				}
 				this.detailLists.push(new MasterReference(null, prop));
@@ -146,11 +146,13 @@ export class ListComponent implements OnInit, OnChanges {
 			if (prop && prop.FacetValues && prop.FacetValues[KnownFacets.HideInList]) {
 				continue;
 			}
-			if (this.master) {
-				this.master.childList = this;
-				if (this.master.masterProperty
-					&& this.master.masterProperty.InverseProperty
-					&& this.master.masterProperty.InverseProperty.ForeignKeyName === prop.Name) {
+			if (this.masters) {
+				const master = this.masters.find(m =>
+					m.masterProperty
+					&& m.masterProperty.InverseProperty
+					&& m.masterProperty.InverseProperty.ForeignKeyName === prop.Name);
+				if (master) {
+					master.childList = this;
 					continue;
 				}
 			}
@@ -169,7 +171,7 @@ export class ListComponent implements OnInit, OnChanges {
 
 	getCurrentFilters(): StorageFilterNode[] {
 		const filters: StorageFilterNode[] = [];
-		const masterDetail = LambdaHelper.getMasterDetailFilter(this.master, this.entityType);
+		const masterDetail = LambdaHelper.getMasterDetailFilter(this.masters, this.entityType);
 		if (masterDetail) {
 			filters.push(masterDetail.getStorageNode());
 		}
@@ -238,12 +240,15 @@ export class ListComponent implements OnInit, OnChanges {
 
 	addNew() {
 		const newEntity = {};
-		if (this.master
-			&& this.master.master
-			&& this.master.masterProperty
-			&& this.master.masterProperty.InverseProperty
-			&& this.master.masterProperty.InverseProperty.ForeignKeyName) {
-			newEntity[this.master.masterProperty.InverseProperty.ForeignKeyName] = (this.master.master as HasId).id;
+		if (this.masters) {
+			for (const master of this.masters) {
+				if (master.master
+					&& master.masterProperty
+					&& master.masterProperty.InverseProperty
+					&& master.masterProperty.InverseProperty.ForeignKeyName) {
+					newEntity[master.masterProperty.InverseProperty.ForeignKeyName] = (master.master as HasId).id;
+				}
+			}
 		}
 		this.openAddNEditDialog(newEntity, true);
 	}
@@ -268,7 +273,7 @@ export class ListComponent implements OnInit, OnChanges {
 				action: action,
 				entityTypeName: this.entityType.Name,
 				title: this.entityType.SingularTitle,
-				master: this.master
+				masters: this.masters
 			}
 		});
 		dialogRef.afterClosed().subscribe(

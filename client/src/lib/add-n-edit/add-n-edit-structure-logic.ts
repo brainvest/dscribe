@@ -1,7 +1,7 @@
 import {EntityTypeMetadata} from '../metadata/entity-type-metadata';
 import {ManageEntityModes} from './models/manage-entity-modes';
 import {MasterReference} from '../list/models/master-reference';
-import {AddNEditStructure, EditorComponentTypes} from './models/add-n-edit-structure';
+import {AddNEditStructure, EditorComponentTypes, ListBehaviors} from './models/add-n-edit-structure';
 import {DataTypes} from '../metadata/data-types';
 import {AddNEditHelper as Helper} from './add-n-edit-helper';
 
@@ -22,10 +22,25 @@ export class AddNEditStructureLogic {
 				subEntity = {};
 				entity[nav.Name] = subEntity;
 			}
-			const navStructure = AddNEditStructureLogic.getStructure(subEntity, nav.EntityType, mode, masters
-				, Helper.joinPath(path, nav.Name), Helper.joinPath(pathTitle, nav.Title));
-			navStructure.parentEntity = entity;
-			navStructure.masterReferences = masters;
+			const childMasters = masters ? [...masters, new MasterReference(entity, nav)] : [new MasterReference(entity, nav)];
+			let navStructure: AddNEditStructure;
+			if (nav.DataType === DataTypes.NavigationEntity) {
+				navStructure = AddNEditStructureLogic.getStructure(subEntity, nav.EntityType, mode, childMasters
+					, Helper.joinPath(path, nav.Name), Helper.joinPath(pathTitle, nav.Title));
+				navStructure.parentEntity = entity;
+				navStructure.masterReferences = childMasters;
+			} else {
+				navStructure = {
+					componentType: EditorComponentTypes.List,
+					entityTypeMetadata: nav.EntityType,
+					listBehavior: ListBehaviors.SaveInObject,
+					masterReferences: childMasters,
+					parentEntity: entity,
+					path: Helper.joinPath(path, nav.Name),
+					pathTitle: Helper.joinPath(pathTitle, nav.Title),
+					propertyMetadata: nav
+				};
+			}
 			if (structure.children) {
 				structure.children.push(navStructure);
 			} else {

@@ -68,9 +68,9 @@
 				<mat-tab-group>
 					<mat-tab *ngFor="let prop of detailLists">
 						<ng-template mat-tab-label>
-							{{prop.masterProperty.title || prop.masterProperty.name}}
+							{{prop.masterProperty.Title || prop.masterProperty.Name}}
 						</ng-template>
-						<dscribe-list [hideFilter]="true" [entityType]="prop.masterProperty.entityType" [master]="prop">
+						<dscribe-list [hideFilter]="true" [entityType]="prop.masterProperty.EntityType" [masters]="[prop]">
 						</dscribe-list>
 					</mat-tab>
 				</mat-tab-group>

@@ -68,7 +68,7 @@
 					(click)="selectEntityType(entityType)"
 			></tr>
 		</table>
-		<mat-paginator id="entityTypesPaginator" #entityTypesPaginator [length]="entityTypes?.length"
+		<mat-paginator id="entityTypesPaginator" #entityTypesPaginator [length]="entityTypesDataSource.data.length"
 									 [pageSize]="5"></mat-paginator>
 	</div>
 
@@ -139,7 +139,7 @@
 					(click)="selectProperty(property)"
 			></tr>
 		</table>
-		<mat-paginator id="propertiesPaginator" #propertiesPaginator [length]="properties?.length"
+		<mat-paginator id="propertiesPaginator" #propertiesPaginator [length]="propertiesDataSource.data?.length"
 									 [pageSize]="5"></mat-paginator>
 	</div>
 </div>

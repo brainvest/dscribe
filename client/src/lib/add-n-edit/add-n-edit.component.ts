@@ -21,7 +21,7 @@ export class AddNEditComponent implements OnInit {
 	@Input() entity: any;
 	@Input() action: ManageEntityModes;
 	@Input() entityTypeName: string;
-	@Input() master: MasterReference;
+	@Input() masters: MasterReference[];
 	@Output() entitySaved = new EventEmitter<AddNEditResult>();
 	@Output() canceled = new EventEmitter();
 
@@ -48,8 +48,7 @@ export class AddNEditComponent implements OnInit {
 	}
 
 	private createEditorStructure() {
-		const masters = this.master ? [this.master] : null;
-		this.structure = AddNEditStructureLogic.getStructure(this.entity, this.entityTypeMetadata, this.action, masters, '', '');
+		this.structure = AddNEditStructureLogic.getStructure(this.entity, this.entityTypeMetadata, this.action, this.masters, '', '');
 	}
 
 	private afterEntitySaved(action: ManageEntityModes, entity: any) {
