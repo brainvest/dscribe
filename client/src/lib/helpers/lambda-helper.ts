@@ -9,10 +9,11 @@ import {ConstantFilterNode} from '../filtering/models/filter-nodes/constant-filt
 
 export class LambdaHelper {
 
-	public static getMasterDetailFilter(master: MasterReference, entityType: EntityTypeMetadata): LambdaFilterNode | null {
-		if (!master) {
+	public static getMasterDetailFilter(masters: MasterReference[], entityType: EntityTypeMetadata): LambdaFilterNode | null {
+		if (!master || !masters.length) {
 			return null;
 		}
+		const master = masters[0]; // TODO: ignoring other possible masters
 		const lambda = new LambdaFilterNode(null, entityType, false);
 		lambda.parameter = new ParameterInfo(entityType.Name[0].toLowerCase(), entityType.Name);
 

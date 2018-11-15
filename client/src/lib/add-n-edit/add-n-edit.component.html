@@ -12,16 +12,12 @@
 					</ng-template>
 					<dscribe-property-editor *ngFor="let property of related.directProperties"
 																	 [property]="property"
-																	 [entity]="entity">
+																	 [entity]="related.currentEntity">
 					</dscribe-property-editor>
 					<dscribe-list *ngIf="related.componentType === componentTypes.List"
-						[hideFilter]="true" [entityType]="prop.masterProperty.EntityType" [master]="prop">
+												[hideFilter]="true" [entityType]="related.entityTypeMetadata"
+												[masters]="related.masterReferences">
 					</dscribe-list>
-				</mat-tab>
-				<mat-tab *ngFor="let prop of detailLists">
-					<ng-template mat-tab-label>
-						{{prop.masterProperty.Title || prop.masterProperty.Name}}
-					</ng-template>
 				</mat-tab>
 			</mat-tab-group>
 		</mat-card>

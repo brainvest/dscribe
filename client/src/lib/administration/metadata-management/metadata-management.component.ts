@@ -115,11 +115,15 @@ export class MetadataManagementComponent implements OnInit {
 		if (!id) {
 			return;
 		}
-		const prop = this.properties.find(x => x.Id === id);
+		let prop = this.properties.find(x => x.Id === id);
 		if (prop) {
 			return prop.Name;
 		}
-		return this.allPropertiesInfo.find(x => x.id === id).name;
+		prop = this.allPropertiesInfo.find(x => x.Id === id);
+		if (prop) {
+			return prop.Name;
+		}
+		return id + ': not found';
 	}
 
 	addEntityType() {
