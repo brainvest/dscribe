@@ -20,7 +20,7 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string PluralTitle { get; set; }
 		[Required]
 		public int EntityTypeGeneralUsageCategoryId { get; set; }
-		[Required]
+		//[Required]
 		public string TableName { get; set; }
 
 		public IEnumerable<LocalFacetModel> LocalFacets { get; set; }

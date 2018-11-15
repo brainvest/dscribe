@@ -20,6 +20,7 @@ export class AddNEditAppInstanceComponent implements OnInit {
 	appInstanceError: AppInstanceInfoModel;
 	appTypes: AppTypeModel[] = [];
 	databaseProviders: DatabaseProviderModel[] = [];
+	submitLoading = false;
 
 	constructor(
 		private dialogRef: MatDialogRef<AddNEditAppInstanceComponent>,
@@ -62,22 +63,24 @@ export class AddNEditAppInstanceComponent implements OnInit {
 	}
 
 	save() {
+		this.submitLoading = true;
 		const request = (this.data.isNew) ?
 			this.appManagementService.addAppInstance(this.appInstance) :
 			this.appManagementService.editAppInstance(this.appInstance);
 		request.subscribe((data: any) => {
 			this.dialogRef.close('saved');
+			this.submitLoading = false;
 		}, (error: HttpErrorResponse) => {
 			this.appInstanceError = error.error;
 			console.log(this.appInstanceError);
 			this.snackbarService.open(error.statusText);
+			this.submitLoading = false;
 		});
 	}
 
 	cancel() {
 		this.dialogRef.close();
 	}
-
 }
 
 export class AddNEditAppInstanceComponentData {

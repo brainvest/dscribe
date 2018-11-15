@@ -23,3 +23,8 @@ table {
 tr.highlight {
 	background-color: aqua;
 }
+
+.mat-spinner {
+	margin-top: 26px;
+	margin-left: 5px;
+}

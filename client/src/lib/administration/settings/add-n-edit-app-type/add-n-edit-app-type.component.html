@@ -23,10 +23,13 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-	<button mat-icon-button (click)="save()">
+	<button mat-icon-button (click)="save()" *ngIf="!submitLoading">
 		<mat-icon color="primary">save</mat-icon>
 	</button>
-	<button mat-icon-button (click)="cancel()">
+	<button mat-icon-button *ngIf="submitLoading">
+		<mat-spinner style="margin-left: 10px;" [diameter]="20" color="accent"></mat-spinner>
+	</button>
+	<button mat-icon-button (click)="cancel()" [disabled]="submitLoading">
 		<mat-icon color="warn">cancel</mat-icon>
 	</button>
 </mat-dialog-actions>

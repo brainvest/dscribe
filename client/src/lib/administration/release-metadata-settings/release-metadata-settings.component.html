@@ -5,35 +5,42 @@
 	<form #releaseForm="ngForm">
 		<mat-form-field appearance="outline">
 			<mat-label>App Instance Id</mat-label>
-			<input matInput
-						 placeholder="App Instance Id"
-						 name="appInstanceId" [(ngModel)]="releaseSettings.appInstanceId">
+			<input matInput placeholder="App Instance Id" name="appInstanceId" [(ngModel)]="releaseSettings.appInstanceId">
+			<p class="form-error-message" *ngFor="let e of releaseSettingsError?.AppInstanceId">
+				{{e}}
+			</p>
 		</mat-form-field>
 
-		<mat-checkbox name="setAsInstanceMetadata" [(ngModel)]="releaseSettings.setAsInstanceMetadata">Set as Instance Metadata</mat-checkbox>
+		<mat-checkbox name="setAsInstanceMetadata" [(ngModel)]="releaseSettings.setAsInstanceMetadata">Set as Instance
+			Metadata</mat-checkbox>
 
 		<mat-form-field appearance="outline">
 			<mat-label>Version</mat-label>
-			<input matInput
-						 placeholder="Version"
-						 name="version" [(ngModel)]="releaseSettings.version">
+			<input matInput placeholder="Version" name="version" [(ngModel)]="releaseSettings.version">
+			<p class="form-error-message" *ngFor="let e of releaseSettingsError?.Version">
+				{{e}}
+			</p>
 		</mat-form-field>
 
 		<mat-form-field appearance="outline">
 			<mat-label>Version Code</mat-label>
-			<input matInput
-						 placeholder="Version Code"
-						 name="versionCode" [(ngModel)]="releaseSettings.versionCode">
+			<input matInput placeholder="Version Code" name="versionCode" [(ngModel)]="releaseSettings.versionCode">
+			<p class="form-error-message" *ngFor="let e of releaseSettingsError?.VersionCode">
+				{{e}}
+			</p>
 		</mat-form-field>
 
 	</form>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-	<button mat-icon-button (click)="release()">
+	<button mat-icon-button (click)="release()" *ngIf="!submitLoading">
 		<mat-icon color="primary">save</mat-icon>
 	</button>
-	<button mat-icon-button (click)="cancel()">
+	<button mat-icon-button *ngIf="submitLoading">
+		<mat-spinner style="margin-left: 10px;" [diameter]="20" color="accent"></mat-spinner>
+	</button>
+	<button mat-icon-button (click)="cancel()" [disabled]="submitLoading">
 		<mat-icon color="warn">cancel</mat-icon>
 	</button>
 </mat-dialog-actions>

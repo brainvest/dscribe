@@ -12,6 +12,7 @@ import { PropertyInfoModel } from '../models/property-info-model';
 import { ReleaseMetadataSettingsComponent } from '../release-metadata-settings/release-metadata-settings.component';
 import { DscribeService } from '../../dscribe.service';
 import { SnackBarService } from '../../common/notifications/snackbar.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -25,14 +26,16 @@ export class MetadataManagementComponent implements OnInit {
 	entityTypesDataSource = new MatTableDataSource<EntityTypeBase>(this.entityTypes);
 	selectedEntityType: EntityTypeBase;
 	entityTypesAreLoading = false;
-
+	generateCodeLoading = false;
+	deleteEntityLoading = false;
+	deletePropertyLoading = false;
 	properties: PropertyBase[];
 	allPropertiesInfo: PropertyInfoModel[];
 	propertiesDataSource = new MatTableDataSource<PropertyBase>();
 	selectedProperty: PropertyBase;
 	propertiesAreLoading = false;
 	displayedEntityTypeColumns = ['name', 'usage', 'singular', 'plural', 'code', 'displayName'];
-	displayedPropertyColumns = ['name', 'title', 'dataType', 'nullable', 'dataEntityType', 'usage', 'foreignKey', 'inverse'];
+	displayedPropertyColumns = ['Name', 'title', 'dataType', 'nullable', 'dataEntityType', 'usage', 'foreignKey', 'inverse'];
 
 	@ViewChild('entityTypesPaginator') entityTypesPaginator: MatPaginator;
 	@ViewChild('propertiesPaginator') propertiesPaginator: MatPaginator;
@@ -138,6 +141,7 @@ export class MetadataManagementComponent implements OnInit {
 	}
 
 	deleteEntityType() {
+		this.deleteEntityLoading = true;
 		if (!this.selectedEntityType) {
 			return;
 		}
@@ -147,9 +151,13 @@ export class MetadataManagementComponent implements OnInit {
 					this.apiClient.deleteEntityType(this.selectedEntityType)
 						.subscribe(() => {
 							this.refreshEntityTypes();
-						}, (errors: any) => {
-							this.snackbarService.open(errors);
+							this.deleteEntityLoading = false;
+						}, (error: HttpErrorResponse) => {
+							this.snackbarService.open(error.error);
+							this.deleteEntityLoading = false;
 						});
+				} else {
+					this.deleteEntityLoading = false;
 				}
 			});
 	}
@@ -157,6 +165,7 @@ export class MetadataManagementComponent implements OnInit {
 	openAddNEditEntityTypeDialog(instance: any, isNew: boolean) {
 		const dialogRef = this.dialog.open(AddNEditEntityTypeComponent, {
 			width: '800px',
+			disableClose: true,
 			data: new AddNEditEntityTypeComponentData(instance, isNew, this.basicInfo)
 		});
 		dialogRef.afterClosed().subscribe(
@@ -189,6 +198,7 @@ export class MetadataManagementComponent implements OnInit {
 	}
 
 	deleteProperty() {
+		this.deletePropertyLoading = true;
 		if (!this.selectedProperty) {
 			return;
 		}
@@ -202,15 +212,19 @@ export class MetadataManagementComponent implements OnInit {
 						(errors: any) => {
 							this.snackbarService.open(errors);
 						});
+				} else {
+					this.deletePropertyLoading = false;
 				}
 			}, (errors: any) => {
 				this.snackbarService.open(errors);
+				this.deletePropertyLoading = false;
 			});
 	}
 
 	openAddNEditPropertyDialog(instance: AddNEditPropertyMetadataModel, isNew: boolean) {
 		const dialogRef = this.dialog.open(AddNEditPropertyComponent, {
 			width: '800px',
+			disableClose: true,
 			data: new AddNEditPropertyComponentData(instance, isNew, this.basicInfo, this.entityTypes,
 				this.properties, this.allPropertiesInfo)
 		});
@@ -227,19 +241,23 @@ export class MetadataManagementComponent implements OnInit {
 
 	openReleaseSettings() {
 		this.dialog.open(ReleaseMetadataSettingsComponent, {
-			width: '300px'
+			width: '300px',
+			disableClose: true,
 		});
 	}
 
 	generateCode() {
+		this.generateCodeLoading = true;
 		this.apiClient.generateCode()
-			.subscribe(x => {
-				if (x.success) {
+			.subscribe((x: any) => {
+				this.generateCodeLoading = false;
+				if (x.Success) {
 					this.snackbarService.open('Code has generated successful.');
 				} else {
 					this.snackbarService.open('errors occured please see the validation errors');
 				}
 			}, (errors: any) => {
+				this.generateCodeLoading = false;
 				this.snackbarService.open(errors);
 			});
 	}
