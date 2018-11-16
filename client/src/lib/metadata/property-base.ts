@@ -1,3 +1,5 @@
+import { FacetDefinitionModel } from "./facets/facet-definition-model";
+
 export class PropertyBase {
 	Id: number;
 	DataTypeId: number;
@@ -9,4 +11,10 @@ export class PropertyBase {
 	ForeignKeyPropertyId: number;
 	InversePropertyId: number;
 	Title: string;
+	LocalFacets: LocalFacetModel[];
+}
+
+export class LocalFacetModel {
+	FacetName: string;
+	Value: string;
 }

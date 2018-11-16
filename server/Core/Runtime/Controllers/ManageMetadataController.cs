@@ -60,7 +60,12 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 						SingularTitle = x.SingularTitle,
 						TableName = x.TableName,
 						PluralTitle = x.PluralTitle,
-						EntityTypeGeneralUsageCategoryId = x.GeneralUsageCategoryId
+						EntityTypeGeneralUsageCategoryId = x.GeneralUsageCategoryId,
+						LocalFacets = x.FacetValues.Select(y => new LocalFacetModel
+						{
+							FacetName = y.FacetDefinition.Name,
+							Value = y.Value
+						}).ToList()
 					})
 					.ToListAsync();
 			return entityTypes;
@@ -210,7 +215,11 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 						OwnerEntityTypeId = x.OwnerEntityTypeId,
 						ForeignKeyPropertyId = x.ForeignKeyPropertyId,
 						InversePropertyId = x.InversePropertyId,
-						// LocalFacets = 
+						LocalFacets = x.PropertyFacetValues.Select(y => new LocalFacetModel
+						{
+							FacetName = y.FacetDefinition.Name,
+							Value = y.Value
+						}).ToList()
 					}).ToListAsync();
 			return properties;
 		}
@@ -240,7 +249,12 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				IsNullable = x.IsNullable,
 				Name = x.Name,
 				PropertyGeneralUsageCategoryId = x.GeneralUsageCategoryId,
-				Title = x.Title
+				Title = x.Title,
+				LocalFacets = x.PropertyFacetValues.Select(y => new LocalFacetModel
+				{
+					FacetName = y.FacetDefinition.Name,
+					Value = y.Value
+				}).ToList()
 			}).SingleOrDefaultAsync(x => x.Id == request.PropertyId);
 			if (model.DataTypeId == (int)DataTypeEnum.NavigationEntity)
 			{
