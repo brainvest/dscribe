@@ -100,25 +100,26 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 
 		public async Task<ActionResult<object>> Edit(ManageEntityRequest request, object businessRepository)
 		{
-			return await CallMethod(nameof(EfCoreEntityHandlerInternal.EditInternal), request, businessRepository);
+			return await CallMethod(nameof(EfCoreEntityHandlerInternal.EditInternal), request, businessRepository, null);
 		}
 
-		public async Task<ActionResult<object>> Add(ManageEntityRequest request, object businessRepository)
+		public async Task<ActionResult<object>> Add(ManageEntityRequest request, object businessRepository, IActionContextInfo actionContext)
 		{
-			return await CallMethod(nameof(EfCoreEntityHandlerInternal.AddInternal), request, businessRepository);
+			return await CallMethod(nameof(EfCoreEntityHandlerInternal.AddInternal), request, businessRepository, actionContext);
 		}
 
 		public async Task<ActionResult<object>> Delete(ManageEntityRequest request, object businessRepository)
 		{
-			return await CallMethod(nameof(EfCoreEntityHandlerInternal.DeleteInternal), request, businessRepository);
+			return await CallMethod(nameof(EfCoreEntityHandlerInternal.DeleteInternal), request, businessRepository, null);
 		}
 
-		private async Task<ActionResult<object>> CallMethod(string internalMethodName, ManageEntityRequest request, object businessRepository)
+		private async Task<ActionResult<object>> CallMethod(string internalMethodName
+			, ManageEntityRequest request, object businessRepository, IActionContextInfo actionContext)
 		{
 			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 			var method = _handlerInternal.GetType().GetMethod(internalMethodName, BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 			object r = EntityHelper.CreateGenericObject(request, entityType);
-			var awaitable = method.Invoke(_handlerInternal, new object[] { r, businessRepository }) as Task<ActionResult<object>>;
+			var awaitable = method.Invoke(_handlerInternal, new object[] { r, businessRepository, actionContext }) as Task<ActionResult<object>>;
 			return await awaitable;
 		}
 

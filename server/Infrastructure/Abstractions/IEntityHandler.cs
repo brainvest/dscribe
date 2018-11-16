@@ -17,7 +17,7 @@ namespace Brainvest.Dscribe.Abstractions
 		Task<IEnumerable<NameResponseItem>> GetIdAndName(IdAndNameRequest request);
 		Task<IEnumerable<NameResponseItem>> GetAutocomplteItems(AutocompleteItemsRequest request);
 		Task<ActionResult<object>> Edit(ManageEntityRequest request, object businessRepository);
-		Task<ActionResult<object>> Add(ManageEntityRequest request, object businessRepository);
+		Task<ActionResult<object>> Add(ManageEntityRequest request, object businessRepository, IActionContextInfo actionContext);
 		Task<ActionResult<object>> Delete(ManageEntityRequest request, object businessRepository);
 		Task<ActionResult> SaveChanges(object businessRepository);
 	}

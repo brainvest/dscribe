@@ -228,33 +228,13 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			}
 		}
 
-		internal async Task<ActionResult<object>> DeleteInternal<TEntity>(ManageEntityRequest<TEntity> request, DbContext dbContext)
-		where TEntity : class
-		{
-			try
-			{
-				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Delete);
-				if (validationResult?.IsValid == false)
-				{
-					return new BadRequestObjectResult(validationResult);
-				}
-				var set = dbContext.Set<TEntity>();
-				var entity = await set.FindAsync(_entityHelper.GetPrimaryKey(request.Entity));
-				set.Remove(entity);
-				return request.Entity;
-			}
-			catch
-			{
-				return new StatusCodeResult(500);
-			}
-		}
-
-		internal async Task<ActionResult<object>> AddInternal<TEntity>(ManageEntityRequest<TEntity> request, DbContext dbContext)
+		internal async Task<ActionResult<object>> AddInternal<TEntity>(ManageEntityRequest<TEntity> request
+			, DbContext dbContext, IActionContextInfo actionContext)
 			where TEntity : class
 		{
 			try
 			{
-				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Insert);
+				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Insert, actionContext);
 				if (validationResult?.IsValid == false)
 				{
 					return new BadRequestObjectResult(validationResult);
@@ -270,12 +250,13 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			}
 		}
 
-		internal async Task<ActionResult<object>> EditInternal<TEntity>(ManageEntityRequest<TEntity> request, DbContext dbContext)
+		internal async Task<ActionResult<object>> EditInternal<TEntity>(ManageEntityRequest<TEntity> request
+			, DbContext dbContext, IActionContextInfo actionContext)
 			where TEntity : class
 		{
 			try
 			{
-				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Update);
+				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Update, actionContext);
 				if (validationResult?.IsValid == false)
 				{
 					return new BadRequestObjectResult(validationResult);
@@ -285,6 +266,28 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				var existing = await set.FindAsync(_entityHelper.GetPrimaryKey(request.Entity));
 				_entityHelper.CopyPropertyValues(request.Entity, existing);
 				return existing;
+			}
+			catch
+			{
+				return new StatusCodeResult(500);
+			}
+		}
+
+		internal async Task<ActionResult<object>> DeleteInternal<TEntity>(ManageEntityRequest<TEntity> request
+			, DbContext dbContext, IActionContextInfo actionContext)
+		where TEntity : class
+		{
+			try
+			{
+				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Delete, actionContext);
+				if (validationResult?.IsValid == false)
+				{
+					return new BadRequestObjectResult(validationResult);
+				}
+				var set = dbContext.Set<TEntity>();
+				var entity = await set.FindAsync(_entityHelper.GetPrimaryKey(request.Entity));
+				set.Remove(entity);
+				return request.Entity;
 			}
 			catch
 			{

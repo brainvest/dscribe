@@ -2,6 +2,7 @@ using Brainvest.Dscribe.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 {
@@ -15,13 +16,18 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 		}
 
 		//TODO: This should get a Model or a dynamic type instead of the Entity. In the current state, validation ignores required non nullable value types.
-		public ModelStateDictionary Validate<TEntity>(TEntity entity, ActionTypeEnum actionType)
+		public ModelStateDictionary Validate<TEntity>(TEntity entity, ActionTypeEnum actionType, IActionContextInfo actionContext)
 		{
 			var entityMetadata = _implementationsContainer.Metadata[typeof(TEntity).Name];
 			Dictionary<string, IEnumerable<string>> propertyValidationErrors = null;
 			foreach (var property in entityMetadata.GetAllProperties())
 			{
 				if (property.IsExpression)
+				{
+					continue;
+				}
+				if (actionContext != null && actionContext.Masters != null && 
+					actionContext.Masters.Any(m => m.MasterProperty.InverseProperty == property || m.MasterProperty.InverseProperty?.ForeignKey == property))
 				{
 					continue;
 				}

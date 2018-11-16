@@ -1,6 +1,8 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Abstractions.Models;
+using Brainvest.Dscribe.Helpers;
+using Brainvest.Dscribe.Runtime.ActionContext;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
@@ -27,20 +29,27 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 			using (var repository = _implementations.RepositoryFactory())
 			{
 				var map = new Dictionary<string, object>();
-				var result = await AddRecursive(request, repository, map, "");
+				var actionContext = new ActionContextInfo
+				{
+					CurrentEntity = request.Entity,
+					EntityType = _implementations.Metadata[request.EntityTypeName],
+					Type = ActionContextType.Add
+				};
+				var result = await AddRecursive(request, repository, map, "", actionContext);
 				await _entityHandler.SaveChanges(repository);
 				return map[""];
 			}
 		}
 
-		private async Task<ActionResult<object>> AddRecursive(ManageEntityRequest request, IDisposable repository, Dictionary<string, object> map, string currentObjectPath)
+		private async Task<ActionResult<object>> AddRecursive(ManageEntityRequest request, IDisposable repository, Dictionary<string, object> map
+			, string currentObjectPath, ActionContextInfo actionContext)
 		{
 			var entityType = _implementations.Metadata[request.EntityTypeName];
 			var prop = entityType.GetAllProperties().First();
 			object entity;
 			if (!entityType.NotMapped())
 			{
-				var result = await _entityHandler.Add(request, repository);
+				var result = await _entityHandler.Add(request, repository, actionContext);
 				entity = result.Value;
 			}
 			else
@@ -51,14 +60,26 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 			{
 				existingValue.GetType().GetMethod("Add").Invoke(existingValue, new object[] { entity });
 			}
-			map.Add(currentObjectPath, entity);
+			if (map.TryGetValue(currentObjectPath, out var list))
+			{
+				(list as IList).Add(entity);
+			}
+			else
+			{
+				map.Add(currentObjectPath, entity);
+			}
 			foreach (var pair in map)
 			{
 				if (!currentObjectPath.StartsWith(pair.Key))
 				{
 					continue;
 				}
-				var typeMetadata = _implementations.Metadata[pair.Value.GetType().Name];
+				var itemType = pair.Value.GetType();
+				if (itemType.IsGenericType)
+				{
+					itemType = itemType.GetGenericArguments().Single();
+				}
+				var typeMetadata = _implementations.Metadata[itemType.Name];
 				foreach (var property in typeMetadata.GetAllProperties())
 				{
 					var path = JoinPath(pair.Key, property.Name);
@@ -90,18 +111,28 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 				//}
 				if (propertyMetadata.DataType == DataTypes.NavigationList)
 				{
-					map.Add(propertyPath, Activator.CreateInstance(typeof(HashSet<>).MakeGenericType(_implementations.Reflector.GetType(propertyMetadata.EntityTypeName))));
+					map.Add(propertyPath, Activator.CreateInstance(typeof(List<>).MakeGenericType(_implementations.Reflector.GetType(propertyMetadata.EntityTypeName))));
 					if (!(value is IEnumerable collection))
 					{
 						continue;
 					}
 					foreach (var item in collection)
 					{
+						var childActionContext = new ActionContextInfo
+						{
+							CurrentEntity = item,
+							CurrentList = collection,
+							EntityType = _implementations.Metadata[propertyMetadata.EntityTypeName],
+							Masters = actionContext.Masters.Concat(new MasterReference(entity, propertyMetadata)),
+							Parent = actionContext,
+							Property = propertyMetadata,
+							Type = ActionContextType.Add
+						};
 						await AddRecursive(new ManageEntityRequest
 						{
 							EntityTypeName = propertyMetadata.EntityTypeName,
 							Entity = item
-						}, repository, map, propertyPath);
+						}, repository, map, propertyPath, childActionContext);
 					}
 				}
 			}

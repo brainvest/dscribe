@@ -16,7 +16,7 @@ namespace Brainvest.Dscribe.Helpers
 			return text + Environment.NewLine + ex.InnerException.GetFullMessage();
 		}
 
-		public static TValue GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
+		public static TValue GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default)
 		{
 			if (dictionary.TryGetValue(key, out TValue value))
 			{
@@ -48,6 +48,18 @@ namespace Brainvest.Dscribe.Helpers
 			where TAttribute : Attribute
 		{
 			return Attribute.GetCustomAttribute(typeof(TEnum).GetMember(value).FirstOrDefault(), typeof(TAttribute)) as TAttribute;
+		}
+
+		public static IEnumerable<T> Concat<T>(this IEnumerable<T> list, T item)
+		{
+			if (list != null)
+			{
+				foreach (var x in list)
+				{
+					yield return x;
+				}
+			}
+			yield return item;
 		}
 	}
 }
