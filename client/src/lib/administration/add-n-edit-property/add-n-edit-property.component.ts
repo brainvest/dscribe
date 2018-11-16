@@ -40,20 +40,60 @@ export class AddNEditPropertyComponent implements OnInit {
 		this.thisTypeProperties = data.thisEntityTypeProperties;
 		this.allProperties = data.allProperties;
 
-		// BECAUSE OF API MISSBEHAVIOUR
+		if (!this.data.isNew) {
+			this.setDefaultFacetValues();
+		}
+	}
+
+	setDefaultFacetValues() {
+		const currentGeneralUsageCategory = this.data.basicInfo.PropertyGeneralUsageCategories
+			.find(x => x.Id === this.data.property.PropertyGeneralUsageCategoryId);
 		this.basicInfo.PropertyFacetDefinitions.forEach((x: FacetDefinitionModel) => {
-			x.Default = false;
+			x.Default = this.data.basicInfo.DefaultPropertyFacetValues[currentGeneralUsageCategory.Name][x.Name];
 		});
 	}
 
+	changeFacetValue(facetType: FacetDefinitionModel) {
+		const localFacet = this.data.property.LocalFacets.find(x => x.FacetName === facetType.Name);
+		if (!localFacet) {
+			this.data.property.LocalFacets.push({
+				FacetName: facetType.Name,
+				Value: 'False'
+			});
+		} else {
+			if (localFacet) {
+				if (localFacet.Value.toLowerCase() === 'false') {
+					localFacet.Value = 'True';
+				} else if (localFacet.Value.toLowerCase() === 'true') {
+					const index = this.data.property.LocalFacets.indexOf(localFacet);
+					this.data.property.LocalFacets.splice(index, 1);
+				}
+			}
+		}
+	}
+
 	getFacetName(facetType: FacetDefinitionModel) {
-		return facetType.Name;
+		const localFacet = this.data.property.LocalFacets.find(x => x.FacetName === facetType.Name);
+		if (localFacet) {
+			if (localFacet.FacetName === facetType.Name) {
+				return facetType.Name;
+			}
+		}
+		return facetType.Name + ' ( Default )';
 	}
 
 	setFacetCheckIcon(facetType: FacetDefinitionModel) {
-		if (facetType.Default) {
+		const localFacet = this.data.property.LocalFacets.find(x => x.FacetName === facetType.Name);
+		if (localFacet) {
+			if (localFacet.Value.toLowerCase() === 'false') {
+				return 'check_box_outline_blank';
+			} else if (localFacet.Value.toLowerCase() === 'true') {
+				return 'check_box';
+			}
+		}
+		if (facetType.Default.toLowerCase() === 'false') {
 			return 'check_box_outline_blank';
-		} else if (!facetType.Default) {
+		} else if (facetType.Default.toLowerCase() === 'true') {
 			return 'check_box';
 		}
 	}

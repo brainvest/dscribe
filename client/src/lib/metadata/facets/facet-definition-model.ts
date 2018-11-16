@@ -2,5 +2,5 @@ export class FacetDefinitionModel {
 	Id: number;
 	Name: string;
 	DataType: string;
-	Default: boolean;
+	Default: string;
 }

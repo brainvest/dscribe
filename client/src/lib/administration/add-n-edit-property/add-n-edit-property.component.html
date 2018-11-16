@@ -137,8 +137,7 @@
 		<mat-card style="margin-bottom: 10px">
 			<h5 style="color:gray">Facets</h5>
 			<div *ngFor="let facetType of basicInfo.PropertyFacetDefinitions">
-				<!-- <mat-checkbox name="isNullable">{{facetType.Name}}</mat-checkbox>	 -->
-				<button mat-icon-button (click)="cancel()">
+				<button mat-icon-button (click)="changeFacetValue(facetType)">
 					<mat-icon color="warn">{{setFacetCheckIcon(facetType)}}</mat-icon>
 					{{getFacetName(facetType)}}
 				</button>
