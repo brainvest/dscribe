@@ -26,6 +26,28 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
+		public async Task<ActionResult<IEnumerable<AppInstanceInfoModel>>> GetAppInstancesInfoForHome()
+		{
+			return await _dbContext.AppInstances.Select(x =>
+			new AppInstanceInfoModel
+			{
+				Id = x.Id,
+				AppTypeId = x.AppTypeId,
+				AppTypeName = x.AppType.Name,
+				AppTypeTitle = x.AppType.Title,
+				IsEnabled = x.IsEnabled,
+				IsProduction = x.IsProduction,
+				MetadataReleaseReleaseTime = x.MetadataRelease.ReleaseTime,
+				MetadataReleaseVersion = x.MetadataRelease.Version,
+				MetadataReleaseVersionCode = x.MetadataRelease.VersionCode,
+				Name = x.Name,
+				GeneratedCodeNamespace = x.GeneratedCodeNamespace,
+				Title = x.Title,
+				UseUnreleasedMetadata = x.UseUnreleasedMetadata,
+			}).ToListAsync();
+		}
+
+		[HttpPost]
 		public async Task<ActionResult<IEnumerable<AppInstanceInfoModel>>> GetAppInstancesInfo()
 		{
 			return await _dbContext.AppInstances.Select(x =>

@@ -18,7 +18,7 @@ export class NavigationComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.httpClient.post<AppInstanceInfoModel[]>(this.config.url('api/AppManagement/getAppInstancesInfo'), null)
+		this.httpClient.post<AppInstanceInfoModel[]>(this.config.url('api/AppManagement/GetAppInstancesInfoForHome'), null)
 			.subscribe(apps => {
 				this.appInstances = apps;
 				this.appInstanceSelected(apps[0]);
