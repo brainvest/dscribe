@@ -32,5 +32,6 @@
 		<file src="bin/$configuration$/netcoreapp2.1/Brainvest.Dscribe.Helpers.dll"  target="lib\netcoreapp2.1"/>
 		<file src="bin/$configuration$/netcoreapp2.1/Brainvest.Dscribe.Metadata.dll"  target="lib\netcoreapp2.1"/>
 		<file src="bin/$configuration$/netcoreapp2.1/Brainvest.Dscribe.MetadataDbAccess.dll"  target="lib\netcoreapp2.1"/>
+		<file src="bin/$configuration$/netcoreapp2.1/Brainvest.Dscribe.LobTools.dll"  target="lib\netcoreapp2.1"/>
 	</files>
 </package>
