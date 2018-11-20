@@ -15,13 +15,13 @@ namespace Brainvest.Dscribe.Metadata
 	{
 		private static bool _facetsDefined = false;
 
-		private Dictionary<string, EntityTypeMetadata> _entityTypesByName = new Dictionary<string, EntityTypeMetadata>();
-		private Dictionary<string, Facet> _propertyFacets = new Dictionary<string, Facet>();
-		private Dictionary<string, Facet> _entityFacets = new Dictionary<string, Facet>();
+		private readonly Dictionary<string, EntityTypeMetadata> _entityTypesByName = new Dictionary<string, EntityTypeMetadata>();
+		private readonly Dictionary<string, Facet> _propertyFacets = new Dictionary<string, Facet>();
+		private readonly Dictionary<string, Facet> _entityFacets = new Dictionary<string, Facet>();
+		private readonly Dictionary<string, DataType> _dataTypesByIndetifier;
+		private readonly Dictionary<string, ExpressionInfo> _expressions;
 		private Dictionary<int, PropertyGeneralUsageCategoryStruct> _propertyGeneralUsageCategories;
 		private Dictionary<int, EntityGeneralUsageCategoryStruct> _entityGeneralUsageCategories;
-		private Dictionary<string, DataType> _dataTypesByIndetifier;
-		private Dictionary<string, ExpressionInfo> _expressions;
 
 		public MetadataCache(MetadataBundle bundle)
 		{
@@ -172,6 +172,19 @@ namespace Brainvest.Dscribe.Metadata
 			{
 				return _entityTypesByName[entityTypeName];
 			}
+		}
+
+		public IEntityTypeMetadata this[Type entityType]
+		{
+			get
+			{
+				return _entityTypesByName[entityType.Name];
+			}
+		}
+
+		public IEntityTypeMetadata Get<T>()
+		{
+			return this[typeof(T)];
 		}
 
 		public IEnumerator<IEntityTypeMetadata> GetEnumerator()

@@ -75,10 +75,11 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 		internal async Task<IEnumerable> GetByFilterInternal<TEntity>(EntityListRequest<TEntity> request)
 			where TEntity : class
 		{
+			var metadata = _implementationsContainer.Metadata.Get<TEntity>();
 			using (var context = await GetReadBusinessDbContext())
 			{
 				var query = QueryBuilder.CreateSelectQuery(request, context);
-				query = QueryBuilder.SortQuery(request, query);
+				query = QueryBuilder.SortQuery(request, query, metadata);
 				query = QueryBuilder.PageQuery(request, query);
 				return await query.ToListAsync();
 			}
@@ -120,6 +121,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 		internal async Task<ExpressionValueResponse<TKey>> GetExpressionValueInternal<TEntity, TKey>(int[] ids, IEnumerable<PropertyInfoModel> properties)
 	where TEntity : class
 		{
+			var metadata = _implementationsContainer.Metadata.Get<TEntity>();
 			using (var context = await GetReadBusinessDbContext())
 			{
 				IQueryable<TEntity> query = context.Set<TEntity>();
@@ -130,7 +132,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 					{
 						keys[i] = (TKey)Convert.ChangeType(ids[i], typeof(TKey)); //TODO:Boxing/Unboxing
 					}
-					query = query.Where(QueryBuilder.FilterByIds<TEntity, TKey>(keys));
+					query = query.Where(QueryBuilder.FilterByIds<TEntity, TKey>(keys, metadata));
 				}
 				PrepareExpressions(typeof(TEntity).Name, properties);
 				var selectExpression = QueryBuilder.GetExpressionValueSelection<TEntity, TKey>(properties);
@@ -188,6 +190,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 		internal async Task<IEnumerable<NameResponseItem>> GetIdAndNameInternal<TEntity, Tkey>(int[] ids)
 	where TEntity : class
 		{
+			var metadata = _implementationsContainer.Metadata.Get<TEntity>();
 			using (var context = await GetReadBusinessDbContext())
 			{
 				IQueryable<TEntity> query = context.Set<TEntity>();
@@ -198,10 +201,10 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 					{
 						keys[i] = (Tkey)Convert.ChangeType(ids[i], typeof(Tkey)); //TODO:Boxing/Unboxing
 					}
-					query = query.Where(QueryBuilder.FilterByIds<TEntity, Tkey>(keys));
+					query = query.Where(QueryBuilder.FilterByIds<TEntity, Tkey>(keys, metadata));
 				}
 				IQueryable<NameResponseItem> selected =
-					query.Select(QueryBuilder.GetIdAndNameSelectionExpression<TEntity, Tkey>(_implementationsContainer.Metadata[typeof(TEntity).Name].DisplayNameProperty));
+					query.Select(QueryBuilder.GetIdAndNameSelectionExpression<TEntity, Tkey>(_implementationsContainer.Metadata.Get<TEntity>()));
 				return await selected.ToListAsync();
 			}
 		}
@@ -209,7 +212,8 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 		internal async Task<IEnumerable<NameResponseItem>> GetAutocompleteItemsInternal<TEntity, Tkey>(string queryText)
 	where TEntity : class
 		{
-			var displayNameProperty = _implementationsContainer.Metadata[typeof(TEntity).Name].DisplayNameProperty;
+			var metadata = _implementationsContainer.Metadata.Get<TEntity>();
+			var displayNameProperty = metadata.DisplayNameProperty;
 			if (string.IsNullOrWhiteSpace(displayNameProperty))
 			{
 				throw new Exception($"DisplayName for type {typeof(TEntity)} is not defined");
@@ -222,7 +226,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 					query = query.Where(QueryBuilder.FilterByDisplayName<TEntity>(queryText, displayNameProperty));
 				}
 				IQueryable<NameResponseItem> selected =
-					query.Select(QueryBuilder.GetIdAndNameSelectionExpression<TEntity, Tkey>(displayNameProperty));
+					query.Select(QueryBuilder.GetIdAndNameSelectionExpression<TEntity, Tkey>(metadata));
 				selected = selected.OrderBy(x => x.DisplayName).Take(100);
 				return await selected.ToListAsync();
 			}

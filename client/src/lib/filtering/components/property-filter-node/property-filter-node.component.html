@@ -8,7 +8,7 @@
 					placeholder="Property">
 		<option [ngValue]="undefined" selected invalid>properties of {{node.inputType.EntityType.SingularTitle}}
 		</option>
-		<option *ngFor="let p of node.properties" [ngValue]="p">{{p?.title || p?.name}}</option>
+		<option *ngFor="let p of node.properties" [ngValue]="p">{{p?.Title || p?.Name}}</option>
 	</select>
 	<ng-container *ngIf="node.child">
 		<dscribe-filter-node [node]="node.child"></dscribe-filter-node>

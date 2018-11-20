@@ -33,7 +33,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			{
 				ClientId = x.ClientId,
 				ClientName = x.ClientName,
-				AllowedGrantTypes = GrantTypes.ImplicitAndClientCredentials,
+				AllowedGrantTypes = GrantTypes.Implicit,
 				RequireConsent = false,
 				RedirectUris = { x.RedirectUri, x.SilentRefreshUri },
 				PostLogoutRedirectUris = { x.PostLogoutRedirectUri },

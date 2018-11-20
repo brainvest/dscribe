@@ -1,3 +1,4 @@
+using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using Brainvest.Dscribe.Helpers.SpecializedTuples;
@@ -13,7 +14,7 @@ namespace Brainvest.Dscribe.Helpers
 {
 	public static class QueryBuilder
 	{
-		public static IQueryable<TEntity> SortQuery<TEntity>(IOrderRequest request, IQueryable<TEntity> query)
+		public static IQueryable<TEntity> SortQuery<TEntity>(IOrderRequest request, IQueryable<TEntity> query, IEntityTypeMetadata entityTypeMetadata)
 			where TEntity : class
 		{
 			var ordered = false;
@@ -27,7 +28,7 @@ namespace Brainvest.Dscribe.Helpers
 			}
 			if (!ordered)
 			{
-				query = query.Order("Id", true, ordered);
+				query = query.Order(entityTypeMetadata.GetPrimaryKey().Name, true, ordered);
 			}
 			return query;
 		}
@@ -94,13 +95,14 @@ namespace Brainvest.Dscribe.Helpers
 			return Expression.Lambda(init, param);
 		}
 
-		public static Expression<Func<TEntity, NameResponseItem>> GetIdAndNameSelectionExpression<TEntity, Tkey>(string displayNamePath)
+		public static Expression<Func<TEntity, NameResponseItem>> GetIdAndNameSelectionExpression<TEntity, Tkey>(IEntityTypeMetadata entityTypeMetadata)
 		{
 			var param = Expression.Parameter(typeof(TEntity), "s");
-			var entityIdExpression = Expression.Property(param, nameof(IdAndNameResponseItem<Tkey>.Id)); //TODO:Hardcoded Primary key name
+			var entityIdExpression = Expression.Property(param, entityTypeMetadata.GetPrimaryKey().Name); //TODO:Hardcoded Primary key name
 			var idType = entityIdExpression.Type;
 			var modelType = typeof(IdAndNameResponseItem<>).MakeGenericType(idType);
 			var idAssignment = Expression.Bind(modelType.GetProperty(nameof(IdAndNameResponseItem<Tkey>.Id)), entityIdExpression);
+			var displayNamePath = entityTypeMetadata.DisplayNameProperty;
 			if (string.IsNullOrWhiteSpace(displayNamePath))
 			{
 				displayNamePath = nameof(IdAndNameResponseItem<Tkey>.Id);
@@ -178,12 +180,12 @@ namespace Brainvest.Dscribe.Helpers
 			return visitor.Visit(expression) as LambdaExpression;
 		}
 
-		public static Expression<Func<TEntity, bool>> FilterByIds<TEntity, TKey>(TKey[] ids)
+		public static Expression<Func<TEntity, bool>> FilterByIds<TEntity, TKey>(TKey[] ids, IEntityTypeMetadata entityTypeMetadata)
 		{
 			var param = Expression.Parameter(typeof(TEntity), "i");
 			var containsMethod = typeof(Enumerable).GetMethods().Single(x => x.Name == nameof(Enumerable.Contains) && x.GetParameters().Length == 2);
 			containsMethod = containsMethod.MakeGenericMethod(typeof(TKey));
-			var property = Expression.Property(param, "Id");
+			var property = Expression.Property(param, entityTypeMetadata.GetPrimaryKey().Name);
 			var idsExp = Expression.Constant(ids, typeof(IEnumerable<TKey>));
 			var call = Expression.Call(containsMethod, idsExp, property);
 			var lambda = Expression.Lambda<Func<TEntity, bool>>(call, param);

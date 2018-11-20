@@ -1,5 +1,4 @@
 using Brainvest.Dscribe.Abstractions.Metadata;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 {
@@ -11,7 +10,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public FacetDataType FacetTypeId { get; set; }
 		public FacetType FacetType { get; set; }
 
-		public int EnumTypeId { get; set; }
+		public int? EnumTypeId { get; set; }
 		public EnumType EnumType { get; set; }
 	}
 }
