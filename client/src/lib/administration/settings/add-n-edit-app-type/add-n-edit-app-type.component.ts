@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { AppTypeModel } from 'src/lib/common/models/app-type.model';
-import { AppManagementService } from 'src/lib/common/services/app-management.service';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AppTypeModel} from '../../../common/models/app-type.model';
+import {AppManagementService} from '../../../common/services/app-management.service';
+import {SnackBarService} from '../../../common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-host-add-n-edit-app-type',
@@ -16,12 +16,14 @@ export class AddNEditAppTypeComponent implements OnInit {
 	appType: AppTypeModel = new AppTypeModel();
 	appTypeError: AppTypeModel;
 	submitLoading = false;
+
 	constructor(
 		private dialogRef: MatDialogRef<AddNEditAppTypeComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: AddNEditAppTypeComponentData,
 		private appManagementService: AppManagementService,
 		private snackbarService: SnackBarService) {
 	}
+
 	ngOnInit() {
 		this.appType = JSON.parse(JSON.stringify(this.data.appType));
 	}
@@ -50,7 +52,8 @@ export class AddNEditAppTypeComponent implements OnInit {
 export class AddNEditAppTypeComponentData {
 	constructor(
 		public appType: AppTypeModel,
-		public isNew: boolean) { }
+		public isNew: boolean) {
+	}
 
 	get action() {
 		return this.isNew ? 'Add' : 'Edit';

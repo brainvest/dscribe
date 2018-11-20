@@ -1,12 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { AppInstanceInfoModel } from 'src/lib/common/models/app-instance-info-model';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { AppManagementService } from 'src/lib/common/services/app-management.service';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AppTypeModel } from 'src/lib/common/models/app-type.model';
-import { DatabaseProviderModel } from 'src/lib/common/models/database-provider.model';
-import { ConnectionStringModel } from 'src/lib/common/models/connection-string.model';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AppInstanceModel} from '../../../common/models/app-instance-model';
+import {AppTypeModel} from '../../../common/models/app-type.model';
+import {DatabaseProviderModel} from '../../../common/models/database-provider.model';
+import {AppManagementService} from '../../../common/services/app-management.service';
+import {SnackBarService} from '../../../common/notifications/snackbar.service';
+import {ConnectionStringModel} from '../../../common/models/connection-string.model';
 
 @Component({
 	selector: 'dscribe-host-add-n-edit-app-instance',
@@ -16,8 +16,8 @@ import { ConnectionStringModel } from 'src/lib/common/models/connection-string.m
 export class AddNEditAppInstanceComponent implements OnInit {
 
 
-	appInstance: AppInstanceInfoModel = new AppInstanceInfoModel();
-	appInstanceError: AppInstanceInfoModel;
+	appInstance: AppInstanceModel = new AppInstanceModel();
+	appInstanceError: AppInstanceModel;
 	appTypes: AppTypeModel[] = [];
 	databaseProviders: DatabaseProviderModel[] = [];
 	submitLoading = false;
@@ -27,9 +27,10 @@ export class AddNEditAppInstanceComponent implements OnInit {
 		@Inject(MAT_DIALOG_DATA) public data: AddNEditAppInstanceComponentData,
 		private appManagementService: AppManagementService,
 		private snackbarService: SnackBarService) {
-		this.appInstanceError = new AppInstanceInfoModel();
+		this.appInstanceError = new AppInstanceModel();
 		this.appInstanceError.DataConnectionString = new ConnectionStringModel();
 	}
+
 	ngOnInit() {
 		this.appInstance = JSON.parse(JSON.stringify(this.data.appInstance));
 		if (!this.appInstance.DataConnectionString) {
@@ -85,8 +86,9 @@ export class AddNEditAppInstanceComponent implements OnInit {
 
 export class AddNEditAppInstanceComponentData {
 	constructor(
-		public appInstance: AppInstanceInfoModel,
-		public isNew: boolean) { }
+		public appInstance: AppInstanceModel,
+		public isNew: boolean) {
+	}
 
 	get action() {
 		return this.isNew ? 'Add' : 'Edit';

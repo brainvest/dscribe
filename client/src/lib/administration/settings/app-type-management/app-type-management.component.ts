@@ -1,10 +1,10 @@
-import { MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AppManagementService } from 'src/lib/common/services/app-management.service';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
-import { AppTypeModel } from 'src/lib/common/models/app-type.model';
-import { AddNEditAppTypeComponentData, AddNEditAppTypeComponent } from '../add-n-edit-app-type/add-n-edit-app-type.component';
-import { ConfirmationDialogComponent } from 'src/lib/common/confirmation-dialog/confirmation-dialog.component';
+import {MatDialog, MatPaginator, MatTableDataSource} from '@angular/material';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {AddNEditAppTypeComponent, AddNEditAppTypeComponentData} from '../add-n-edit-app-type/add-n-edit-app-type.component';
+import {AppTypeModel} from '../../../common/models/app-type.model';
+import {AppManagementService} from '../../../common/services/app-management.service';
+import {SnackBarService} from '../../../common/notifications/snackbar.service';
+import {ConfirmationDialogComponent} from '../../../common/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
 	selector: 'dscribe-host-app-type-management',
@@ -26,7 +26,8 @@ export class AppTypeManagementComponent implements OnInit {
 		private appManagementService: AppManagementService,
 		private snackBarService: SnackBarService,
 		private dialog: MatDialog,
-	) { }
+	) {
+	}
 
 	ngOnInit() {
 		this.appTypesDataSource.paginator = this.AppTypePaginator;

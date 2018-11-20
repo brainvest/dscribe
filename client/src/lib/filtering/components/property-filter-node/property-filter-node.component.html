@@ -6,7 +6,7 @@
 	</div>
 	<select class="filter-option" [class.noOptionSelected]="!node.property" [(ngModel)]="node.property"
 					placeholder="Property">
-		<option [ngValue]="undefined" selected invalid>properties of {{node.inputType.entityType.singularTitle}}
+		<option [ngValue]="undefined" selected invalid>properties of {{node.inputType.EntityType.SingularTitle}}
 		</option>
 		<option *ngFor="let p of node.properties" [ngValue]="p">{{p?.title || p?.name}}</option>
 	</select>

@@ -1,8 +1,8 @@
-import {AppInstanceInfoModel} from '../common/models/app-instance-info-model';
+import {AppInstanceInformation} from '../common/models/app-instance-information';
 
 export interface DscribeConfig {
 	appInstanceId: number;
-	appInstance: AppInstanceInfoModel;
+	appInstance: AppInstanceInformation;
 	authHeaderFetcher: () => string;
 	serverRoot: string;
 }

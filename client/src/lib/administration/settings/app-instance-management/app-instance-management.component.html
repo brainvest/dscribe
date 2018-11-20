@@ -54,7 +54,7 @@
 			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedAppInstanceColumns"></tr>
-			<tr mat-row *matRowDef="let appInstance; columns: displayedAppInstanceColumns;" [ngClass]="{'highlight': selectedEntityType?.id === appInstance.id}"
+			<tr mat-row *matRowDef="let appInstance; columns: displayedAppInstanceColumns;" [ngClass]="{'highlight': selectedAppInstance?.Id === appInstance.id}"
 			 (click)="selectAppInstance(appInstance)"></tr>
 		</table>
 		<mat-paginator id="appInstancesPaginator" #appInstancesPaginator [length]="appInstances?.length" [pageSize]="5"></mat-paginator>

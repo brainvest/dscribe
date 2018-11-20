@@ -1,8 +1,8 @@
 export class ConnectionStringModel {
-	public server: string;
-	public user: string;
-	public password: string;
-	public database: string;
-	public trusted_Connection: boolean;
-	public multipleActiveResultSets: boolean;
+	public Server: string;
+	public User: string;
+	public Password: string;
+	public Database: string;
+	public Trusted_Connection: boolean;
+	public MultipleActiveResultSets: boolean;
 }

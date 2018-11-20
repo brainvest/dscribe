@@ -31,7 +31,7 @@
 			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedAppTypeColumns"></tr>
-			<tr mat-row *matRowDef="let appType; columns: displayedAppTypeColumns;" [ngClass]="{'highlight': selectedEntityType?.id === appType.id}"
+			<tr mat-row *matRowDef="let appType; columns: displayedAppTypeColumns;" [ngClass]="{'highlight': selectedAppType?.Id === appType.id}"
 			 (click)="selectAppType(appType)"></tr>
 		</table>
 		<mat-paginator id="AppTypePaginator" #AppTypePaginator [length]="appTypes?.length" [pageSize]="5"></mat-paginator>

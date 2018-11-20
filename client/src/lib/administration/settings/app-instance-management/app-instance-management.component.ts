@@ -1,13 +1,10 @@
-import { MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AppManagementService } from 'src/lib/common/services/app-management.service';
-import { AppInstanceInfoModel } from 'src/lib/common/models/app-instance-info-model';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
-import { ConfirmationDialogComponent } from 'src/lib/common/confirmation-dialog/confirmation-dialog.component';
-import {
-	AddNEditAppInstanceComponent,
-	AddNEditAppInstanceComponentData
-} from '../add-n-edit-app-instance/add-n-edit-app-instancecomponent';
+import {MatDialog, MatPaginator, MatTableDataSource} from '@angular/material';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {AddNEditAppInstanceComponent, AddNEditAppInstanceComponentData} from '../add-n-edit-app-instance/add-n-edit-app-instancecomponent';
+import {AppInstanceModel} from '../../../common/models/app-instance-model';
+import {AppManagementService} from '../../../common/services/app-management.service';
+import {SnackBarService} from '../../../common/notifications/snackbar.service';
+import {ConfirmationDialogComponent} from '../../../common/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
 	selector: 'dscribe-host-app-instance-management',
@@ -17,9 +14,9 @@ import {
 export class AppInstanceManagementComponent implements OnInit {
 
 	displayedAppInstanceColumns = ['name', 'title', 'appTypeName', 'isEnabled', 'isProduction'];
-	appInstances: AppInstanceInfoModel[] = [];
-	selectedAppInstance: AppInstanceInfoModel = new AppInstanceInfoModel();
-	appInstancesDataSource = new MatTableDataSource<AppInstanceInfoModel>(this.appInstances);
+	appInstances: AppInstanceModel[] = [];
+	selectedAppInstance: AppInstanceModel = new AppInstanceModel();
+	appInstancesDataSource = new MatTableDataSource<AppInstanceModel>(this.appInstances);
 
 
 	@ViewChild('entitiyTypesPaginator') AppInstancePaginator: MatPaginator;
@@ -28,7 +25,8 @@ export class AppInstanceManagementComponent implements OnInit {
 	constructor(
 		private appManagementService: AppManagementService,
 		private snackBarService: SnackBarService,
-		private dialog: MatDialog) { }
+		private dialog: MatDialog) {
+	}
 
 	ngOnInit() {
 		this.appInstancesDataSource.paginator = this.AppInstancePaginator;
@@ -92,7 +90,7 @@ export class AppInstanceManagementComponent implements OnInit {
 		);
 	}
 
-	selectAppInstance(appInstance: AppInstanceInfoModel) {
+	selectAppInstance(appInstance: AppInstanceModel) {
 		if (appInstance === this.selectedAppInstance) {
 			return;
 		}

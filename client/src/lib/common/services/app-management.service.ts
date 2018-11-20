@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { DscribeService } from 'src/lib/dscribe.service';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AppTypeModel } from '../models/app-type.model';
-import { AppInstanceInfoModel } from '../models/app-instance-info-model';
-import { DatabaseProviderModel } from '../models/database-provider.model';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {AppTypeModel} from '../models/app-type.model';
+import {AppInstanceModel} from '../models/app-instance-model';
+import {DatabaseProviderModel} from '../models/database-provider.model';
+import {DscribeService} from '../../dscribe.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -42,23 +42,23 @@ export class AppManagementService {
 		return this.http.get<AppTypeModel[]>(this.GetAppTypesApi);
 	}
 
-	deleteAppInstance(appInstance: AppInstanceInfoModel): Observable<any> {
-		return this.http.post<AppInstanceInfoModel>(this.DeleteAppInstanceApi, appInstance);
+	deleteAppInstance(appInstance: AppInstanceModel): Observable<any> {
+		return this.http.post<AppInstanceModel>(this.DeleteAppInstanceApi, appInstance);
 	}
 
-	getAppInstancesInfo(): Observable<AppInstanceInfoModel[]> {
-		return this.http.post<AppInstanceInfoModel[]>(this.GetAppInstancesInfoApi, null);
+	getAppInstancesInfo(): Observable<AppInstanceModel[]> {
+		return this.http.post<AppInstanceModel[]>(this.GetAppInstancesInfoApi, null);
 	}
 
 	getDatabaseProviders(): Observable<DatabaseProviderModel[]> {
 		return this.http.get<DatabaseProviderModel[]>(this.GetDatabaseProvidersApi);
 	}
 
-	addAppInstance(appInstance: AppInstanceInfoModel): Observable<AppInstanceInfoModel> {
-		return this.http.post<AppInstanceInfoModel>(this.AddAppInstanceApi, appInstance);
+	addAppInstance(appInstance: AppInstanceModel): Observable<AppInstanceModel> {
+		return this.http.post<AppInstanceModel>(this.AddAppInstanceApi, appInstance);
 	}
 
-	editAppInstance(appInstance: AppInstanceInfoModel): Observable<any> {
-		return this.http.post<AppInstanceInfoModel>(this.EditAppInstanceApi, appInstance);
+	editAppInstance(appInstance: AppInstanceModel): Observable<any> {
+		return this.http.post<AppInstanceModel>(this.EditAppInstanceApi, appInstance);
 	}
 }
