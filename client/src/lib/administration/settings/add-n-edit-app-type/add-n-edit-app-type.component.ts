@@ -36,6 +36,7 @@ export class AddNEditAppTypeComponent implements OnInit {
 		request.subscribe((data: any) => {
 			this.submitLoading = false;
 			this.dialogRef.close('saved');
+			this.snackbarService.open('Success');
 		}, (error: HttpErrorResponse) => {
 			this.appTypeError = error.error;
 			this.snackbarService.open(error.statusText);

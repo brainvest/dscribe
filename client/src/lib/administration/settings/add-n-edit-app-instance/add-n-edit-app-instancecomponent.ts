@@ -1,12 +1,12 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {HttpErrorResponse} from '@angular/common/http';
-import {AppInstanceModel} from '../../../common/models/app-instance-model';
-import {AppTypeModel} from '../../../common/models/app-type.model';
-import {DatabaseProviderModel} from '../../../common/models/database-provider.model';
-import {AppManagementService} from '../../../common/services/app-management.service';
-import {SnackBarService} from '../../../common/notifications/snackbar.service';
-import {ConnectionStringModel} from '../../../common/models/connection-string.model';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AppInstanceModel } from '../../../common/models/app-instance-model';
+import { AppTypeModel } from '../../../common/models/app-type.model';
+import { DatabaseProviderModel } from '../../../common/models/database-provider.model';
+import { AppManagementService } from '../../../common/services/app-management.service';
+import { SnackBarService } from '../../../common/notifications/snackbar.service';
+import { ConnectionStringModel } from '../../../common/models/connection-string.model';
 
 @Component({
 	selector: 'dscribe-host-add-n-edit-app-instance',
@@ -71,9 +71,9 @@ export class AddNEditAppInstanceComponent implements OnInit {
 		request.subscribe((data: any) => {
 			this.dialogRef.close('saved');
 			this.submitLoading = false;
+			this.snackbarService.open('Success');
 		}, (error: HttpErrorResponse) => {
-			this.appInstanceError = error.error;
-			console.log(this.appInstanceError);
+			this.appInstanceError = error.error ? error.error : new AppInstanceModel();
 			this.snackbarService.open(error.statusText);
 			this.submitLoading = false;
 		});

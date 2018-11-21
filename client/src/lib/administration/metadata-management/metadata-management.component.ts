@@ -122,7 +122,7 @@ export class MetadataManagementComponent implements OnInit {
 		if (prop) {
 			return prop.Name;
 		}
-		return this.allPropertiesInfo!.find(x => x.id === id).name;
+		return this.allPropertiesInfo!.find(x => x.Id === id).Name;
 	}
 
 	addEntityType() {
