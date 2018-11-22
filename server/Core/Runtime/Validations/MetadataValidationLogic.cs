@@ -12,7 +12,7 @@ namespace Brainvest.Dscribe.Runtime.Validations
 		{
 			if (!await dbContext.EntityTypes.AnyAsync())
 			{
-				return "Entity list is empty.";
+				//return "Entity list is empty.";
 			}
 			return string.Empty;
 		}
