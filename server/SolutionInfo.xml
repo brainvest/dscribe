@@ -1,8 +1,12 @@
 <Project>
 	<PropertyGroup>
-		<Version>0.1.22</Version>
+		<Version>0.1.24</Version>
 		<Authors>Alireza Haghshenas, Nima Hakimi</Authors>
 		<Company>LastInfinity</Company>
 		<Product>Dscribe</Product>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<RuntimeFrameworkVersion>2.1.1</RuntimeFrameworkVersion>
 	</PropertyGroup>
 </Project>
