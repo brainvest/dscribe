@@ -13,6 +13,7 @@ import {Observable, of} from 'rxjs';
 export class ListContainerComponent implements OnInit {
 	entityType: EntityTypeMetadata;
 	entityTypes: EntityTypeMetadata[];
+	navFixed: boolean;
 
 	private entityTypeName: string;
 

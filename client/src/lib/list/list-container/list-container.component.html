@@ -1,11 +1,20 @@
-<div class="list-wrapper">
-	<div class="list-container">
-		<nav class="secondary-nav mat-elevation-z4">
-			<a class="secondary-nav-item" *ngFor="let entityType of entityTypes" routerLink="/entity/{{entityType.Name}}"
-			 routerLinkActive="active">
-			 {{entityType.PluralTitle || entityType.Name}}
+<mat-drawer-container>
+	<mat-drawer #drawer [mode]="navFixed?'side':'over'">
+		<mat-toolbar>
+			<span>Entities</span>
+			<span style="flex-grow: 1">&nbsp;</span>
+			<button mat-icon-button (click)="navFixed = !navFixed">
+				<mat-icon>{{navFixed ? 'lock' : 'lock_open'}}</mat-icon>
+			</button>
+		</mat-toolbar>
+		<mat-list dense>
+			<a mat-list-item *ngFor="let entityType of entityTypes" routerLink="/entity/{{entityType.Name}}"
+				 routerLinkActive="active">
+				{{entityType.PluralTitle || entityType.Name}}
 			</a>
-		</nav>
-		<dscribe-list [entityType]="entityType"></dscribe-list>
-	</div>
-</div>
+		</mat-list>
+	</mat-drawer>
+	<mat-drawer-content>
+		<dscribe-list [entityType]="entityType" [hasNav]="true" (navToggled)="drawer.toggle()"></dscribe-list>
+	</mat-drawer-content>
+</mat-drawer-container>

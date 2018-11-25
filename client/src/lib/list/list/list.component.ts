@@ -46,8 +46,11 @@ export class ListComponent implements OnInit, OnChanges {
 	@Input() entityType: EntityTypeMetadata;
 	@Input() masters: MasterReference[];
 	@Input() hideFilter: boolean;
-	@Output() selectionChanged = new EventEmitter<any>();
 	@Input() addNEditStructure: AddNEditStructure;
+	@Input() hasNav: boolean;
+
+	@Output() selectionChanged = new EventEmitter<any>();
+	@Output() navToggled = new EventEmitter<any>();
 
 	detailLists?: MasterReference[];
 	displayedColumns = [];
@@ -362,6 +365,10 @@ export class ListComponent implements OnInit, OnChanges {
 
 	shouldDisplayCommand(command: DscribeCommand) {
 		return !command.displayPredicate || command.displayPredicate(<DscribeCommandDisplayPredicate<ListComponent>>{component: this});
+	}
+
+	toggleNav() {
+		this.navToggled.next();
 	}
 
 }
