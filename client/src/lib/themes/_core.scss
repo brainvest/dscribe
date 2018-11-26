@@ -34,16 +34,25 @@
 .table {
 	background-color: #fff;
 }
+
 /********************************************
       Table
 *******************************************/
 
 .mat-header-row {
 	background-color: #F7FAFC;
+	min-height: 36px;
+	height: 36px !important;
+}
+
+.mat-sort-header-button {
+	font-weight: bold !important;
 }
 
 .mat-row {
 	cursor: pointer;
+	min-height: 36px;
+	height: 36px !important;
 }
 
 .mat-row:hover {

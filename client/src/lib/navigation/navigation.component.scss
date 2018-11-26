@@ -4,6 +4,10 @@
 	flex-direction: row;
 }
 
+main {
+	max-width: 100%;
+}
+
 .container main {
 	flex-grow: 1;
 	background-color: #ECEFF1;
