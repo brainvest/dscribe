@@ -14,6 +14,7 @@ namespace Brainvest.Dscribe.Runtime.ActionContext
 		public IEntityTypeMetadata EntityType { get; set; }
 		public IPropertyMetadata Property { get; set; }
 		public IEnumerable<IMasterReference> Masters { get; set; }
+		public IEnumerable<string> ExcludedProperties { get; set; }
 	}
 
 	public class MasterReference : IMasterReference

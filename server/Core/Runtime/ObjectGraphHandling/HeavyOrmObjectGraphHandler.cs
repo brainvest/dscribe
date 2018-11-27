@@ -45,10 +45,21 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 			, string currentObjectPath, ActionContextInfo actionContext)
 		{
 			var entityType = _implementations.Metadata[request.EntityTypeName];
-			var prop = entityType.GetAllProperties().First();
 			object entity;
 			if (!entityType.NotMapped())
 			{
+				foreach (var prop in entityType.GetAllProperties().Where(x => x.DataType == DataTypes.NavigationEntity))
+				{
+					if (prop.HideInInsert() || prop.ForeignKey == null)
+					{
+						continue;
+					}
+					if (actionContext.ExcludedProperties == null)
+					{
+						actionContext.ExcludedProperties = new List<string> { };
+					}
+					(actionContext.ExcludedProperties as List<string>).Add(prop.ForeignKey.Name);
+				}
 				var result = await _entityHandler.Add(request, repository, actionContext);
 				entity = result.Value;
 			}

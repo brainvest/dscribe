@@ -16,6 +16,7 @@ export class AddNEditStructureLogic {
 		};
 		const allProperties = entityTypeMetaData.getPropertiesForManage(mode);
 		const navProps = allProperties.filter(x => x.DataType === DataTypes.NavigationEntity || x.DataType === DataTypes.NavigationList);
+		const propertiesToHide: string[] = [];
 		for (const nav of navProps) {
 			const childMasters = masters ? [...masters, new MasterReference(entity, nav)] : [new MasterReference(entity, nav)];
 			let navStructure: AddNEditStructure;
@@ -29,6 +30,9 @@ export class AddNEditStructureLogic {
 					, Helper.joinPath(path, nav.Name), Helper.joinPath(pathTitle, nav.Title));
 				navStructure.parentEntity = entity;
 				navStructure.masterReferences = childMasters;
+				if (nav.ForeignKeyName) {
+					propertiesToHide.push(nav.ForeignKeyName);
+				}
 			} else {
 				let list = entity[nav.Name];
 				if (!list) {
@@ -60,6 +64,9 @@ export class AddNEditStructureLogic {
 					m.masterProperty
 					&& m.masterProperty.InverseProperty
 					&& m.masterProperty.InverseProperty.ForeignKeyProperty === prop)) {
+				continue;
+			}
+			if (propertiesToHide.indexOf(prop.Name) > -1) {
 				continue;
 			}
 			if (structure.directProperties) {

@@ -13,6 +13,7 @@ namespace Brainvest.Dscribe.Abstractions
 		IEntityTypeMetadata EntityType { get; }
 		IPropertyMetadata Property { get; }
 		IEnumerable<IMasterReference> Masters { get; }
+		IEnumerable<string> ExcludedProperties { get; }
 	}
 
 	public enum ActionContextType

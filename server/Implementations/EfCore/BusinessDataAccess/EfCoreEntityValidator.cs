@@ -26,6 +26,10 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				{
 					continue;
 				}
+				if (actionContext.ExcludedProperties != null && actionContext.ExcludedProperties.Contains(property.Name))
+				{
+					continue;
+				}
 				if (actionContext != null && actionContext.Masters != null && 
 					actionContext.Masters.Any(m => m.MasterProperty.InverseProperty == property || m.MasterProperty.InverseProperty?.ForeignKey == property))
 				{
