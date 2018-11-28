@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Brainvest.Dscribe.LobTools.Entities
 {
-	public class EntityChangeLog : IEntityReference, IRequestReference
+	public class Attachment : IEntityReference, IRequestReference
 	{
 		public int Id { get; set; }
 
@@ -12,10 +12,13 @@ namespace Brainvest.Dscribe.LobTools.Entities
 
 		public long? RequestLogId { get; set; }
 		[ForeignKey(nameof(RequestLogId))]
-		public RequestLog RequestLog { get; set; }
+		public RequestLog Request { get; set; }
 
-		public ActionTypeEnum ActionTypeId { get; set; }
-		public string NewValues { get; set; }
-		public string OldValues { get; set; }
+		public bool IsDeleted { get; set; }
+		public string Title { get; set; }
+		public string Description { get; set; }
+
+		public byte[] Data { get; set; }
+		public string Url { get; set; }
 	}
 }
