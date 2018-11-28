@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling</AssemblyName>
+    <RootNamespace>Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling</RootNamespace>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+	<Import Project="..\..\SolutionInfo.xml" />
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NPOI" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Abstractions\Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

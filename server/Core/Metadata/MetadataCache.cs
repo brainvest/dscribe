@@ -16,6 +16,7 @@ namespace Brainvest.Dscribe.Metadata
 		private static bool _facetsDefined = false;
 
 		private readonly Dictionary<string, EntityTypeMetadata> _entityTypesByName = new Dictionary<string, EntityTypeMetadata>();
+		private readonly Dictionary<int, EntityTypeMetadata> _entityTypesById = new Dictionary<int, EntityTypeMetadata>();
 		private readonly Dictionary<string, Facet> _propertyFacets = new Dictionary<string, Facet>();
 		private readonly Dictionary<string, Facet> _entityFacets = new Dictionary<string, Facet>();
 		private readonly Dictionary<string, DataType> _dataTypesByIndetifier;
@@ -86,6 +87,7 @@ namespace Brainvest.Dscribe.Metadata
 				}
 
 				_entityTypesByName.Add(dbEntityMetadata.Name, entityTypeMetadata);
+				_entityTypesById.Add(dbEntityMetadata.Id, entityTypeMetadata);
 			}
 
 			foreach (var property in bundle.EntityTypes.Where(x => x.Properties != null).SelectMany(x => x.Properties))
@@ -179,6 +181,14 @@ namespace Brainvest.Dscribe.Metadata
 			get
 			{
 				return _entityTypesByName[entityType.Name];
+			}
+		}
+
+		public IEntityTypeMetadata this[int entityTypeId]
+		{
+			get
+			{
+				return _entityTypesById[entityTypeId];
 			}
 		}
 
