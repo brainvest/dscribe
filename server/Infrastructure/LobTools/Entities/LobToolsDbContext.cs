@@ -15,7 +15,10 @@ namespace Brainvest.Dscribe.LobTools.Entities
 			modelBuilder.HasDefaultSchema("lob");
 		}
 
+		public DbSet<Attachment> Attachments { get; set; }
 		public DbSet<Draft> Drafts { get; set; }
 		public DbSet<User> Users { get; set; }
+		public DbSet<ReportDefinition> ReportDefinitions { get; set; }
+		public DbSet<ReportFormat> ReportFormats { get; set; }
 	}
 }
