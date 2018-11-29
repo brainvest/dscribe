@@ -1,8 +1,9 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
-using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.LobTools.Models;
+using Brainvest.Dscribe.MetadataDbAccess;
+using Brainvest.Dscribe.MetadataDbAccess.Entities.Reporting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,43 +21,40 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		private readonly IUsersService _usersService;
 		private readonly IRichTextDocumentHandler _richTextDocumentHandler;
 		private readonly IEntityHandler _entityHandler;
+		private readonly MetadataDbContext _metadataDbContext;
 
 		public ReportController(
 			IImplementationsContainer implementationsContainer,
 			IUsersService usersService,
 			IRichTextDocumentHandler richTextDocumentHandler,
-			IEntityHandler entityHandler)
+			IEntityHandler entityHandler,
+			MetadataDbContext metadataDbContext)
 		{
 			_implementationsContainer = implementationsContainer;
 			_usersService = usersService;
 			_richTextDocumentHandler = richTextDocumentHandler;
 			_entityHandler = entityHandler;
+			_metadataDbContext = metadataDbContext;
 		}
 
 		public async Task<ActionResult<IEnumerable<ReportsListResponse>>> GetReports()
 		{
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
-			{
-				var reports = await dbContext.ReportDefinitions
-					.Select(x => new ReportsListResponse
-					{
-						EntityTypeId = x.EntityTypeId,
-						ReportFormatId = x.ReportFormatId,
-						Id = x.Id,
-						Title = x.Title
-					}).ToListAsync();
-				return reports;
-			}
+			var reports = await _metadataDbContext.ReportDefinitions
+				.Select(x => new ReportsListResponse
+				{
+					EntityTypeId = x.EntityTypeId,
+					ReportFormatId = x.ReportFormatId,
+					Id = x.Id,
+					Title = x.Title
+				}).ToListAsync();
+			return reports;
 		}
 
 		public async Task<ActionResult> ProcessForDownload(DownloadReportRequest request)
 		{
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
-			{
-				var report = await dbContext.ReportDefinitions.FindAsync(request.ReportId);
-				var (stream, contentType, fileName) = await ProcessReport(report, request.EntityIdentifier);
-				return File(stream, contentType, fileName);
-			}
+			var report = await _metadataDbContext.ReportDefinitions.FindAsync(request.ReportId);
+			var (stream, contentType, fileName) = await ProcessReport(report, request.EntityIdentifier);
+			return File(stream, contentType, fileName);
 		}
 
 		private async Task<(byte[] stream, string contentType, string fileName)> ProcessReport(ReportDefinition report, int entityIdentifier)
