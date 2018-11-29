@@ -1,4 +1,4 @@
-namespace Brainvest.Dscribe.LobTools.Entities
+namespace Brainvest.Dscribe.MetadataDbAccess.Entities.Reporting
 {
 	public class ReportFormat
 	{
