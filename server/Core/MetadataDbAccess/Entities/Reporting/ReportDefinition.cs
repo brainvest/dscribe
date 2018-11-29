@@ -1,7 +1,7 @@
 using Brainvest.Dscribe.Abstractions;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Brainvest.Dscribe.LobTools.Entities
+namespace Brainvest.Dscribe.MetadataDbAccess.Entities.Reporting
 {
 	public class ReportDefinition : IRequestReference
 	{
