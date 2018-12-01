@@ -10,6 +10,7 @@ namespace Brainvest.Dscribe.Metadata
 	{
 		public EntityGeneralUsageCategoryStruct GeneralBehavior { get; private set; }
 		private Dictionary<string, PropertyMetadata> _properties = new Dictionary<string, PropertyMetadata>();
+		public int EntityTypeId { get; private set; }
 		public string Name { get; private set; }
 		public string SchemaName { get; private set; }
 		public string SingularTitle { get; private set; }
@@ -39,6 +40,7 @@ namespace Brainvest.Dscribe.Metadata
 
 		public EntityTypeMetadata(EntityType dbMetadata, EntityTypeMetadata baseEntityType)
 		{
+			EntityTypeId = dbMetadata.Id;
 			Name = dbMetadata.Name;
 			SchemaName = dbMetadata.SchemaName;
 			SingularTitle = (dbMetadata.SingularTitle) ?? (dbMetadata.Name.SmartSeparate());
