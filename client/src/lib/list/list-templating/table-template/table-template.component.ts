@@ -17,17 +17,4 @@ export class TableTemplateComponent {
 	@Output() rowClick = new EventEmitter<any>();
 	@ViewChild(MatSort) sort: MatSort;
 
-
-	isAllSelected() {
-		const numSelected = this.selection.selected.length;
-		const numRows = this.data.length;
-		return numSelected === numRows;
-	}
-
-	masterToggle() {
-		this.isAllSelected() ?
-			this.selection.clear() :
-			this.data.forEach(row => this.selection.select(row));
-	}
-
 }

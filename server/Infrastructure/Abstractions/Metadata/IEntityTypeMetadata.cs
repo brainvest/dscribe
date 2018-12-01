@@ -8,6 +8,7 @@ namespace Brainvest.Dscribe.Abstractions.Metadata
 		string SchemaName { get; }
 		string TableName { get; }
 		string DisplayNameProperty { get; }
+		int EntityTypeId { get; }
 
 		IPropertyMetadata GetPrimaryKey();
 		IEnumerable<IPropertyMetadata> GetDirectProperties();
