@@ -4,8 +4,8 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models
 	{
 		public string ClientId { get; set; }
 		public string ClientName { get; set; }
-		public string RedirectUri { get; set; }
-		public string SilentRefreshUri { get; set; }
-		public string PostLogoutRedirectUri { get; set; }
+		public string[] RedirectUris { get; set; }
+		public string[] SilentRefreshUris { get; set; }
+		public string[] PostLogoutRedirectUris { get; set; }
 	}
 }

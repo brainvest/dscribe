@@ -1,3 +1,4 @@
+using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
 using IdentityModel;
 using IdentityServer4;
@@ -35,15 +36,15 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 				ClientName = x.ClientName,
 				AllowedGrantTypes = GrantTypes.Implicit,
 				RequireConsent = false,
-				RedirectUris = { x.RedirectUri, x.SilentRefreshUri },
-				PostLogoutRedirectUris = { x.PostLogoutRedirectUri },
+				RedirectUris = x.RedirectUris.SafeUnionAll(x.SilentRefreshUris).ToList(),
+				PostLogoutRedirectUris = x.PostLogoutRedirectUris.ToList(),
 				AllowedScopes = new List<string>
 					{
 							IdentityServerConstants.StandardScopes.OpenId,
 							IdentityServerConstants.StandardScopes.Profile,
 							"roles"
 					},
-				AllowedCorsOrigins = new List<string> { x.PostLogoutRedirectUri },
+				AllowedCorsOrigins = x.PostLogoutRedirectUris.ToList(),
 				AllowOfflineAccess = true,
 				AllowAccessTokensViaBrowser = true,
 				AlwaysIncludeUserClaimsInIdToken = true,
