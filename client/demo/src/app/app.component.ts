@@ -6,6 +6,7 @@ import {DscribeFeatureArea} from '../../../src/lib/models/dscribe-feature-area.e
 import {DscribeCommandCallbackInput} from '../../../src/lib/models/dscribe-command-callback-input';
 import {ListComponent} from '../../../src/lib/list/list/list.component';
 import {DscribeCommandDisplayPredicate} from '../../../src/lib/models/dscribe-command-display-predicate';
+import {environment} from '../environments/environment';
 
 @Component({
 	selector: 'dscribe-host-root',
@@ -17,6 +18,7 @@ export class AppComponent {
 
 	constructor(public authService: AuthService, private dscribeService: DscribeService) {
 		this.setupDscribe();
+		this.dscribeService.setServerRoot(environment.apiServerRoot);
 	}
 
 	private setupDscribe() {

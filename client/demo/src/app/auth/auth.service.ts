@@ -5,6 +5,7 @@
 
 import {Injectable} from '@angular/core';
 import {User, UserManager, UserManagerSettings} from 'oidc-client';
+import {environment} from '../../environments/environment';
 
 @Injectable({
 	providedIn: 'root'
@@ -44,15 +45,15 @@ export class AuthService {
 
 export function getClientSettings(): UserManagerSettings {
 	return {
-		authority: 'http://localhost:5001/',
+		authority: environment.auth.authority,
 		client_id: 'dscribe',
-		redirect_uri: 'http://localhost:4200/auth-callback',
-		post_logout_redirect_uri: 'http://localhost:4200/',
+		redirect_uri: environment.auth.redirect_uri,
+		post_logout_redirect_uri: environment.auth.post_logout_redirect_uri,
 		response_type: 'id_token token',
 		scope: 'openid profile roles',
 		filterProtocolClaims: true,
 		loadUserInfo: true,
 		automaticSilentRenew: true,
-		silent_redirect_uri: 'http://localhost:4200/oidc-silent-refresh/index.html'
+		silent_redirect_uri: environment.auth.silent_redirect_uri
 	};
 }
