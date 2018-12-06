@@ -39,10 +39,9 @@ export class AddNEditPropertyComponent implements OnInit {
 		this.entityTypes = data.entityTypes;
 		this.thisTypeProperties = data.thisEntityTypeProperties;
 		this.allProperties = data.allProperties;
-		console.log(this.basicInfo);
-		console.log(data);
 		if (!this.data.isNew) {
 			this.setDefaultFacetValues();
+			this.data.basicInfo.PropertyFacetDefinitions = [];
 		}
 	}
 

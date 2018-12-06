@@ -7,10 +7,10 @@
 					<mat-icon color="primary">add</mat-icon>
 				</button>
 				<button mat-icon-button (click)="editEntityType()" [disabled]="!selectedEntityType">
-					<mat-icon color="accent">edit</mat-icon>
+					<mat-icon color="accent" [ngStyle]="{ 'color' : selectedEntityType ? '' : '#dddddd' }">edit</mat-icon>
 				</button>
 				<button mat-icon-button (click)="deleteEntityType()" [disabled]="!selectedEntityType" *ngIf="!deleteEntityLoading">
-					<mat-icon color="warn">delete</mat-icon>
+					<mat-icon color="warn" [ngStyle]="{ 'color' : selectedEntityType ? '' : '#dddddd' }" >delete</mat-icon>
 				</button>
 				<button mat-icon-button matTooltip="Delete loading" *ngIf="deleteEntityLoading" style="margin-top: -26px;">
 					<mat-spinner strokeWidth="3" [diameter]="20" color="accent"></mat-spinner>
@@ -78,13 +78,13 @@
 			<span *ngIf="!selectedEntityType">Please select an entity type to manage its properties</span>
 			<mat-card-actions>
 				<button mat-icon-button (click)="addProperty()" [disabled]="!selectedEntityType">
-					<mat-icon color="primary">add</mat-icon>
+					<mat-icon color="primary" [ngStyle]="{ 'color' : selectedEntityType ? '' : '#dddddd' }">add</mat-icon>
 				</button>&nbsp;
 				<button mat-icon-button (click)="editProperty()" [disabled]="!selectedEntityType || !selectedProperty">
-					<mat-icon color="accent">edit</mat-icon>
+					<mat-icon color="accent" [ngStyle]="{ 'color' : selectedProperty ? '' : '#dddddd' }">edit</mat-icon>
 				</button>&nbsp;
 				<button mat-icon-button (click)="deleteProperty()" [disabled]="!selectedEntityType || !selectedProperty" *ngIf="!deletePropertyLoading">
-					<mat-icon color="warn">delete</mat-icon>
+					<mat-icon color="warn" [ngStyle]="{ 'color' : selectedProperty ? '' : '#dddddd' }">delete</mat-icon>
 				</button>
 				<button mat-icon-button matTooltip="Delete loading" *ngIf="deletePropertyLoading" style="margin-top: -26px;">
 					<mat-spinner strokeWidth="3" [diameter]="20" color="accent"></mat-spinner>
