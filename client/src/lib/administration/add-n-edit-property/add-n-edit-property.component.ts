@@ -39,7 +39,8 @@ export class AddNEditPropertyComponent implements OnInit {
 		this.entityTypes = data.entityTypes;
 		this.thisTypeProperties = data.thisEntityTypeProperties;
 		this.allProperties = data.allProperties;
-
+		console.log(this.basicInfo);
+		console.log(data);
 		if (!this.data.isNew) {
 			this.setDefaultFacetValues();
 		}
@@ -49,7 +50,9 @@ export class AddNEditPropertyComponent implements OnInit {
 		const currentGeneralUsageCategory = this.data.basicInfo.PropertyGeneralUsageCategories
 			.find(x => x.Id === this.data.property.PropertyGeneralUsageCategoryId);
 		this.basicInfo.PropertyFacetDefinitions.forEach((x: FacetDefinitionModel) => {
-			x.Default = this.data.basicInfo.DefaultPropertyFacetValues[currentGeneralUsageCategory.Name][x.Name];
+			if (this.data.basicInfo.DefaultPropertyFacetValues[currentGeneralUsageCategory.Name]) {
+				x.Default = this.data.basicInfo.DefaultPropertyFacetValues[currentGeneralUsageCategory.Name][x.Name];
+			}
 		});
 	}
 
@@ -73,6 +76,16 @@ export class AddNEditPropertyComponent implements OnInit {
 	}
 
 	getFacetName(facetType: FacetDefinitionModel) {
+		if (!this.data.property.LocalFacets) {
+			this.data.property.LocalFacets = [];
+			// this.data.property.LocalFacets = [];
+			// this.basicInfo.PropertyFacetDefinitions.forEach((element: FacetDefinitionModel) => {
+			// 	this.data.property.LocalFacets.push({
+			// 		FacetName: element.Name,
+			// 		Value: element.DataType
+			// 	});
+			// });
+		}
 		const localFacet = this.data.property.LocalFacets.find(x => x.FacetName === facetType.Name);
 		if (localFacet) {
 			if (localFacet.FacetName === facetType.Name) {
@@ -82,19 +95,44 @@ export class AddNEditPropertyComponent implements OnInit {
 		return facetType.Name + ' ( Default )';
 	}
 
-	setFacetCheckIcon(facetType: FacetDefinitionModel) {
-		const localFacet = this.data.property.LocalFacets.find(x => x.FacetName === facetType.Name);
-		if (localFacet) {
-			if (localFacet.Value.toLowerCase() === 'false') {
-				return 'check_box_outline_blank';
-			} else if (localFacet.Value.toLowerCase() === 'true') {
-				return 'check_box';
+	setPropertyFacetDefinitions() {
+		this.basicInfo.PropertyFacetDefinitions = [];
+		const generalUsageCategory =
+			this.basicInfo.PropertyGeneralUsageCategories.find(x => x.Id === this.property.PropertyGeneralUsageCategoryId);
+
+		if (generalUsageCategory) {
+			for (const g in this.basicInfo.DefaultPropertyFacetValues[generalUsageCategory.Name]) {
+				if (generalUsageCategory) {
+					let id = 0;
+					this.basicInfo.PropertyFacetDefinitions.push({
+						Id: ++id,
+						Default: this.basicInfo.DefaultPropertyFacetValues[generalUsageCategory.Name][g],
+						Name: g,
+						DataType: ''
+					});
+				}
 			}
 		}
-		if (facetType.Default.toLowerCase() === 'false') {
-			return 'check_box_outline_blank';
-		} else if (facetType.Default.toLowerCase() === 'true') {
-			return 'check_box';
+		// this.basicInfo.PropertyFacetDefinitions = this.basicInfo.DefaultPropertyFacetValues[generalUsageCategory.Name];
+	}
+
+	setFacetCheckIcon(facetType: FacetDefinitionModel) {
+		if (this.data.property.LocalFacets) {
+			const localFacet = this.data.property.LocalFacets.find(x => x.FacetName === facetType.Name);
+			if (localFacet) {
+				if (localFacet.Value.toLowerCase() === 'false') {
+					return 'check_box_outline_blank';
+				} else if (localFacet.Value.toLowerCase() === 'true') {
+					return 'check_box';
+				}
+			}
+		}
+		if (facetType.Default) {
+			if (facetType.Default.toLowerCase() === 'false') {
+				return 'check_box_outline_blank';
+			} else if (facetType.Default.toLowerCase() === 'true') {
+				return 'check_box';
+			}
 		}
 	}
 
