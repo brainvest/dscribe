@@ -40,8 +40,8 @@ export class AddNEditPropertyComponent implements OnInit {
 		this.thisTypeProperties = data.thisEntityTypeProperties;
 		this.allProperties = data.allProperties;
 		if (!this.data.isNew) {
-			this.setDefaultFacetValues();
 			this.data.basicInfo.PropertyFacetDefinitions = [];
+			this.setDefaultFacetValues();
 		}
 	}
 
@@ -53,6 +53,7 @@ export class AddNEditPropertyComponent implements OnInit {
 				x.Default = this.data.basicInfo.DefaultPropertyFacetValues[currentGeneralUsageCategory.Name][x.Name];
 			}
 		});
+		this.setPropertyFacetDefinitions();
 	}
 
 	changeFacetValue(facetType: FacetDefinitionModel) {
@@ -77,13 +78,6 @@ export class AddNEditPropertyComponent implements OnInit {
 	getFacetName(facetType: FacetDefinitionModel) {
 		if (!this.data.property.LocalFacets) {
 			this.data.property.LocalFacets = [];
-			// this.data.property.LocalFacets = [];
-			// this.basicInfo.PropertyFacetDefinitions.forEach((element: FacetDefinitionModel) => {
-			// 	this.data.property.LocalFacets.push({
-			// 		FacetName: element.Name,
-			// 		Value: element.DataType
-			// 	});
-			// });
 		}
 		const localFacet = this.data.property.LocalFacets.find(x => x.FacetName === facetType.Name);
 		if (localFacet) {
@@ -112,7 +106,6 @@ export class AddNEditPropertyComponent implements OnInit {
 				}
 			}
 		}
-		// this.basicInfo.PropertyFacetDefinitions = this.basicInfo.DefaultPropertyFacetValues[generalUsageCategory.Name];
 	}
 
 	setFacetCheckIcon(facetType: FacetDefinitionModel) {

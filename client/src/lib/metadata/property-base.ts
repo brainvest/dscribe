@@ -1,5 +1,3 @@
-import { FacetDefinitionModel } from "./facets/facet-definition-model";
-
 export class PropertyBase {
 	Id: number;
 	DataTypeId: number;
