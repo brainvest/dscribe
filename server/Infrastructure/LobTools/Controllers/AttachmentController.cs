@@ -35,13 +35,25 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 						Identifier = x.Identifier,
 						IsDeleted = x.IsDeleted,
 						Title = x.Title,
-						Url = x.Url
+						Url = x.Url,
+						FileName = x.FileName,
+						Size = x.Size
 					})
 					.ToListAsync();
 				return new AttachmentsListResponse
 				{
 					Items = attachmets
 				};
+			}
+		}
+
+		public async Task<ActionResult> Download(DownloadAttachmentRequest request)
+		{
+			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			{
+				var attachment = await dbContext.Attachments.FindAsync(request.Id);
+				HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
+				return File(attachment.Data, "application/octet-stream", attachment.FileName);
 			}
 		}
 	}

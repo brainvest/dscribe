@@ -80,7 +80,9 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 					Description = request.Description,
 					EntityTypeId = report.EntityTypeId,
 					Identifier = request.EntityIdentifier,
-					Title = request.Title
+					Title = request.Title,
+					FileName = fileName,
+					Size = bytes.LongLength
 				};
 				await dbContext.AddAsync(attachment);
 				await dbContext.SaveChangesAsync();

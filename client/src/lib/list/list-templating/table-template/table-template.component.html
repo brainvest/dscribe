@@ -8,9 +8,9 @@
 			<td mat-cell *matCellDef="let row" class="lob-cell">
 				<mat-icon [ngClass]="{hidden:!row?._lobInfo?.AttachmentsCount}"
 									(click)="attachmentsClick.emit(row);$event.stopPropagation();"
-									[matBadge]="row?._lobInfo?.CommentsCount" matBadgeSize="small" matBadgeColor="accent"
+									[matBadge]="row?._lobInfo?.AttachmentsCount" matBadgeSize="small" matBadgeColor="accent"
 									matBadgeOverlap="true" matBadgePosition="below before"
-									matTooltip="{{row?._lobInfo?.CommentsCount}} attachments">
+									matTooltip="{{row?._lobInfo?.AttachmentsCount}} attachments">
 					attach_file
 				</mat-icon>
 				<mat-icon [ngClass]="{hidden:!row?._lobInfo?.CommentsCount}"
