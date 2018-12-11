@@ -27,4 +27,10 @@ export class EntityTypeBase {
 	public SingularTitle: string;
 	public EntityTypeGeneralUsageCategoryId: number;
 	public TableName: string;
+	LocalFacets: LocalFacetModel[];
+}
+
+export class LocalFacetModel {
+	FacetName: string;
+	Value: string;
 }

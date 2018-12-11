@@ -46,7 +46,7 @@
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>General Usage Category</mat-label>
 			<mat-select name="usage" placeholder="General Usage Category" [(ngModel)]="entityType.EntityTypeGeneralUsageCategoryId"
-			 [required]="true">
+			 [required]="true" (selectionChange)="setEntityTypeFacetDefinitions()">
 				<mat-option *ngFor="let category of data.basicInfo.EntityTypeGeneralUsageCategories" [value]="category.Id">
 					{{category.Name}}
 				</mat-option>
@@ -55,6 +55,16 @@
 				{{e}}
 			</p>
 		</mat-form-field>
+
+		<mat-card style="margin-bottom: 10px" *ngIf="entityType.EntityTypeGeneralUsageCategoryId">
+			<h5 style="color:gray">Facets</h5>
+			<div *ngFor="let facetType of basicInfo.EntityTypeFacetDefinitions">
+				<button mat-icon-button (click)="changeFacetValue(facetType)" *ngIf="facetType.Default">
+					<mat-icon color="warn">{{setFacetCheckIcon(facetType)}}</mat-icon>
+					{{getFacetName(facetType)}}
+				</button>
+			</div>
+		</mat-card>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Code Path</mat-label>

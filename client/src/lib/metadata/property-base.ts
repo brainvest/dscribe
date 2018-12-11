@@ -9,4 +9,10 @@ export class PropertyBase {
 	ForeignKeyPropertyId: number;
 	InversePropertyId: number;
 	Title: string;
+	LocalFacets: LocalFacetModel[];
+}
+
+export class LocalFacetModel {
+	FacetName: string;
+	Value: string;
 }
