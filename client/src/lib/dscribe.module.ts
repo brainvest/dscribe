@@ -5,7 +5,7 @@ import {ListComponent} from './list/list/list.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {DscribeInterceptor} from './common/dscribe-interceptor';
 import {
-	MatAutocompleteModule,
+	MatAutocompleteModule, MatBadgeModule,
 	MatButtonModule,
 	MatButtonToggleModule,
 	MatCardModule,
@@ -19,7 +19,7 @@ import {
 	MatMenuModule,
 	MatNativeDateModule,
 	MatPaginatorModule,
-	MatProgressSpinnerModule,
+	MatProgressSpinnerModule, MatRadioModule,
 	MatSelectModule,
 	MatSidenavModule,
 	MatSnackBarModule,
@@ -72,6 +72,9 @@ import {AppInstanceManagementComponent} from './administration/settings/app-inst
 import {AppTypeManagementComponent} from './administration/settings/app-type-management/app-type-management.component';
 import {AddNEditAppTypeComponent} from './administration/settings/add-n-edit-app-type/add-n-edit-app-type.component';
 import {AddNEditAppInstanceComponent} from './administration/settings/add-n-edit-app-instance/add-n-edit-app-instancecomponent';
+import {CommentsListComponent} from './lob-tools/comments/comments-list/comments-list.component';
+import {AttachmentsListComponent} from './lob-tools/attachments/attachments-list/attachments-list.component';
+import {ReportsListComponent} from './lob-tools/reporting/reports-list/reports-list.component';
 
 @NgModule({
 	imports: [
@@ -82,6 +85,7 @@ import {AddNEditAppInstanceComponent} from './administration/settings/add-n-edit
 		FormsModule,
 		HttpClientModule,
 		MatAutocompleteModule,
+		MatBadgeModule,
 		MatButtonModule,
 		MatCardModule,
 		MatDatepickerModule,
@@ -94,6 +98,7 @@ import {AddNEditAppInstanceComponent} from './administration/settings/add-n-edit
 		MatMenuModule,
 		MatNativeDateModule,
 		MatPaginatorModule,
+		MatRadioModule,
 		MatSortModule,
 		MatSelectModule,
 		MatTableModule,
@@ -146,7 +151,10 @@ import {AddNEditAppInstanceComponent} from './administration/settings/add-n-edit
 		AppInstanceManagementComponent,
 		AppTypeManagementComponent,
 		AddNEditAppTypeComponent,
-		AddNEditAppInstanceComponent
+		AddNEditAppInstanceComponent,
+		CommentsListComponent,
+		AttachmentsListComponent,
+		ReportsListComponent
 	],
 	exports: [DscribeComponent, ListComponent, DisplayValuePipe],
 	providers: [
@@ -164,6 +172,9 @@ import {AddNEditAppInstanceComponent} from './administration/settings/add-n-edit
 		AutoCompleteMoreDialogComponent,
 		AddNEditAppTypeComponent,
 		AddNEditAppInstanceComponent,
+		CommentsListComponent,
+		AttachmentsListComponent,
+		ReportsListComponent
 	]
 })
 export class DscribeModule {

@@ -15,6 +15,8 @@ export class TableTemplateComponent {
 	@Input() displayedColumns: string[];
 
 	@Output() rowClick = new EventEmitter<any>();
+	@Output() commentsClick = new EventEmitter<any>();
+	@Output() attachmentsClick = new EventEmitter<any>();
 	@ViewChild(MatSort) sort: MatSort;
 
 }

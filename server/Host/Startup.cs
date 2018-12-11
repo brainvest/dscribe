@@ -49,7 +49,6 @@ namespace Brainvest.Dscribe.Host
 				});
 
 			RuntimeStartup.ConfigureServices(services, Configuration);
-			LobToolsStartup.ConfigureServices(services, Configuration);
 			services.RegisterEfCore();
 
 			services.AddMvc()
@@ -68,7 +67,6 @@ namespace Brainvest.Dscribe.Host
 		{
 			app.UseCors("AllowAll");
 			RuntimeStartup.Configure(app, env);
-			LobToolsStartup.Configure(app, env);
 			app.UseAuthentication();
 			app.UseMvc();
 		}

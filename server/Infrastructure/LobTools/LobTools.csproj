@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\MetadataDbAccess\MetadataDbAccess.csproj" />
+    <ProjectReference Include="..\..\InterfacesTo3rdParty\RichTextDocumentHandling\RichTextDocumentHandling.csproj" />
     <ProjectReference Include="..\Abstractions\Abstractions.csproj" />
   </ItemGroup>
 

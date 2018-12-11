@@ -1,5 +1,6 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Helpers;
+using Brainvest.Dscribe.LobTools;
 using Brainvest.Dscribe.Runtime.AccessControl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,11 +22,13 @@ namespace Brainvest.Dscribe.Runtime
 			services.AddSingleton<IPermissionService, PermissionCache>();
 			services.AddSingleton<IUsersService, UsersCache>();
 			services.Configure<GlobalConfiguration>(configuration.GetSection(nameof(GlobalConfiguration)));
+			LobToolsStartup.ConfigureServices(services, configuration, defaultAppInstanceId);
 		}
 
 		public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
 			app.UseMultitenancy<IImplementationsContainer>();
+			LobToolsStartup.Configure(app, env);
 		}
 	}
 }

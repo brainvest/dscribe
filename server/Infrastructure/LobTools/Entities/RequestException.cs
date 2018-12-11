@@ -6,7 +6,7 @@ namespace Brainvest.Dscribe.LobTools.Entities
 	{
 		public int Id { get; set; }
 
-		public int RequestId { get; set; }
+		public long RequestId { get; set; }
 		[ForeignKey(nameof(RequestId))]
 		public RequestLog Request { get; set; }
 

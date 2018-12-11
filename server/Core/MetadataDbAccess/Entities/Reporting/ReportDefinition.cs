@@ -3,13 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities.Reporting
 {
-	public class ReportDefinition : IRequestReference
+	public class ReportDefinition
 	{
 		public int Id { get; set; }
 
 		public int EntityTypeId { get; set; }
-
-		public long? RequestLogId { get; set; }
+		public EntityType EntityType { get; set; }
 
 		public ReportFormats ReportFormatId { get; set; }
 		[ForeignKey(nameof(ReportFormatId))]

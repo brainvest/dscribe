@@ -3,7 +3,6 @@ using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.LobTools.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +19,30 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		{
 			_implementationsContainer = implementationsContainer;
 			_usersService = usersService;
+		}
+
+		public async Task<ActionResult<AttachmentsListResponse>> GetAttachmentsList(AttachmentsListRequest request)
+		{
+			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
+			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			{
+				var attachmets = await dbContext.Attachments.Where(x => x.EntityTypeId == entityTypeId && x.Identifier == request.Identifier)
+					.Select(x => new AttachmentsListResponse.Item
+					{
+						Description = x.Description,
+						EntityTypeId = x.EntityTypeId,
+						Id = x.Id,
+						Identifier = x.Identifier,
+						IsDeleted = x.IsDeleted,
+						Title = x.Title,
+						Url = x.Url
+					})
+					.ToListAsync();
+				return new AttachmentsListResponse
+				{
+					Items = attachmets
+				};
+			}
 		}
 	}
 }

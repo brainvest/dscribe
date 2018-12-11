@@ -1,5 +1,27 @@
 <div class="list-table-container">
 	<table mat-table [dataSource]="data" matSort>
+		<ng-container matColumnDef="lobInfo">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header class="lob-cell">
+				<mat-icon>attach_file</mat-icon>
+				<mat-icon>insert_comment</mat-icon>
+			</th>
+			<td mat-cell *matCellDef="let row" class="lob-cell">
+				<mat-icon [ngClass]="{hidden:!row?._lobInfo?.AttachmentsCount}"
+									(click)="attachmentsClick.emit(row);$event.stopPropagation();"
+									[matBadge]="row?._lobInfo?.CommentsCount" matBadgeSize="small" matBadgeColor="accent"
+									matBadgeOverlap="true" matBadgePosition="below before"
+									matTooltip="{{row?._lobInfo?.CommentsCount}} attachments">
+					attach_file
+				</mat-icon>
+				<mat-icon [ngClass]="{hidden:!row?._lobInfo?.CommentsCount}"
+									(click)="commentsClick.emit(row);$event.stopPropagation();"
+									[matBadge]="row?._lobInfo?.CommentsCount" matBadgeSize="small" matBadgeColor="accent"
+									matBadgeOverlap="true" matBadgePosition="below before"
+									matTooltip="{{row?._lobInfo?.CommentsCount}} comments">
+					insert_comment
+				</mat-icon>
+			</td>
+		</ng-container>
 		<ng-container *ngFor="let col of columns; let even = even" [matColumnDef]="col.name">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="{even_col: even}">{{col.title || col.name}}</th>
 			<td mat-cell *matCellDef="let row" [ngClass]="{even_col: even}">{{row[col.name] | displayValue:col | async}}</td>

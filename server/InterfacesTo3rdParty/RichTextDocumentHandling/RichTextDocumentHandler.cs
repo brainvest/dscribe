@@ -20,6 +20,10 @@ namespace Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling
 
 			foreach (var run in GetRuns(document))
 			{
+				if (run.Text.Contains("{"))
+				{
+
+				}
 				regex.Replace(run.Text, match =>
 				{
 					var pattern = match.Groups["pattern"].Value;
@@ -52,7 +56,7 @@ namespace Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling
 				document.Write(output);
 				var bytes = new byte[output.Position];
 				output.Seek(0, SeekOrigin.Begin);
-				output.Write(bytes, 0, bytes.Length);
+				output.Read(bytes, 0, bytes.Length);
 				return bytes;
 			}
 		}
