@@ -7,6 +7,7 @@ import {EntityTypeMetadata} from '../metadata/entity-type-metadata';
 import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
 import {DownloadReportRequest, ReportsListResponse, SaveReportAsAttachmentRequest} from './models/report-models';
 import {map} from 'rxjs/operators';
+import {AttachmentListItem, AttachmentsListRequest, AttachmentsListResponse} from './models/attachment-models';
 
 @Injectable({
 	providedIn: 'root'
@@ -26,6 +27,9 @@ export class LobInfoService {
 	private getReportsAPI = this.dscribeService.url('api/report/getReports');
 	private downloadReportAPI = this.dscribeService.url('api/report/processForDownload');
 	private saveAsAttachmentApi = this.dscribeService.url('api/report/saveAsAttachment');
+
+	private attachmentsListApi = this.dscribeService.url('api/attachment/getAttachmentsList');
+	private downloadAttachmentApi = this.dscribeService.url('api/attachment/download');
 
 	setLobInfo(entityType: EntityTypeMetadata, data: any[]) {
 		if (!data || !data.length) {
@@ -71,6 +75,19 @@ export class LobInfoService {
 
 	saveReportAsAttachment(request: SaveReportAsAttachmentRequest) {
 		return this.http.post(this.saveAsAttachmentApi, request, {
+			observe: 'response',
+			responseType: 'blob'
+		});
+	}
+
+	getAttachmentsList(request: AttachmentsListRequest) {
+		return this.http.post<AttachmentsListResponse>(this.attachmentsListApi, request);
+	}
+
+	downloadAttachment(attachment: AttachmentListItem) {
+		return this.http.post(this.downloadAttachmentApi, {
+			Id: attachment.Id
+		}, {
 			observe: 'response',
 			responseType: 'blob'
 		});
