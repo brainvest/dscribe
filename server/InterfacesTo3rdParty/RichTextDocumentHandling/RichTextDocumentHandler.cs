@@ -20,10 +20,6 @@ namespace Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling
 
 			foreach (var run in GetRuns(document))
 			{
-				if (run.Text.Contains("{"))
-				{
-
-				}
 				regex.Replace(run.Text, match =>
 				{
 					var pattern = match.Groups["pattern"].Value;
