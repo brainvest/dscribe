@@ -1,3 +1,5 @@
+using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +11,7 @@ namespace Brainvest.Dscribe.LobTools
 	{
 		public static void ConfigureServices(IServiceCollection services, IConfiguration configuration, int? defaultAppInstanceId = null)
 		{
-
+			services.AddScoped<IRichTextDocumentHandler, RichTextDocumentHandler>();
 		}
 
 		public static void Configure(IApplicationBuilder app, IHostingEnvironment env)

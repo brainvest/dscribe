@@ -40,7 +40,8 @@ namespace Brainvest.Dscribe.Runtime
 				AppTypeId = appType.Id,
 				InstanceName = instance.Name,
 				Provider = instance.DatabaseProviderId,
-				ConnectionString = instance.DataConnectionString,
+				DataConnectionString = instance.DataConnectionString,
+				LobConnectionString = instance.LobConnectionString,
 				MigrateDatabase = instance.MigrateDatabase,
 				GeneratedCodeNamespace = instance.GeneratedCodeNamespace
 			};
@@ -73,12 +74,12 @@ namespace Brainvest.Dscribe.Runtime
 				switch (instanceInfo.Provider)
 				{
 					case DatabaseProviderEnum.MySql:
-						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseMySql(instanceInfo.ConnectionString).Options;
-						implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseMySql(instanceInfo.ConnectionString).Options;
+						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseMySql(instanceInfo.DataConnectionString).Options;
+						implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseMySql(instanceInfo.LobConnectionString).Options;
 						break;
 					case DatabaseProviderEnum.SqlServer:
-						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.ConnectionString).Options;
-						implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseSqlServer(instanceInfo.ConnectionString).Options;
+						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.DataConnectionString).Options;
+						implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseSqlServer(instanceInfo.LobConnectionString).Options;
 						break;
 					default:
 						throw new NotImplementedException($"The provider {instanceInfo.Provider} is not implemented");

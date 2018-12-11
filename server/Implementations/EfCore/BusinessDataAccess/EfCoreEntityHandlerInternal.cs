@@ -141,9 +141,9 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				selectMethod = selectMethod.MakeGenericMethod(typeof(TEntity), selectExpression.ReturnType);
 				var selected = selectMethod.Invoke(null, new object[] { query, selectExpression });
 				var toListMethod = typeof(EntityFrameworkQueryableExtensions).GetMethods()
-					.Single(x => x.Name == nameof(EntityFrameworkQueryableExtensions.ToListAsync) && x.IsGenericMethodDefinition && x.GetParameters().Length == 1);
+					.Single(x => x.Name == nameof(EntityFrameworkQueryableExtensions.ToListAsync) && x.IsGenericMethodDefinition);
 				toListMethod = toListMethod.MakeGenericMethod(selectExpression.ReturnType);
-				var selectionTask = toListMethod.Invoke(null, new object[] { selected }) as Task;
+				var selectionTask = toListMethod.Invoke(null, new object[] { selected, null }) as Task;
 				await selectionTask;
 				var selectionResult = selectionTask.GetType().GetProperty("Result").GetValue(selectionTask) as IEnumerable;
 				Tuple<string, PropertyInfo, Dictionary<TKey, object>>[] props = null;

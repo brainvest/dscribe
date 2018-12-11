@@ -4,6 +4,7 @@ using Brainvest.Dscribe.LobTools.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,11 +38,31 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 					.GroupBy(x => x.Identifier)
 					.ToDictionaryAsync(g => g.Key, g => g.Count());
 
+				var commentCounts = await commentCountTask;
+				var attachmentCounts = await attachmentCountTask;
+
+				var summaries = new Dictionary<int, LobSummaryInfo>();
+				foreach (var item in commentCounts)
+				{
+					summaries.Add(item.Key, new LobSummaryInfo { CommentsCount = item.Value });
+				}
+
+				foreach (var item in attachmentCounts)
+				{
+					if (summaries.TryGetValue(item.Key, out var val))
+					{
+						val.AttachmentsCount = item.Value;
+					}
+					else
+					{
+						summaries.Add(item.Key, new LobSummaryInfo { AttachmentsCount = item.Value });
+					}
+				}
+
 				return new LobSummaryResponse
 				{
 					EntityTypeName = request.EntityTypeName,
-					CommentCounts = await commentCountTask,
-					AttachmentCounts = await attachmentCountTask
+					Summaries = summaries
 				};
 			}
 		}

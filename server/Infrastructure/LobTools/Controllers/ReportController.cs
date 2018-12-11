@@ -1,6 +1,7 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
+using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.LobTools.Models;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.MetadataDbAccess.Entities.Reporting;
@@ -37,27 +38,57 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			_metadataDbContext = metadataDbContext;
 		}
 
+		[HttpPost]
 		public async Task<ActionResult<IEnumerable<ReportsListResponse>>> GetReports()
 		{
 			var reports = await _metadataDbContext.ReportDefinitions
-				.Select(x => new ReportsListResponse
+				.Select(x => new
 				{
-					EntityTypeId = x.EntityTypeId,
-					ReportFormatId = x.ReportFormatId,
-					Id = x.Id,
-					Title = x.Title
+					x.EntityTypeId,
+					x.ReportFormatId,
+					x.Id,
+					x.Title
 				}).ToListAsync();
-			return reports;
+			return reports.Select(x => new ReportsListResponse
+			{
+				EntityTypeName = _implementationsContainer.Metadata[x.EntityTypeId].Name,
+				Format = x.ReportFormatId,
+				Id = x.Id,
+				Title = x.Title
+			}).ToList();
 		}
 
+		[HttpPost]
 		public async Task<ActionResult> ProcessForDownload(DownloadReportRequest request)
 		{
-			var report = await _metadataDbContext.ReportDefinitions.FindAsync(request.ReportId);
-			var (stream, contentType, fileName) = await ProcessReport(report, request.EntityIdentifier);
-			return File(stream, contentType, fileName);
+			var report = await _metadataDbContext.ReportDefinitions.FindAsync(request.ReportDefinitionId);
+			var (bytes, contentType, fileName) = await ProcessReport(report, request.EntityIdentifier);
+			HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
+			return File(bytes, contentType, fileName);
 		}
 
-		private async Task<(byte[] stream, string contentType, string fileName)> ProcessReport(ReportDefinition report, int entityIdentifier)
+		[HttpPost]
+		public async Task<ActionResult> SaveAsAttachment(SaveReportAsAttachmentRequest request)
+		{
+			var report = await _metadataDbContext.ReportDefinitions.FindAsync(request.ReportDefinitionId);
+			var (bytes, contentType, fileName) = await ProcessReport(report, request.EntityIdentifier);
+			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			{
+				var attachment = new Attachment
+				{
+					Data = bytes,
+					Description = request.Description,
+					EntityTypeId = report.EntityTypeId,
+					Identifier = request.EntityIdentifier,
+					Title = request.Title
+				};
+				await dbContext.AddAsync(attachment);
+				await dbContext.SaveChangesAsync();
+			}
+			return Ok();
+		}
+
+		private async Task<(byte[] bytes, string contentType, string fileName)> ProcessReport(ReportDefinition report, int entityIdentifier)
 		{
 			var entityTypeName = _implementationsContainer.Metadata[report.EntityTypeId].Name;
 			switch (report.ReportFormatId)
@@ -67,7 +98,8 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 					{
 						var processed = await _richTextDocumentHandler.Process(report.Definition
 							, expressions => GetTemplateValues(expressions, entityIdentifier, entityTypeName));
-						return (processed, "", $"{report.Title}-{entityTypeName}-{DateTime.Now}");
+						return (processed, "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+							, $"{report.Title}-{entityTypeName}-{DateTime.Now.ToString("yyyyMMddHHmmss")}.docx");
 					}
 				default:
 					throw new NotImplementedException($"The report format {report.ReportFormatId} is not implemented");
