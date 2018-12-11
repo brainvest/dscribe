@@ -15,19 +15,8 @@ export class TableTemplateComponent {
 	@Input() displayedColumns: string[];
 
 	@Output() rowClick = new EventEmitter<any>();
+	@Output() commentsClick = new EventEmitter<any>();
+	@Output() attachmentsClick = new EventEmitter<any>();
 	@ViewChild(MatSort) sort: MatSort;
-
-
-	isAllSelected() {
-		const numSelected = this.selection.selected.length;
-		const numRows = this.data.length;
-		return numSelected === numRows;
-	}
-
-	masterToggle() {
-		this.isAllSelected() ?
-			this.selection.clear() :
-			this.data.forEach(row => this.selection.select(row));
-	}
 
 }

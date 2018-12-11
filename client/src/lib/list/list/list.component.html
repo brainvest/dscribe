@@ -30,6 +30,10 @@
 					</button>
 				</ng-container>
 				</span>
+				<button [disabled]="!selection.hasValue() || !reports?.length" mat-icon-button (click)="showReports()"
+								color="accent" matTooltip="Reports">
+					<mat-icon>class</mat-icon>
+				</button>
 			</div>
 		</div>
 
@@ -59,8 +63,10 @@
 						</dscribe-custom-template-host>
 					</div>
 				</ng-container>
-				<dscribe-table-template *ngSwitchDefault (rowClick)="selectRow($event)" [data]="data" [columns]="columns"
-																[displayedColumns]="displayedColumns" [selection]="selection">
+				<dscribe-table-template
+					*ngSwitchDefault (rowClick)="selectRow($event)" [data]="data" [columns]="columns"
+					[displayedColumns]="displayedColumns" [selection]="selection"
+					(commentsClick)="showComments($event)" (attachmentsClick)="showAttachments($event)">
 				</dscribe-table-template>
 			</ng-container>
 			<mat-paginator class="list-paginator" [length]="totalCount" [pageSize]="pageSize"></mat-paginator>

@@ -31,6 +31,12 @@ import {SnackBarService} from '../../common/notifications/snackbar.service';
 import {ManageEntityModes} from '../../add-n-edit/models/manage-entity-modes';
 import {AddNEditResult} from '../../common/models/add-n-edit-result';
 import {AddNEditStructure, ListBehaviors} from '../../add-n-edit/models/add-n-edit-structure';
+import {LobInfoService} from '../../lob-tools/lob-info.service';
+import {CommentsListComponent} from '../../lob-tools/comments/comments-list/comments-list.component';
+import {LobListDialogData} from '../../lob-tools/models/common-models';
+import {AttachmentsListComponent} from '../../lob-tools/attachments/attachments-list/attachments-list.component';
+import {ReportsListResponse} from '../../lob-tools/models/report-models';
+import {ReportsListComponent} from '../../lob-tools/reporting/reports-list/reports-list.component';
 
 @Component({
 	selector: 'dscribe-list',
@@ -64,6 +70,7 @@ export class ListComponent implements OnInit, OnChanges {
 	pageSize = 10;
 	filterLambda: LambdaFilterNode;
 	userDefinedFilter: StorageFilterNode;
+	reports: ReportsListResponse[];
 
 	displayMode = 'grid';
 
@@ -78,7 +85,8 @@ export class ListComponent implements OnInit, OnChanges {
 		private dataHandler: DataHandlerService,
 		private dialog: MatDialog,
 		private dscribeService: DscribeService,
-		private snackbarService: SnackBarService) {
+		private snackbarService: SnackBarService,
+		private lobService: LobInfoService) {
 		this.selection.changed.subscribe((x: any) => {
 			if (x.added.length === 1) {
 				this.selectDetails(x.added[0]);
@@ -120,13 +128,15 @@ export class ListComponent implements OnInit, OnChanges {
 			this.displayedEntityTypeName = this.entityType.Name;
 			this.refreshData();
 			this.createColumns(this.entityType);
+			this.lobService.getReports(this.displayedEntityTypeName)
+				.subscribe(x => this.reports = x);
 		}
 	}
 
 	createColumns(entityType: EntityTypeMetadata) {
 		this.detailLists = [];
 		this.columns = [];
-		this.displayedColumns = [];
+		this.displayedColumns = ['lobInfo'];
 		for (const propertyName in entityType.Properties) {
 			if (!entityType.Properties.hasOwnProperty(propertyName)) {
 				continue;
@@ -240,6 +250,7 @@ export class ListComponent implements OnInit, OnChanges {
 				})
 			).subscribe((data: any) => {
 			this.data = data;
+			this.lobService.setLobInfo(this.entityType, data);
 		}, (errors: any) => {
 			// this.snackbarService.open(errors);
 		});
@@ -369,6 +380,39 @@ export class ListComponent implements OnInit, OnChanges {
 
 	toggleNav() {
 		this.navToggled.next();
+	}
+
+	showComments(row: any) {
+		const pkName = this.entityType.getPrimaryKey().Name;
+		this.dialog.open(CommentsListComponent, {
+			width: '800px',
+			data: <LobListDialogData>{
+				entityTypeName: this.displayedEntityTypeName,
+				identifier: row[pkName]
+			}
+		});
+	}
+
+	showAttachments(row: any) {
+		const pkName = this.entityType.getPrimaryKey().Name;
+		this.dialog.open(AttachmentsListComponent, {
+			width: '800px',
+			data: <LobListDialogData>{
+				entityTypeName: this.displayedEntityTypeName,
+				identifier: row[pkName]
+			}
+		});
+	}
+
+	showReports() {
+		const pkName = this.entityType.getPrimaryKey().Name;
+		this.dialog.open(ReportsListComponent, {
+			width: '800px',
+			data: <LobListDialogData>{
+				entityTypeName: this.displayedEntityTypeName,
+				identifier: this.selection.selected[0][pkName]
+			}
+		});
 	}
 
 }

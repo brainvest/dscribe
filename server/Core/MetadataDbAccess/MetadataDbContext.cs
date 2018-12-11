@@ -1,6 +1,7 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
+using Brainvest.Dscribe.MetadataDbAccess.Entities.Reporting;
 using Brainvest.Dscribe.MetadataDbAccess.Entities.Security;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -160,6 +161,9 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 		public DbSet<Role> Roles { get; set; }
 		public DbSet<EntityActionType> EntityActionTypes { get; set; }
 		public DbSet<Permission> Permissions { get; set; }
+
+		public DbSet<ReportDefinition> ReportDefinitions { get; set; }
+		public DbSet<ReportFormat> ReportFormats { get; set; }
 
 	}
 }

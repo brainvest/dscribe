@@ -23,6 +23,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 
 		[Required]
 		public string DataConnectionString { get; set; }
+		public string LobConnectionString { get; set; }
 		public bool IsEnabled { get; set; }
 		public bool UseUnreleasedMetadata { get; set; }
 		public bool MigrateDatabase { get; set; }
