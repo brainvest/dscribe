@@ -63,7 +63,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 					.AddEntityFrameworkStores<SecurityDbContext>()
 					.AddDefaultTokenProviders();
 
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 			services.AddScoped<IEmailSender, FakeEmailSender>();
 
 			var clients = Configuration.GetSection("Clients").Get<IEnumerable<ClientInfo>>();

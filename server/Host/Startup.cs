@@ -53,7 +53,7 @@ namespace Brainvest.Dscribe.Host
 
 			services.AddMvc()
 				.AddJsonOptions(opt => opt.SerializerSettings.ContractResolver = new DefaultContractResolver())
-				.SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+				.SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 
 			services.AddAuthentication("Bearer")
 					.AddIdentityServerAuthentication(options =>
