@@ -3,6 +3,7 @@ using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Composition;

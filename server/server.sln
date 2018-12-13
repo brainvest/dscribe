@@ -40,7 +40,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LobTools", "Infrastructure\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InterfacesTo3rdParty", "InterfacesTo3rdParty", "{285231C9-A243-4037-AF79-FB1FF3A30148}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichTextDocumentHandling", "InterfacesTo3rdParty\RichTextDocumentHandling\RichTextDocumentHandling.csproj", "{54BAC022-E894-487D-B385-713439CED105}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RichTextDocumentHandling", "InterfacesTo3rdParty\RichTextDocumentHandling\RichTextDocumentHandling.csproj", "{54BAC022-E894-487D-B385-713439CED105}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
