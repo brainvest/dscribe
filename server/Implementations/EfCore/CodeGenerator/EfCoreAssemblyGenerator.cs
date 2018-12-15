@@ -1,9 +1,7 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Brainvest.Dscribe.Abstractions.Metadata;
-using Microsoft.CodeAnalysis;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;

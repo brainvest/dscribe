@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 {
 	public class EntityTypeGeneralUsageCategory

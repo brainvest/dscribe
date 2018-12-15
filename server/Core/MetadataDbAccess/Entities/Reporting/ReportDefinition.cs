@@ -1,4 +1,3 @@
-using Brainvest.Dscribe.Abstractions;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities.Reporting

@@ -28,7 +28,7 @@ namespace Brainvest.Dscribe.Helpers
 					continue;
 				}
 				var prop = dest.GetType().GetTypeInfo().GetProperty(property.Name);
-				if (prop == null || !prop.CanWrite || !prop.CanRead || property.IsReadOnlyInEdit() 
+				if (prop == null || !prop.CanWrite || !prop.CanRead || property.IsReadOnlyInEdit()
 					|| (property.HideInEdit() &&
 					(property.DataType == DataTypes.NavigationList || property.DataType == DataTypes.NavigationEntity)))
 				{

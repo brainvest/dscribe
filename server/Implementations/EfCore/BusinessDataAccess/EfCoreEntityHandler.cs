@@ -5,8 +5,6 @@ using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.Helpers.FilterNodeConverter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;

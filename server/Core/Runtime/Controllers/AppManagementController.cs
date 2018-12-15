@@ -208,11 +208,11 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		public string GenerateConnectionString(DataConnectionStringModel model)
 		{
 			var result = "Server=" + model.Server + ";" +
-   						 "Database=" + model.Database + ";" +
-   						 "Trusted_Connection=" + model.Trusted_Connection + ";" +
-   						 "MultipleActiveResultSets=" + model.MultipleActiveResultSets + ";" +
-   						 "user=" + model.User + ";" +
-   						 "password=" + model.Password;
+								"Database=" + model.Database + ";" +
+								"Trusted_Connection=" + model.Trusted_Connection + ";" +
+								"MultipleActiveResultSets=" + model.MultipleActiveResultSets + ";" +
+								"user=" + model.User + ";" +
+								"password=" + model.Password;
 
 			return result;
 		}

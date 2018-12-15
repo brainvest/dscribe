@@ -1,5 +1,4 @@
 using Brainvest.Dscribe.Abstractions;
-using Brainvest.Dscribe.Helpers;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Composition.Hosting;
@@ -58,7 +57,7 @@ namespace Brainvest.Dscribe.Runtime
 				{
 					File.Copy(fileName, targetFilePath);
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					logger.LogError(ex, $"Could not copy {fileName} to {Path.Combine(tempPath, targetFileName)}");
 				}
@@ -68,7 +67,7 @@ namespace Brainvest.Dscribe.Runtime
 				containerConfiguration.WithAssembly(Assembly.LoadFrom(targetFilePath));
 				_container = containerConfiguration.CreateContainer();
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				logger.LogError(ex, $"Could not compose assembly:{targetFileName}");
 			}
