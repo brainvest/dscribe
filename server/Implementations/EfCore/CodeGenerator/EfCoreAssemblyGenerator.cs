@@ -12,7 +12,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {
 	class EfCoreAssemblyGenerator : IBusinessAssemblyGenerator
 	{
-		public async Task<(bool succeeded, IEnumerable<IDiagnosticInfo> diagnostics)> GenerateAssembly(IMetadataCache cache, IInstanceInfo instanceInfo, string path, string instanceName)
+		public async Task<CodeGenerationResult> GenerateCode(IMetadataCache cache, IInstanceInfo instanceInfo, string path, string instanceName)
 		{
 			var codeGen = new EfCoreCodeGenerator();
 			var compileUnit = codeGen.CreateCode(cache, instanceInfo);

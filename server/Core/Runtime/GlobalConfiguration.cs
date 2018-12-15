@@ -1,7 +1,5 @@
 using Brainvest.Dscribe.Abstractions;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Brainvest.Dscribe.Runtime
 {
@@ -9,5 +7,19 @@ namespace Brainvest.Dscribe.Runtime
 	{
 		public string ImplementationsDirectory { get; set; }
 		public string TempDirectory { get; set; }
+		public Dictionary<string, InstanceSettings> InstanceSettings { get; set; }
+
+		public InstanceSettings GetInstanceSettings(string instaneName)
+		{
+			if (InstanceSettings == null)
+			{
+				return null;
+			}
+			if (InstanceSettings.TryGetValue(instaneName, out var instanceSettings))
+			{
+				return instanceSettings;
+			}
+			return null;
+		}
 	}
 }

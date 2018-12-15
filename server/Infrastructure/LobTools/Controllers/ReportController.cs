@@ -127,5 +127,10 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			}
 			return result;
 		}
+
+		//public async Task<ActionResult> AddReportDefinition(ManageReportDefinitionRequest request)
+		//{
+
+		//}
 	}
 }

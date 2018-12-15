@@ -3,7 +3,6 @@ using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Composition;
@@ -15,9 +14,9 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {
 	public class EfCoreCompiler
 	{
-		public async Task<(bool succeeded, IEnumerable<IDiagnosticInfo> diagnostics)> GenerateAssemblyAsync(
+		public async Task<CodeGenerationResult> GenerateAssemblyAsync(
 			string sourceCodeFile
-			, string fileName
+			, string assymblyFileName
 			, string assembliesPath)
 		{
 			var referenceAssembliesPath = Path.GetDirectoryName(typeof(string).Assembly.Location);
@@ -38,11 +37,21 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			{
 				sourceCode = await reader.ReadToEndAsync();
 			}
-			if (!CSharpLanguage.CompileToAssembly(sourceCode, Path.GetFileNameWithoutExtension(fileName), fileName, references, out var diagnostics))
+			if (!CSharpLanguage.CompileToAssembly(sourceCode, Path.GetFileNameWithoutExtension(assymblyFileName), assymblyFileName, references, out var diagnostics))
 			{
-				return (false, diagnostics?.Select(x => new DiagnosticInfo { Message = x.GetMessage() }));
+				return new CodeGenerationResult
+				{
+					Succeeded = false,
+					SourceCodeFileName = sourceCodeFile,
+					Diagnostics = diagnostics?.Select(x => new DiagnosticInfo { Message = x.GetMessage() })
+				};
 			}
-			return (true, null);
+			return new CodeGenerationResult
+			{
+				Succeeded = true,
+				AssemblyFileName = assymblyFileName,
+				SourceCodeFileName = sourceCodeFile
+			};
 		}
 	}
 }

@@ -10,5 +10,6 @@ namespace Brainvest.Dscribe.Abstractions
 		public string LobConnectionString { get; set; }
 		public bool MigrateDatabase { get; set; }
 		public string GeneratedCodeNamespace { get; set; }
+		public InstanceSettings InstanceSettings { get; set; }
 	}
 }

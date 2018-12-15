@@ -10,5 +10,6 @@ namespace Brainvest.Dscribe.Abstractions
 		bool MigrateDatabase { get; }
 		string GeneratedCodeNamespace { get; }
 		DatabaseProviderEnum Provider { get; }
+		InstanceSettings InstanceSettings { get; }
 	}
 }

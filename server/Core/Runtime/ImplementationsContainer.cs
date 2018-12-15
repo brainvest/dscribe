@@ -1,8 +1,8 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Metadata;
+using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.Metadata;
 using Brainvest.Dscribe.MetadataDbAccess;
-using Brainvest.Dscribe.LobTools.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -34,6 +34,8 @@ namespace Brainvest.Dscribe.Runtime
 			bundle.FixupRelationships();
 			var metadataCache = new MetadataCache(bundle);
 			var metadataModel = new MetadataModel(bundle);
+			var globalConfig = scope.ServiceProvider.GetRequiredService<IOptions<GlobalConfiguration>>().Value;
+			InstanceSettings instanceSettings = globalConfig?.InstanceSettings?[instance.Name];
 			var instanceInfo = new InstanceInfo
 			{
 				AppInstanceId = appInstanceId,
@@ -43,12 +45,12 @@ namespace Brainvest.Dscribe.Runtime
 				DataConnectionString = instance.DataConnectionString,
 				LobConnectionString = instance.LobConnectionString,
 				MigrateDatabase = instance.MigrateDatabase,
-				GeneratedCodeNamespace = instance.GeneratedCodeNamespace
+				GeneratedCodeNamespace = instance.GeneratedCodeNamespace,
+				InstanceSettings = instanceSettings
 			};
 
 			var bridge = new BusinessAssemblyBridge(
-				instanceInfo,
-				scope.ServiceProvider.GetRequiredService<IOptions<GlobalConfiguration>>().Value,
+				instanceInfo, globalConfig,
 				scope.ServiceProvider.GetRequiredService<ILogger<BusinessAssemblyBridge>>());
 			var reflector = new BusinessReflector(metadataCache);
 
