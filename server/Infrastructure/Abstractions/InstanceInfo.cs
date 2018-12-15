@@ -11,5 +11,6 @@ namespace Brainvest.Dscribe.Abstractions
 		public bool MigrateDatabase { get; set; }
 		public string GeneratedCodeNamespace { get; set; }
 		public InstanceSettings InstanceSettings { get; set; }
+		public string LoadBusinessFromAssemblyName { get; set; }
 	}
 }

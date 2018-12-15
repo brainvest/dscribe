@@ -46,8 +46,17 @@ namespace Brainvest.Dscribe.Runtime
 				LobConnectionString = instance.LobConnectionString,
 				MigrateDatabase = instance.MigrateDatabase,
 				GeneratedCodeNamespace = instance.GeneratedCodeNamespace,
-				InstanceSettings = instanceSettings
+				InstanceSettings = instanceSettings,
+				LoadBusinessFromAssemblyName = instanceSettings?.LoadBusinessFromAssemblyName
 			};
+			if (instanceSettings?.ConnectionStringMaps != null)
+			{
+				foreach (var map in instanceSettings?.ConnectionStringMaps)
+				{
+					instanceInfo.DataConnectionString = instanceInfo.DataConnectionString.Replace(map.From, map.To);
+					instanceInfo.LobConnectionString = instanceInfo.LobConnectionString.Replace(map.From, map.To);
+				}
+			}
 
 			var bridge = new BusinessAssemblyBridge(
 				instanceInfo, globalConfig,
