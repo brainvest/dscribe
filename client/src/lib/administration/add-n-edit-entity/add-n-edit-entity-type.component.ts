@@ -5,7 +5,7 @@ import { EntityTypeBase } from '../../metadata/entity-type-base';
 import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
 import { MetadataManagementApiClient } from '../metadata-management-api-client';
 import { SnackBarService } from '../../common/notifications/snackbar.service';
-import { FacetDefinitionModel } from 'src/lib/metadata/facets/facet-definition-model';
+import {FacetDefinitionModel} from '../../metadata/facets/facet-definition-model';
 
 @Component({
 	selector: 'dscribe-add-n-edit-entity-type',
