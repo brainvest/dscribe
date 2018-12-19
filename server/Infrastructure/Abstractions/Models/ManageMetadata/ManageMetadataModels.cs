@@ -18,7 +18,7 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string SingularTitle { get; set; }
 		[Required]
 		public string PluralTitle { get; set; }
-		[Required]
+		[IntegerRequired]
 		public int EntityTypeGeneralUsageCategoryId { get; set; }
 		//[Required]
 		public string TableName { get; set; }
@@ -41,9 +41,9 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public string Title { get; set; }
 		[Required]
 		[Range(1, int.MaxValue, ErrorMessage = "The General usage category field is required.")]
-		// NOTICE. ANOTHER SOLUTION FOR THIS VALIDATION IS TO MAKE FIELD NULLABLE. 
+		[IntegerRequired]
 		public int PropertyGeneralUsageCategoryId { get; set; }
-		[Required]
+		[IntegerRequired]
 		public int OwnerEntityTypeId { get; set; }
 
 		public IEnumerable<LocalFacetModel> LocalFacets { get; set; }
