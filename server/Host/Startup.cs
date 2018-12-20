@@ -71,8 +71,8 @@ namespace Brainvest.Dscribe.Host
 
 			app.UseCors("AllowAll");
 			RuntimeStartup.Configure(app, env);
-			app.UseAuthentication();
 			app.UseLogger();
+			app.UseAuthentication();
 			app.UseMvc();
 		}
 	}

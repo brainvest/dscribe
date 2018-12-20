@@ -25,27 +25,23 @@ namespace MiddleWare.Log
 				log = await LogIndicator.RequestIndiactor(httpContext, dbContext);
 				using (var memStream = new MemoryStream())
 				{
-					//var originalResponseBody = httpContext.Response.Body;
-					//httpContext.Response.Body = memStream;
+					var originalResponseBody = httpContext.Response.Body;
+					httpContext.Response.Body = memStream;
 
 					await _next(httpContext);
 
-					//memStream.Position = 0;
-					//log.Response = new StreamReader(memStream).ReadToEnd();
-					//memStream.Position = 0;
-					//await memStream.CopyToAsync(originalResponseBody);
-					//httpContext.Response.Body = originalResponseBody;
+					memStream.Position = 0;
+					log.Response = new StreamReader(memStream).ReadToEnd();
+					memStream.Position = 0;
+					await memStream.CopyToAsync(originalResponseBody);
+					httpContext.Response.Body = originalResponseBody;
 
 				}
 				await LogIndicator.ResponseIndiactor(httpContext, dbContext, log);
 			}
 			catch (Exception ex)
 			{
-
-			}
-			finally
-			{
-
+				await LogIndicator.ExceptionIndiactor(httpContext, dbContext, log, ex);
 			}
 		}
 	}
