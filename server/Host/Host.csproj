@@ -35,6 +35,7 @@
     <ProjectReference Include="..\Core\Runtime\Runtime.csproj" />
     <ProjectReference Include="..\Implementations\EfCore\EfCore.All\EfCore.All.csproj" />
     <ProjectReference Include="..\Infrastructure\LobTools\LobTools.csproj" />
+    <ProjectReference Include="..\MiddleWare\MiddleWare.csproj" />
   </ItemGroup>
 
 </Project>

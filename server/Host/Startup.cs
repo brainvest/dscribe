@@ -1,4 +1,5 @@
 using Brainvest.Dscribe.Implementations.EfCore.All;
+using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.Runtime;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MiddleWare.Log;
 using Newtonsoft.Json.Serialization;
 using System;
 
@@ -46,6 +48,8 @@ namespace Brainvest.Dscribe.Host
 							throw new NotImplementedException($"The provider {provider} is not implemented yet.");
 					}
 				});
+			services.AddDbContext<LobToolsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LobConnectionString")));
+
 
 			RuntimeStartup.ConfigureServices(services, Configuration);
 			services.RegisterEfCore();
@@ -64,9 +68,11 @@ namespace Brainvest.Dscribe.Host
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
+
 			app.UseCors("AllowAll");
 			RuntimeStartup.Configure(app, env);
 			app.UseAuthentication();
+			app.UseLogger();
 			app.UseMvc();
 		}
 	}

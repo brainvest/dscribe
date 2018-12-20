@@ -17,15 +17,19 @@ namespace Brainvest.Dscribe.LobTools.Entities
 		public long RequestSize { get; set; }
 		public string IpAddress { get; set; }
 
-		public ActionTypeEnum? ActionTypeId { get; set; }
+		//public ActionTypeEnum? ActionTypeId { get; set; }
 
 		public string ProcessDuration { get; set; }
 		public bool Failed { get; set; }
 		public bool HadException { get; set; }
 		public string Response { get; set; }
+		public int ResponseStatusCode { get; set; }
 		public long ResponseSize { get; set; }
 
-		public ICollection<RequestException> Exceptions { get; set; }
-		public ICollection<EntityChangeLog> EntityChanges { get; set; }
+		public string ExceptionTitle { get; set; }
+		public string ExceptionMessage { get; set; }
+
+		//public ICollection<RequestException> Exceptions { get; set; }
+		//public ICollection<EntityChangeLog> EntityChanges { get; set; }
 	}
 }
