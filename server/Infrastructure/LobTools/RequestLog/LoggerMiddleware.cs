@@ -1,4 +1,6 @@
+using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.LobTools.Entities;
+using Brainvest.Dscribe.LobTools.RequestLog;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -17,12 +19,12 @@ namespace MiddleWare.Log
 			_next = next;
 		}
 
-		public async Task Invoke(HttpContext httpContext, LobToolsDbContext dbContext)
+		public async Task Invoke(HttpContext httpContext, LobToolsDbContext dbContext, RequestLogger requestLogger)
 		{
-			var log = new RequestLog();
+			var log = new RequestLogModel();
 			try
 			{
-				log = await LogIndicator.RequestIndiactor(httpContext, dbContext);
+				log = await requestLogger.RequestIndiactor(httpContext);
 				using (var memStream = new MemoryStream())
 				{
 					var originalResponseBody = httpContext.Response.Body;
@@ -37,11 +39,11 @@ namespace MiddleWare.Log
 					httpContext.Response.Body = originalResponseBody;
 
 				}
-				await LogIndicator.ResponseIndiactor(httpContext, dbContext, log);
+				await requestLogger.ResponseIndiactor(httpContext, log);
 			}
 			catch (Exception ex)
 			{
-				await LogIndicator.ExceptionIndiactor(httpContext, dbContext, log, ex);
+				await requestLogger.ExceptionIndiactor(httpContext, log, ex);
 			}
 		}
 	}

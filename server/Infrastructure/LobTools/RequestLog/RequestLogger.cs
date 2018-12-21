@@ -1,56 +1,57 @@
+using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.LobTools.Entities;
 using Microsoft.AspNetCore.Http;
+using MiddleWare.Log;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiddleWare.Log
+namespace Brainvest.Dscribe.LobTools.RequestLog
 {
-	public static class LogIndicator
+	public class RequestLogger : IRequestLogger
 	{
-		public static async Task<RequestLog> RequestIndiactor(HttpContext httpContext, LobToolsDbContext dbContext)
+		public LobToolsDbContext _dbContext;
+		public RequestLogger(LobToolsDbContext dbContext)
+		{
+			_dbContext = dbContext;
+		}
+
+		public async Task<RequestLogModel> RequestIndiactor(HttpContext httpContext)
 		{
 			// TODO. ASK HOW TO FILL BELOW FIELDS
 			// ActionTypeId - not now
 			// EntityChanges - not now
 			// QueryString - route parameter
-			var request = new RequestLog
+			var request = new Entities.RequestLog
 			{
 				IpAddress = httpContext.Connection.RemoteIpAddress.ToString(),
 				Path = httpContext.Request.Path,
 				Method = httpContext.Request.Method,
 				StartTime = DateTime.Now,
 			};
-
 			using (var reader = new StreamReader(httpContext.Request.Body, Encoding.UTF8, true, 1024, true))
 			{
 				request.Body = await reader.ReadToEndAsync();
 				request.RequestSize = httpContext.Request.ContentLength;
 			}
-
-			dbContext.RequestLogs.Add(request);
-			await dbContext.SaveChangesAsync();
-			return request;
+			_dbContext.RequestLogs.Add(request);
+			await _dbContext.SaveChangesAsync();
+			return new RequestLogModel { Id = request.Id };
 		}
-
-		public static async Task ResponseIndiactor(HttpContext httpContext, LobToolsDbContext dbContext, RequestLog requestLog)
+		public async Task ResponseIndiactor(HttpContext httpContext, RequestLogModel requestLog)
 		{
-			// TODO. ASK HOW TO FILL BELOW FIELDS
-			// RESPONSE SIZE
-			var request = await dbContext.RequestLogs.FindAsync(requestLog.Id);
-
+			var request = await _dbContext.RequestLogs.FindAsync(requestLog.Id);
 			request.ResponseStatusCode = httpContext.Response.StatusCode;
 			request.ProcessDuration = (DateTime.Now - request.StartTime).TotalMilliseconds.ToString();
+			request.ResponseSize = httpContext.Response.ContentLength;
 			request.Failed = httpContext.Response.StatusCode == 200 ? false : true;
-			await dbContext.SaveChangesAsync();
+			await _dbContext.SaveChangesAsync();
 		}
-
-		public static async Task ExceptionIndiactor(HttpContext httpContext, LobToolsDbContext dbContext, RequestLog requestLog,Exception ex)
+		public async Task ExceptionIndiactor(HttpContext httpContext, RequestLogModel requestLog, Exception ex)
 		{
-			var request = await dbContext.RequestLogs.FindAsync(requestLog.Id);
+			var request = await _dbContext.RequestLogs.FindAsync(requestLog.Id);
 
 			request.ResponseStatusCode = httpContext.Response.StatusCode;
 			request.ProcessDuration = (DateTime.Now - request.StartTime).TotalMilliseconds.ToString();
@@ -58,7 +59,7 @@ namespace MiddleWare.Log
 			request.ExceptionTitle = ex.Message;
 			request.HadException = true;
 			request.Failed = true;
-			await dbContext.SaveChangesAsync();
+			await _dbContext.SaveChangesAsync();
 		}
 	}
 }

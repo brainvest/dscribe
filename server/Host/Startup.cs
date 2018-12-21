@@ -1,5 +1,6 @@
 using Brainvest.Dscribe.Implementations.EfCore.All;
 using Brainvest.Dscribe.LobTools.Entities;
+using Brainvest.Dscribe.LobTools.RequestLog;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.Runtime;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +32,7 @@ namespace Brainvest.Dscribe.Host
 					.AllowAnyOrigin()
 					.AllowAnyHeader()));
 
+			services.AddScoped<RequestLogger>();
 			services.AddDbContext<MetadataDbContext>(options =>
 				{
 					var provider = Configuration.GetSection("EfProvider").Get<string>();

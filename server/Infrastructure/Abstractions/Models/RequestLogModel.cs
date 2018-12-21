@@ -1,10 +1,10 @@
-using Brainvest.Dscribe.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Brainvest.Dscribe.LobTools.Entities
+namespace Brainvest.Dscribe.Abstractions.Models
 {
-	public class RequestLog
+	public class RequestLogModel
 	{
 		public long Id { get; set; }
 
@@ -24,7 +24,7 @@ namespace Brainvest.Dscribe.LobTools.Entities
 		public bool HadException { get; set; }
 		public string Response { get; set; }
 		public int ResponseStatusCode { get; set; }
-		public long? ResponseSize { get; set; }
+		public long ResponseSize { get; set; }
 
 		public string ExceptionTitle { get; set; }
 		public string ExceptionMessage { get; set; }
