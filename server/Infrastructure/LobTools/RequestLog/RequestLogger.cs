@@ -4,6 +4,7 @@ using Brainvest.Dscribe.LobTools.Entities;
 using Microsoft.AspNetCore.Http;
 using MiddleWare.Log;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,11 +32,19 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 				Method = httpContext.Request.Method,
 				StartTime = DateTime.Now,
 			};
-			using (var reader = new StreamReader(httpContext.Request.Body, Encoding.UTF8, true, 1024, true))
-			{
-				request.Body = await reader.ReadToEndAsync();
-				request.RequestSize = httpContext.Request.ContentLength;
-			}
+
+			#region Get Request Body
+			var timer = Stopwatch.StartNew();
+			request.Body = await new StreamReader(httpContext.Request.Body).ReadToEndAsync();
+			var injectedRequestStream = new MemoryStream();
+			var bytesToWrite = Encoding.UTF8.GetBytes(request.Body);
+			injectedRequestStream.Write(bytesToWrite, 0, bytesToWrite.Length);
+			injectedRequestStream.Seek(0, SeekOrigin.Begin);
+			httpContext.Request.Body = injectedRequestStream;
+			#endregion
+
+			request.RequestSize = httpContext.Request.ContentLength;
+
 			_dbContext.RequestLogs.Add(request);
 			await _dbContext.SaveChangesAsync();
 			return new RequestLogModel { Id = request.Id };
