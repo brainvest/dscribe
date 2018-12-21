@@ -27,7 +27,8 @@ import {
 	MatTableModule,
 	MatTabsModule,
 	MatToolbarModule,
-	MatTooltipModule
+	MatTooltipModule,
+	MatProgressBarModule
 } from '@angular/material';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -110,6 +111,7 @@ import {ReportsListComponent} from './lob-tools/reporting/reports-list/reports-l
 		MatProgressSpinnerModule,
 		ReactiveFormsModule,
 		MatSnackBarModule,
+		MatProgressBarModule,
 	],
 	declarations: [
 		ArithmeticFilterNodeComponent,

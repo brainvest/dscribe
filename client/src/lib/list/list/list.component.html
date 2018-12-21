@@ -2,36 +2,37 @@
 	<div class="table mat-elevation-z4">
 		<div class="table-actions">
 			<span>
-				<button mat-icon-button *ngIf="hasNav" (click)="toggleNav()" matTooltip="Toggle NavBar"><mat-icon>more_vert</mat-icon></button>
+				<button mat-icon-button *ngIf="hasNav" (click)="toggleNav()" matTooltip="Toggle NavBar">
+					<mat-icon>more_vert</mat-icon>
+				</button>
 				<span>{{entityType?.PluralTitle || entityType?.Name}}</span>
 			</span>
 			<div>
 				<button mat-icon-button (click)="addNew()" color="primary" matTooltip="Add New {{entityType?.SingularTitle}}">
 					<mat-icon>add</mat-icon>
 				</button>
-				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="editSelectedRow()" color="primary"
-								matTooltip="Edit Selected {{entityType?.SingularTitle}}">
+				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="editSelectedRow()" color="primary" matTooltip="Edit Selected {{entityType?.SingularTitle}}">
 					<mat-icon>edit</mat-icon>
 				</button>
-				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="deleteSelected()" color="warn"
-								matTooltip="Delete selected {{entityType?.SingularTitle}}">
+				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="deleteSelected()" color="warn" matTooltip="Delete selected {{entityType?.SingularTitle}}">
 					<mat-icon>delete</mat-icon>
 				</button>
+				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="manageComment()" color="primary" matTooltip="Comment for selected {{entityType?.SingularTitle}}">
+					<mat-icon>insert_comment</mat-icon>
+				</button>
 				<span *ngIf="!hideFilter">
-					<mat-button-toggle (change)="toggleFilter()" [checked]="filterVisible"
-														 matTooltip="{{filterVisible ? 'Hide' : 'Show'}} Filter"><mat-icon>filter_list</mat-icon></mat-button-toggle>
+					<mat-button-toggle (change)="toggleFilter()" [checked]="filterVisible" matTooltip="{{filterVisible ? 'Hide' : 'Show'}} Filter">
+						<mat-icon>filter_list</mat-icon>
+					</mat-button-toggle>
 					<ng-container *ngFor="let command of filterCommands">
-					<button *ngIf="shouldDisplayCommand(command)"
-									matTooltip="{{command.title}}"
-									mat-icon-button
-									(click)="callFilterCommand(command)">
-						<mat-icon *ngIf="command.iconName">{{command.iconName}}</mat-icon>
-						<span *ngIf="!command.iconName">{{command.title}}</span>
-					</button>
-				</ng-container>
+						<button *ngIf="shouldDisplayCommand(command)" matTooltip="{{command.title}}" mat-icon-button (click)="callFilterCommand(command)">
+							<mat-icon *ngIf="command.iconName">{{command.iconName}}</mat-icon>
+							<span *ngIf="!command.iconName">{{command.title}}</span>
+						</button>
+					</ng-container>
 				</span>
-				<button [disabled]="!selection.hasValue() || !reports?.length" mat-icon-button (click)="showReports()"
-								color="accent" matTooltip="Reports">
+				<button [disabled]="!selection.hasValue() || !reports?.length" mat-icon-button (click)="showReports()" color="accent"
+				 matTooltip="Reports">
 					<mat-icon>class</mat-icon>
 				</button>
 			</div>
@@ -55,18 +56,15 @@
 			<ng-container [ngSwitch]="displayMode">
 				<ng-container *ngSwitchCase="'card'">
 					<div style="display: flex; flex-wrap: wrap">
-						<dscribe-custom-template-host [ngStyle]="{'width': getCustomTemplateWidth()}" style="margin: 24px;"
-																					*ngFor="let instance of data" (select)="selectRow(instance)"
-																					[isSelected]="selection.isSelected(instance)"
-																					[data]="instance" [entityTypeName]="entityType.Name">
+						<dscribe-custom-template-host [ngStyle]="{'width': getCustomTemplateWidth()}" style="margin: 24px;" *ngFor="let instance of data"
+						 (select)="selectRow(instance)" [isSelected]="selection.isSelected(instance)" [data]="instance" [entityTypeName]="entityType.Name">
 
 						</dscribe-custom-template-host>
 					</div>
 				</ng-container>
-				<dscribe-table-template
-					*ngSwitchDefault (rowClick)="selectRow($event)" [data]="data" [columns]="columns"
-					[displayedColumns]="displayedColumns" [selection]="selection"
-					(commentsClick)="showComments($event)" (attachmentsClick)="showAttachments($event)">
+				<dscribe-table-template *ngSwitchDefault (rowClick)="selectRow($event)" [data]="data" [columns]="columns"
+				 [displayedColumns]="displayedColumns" [selection]="selection" (commentsClick)="showComments($event)"
+				 (attachmentsClick)="showAttachments($event)">
 				</dscribe-table-template>
 			</ng-container>
 			<mat-paginator class="list-paginator" [length]="totalCount" [pageSize]="pageSize"></mat-paginator>
