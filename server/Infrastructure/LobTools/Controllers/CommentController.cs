@@ -34,7 +34,8 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 						Id = x.Id,
 						Identifier = x.Identifier,
 						RequestLogId = x.RequestLogId,
-						Title = x.Title
+						Title = x.Title,
+						EntityTypeName = request.EntityTypeName,
 					})
 					.ToListAsync();
 				return new CommentsListResponse

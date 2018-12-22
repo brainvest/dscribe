@@ -1,3 +1,50 @@
-<p>
-  comments-list works!
-</p>
+<h1 mat-dialog-title>{{data.mode === 1 ? 'View' : 'Manage'}} Comments</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<mat-dialog-content>
+	<mat-card style="margin-bottom: 10px" *ngFor="let comment of comments">
+		<mat-card-header>
+			<h4 style="color:gray" *ngIf="!comment.IsEditing">{{comment.Title}}</h4>
+		</mat-card-header>
+		<mat-card-content>
+			<h5 style="color:gray" *ngIf="!comment.IsEditing">{{comment.Description}}</h5>
+			<mat-form-field class="full-width" appearance="outline" *ngIf="comment.IsEditing">
+				<mat-label>Title</mat-label>
+				<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="commentToSave.Title">
+				<p class="form-error-message" *ngFor="let e of commentToSaveError?.Title">
+					{{e}}
+				</p>
+			</mat-form-field>
+			<mat-form-field class="full-width" appearance="outline" *ngIf="comment.IsEditing">
+				<mat-label>Description</mat-label>
+				<textarea matInput type="text" placeholder="Description" name="Description" [(ngModel)]="commentToSave.Description"
+				 style="height: 100px;"></textarea>
+				<p class="form-error-message" *ngFor="let e of commentToSaveError?.Title">
+					{{e}}
+				</p>
+			</mat-form-field>
+		</mat-card-content>
+		<mat-card-actions *ngIf="data.mode === 2">
+			<button mat-icon-button (click)="deleteComment(comment)" *ngIf="!comment.IsEditing">
+				<mat-icon color="warn">delete</mat-icon>
+			</button>
+			<button mat-icon-button (click)="switchToEditMode(comment)" *ngIf="!comment.IsEditing">
+				<mat-icon color="primary">edit</mat-icon>
+			</button>
+			<button mat-icon-button (click)="cancelEditMode(comment)" [disabled]="submitLoading" *ngIf="comment.IsEditing">
+				<mat-icon color="warn">cancel</mat-icon>
+			</button>
+			<button mat-icon-button (click)="saveComment(comment)" *ngIf="comment.IsEditing">
+				<mat-icon color="accent">save</mat-icon>
+			</button>
+		</mat-card-actions>
+	</mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<button mat-icon-button (click)="cancel()">
+		<mat-icon color="warn">cancel</mat-icon>
+	</button>
+	<button mat-icon-button (click)="switchToAddMode()">
+		<mat-icon color="warn">add</mat-icon>
+	</button>
+</mat-dialog-actions>

@@ -1,13 +1,14 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {DscribeService} from '../dscribe.service';
-import {LobSummaryInfo, LobSummaryRequest, LobSummaryResponse} from '../common/models/lob/common-models';
-import {MetadataService} from '../common/services/metadata.service';
-import {EntityTypeMetadata} from '../metadata/entity-type-metadata';
-import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
-import {DownloadReportRequest, ReportsListResponse, SaveReportAsAttachmentRequest} from './models/report-models';
-import {map} from 'rxjs/operators';
-import {AttachmentListItem, AttachmentsListRequest, AttachmentsListResponse} from './models/attachment-models';
+import { GetCommentRequestModel, CommentModel } from './models/comment.model';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { DscribeService } from '../dscribe.service';
+import { LobSummaryInfo, LobSummaryRequest, LobSummaryResponse } from '../common/models/lob/common-models';
+import { MetadataService } from '../common/services/metadata.service';
+import { EntityTypeMetadata } from '../metadata/entity-type-metadata';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { DownloadReportRequest, ReportsListResponse, SaveReportAsAttachmentRequest } from './models/report-models';
+import { map } from 'rxjs/operators';
+import { AttachmentListItem, AttachmentsListRequest, AttachmentsListResponse } from './models/attachment-models';
 
 @Injectable({
 	providedIn: 'root'
@@ -30,6 +31,11 @@ export class LobInfoService {
 
 	private attachmentsListApi = this.dscribeService.url('api/attachment/getAttachmentsList');
 	private downloadAttachmentApi = this.dscribeService.url('api/attachment/download');
+
+	private getCommentsApi = this.dscribeService.url('api/Comment/GetCommentsList');
+	private addCommentApi = this.dscribeService.url('api/Comment/AddComment');
+	private editCommentApi = this.dscribeService.url('api/Comment/EditComment');
+	private deleteCommentApi = this.dscribeService.url('api/Comment/DeleteComment');
 
 	setLobInfo(entityType: EntityTypeMetadata, data: any[]) {
 		if (!data || !data.length) {
@@ -88,8 +94,24 @@ export class LobInfoService {
 		return this.http.post(this.downloadAttachmentApi, {
 			Id: attachment.Id
 		}, {
-			observe: 'response',
-			responseType: 'blob'
-		});
+				observe: 'response',
+				responseType: 'blob'
+			});
+	}
+
+	getCommentList(model: GetCommentRequestModel): Observable<CommentModel[]> {
+		return this.http.post<CommentModel[]>(this.getCommentsApi, model);
+	}
+
+	addComment(model: CommentModel): Observable<any> {
+		return this.http.post<any>(this.addCommentApi, model);
+	}
+
+	editComment(model: CommentModel): Observable<CommentModel[]> {
+		return this.http.post<CommentModel[]>(this.editCommentApi, model);
+	}
+
+	deleteComment(model: CommentModel): Observable<any> {
+		return this.http.post<any>(this.deleteCommentApi, model);
 	}
 }
