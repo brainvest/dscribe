@@ -17,6 +17,10 @@ namespace Brainvest.Dscribe.LobTools.Entities
 		public long? RequestSize { get; set; }
 		public string IpAddress { get; set; }
 
+		public int? EntityTypeId { get; set; }
+		public int? PropertyId { get; set; }
+		public int? AppTypeId { get; set; }
+		public int? AppInstanceId { get; set; }
 		//public ActionTypeEnum? ActionTypeId { get; set; }
 
 		public string ProcessDuration { get; set; }

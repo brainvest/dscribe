@@ -30,6 +30,7 @@ namespace MiddleWare.Log
 					var originalResponseBody = httpContext.Response.Body;
 					httpContext.Response.Body = memStream;
 
+					httpContext.Items.Add("RequestLog", log);
 					await _next(httpContext);
 
 					memStream.Position = 0;

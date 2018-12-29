@@ -129,6 +129,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			entityType.GeneralUsageCategoryId = model.EntityTypeGeneralUsageCategoryId;
 			await ProcessEntityTypeLocalFacets(model, true, entityType);
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).EntityTypeId = entityType.Id;
 			return Ok();
 		}
 

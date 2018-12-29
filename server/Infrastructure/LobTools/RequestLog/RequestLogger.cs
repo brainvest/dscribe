@@ -47,7 +47,15 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 
 			_dbContext.RequestLogs.Add(request);
 			await _dbContext.SaveChangesAsync();
-			return new RequestLogModel { Id = request.Id };
+			return new RequestLogModel {
+				Id = request.Id,
+				Body = request.Body,
+				IpAddress = request.IpAddress,
+				Method = request.Method,
+				Path = request.Path,
+				StartTime = request.StartTime,
+				UserId = request.UserId,
+			};
 		}
 		public async Task ResponseIndiactor(HttpContext httpContext, RequestLogModel requestLog)
 		{
@@ -56,6 +64,10 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 			request.ProcessDuration = (DateTime.Now - request.StartTime).TotalMilliseconds.ToString();
 			request.ResponseSize = httpContext.Response.ContentLength;
 			request.Failed = httpContext.Response.StatusCode == 200 ? false : true;
+			request.EntityTypeId = request.EntityTypeId;
+			request.PropertyId = request.PropertyId;
+			request.AppInstanceId = request.AppInstanceId;
+			request.AppTypeId = request.AppTypeId;
 			await _dbContext.SaveChangesAsync();
 		}
 		public async Task ExceptionIndiactor(HttpContext httpContext, RequestLogModel requestLog, Exception ex)
