@@ -47,7 +47,8 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 
 			_dbContext.RequestLogs.Add(request);
 			await _dbContext.SaveChangesAsync();
-			return new RequestLogModel {
+			return new RequestLogModel
+			{
 				Id = request.Id,
 				Body = request.Body,
 				IpAddress = request.IpAddress,
@@ -64,10 +65,10 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 			request.ProcessDuration = (DateTime.Now - request.StartTime).TotalMilliseconds.ToString();
 			request.ResponseSize = httpContext.Response.ContentLength;
 			request.Failed = httpContext.Response.StatusCode == 200 ? false : true;
-			request.EntityTypeId = request.EntityTypeId;
-			request.PropertyId = request.PropertyId;
-			request.AppInstanceId = request.AppInstanceId;
-			request.AppTypeId = request.AppTypeId;
+			request.EntityTypeId = ((RequestLogModel)httpContext.Items["RequestLog"]).EntityTypeId;
+			request.PropertyId = ((RequestLogModel)httpContext.Items["RequestLog"]).PropertyId;
+			request.AppInstanceId = ((RequestLogModel)httpContext.Items["RequestLog"]).AppInstanceId;
+			request.AppTypeId = ((RequestLogModel)httpContext.Items["RequestLog"]).AppTypeId;
 			await _dbContext.SaveChangesAsync();
 		}
 		public async Task ExceptionIndiactor(HttpContext httpContext, RequestLogModel requestLog, Exception ex)
