@@ -1,3 +1,4 @@
+using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.AppManagement;
 using Brainvest.Dscribe.Abstractions.Models.ManageMetadata;
 using Brainvest.Dscribe.LobTools.Entities;
@@ -34,6 +35,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				ProcessDuration = x.ProcessDuration,
 				StartTime = x.StartTime,
 				UserId = x.UserId,
+				Action = GetActionFromUrl(x.Path)
 			}).ToList();
 			return result;
 		}
@@ -58,6 +60,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				ProcessDuration = x.ProcessDuration,
 				StartTime = x.StartTime,
 				UserId = x.UserId,
+				Action = GetActionFromUrl(x.Path)
 			}).ToList();
 		}
 		public async Task<IEnumerable<PropertyHistoryModel>> GetPropertyHistory(PropertyHistoryModel model)
@@ -103,6 +106,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				StartTime = x.StartTime,
 				ProcessDuration = x.ProcessDuration,
 				LogId = x.Id,
+				Action = GetActionFromUrl(x.Path)
 			}).ToList();
 			return result;
 		}
@@ -127,6 +131,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				StartTime = x.StartTime,
 				ProcessDuration = x.ProcessDuration,
 				LogId = x.Id,
+				Action = GetActionFromUrl(x.Path)
 			}).ToList();
 		}
 		public async Task<IEnumerable<AppTypeHistoryModel>> GetAppTypeHistory(AppTypeHistoryModel model)
@@ -170,6 +175,17 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		{
 			var requestAction = body.Split('/').Last();
 			return requestAction == action;
+		}
+		private string GetActionFromUrl(string path)
+		{
+			try
+			{
+				return path.Split('/').Last();
+			}
+			catch
+			{
+				return null;
+			}
 		}
 	}
 }

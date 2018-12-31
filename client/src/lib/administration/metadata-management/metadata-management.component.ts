@@ -13,6 +13,8 @@ import { ReleaseMetadataSettingsComponent } from '../release-metadata-settings/r
 import { DscribeService } from '../../dscribe.service';
 import { SnackBarService } from '../../common/notifications/snackbar.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EntityHistoryComponent } from '../history/entity-history/entity-history.component';
+import { EntityTypeHistoryModel } from '../models/history/entity-type-history-model';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -156,6 +158,22 @@ export class MetadataManagementComponent implements OnInit {
 					this.deleteEntityLoading = false;
 				}
 			});
+	}
+
+	showEntityHistory() {
+		const data = new EntityTypeHistoryModel();
+		data.EntityType.Id = this.selectedEntityType.Id;
+		data.EntityType.Name = this.selectedEntityType.Name;
+		data.basicInfo = this.basicInfo;
+		const dialogRef = this.dialog.open(EntityHistoryComponent, {
+			width: '90%',
+			data: data
+		});
+		dialogRef.afterClosed().subscribe(
+			(res => {
+
+			})
+		);
 	}
 
 	openAddNEditEntityTypeDialog(instance: any, isNew: boolean) {

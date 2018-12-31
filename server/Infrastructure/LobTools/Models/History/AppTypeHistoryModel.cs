@@ -13,5 +13,6 @@ namespace Brainvest.Dscribe.LobTools.Models.History
 		public Guid? UserId { get; set; }
 		public string ProcessDuration { get; set; }
 		public long LogId { get; set; }
+		public string Action { get; set; }
 	}
 }

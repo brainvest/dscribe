@@ -3,6 +3,9 @@
 		<div class="table-toolbar">
 			<span>Entity Types</span>
 			<div>
+				<button mat-icon-button (click)="showEntityHistory()" [disabled]="!selectedEntityType" matTooltip="Show history">
+					<mat-icon color="accent" [ngStyle]="{ 'color' : selectedEntityType ? '' : '#dddddd' }">history</mat-icon>
+				</button>
 				<button mat-icon-button (click)="addEntityType()">
 					<mat-icon color="primary">add</mat-icon>
 				</button>
@@ -10,10 +13,13 @@
 					<mat-icon color="accent" [ngStyle]="{ 'color' : selectedEntityType ? '' : '#dddddd' }">edit</mat-icon>
 				</button>
 				<button mat-icon-button (click)="deleteEntityType()" [disabled]="!selectedEntityType" *ngIf="!deleteEntityLoading">
-					<mat-icon color="warn" [ngStyle]="{ 'color' : selectedEntityType ? '' : '#dddddd' }" >delete</mat-icon>
+					<mat-icon color="warn" [ngStyle]="{ 'color' : selectedEntityType ? '' : '#dddddd' }">delete</mat-icon>
 				</button>
 				<button mat-icon-button matTooltip="Delete loading" *ngIf="deleteEntityLoading" style="margin-top: -26px;">
 					<mat-spinner strokeWidth="3" [diameter]="20" color="accent"></mat-spinner>
+				</button>
+				<button mat-icon-button matTooltip="Show deleted entities" (click)="showDeletedHistory()">
+					<mat-icon color="warn">delete_sweep</mat-icon>
 				</button>
 				<button mat-icon-button (click)="openReleaseSettings()" matTooltip="Release Metadata">
 					<mat-icon color="warn">new_releases</mat-icon>
@@ -24,7 +30,6 @@
 				<button mat-icon-button matTooltip="Generate Code Loading" *ngIf="generateCodeLoading" style="margin-top: -26px;">
 					<mat-spinner strokeWidth="3" [diameter]="20" color="accent"></mat-spinner>
 				</button>
-
 			</div>
 		</div>
 
@@ -63,13 +68,11 @@
 			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedEntityTypeColumns"></tr>
-			<tr mat-row *matRowDef="let entityType; columns: displayedEntityTypeColumns;"
-					[ngClass]="{'highlight': selectedEntityType?.Id === entityType.Id}"
-					(click)="selectEntityType(entityType)"
-			></tr>
+			<tr mat-row *matRowDef="let entityType; columns: displayedEntityTypeColumns;" [ngClass]="{'highlight': selectedEntityType?.Id === entityType.Id}"
+			 (click)="selectEntityType(entityType)"></tr>
 		</table>
 		<mat-paginator id="entityTypesPaginator" #entityTypesPaginator [length]="entityTypesDataSource.data.length"
-									 [pageSize]="5"></mat-paginator>
+		 [pageSize]="5"></mat-paginator>
 	</div>
 
 	<div class="table-wrapper">
@@ -134,12 +137,9 @@
 			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedPropertyColumns"></tr>
-			<tr mat-row *matRowDef="let property; columns: displayedPropertyColumns;"
-					[ngClass]="{'highlight': selectedProperty?.Id === property.Id}"
-					(click)="selectProperty(property)"
-			></tr>
+			<tr mat-row *matRowDef="let property; columns: displayedPropertyColumns;" [ngClass]="{'highlight': selectedProperty?.Id === property.Id}"
+			 (click)="selectProperty(property)"></tr>
 		</table>
-		<mat-paginator id="propertiesPaginator" #propertiesPaginator [length]="propertiesDataSource.data?.length"
-									 [pageSize]="5"></mat-paginator>
+		<mat-paginator id="propertiesPaginator" #propertiesPaginator [length]="propertiesDataSource.data?.length" [pageSize]="5"></mat-paginator>
 	</div>
 </div>

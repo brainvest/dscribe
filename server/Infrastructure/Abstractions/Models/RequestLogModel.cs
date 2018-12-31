@@ -28,7 +28,7 @@ namespace Brainvest.Dscribe.Abstractions.Models
 		public bool HadException { get; set; }
 		public string Response { get; set; }
 		public int ResponseStatusCode { get; set; }
-		public long ResponseSize { get; set; }
+		public long? ResponseSize { get; set; }
 
 		public string ExceptionTitle { get; set; }
 		public string ExceptionMessage { get; set; }
