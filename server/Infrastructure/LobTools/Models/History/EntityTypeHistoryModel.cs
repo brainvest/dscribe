@@ -7,8 +7,9 @@ using System.Text;
 
 namespace Brainvest.Dscribe.LobTools.Models
 {
-	public class EntityTypeHistoryModel : EntityTypeModel, IHistory
+	public class EntityTypeHistoryModel :IHistory
 	{
+		public EntityTypeModel EntityType { get; set; }
 		public DateTime StartTime { get; set; }
 		public Guid? UserId { get; set; }
 		public string ProcessDuration { get; set; }

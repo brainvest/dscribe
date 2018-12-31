@@ -6,8 +6,9 @@ using System.Text;
 
 namespace Brainvest.Dscribe.LobTools.Models.History
 {
-	public class AppTypeHistoryModel : AppTypeModel, IHistory
+	public class AppTypeHistoryModel : IHistory
 	{
+		public AppTypeModel AppType { get; set; }
 		public DateTime StartTime { get; set; }
 		public Guid? UserId { get; set; }
 		public string ProcessDuration { get; set; }
