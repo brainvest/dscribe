@@ -1,0 +1,69 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<h1 mat-dialog-title>History of {{data.Name}}</h1>
+
+<mat-dialog-content>
+	<div [hidden]="isLoading">
+		<table mat-table [dataSource]="propertiesDataSource" matSort>
+
+			<ng-container matColumnDef="action">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+				<td mat-cell *matCellDef="let propertyHistory">
+					<button mat-icon-button>
+						<mat-icon color="accent" [ngStyle]="setActionColor(propertyHistory)">{{setActionIcon(propertyHistory)}}</mat-icon>
+					</button>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="name">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+				<td mat-cell *matCellDef="let propertyHistory">{{propertyHistory.Property.Name}}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="title">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+				<td mat-cell *matCellDef="let propertyHistory">{{propertyHistory.Property.Title}}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="dataType">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Data Type</th>
+				<td mat-cell *matCellDef="let propertyHistory">{{getDataTypeName(propertyHistory.Property.DataTypeId)}}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="nullable">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Nullable</th>
+				<td mat-cell *matCellDef="let propertyHistory">{{propertyHistory.Property.IsNullable}}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="dataEntityType">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Data Entity Type</th>
+				<td mat-cell *matCellDef="let propertyHistory">{{getEntityTypeName(propertyHistory.Property.DataEntityTypeId)}}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="usage">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Usage</th>
+				<td mat-cell *matCellDef="let propertyHistory">{{getPropertyUsageName(propertyHistory.Property.PropertyGeneralUsageCategoryId)}}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="foreignKey">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Foreign Key</th>
+				<td mat-cell *matCellDef="let propertyHistory">{{getPropertyName(propertyHistory.Property.ForeignKeyPropertyId)}}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="inverse">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Inverse Property</th>
+				<td mat-cell *matCellDef="let propertyHistory">{{getPropertyName(propertyHistory.Property.InversePropertyId)}}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="ActionDate">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header>Action Date</th>
+				<td mat-cell *matCellDef="let propertyHistory" [matTooltip]="propertyHistory.StartTime | date:'shortTime'">{{propertyHistory.StartTime
+					| date}}</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedPropertyColumns"></tr>
+			<tr mat-row *matRowDef="let property; columns: displayedPropertyColumns;" [ngClass]="{'highlight': selectedProperty?.Id === property.Id}"
+			 (click)="selectProperty(property)"></tr>
+		</table>
+		<mat-paginator id="propertiesPaginator" #propertiesPaginator [length]="propertiesDataSource.data.length" [pageSize]="5"></mat-paginator>
+	</div>
+</mat-dialog-content>

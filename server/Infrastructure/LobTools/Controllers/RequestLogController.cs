@@ -71,7 +71,9 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				Property = JsonConvert.DeserializeObject<PropertyModel>(x.Body),
 				LogId = x.Id,
 				StartTime = x.StartTime,
-				UserId = x.UserId
+				UserId = x.UserId,
+				Action = GetActionFromUrl(x.Path),
+				ProcessDuration = x.ProcessDuration,
 			}).ToList();
 			return result;
 		}

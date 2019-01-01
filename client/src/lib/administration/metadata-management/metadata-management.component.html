@@ -80,6 +80,9 @@
 			<span *ngIf="selectedEntityType">Properties of {{selectedEntityType?.Name}}</span>
 			<span *ngIf="!selectedEntityType">Please select an entity type to manage its properties</span>
 			<mat-card-actions>
+				<button mat-icon-button (click)="showPropertyHistory()" [disabled]="!selectedEntityType || !selectedProperty">
+					<mat-icon color="primary" [ngStyle]="{ 'color' : selectedProperty ? '' : '#dddddd' }">history</mat-icon>
+				</button>&nbsp;
 				<button mat-icon-button (click)="addProperty()" [disabled]="!selectedEntityType">
 					<mat-icon color="primary" [ngStyle]="{ 'color' : selectedEntityType ? '' : '#dddddd' }">add</mat-icon>
 				</button>&nbsp;

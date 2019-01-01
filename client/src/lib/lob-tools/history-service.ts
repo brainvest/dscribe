@@ -1,3 +1,4 @@
+import { PropertyHistoryModel } from './../administration/models/history/property-type-history-model';
 import { GetCommentRequestModel, CommentModel } from './models/comment.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -38,8 +39,8 @@ export class HistoryService {
 		return this.http.get<any>(this.getDeletedEntityTypeHistoryAPI);
 	}
 
-	getPropertyHistory(model: CommentModel): Observable<any> {
-		return this.http.get<any>(this.getPropertyHistoryAPI);
+	getPropertyHistory(model: PropertyHistoryModel): Observable<PropertyHistoryModel[]> {
+		return this.http.post<PropertyHistoryModel[]>(this.getPropertyHistoryAPI, model);
 	}
 
 	getDeletedPropertyHistory(model: CommentModel): Observable<any> {

@@ -1,3 +1,4 @@
+import { PropertyHistoryComponent } from './administration/history/property-history/property-history.component';
 import {NgModule} from '@angular/core';
 import {DscribeComponent} from './dscribe.component';
 import {ListContainerComponent} from './list/list-container/list-container.component';
@@ -119,6 +120,7 @@ import { EntityHistoryComponent } from './administration/history/entity-history/
 		AddNEditComponent,
 		AddNEditEntityTypeComponent,
 		EntityHistoryComponent,
+		PropertyHistoryComponent,
 		AddNEditPropertyComponent,
 		AutoCompleteMoreDialogComponent,
 		BoolEditorComponent,
@@ -180,6 +182,7 @@ import { EntityHistoryComponent } from './administration/history/entity-history/
 		AttachmentsListComponent,
 		ReportsListComponent,
 		EntityHistoryComponent,
+		PropertyHistoryComponent,
 	]
 })
 export class DscribeModule {

@@ -15,6 +15,8 @@ import { SnackBarService } from '../../common/notifications/snackbar.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EntityHistoryComponent } from '../history/entity-history/entity-history.component';
 import { EntityTypeHistoryModel } from '../models/history/entity-type-history-model';
+import { PropertyHistoryModel } from '../models/history/property-type-history-model';
+import { PropertyHistoryComponent } from '../history/property-history/property-history.component';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -166,6 +168,26 @@ export class MetadataManagementComponent implements OnInit {
 		data.EntityType.Name = this.selectedEntityType.Name;
 		data.basicInfo = this.basicInfo;
 		const dialogRef = this.dialog.open(EntityHistoryComponent, {
+			width: '90%',
+			data: data
+		});
+		dialogRef.afterClosed().subscribe(
+			(res => {
+
+			})
+		);
+	}
+
+	showPropertyHistory() {
+		const data = new PropertyHistoryModel();
+		data.Property.Id = this.selectedProperty.Id;
+		data.Property.Name = this.selectedProperty.Name;
+		data.basicInfo = this.basicInfo;
+		data.entityTypes = this.entityTypes;
+		data.properties = this.properties;
+		data.allPropertiesInfo = this.allPropertiesInfo;
+
+		const dialogRef = this.dialog.open(PropertyHistoryComponent, {
 			width: '90%',
 			data: data
 		});
