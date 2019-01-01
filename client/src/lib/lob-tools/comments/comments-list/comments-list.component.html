@@ -24,10 +24,10 @@
 			</mat-form-field>
 		</mat-card-content>
 		<mat-card-actions *ngIf="data.mode === 2">
-			<button mat-icon-button (click)="deleteComment(comment)" *ngIf="!comment.IsEditing">
+			<button mat-icon-button (click)="deleteComment(comment)" *ngIf="!comment.IsEditing" [disabled]="isAdding">
 				<mat-icon color="warn">delete</mat-icon>
 			</button>
-			<button mat-icon-button (click)="switchToEditMode(comment)" *ngIf="!comment.IsEditing">
+			<button mat-icon-button (click)="switchToEditMode(comment)" *ngIf="!comment.IsEditing" [disabled]="isAdding">
 				<mat-icon color="primary">edit</mat-icon>
 			</button>
 			<button mat-icon-button (click)="cancelEditMode(comment)" [disabled]="submitLoading" *ngIf="comment.IsEditing">
@@ -44,7 +44,7 @@
 	<button mat-icon-button (click)="cancel()">
 		<mat-icon color="warn">cancel</mat-icon>
 	</button>
-	<button mat-icon-button (click)="switchToAddMode()">
+	<button mat-icon-button (click)="switchToAddMode()" *ngIf="data.mode === 2" [disabled]="isAdding">
 		<mat-icon color="warn">add</mat-icon>
 	</button>
 </mat-dialog-actions>
