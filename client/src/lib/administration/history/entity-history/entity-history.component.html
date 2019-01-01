@@ -1,5 +1,6 @@
 <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-<h1 mat-dialog-title>History of {{data.EntityType.Name}}</h1>
+<h1 mat-dialog-title *ngIf="data.historyType === 1">History of {{data.EntityType.Name}}</h1>
+<h1 mat-dialog-title *ngIf="data.historyType === 2">Deleted entities history</h1>
 
 <mat-dialog-content *ngIf="!isLoading">
 	<table mat-table [dataSource]="entityTypesDataSource" matSort>

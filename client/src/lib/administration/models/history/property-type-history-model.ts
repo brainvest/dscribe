@@ -1,3 +1,4 @@
+import { HistoryType } from './history-type';
 import { PropertyBase } from './../../../metadata/property-base';
 import { IHistory } from './history-model';
 import { MetadataBasicInfoModel } from 'src/lib/metadata/metadata-basic-info-model';
@@ -15,7 +16,7 @@ export class PropertyHistoryModel implements IHistory {
 	properties: PropertyBase[];
 	entityTypes: EntityTypeBase[];
 	allPropertiesInfo: PropertyInfoModel[];
-
+	historyType: HistoryType;
 	constructor() {
 		this.Property = new PropertyBase();
 		this.Property.DataTypeId = 1;

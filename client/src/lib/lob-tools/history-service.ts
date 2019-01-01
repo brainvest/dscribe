@@ -35,7 +35,7 @@ export class HistoryService {
 		return this.http.post<EntityTypeHistoryModel[]>(this.getEntityTypeHistoryAPI, data);
 	}
 
-	getDeletedEntityTypeHistory(model: CommentModel): Observable<any> {
+	getDeletedEntityTypeHistory(): Observable<any> {
 		return this.http.get<any>(this.getDeletedEntityTypeHistoryAPI);
 	}
 
@@ -43,7 +43,7 @@ export class HistoryService {
 		return this.http.post<PropertyHistoryModel[]>(this.getPropertyHistoryAPI, model);
 	}
 
-	getDeletedPropertyHistory(model: CommentModel): Observable<any> {
+	getDeletedPropertyHistory(): Observable<any> {
 		return this.http.get<any>(this.getDeletedPropertyHistoryAPI);
 	}
 

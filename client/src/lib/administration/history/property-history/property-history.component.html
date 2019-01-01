@@ -1,5 +1,6 @@
 <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-<h1 mat-dialog-title>History of {{data.Name}}</h1>
+<h1 mat-dialog-title *ngIf="data.historyType === 1">History of {{data.Name}}</h1>
+<h1 mat-dialog-title *ngIf="data.historyType === 2">Deleted propertied history</h1>
 
 <mat-dialog-content>
 	<div [hidden]="isLoading">
@@ -34,7 +35,7 @@
 				<td mat-cell *matCellDef="let propertyHistory">{{propertyHistory.Property.IsNullable}}</td>
 			</ng-container>
 
-			<ng-container matColumnDef="dataEntityType">
+			<ng-container matColumnDef="dataEntityType" *ngIf="data.historyType === 1">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Data Entity Type</th>
 				<td mat-cell *matCellDef="let propertyHistory">{{getEntityTypeName(propertyHistory.Property.DataEntityTypeId)}}</td>
 			</ng-container>
@@ -44,12 +45,12 @@
 				<td mat-cell *matCellDef="let propertyHistory">{{getPropertyUsageName(propertyHistory.Property.PropertyGeneralUsageCategoryId)}}</td>
 			</ng-container>
 
-			<ng-container matColumnDef="foreignKey">
+			<ng-container matColumnDef="foreignKey" *ngIf="data.historyType === 1">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Foreign Key</th>
 				<td mat-cell *matCellDef="let propertyHistory">{{getPropertyName(propertyHistory.Property.ForeignKeyPropertyId)}}</td>
 			</ng-container>
 
-			<ng-container matColumnDef="inverse">
+			<ng-container matColumnDef="inverse" *ngIf="data.historyType === 1">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Inverse Property</th>
 				<td mat-cell *matCellDef="let propertyHistory">{{getPropertyName(propertyHistory.Property.InversePropertyId)}}</td>
 			</ng-container>

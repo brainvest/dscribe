@@ -1,6 +1,7 @@
 import { IHistory } from './history-model';
 import { EntityTypeBase } from 'src/lib/metadata/entity-type-base';
 import { MetadataBasicInfoModel } from 'src/lib/metadata/metadata-basic-info-model';
+import { HistoryType } from './history-type';
 
 export class EntityTypeHistoryModel implements IHistory {
 	EntityType: EntityTypeBase;
@@ -10,6 +11,7 @@ export class EntityTypeHistoryModel implements IHistory {
 	StartTime: Date;
 	UserId: string;
 	basicInfo: MetadataBasicInfoModel;
+	historyType: HistoryType;
 
 	constructor() {
 		this.EntityType = new EntityTypeBase();

@@ -4,6 +4,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatTableDataSource } from '@angular/material';
 import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
 import { HistoryService } from 'src/lib/lob-tools/history-service';
+import { HistoryType } from '../../models/history/history-type';
 
 @Component({
 	selector: 'dscribe-property-history',
@@ -14,17 +15,9 @@ export class PropertyHistoryComponent implements OnInit {
 
 	private propertyHistories: PropertyHistoryModel[] = [];
 	private isLoading = false;
-	displayedPropertyColumns = [
-		'action',
-		'name',
-		'title',
-		'dataType',
-		'nullable',
-		'dataEntityType',
-		'usage',
-		'foreignKey',
-		'inverse',
-		'ActionDate'];
+	displayedPropertyColumns = this.data.historyType === HistoryType.addEdit ?
+		['action', 'name', 'title', 'dataType', 'nullable', 'dataEntityType', 'usage', 'foreignKey', 'inverse', 'ActionDate'] :
+		['action', 'name', 'title', 'dataType', 'nullable', 'usage', 'ActionDate'];
 	propertiesDataSource = new MatTableDataSource<PropertyHistoryModel>(this.propertyHistories);
 
 	@ViewChild('propertiesPaginator') propertyPaginator: MatPaginator;
@@ -37,7 +30,12 @@ export class PropertyHistoryComponent implements OnInit {
 
 	ngOnInit() {
 		this.propertiesDataSource.paginator = this.propertyPaginator;
-		this.getPropertyHistory();
+		if (this.data.historyType === HistoryType.addEdit) {
+			this.getPropertyHistory();
+		}
+		if (this.data.historyType === HistoryType.deleted) {
+			this.getDeletedPropertyHistory();
+		}
 	}
 
 	getEntityTypeName(id: number) {
@@ -90,6 +88,20 @@ export class PropertyHistoryComponent implements OnInit {
 		this.isLoading = true;
 		this.propertyHistories = [];
 		this.historyService.getPropertyHistory(this.data).subscribe(
+			(res: PropertyHistoryModel[]) => {
+				this.isLoading = false;
+				this.propertiesDataSource.data = this.propertyHistories = res;
+			}, (error: HttpErrorResponse) => {
+				this.snackbarService.open(error.statusText);
+				this.isLoading = false;
+			}
+		);
+	}
+
+	getDeletedPropertyHistory() {
+		this.isLoading = true;
+		this.propertyHistories = [];
+		this.historyService.getDeletedPropertyHistory().subscribe(
 			(res: PropertyHistoryModel[]) => {
 				this.isLoading = false;
 				this.propertiesDataSource.data = this.propertyHistories = res;

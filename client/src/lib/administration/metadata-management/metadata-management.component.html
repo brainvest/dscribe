@@ -4,7 +4,7 @@
 			<span>Entity Types</span>
 			<div>
 				<button mat-icon-button (click)="showEntityHistory()" [disabled]="!selectedEntityType" matTooltip="Show history">
-					<mat-icon color="accent" [ngStyle]="{ 'color' : selectedEntityType ? '' : '#dddddd' }">history</mat-icon>
+					<mat-icon color="primary" [ngStyle]="{ 'color' : selectedEntityType ? '' : '#dddddd' }">history</mat-icon>
 				</button>
 				<button mat-icon-button (click)="addEntityType()">
 					<mat-icon color="primary">add</mat-icon>
@@ -18,8 +18,8 @@
 				<button mat-icon-button matTooltip="Delete loading" *ngIf="deleteEntityLoading" style="margin-top: -26px;">
 					<mat-spinner strokeWidth="3" [diameter]="20" color="accent"></mat-spinner>
 				</button>
-				<button mat-icon-button matTooltip="Show deleted entities" (click)="showDeletedHistory()">
-					<mat-icon color="warn">delete_sweep</mat-icon>
+				<button mat-icon-button matTooltip="Show deleted entities" (click)="showDeletedEntityTypeHistory()">
+					<mat-icon color="primary">delete_sweep</mat-icon>
 				</button>
 				<button mat-icon-button (click)="openReleaseSettings()" matTooltip="Release Metadata">
 					<mat-icon color="warn">new_releases</mat-icon>
@@ -88,6 +88,9 @@
 				</button>&nbsp;
 				<button mat-icon-button (click)="editProperty()" [disabled]="!selectedEntityType || !selectedProperty">
 					<mat-icon color="accent" [ngStyle]="{ 'color' : selectedProperty ? '' : '#dddddd' }">edit</mat-icon>
+				</button>&nbsp;
+				<button mat-icon-button matTooltip="Show deleted properties" (click)="showDeletedPropertiesTypeHistory()" [disabled]="!selectedEntityType">
+					<mat-icon color="primary" [ngStyle]="{ 'color' : selectedEntityType ? '' : '#dddddd' }">delete_sweep</mat-icon>
 				</button>&nbsp;
 				<button mat-icon-button (click)="deleteProperty()" [disabled]="!selectedEntityType || !selectedProperty" *ngIf="!deletePropertyLoading">
 					<mat-icon color="warn" [ngStyle]="{ 'color' : selectedProperty ? '' : '#dddddd' }">delete</mat-icon>

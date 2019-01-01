@@ -39,14 +39,14 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			}).ToList();
 			return result;
 		}
-		public async Task<IEnumerable<EntityTypeHistoryModel>> GetDeletedEntityTypeHistory(EntityTypeHistoryModel model)
+		public async Task<IEnumerable<EntityTypeHistoryModel>> GetDeletedEntityTypeHistory()
 		{
 			// TODO. THIS ACTION MAY BE SLOW WHEN REQUEST LOG TABLE WOULD BE LARGE	
 			var logs = await _dbContext.RequestLogs
 				.Where(x =>
 				x.EntityTypeId != null &&
 				x.Failed == false &&
-				PathChecker(x.Body, "deleteEntityType")).ToListAsync();
+				PathChecker(x.Path, "deleteEntityType")).ToListAsync();
 
 			if (!logs.Any())
 			{
@@ -77,13 +77,13 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			}).ToList();
 			return result;
 		}
-		public async Task<IEnumerable<PropertyHistoryModel>> GetDeletedPropertyHistory(PropertyHistoryModel model)
+		public async Task<IEnumerable<PropertyHistoryModel>> GetDeletedPropertyHistory()
 		{
 			var logs = await _dbContext.RequestLogs
 				.Where(x =>
 				x.PropertyId != null &&
 				x.Failed == false &&
-				PathChecker(x.Body, "DeleteProperty")).ToListAsync();
+				PathChecker(x.Path, "deleteProperty")).ToListAsync();
 
 			if (!logs.Any())
 			{
@@ -95,7 +95,8 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				Property = JsonConvert.DeserializeObject<PropertyModel>(x.Body),
 				LogId = x.Id,
 				StartTime = x.StartTime,
-				UserId = x.UserId
+				UserId = x.UserId,
+				Action = GetActionFromUrl(x.Path)
 			}).ToList();
 		}
 		public async Task<IEnumerable<AppInstanceHistoryModel>> GetAppInstanceHistory(AppInstanceHistoryModel model)

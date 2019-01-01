@@ -45,6 +45,13 @@ namespace Brainvest.Dscribe.Runtime.Validations
 			{
 				return "The selected entity is not exist";
 			}
+
+			var relativeProperty = await dbContext.Properties.Where(x => x.DataEntityTypeId == model.Id).Include(x => x.OwnerEntityType).ToListAsync();
+			if (relativeProperty.Any())
+			{
+				return "The selected entity is navigated to '" + relativeProperty.FirstOrDefault().Name + 
+					@"' in entity '" + relativeProperty.FirstOrDefault().OwnerEntityType.Name + "'";
+			}
 			return string.Empty;
 		}
 

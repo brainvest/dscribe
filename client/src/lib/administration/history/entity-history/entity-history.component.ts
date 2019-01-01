@@ -4,11 +4,12 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatTableDataSource } from 
 import { EntityTypeHistoryModel } from '../../models/history/entity-type-history-model';
 import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
 import { HistoryService } from 'src/lib/lob-tools/history-service';
+import { HistoryType } from '../../models/history/history-type';
 
 @Component({
 	selector: 'dscribe-entity-history',
 	templateUrl: './entity-history.component.html',
-	styleUrls: ['./entity-history.component.css']
+	styleUrls: ['./entity-history.component.css'],
 })
 export class EntityHistoryComponent implements OnInit {
 
@@ -27,7 +28,12 @@ export class EntityHistoryComponent implements OnInit {
 
 	ngOnInit() {
 		this.entityTypesDataSource.paginator = this.entityTypesPaginator;
-		this.getEntityHistory();
+		if (this.data.historyType === HistoryType.addEdit) {
+			this.getEntityHistory();
+		}
+		if (this.data.historyType === HistoryType.deleted) {
+			this.getDeletedEntityHistory();
+		}
 	}
 
 	setActionIcon(data: EntityTypeHistoryModel) {
@@ -52,6 +58,20 @@ export class EntityHistoryComponent implements OnInit {
 				return { 'color': 'red' };
 			default: return {};
 		}
+	}
+
+	getDeletedEntityHistory() {
+		this.isLoading = true;
+		this.entityHistories = [];
+		this.historyService.getDeletedEntityTypeHistory().subscribe(
+			(res: EntityTypeHistoryModel[]) => {
+				this.isLoading = false;
+				this.entityTypesDataSource.data = this.entityHistories = res;
+			}, (error: HttpErrorResponse) => {
+				this.snackbarService.open(error.statusText);
+				this.isLoading = false;
+			}
+		);
 	}
 
 	getEntityHistory() {
