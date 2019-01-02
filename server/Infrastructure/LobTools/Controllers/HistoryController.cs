@@ -17,10 +17,10 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]/[action]")]
-	public class RequestLogController : ControllerBase
+	public class HistoryController : ControllerBase
 	{
 		public LobToolsDbContext _dbContext;
-		public RequestLogController(LobToolsDbContext dbContext)
+		public HistoryController(LobToolsDbContext dbContext)
 		{
 			_dbContext = dbContext;
 		}

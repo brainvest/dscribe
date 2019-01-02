@@ -1,16 +1,10 @@
 import { PropertyHistoryModel } from './../administration/models/history/property-type-history-model';
-import { GetCommentRequestModel, CommentModel } from './models/comment.model';
+import { CommentModel } from './models/comment.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DscribeService } from '../dscribe.service';
-import { LobSummaryInfo, LobSummaryRequest, LobSummaryResponse } from '../common/models/lob/common-models';
-import { MetadataService } from '../common/services/metadata.service';
-import { EntityTypeMetadata } from '../metadata/entity-type-metadata';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { DownloadReportRequest, ReportsListResponse, SaveReportAsAttachmentRequest } from './models/report-models';
-import { map } from 'rxjs/operators';
-import { AttachmentListItem, AttachmentsListRequest, AttachmentsListResponse } from './models/attachment-models';
 import { EntityTypeHistoryModel } from '../administration/models/history/entity-type-history-model';
+import { Observable } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -22,14 +16,14 @@ export class HistoryService {
 		private dscribeService: DscribeService) {
 	}
 
-	private getEntityTypeHistoryAPI = this.dscribeService.url('api/RequestLog/GetEntityTypeHistory');
-	private getDeletedEntityTypeHistoryAPI = this.dscribeService.url('api/RequestLog/GetDeletedEntityTypeHistory');
-	private getPropertyHistoryAPI = this.dscribeService.url('api/RequestLog/GetPropertyHistory');
-	private getDeletedPropertyHistoryAPI = this.dscribeService.url('api/RequestLog/GetDeletedPropertyHistory');
-	private getAppInstanceHistoryAPI = this.dscribeService.url('api/RequestLog/GetAppInstanceHistory');
-	private getDeletedAppInstanceHistoryAPI = this.dscribeService.url('api/RequestLog/GetDeletedAppInstanceHistory');
-	private getAppTypeHistoryAPI = this.dscribeService.url('api/RequestLog/GetAppTypeHistory');
-	private getDeletedAppTypeHistoryAPI = this.dscribeService.url('api/RequestLog/GetDeletedAppTypeHistory');
+	private getEntityTypeHistoryAPI = this.dscribeService.url('api/History/GetEntityTypeHistory');
+	private getDeletedEntityTypeHistoryAPI = this.dscribeService.url('api/History/GetDeletedEntityTypeHistory');
+	private getPropertyHistoryAPI = this.dscribeService.url('api/History/GetPropertyHistory');
+	private getDeletedPropertyHistoryAPI = this.dscribeService.url('api/History/GetDeletedPropertyHistory');
+	private getAppInstanceHistoryAPI = this.dscribeService.url('api/History/GetAppInstanceHistory');
+	private getDeletedAppInstanceHistoryAPI = this.dscribeService.url('api/History/GetDeletedAppInstanceHistory');
+	private getAppTypeHistoryAPI = this.dscribeService.url('api/History/GetAppTypeHistory');
+	private getDeletedAppTypeHistoryAPI = this.dscribeService.url('api/History/GetDeletedAppTypeHistory');
 
 	getEntityTypeHistory(data: EntityTypeHistoryModel): Observable<EntityTypeHistoryModel[]> {
 		return this.http.post<EntityTypeHistoryModel[]>(this.getEntityTypeHistoryAPI, data);
