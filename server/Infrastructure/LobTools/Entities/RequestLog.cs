@@ -31,7 +31,8 @@ namespace Brainvest.Dscribe.LobTools.Entities
 		public string ExceptionTitle { get; set; }
 		public string ExceptionMessage { get; set; }
 
-		//public ICollection<RequestException> Exceptions { get; set; }
-		//public ICollection<EntityChangeLog> EntityChanges { get; set; }
+		public List<DataLog> DataLogs { get; set; }
+										   //public ICollection<RequestException> Exceptions { get; set; }
+										   //public ICollection<EntityChangeLog> EntityChanges { get; set; }
 	}
 }
