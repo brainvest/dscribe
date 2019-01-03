@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Brainvest.Dscribe.LobTools.Models
 {
@@ -30,8 +31,10 @@ namespace Brainvest.Dscribe.LobTools.Models
 	{
 		public int? Id { get; set; }
 		public string EntityTypeName { get; set; }
+		[Required]
 		public string Description { get; set; }
 		public int Identifier { get; set; }
+		[Required]
 		public string Title { get; set; }
 	}
 

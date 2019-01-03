@@ -101,6 +101,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			_dbContext.EntityTypes.Add(entityType);
 			await ProcessEntityTypeLocalFacets(model, false, entityType);
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).EntityTypeId = entityType.Id;
 			return Ok();
 		}
 
@@ -129,6 +130,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			entityType.GeneralUsageCategoryId = model.EntityTypeGeneralUsageCategoryId;
 			await ProcessEntityTypeLocalFacets(model, true, entityType);
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).EntityTypeId = entityType.Id;
 			return Ok();
 		}
 
@@ -184,6 +186,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			_dbContext.EntityTypeFacetValues.RemoveRange(localFacets);
 			_dbContext.EntityTypes.Remove(entityType);
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).EntityTypeId = entityType.Id;
 			return Ok();
 		}
 
@@ -312,6 +315,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				_dbContext.Properties.Add(property);
 				await ProcessPropertyLocalFacets(model, false, property);
 				await _dbContext.SaveChangesAsync();
+				((RequestLogModel)HttpContext.Items["RequestLog"]).PropertyId = property.Id;
 				transaction.Commit();
 			}
 			return Ok();
@@ -349,6 +353,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			}
 			await ProcessPropertyLocalFacets(model, true, property);
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).PropertyId = property.Id;
 			return Ok();
 		}
 
@@ -468,6 +473,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			_dbContext.PropertyFacetValues.RemoveRange(localFacets);
 			_dbContext.Properties.Remove(property);
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).PropertyId = property.Id;
 			return Ok();
 		}
 

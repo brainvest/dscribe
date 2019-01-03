@@ -3,6 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { LobListDialogData } from '../../models/common-models';
 import { LobInfoService } from '../../lob-info.service';
+import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-comments-list',
@@ -14,12 +15,15 @@ export class CommentsListComponent implements OnInit {
 	public comments: CommentModel[] = [];
 	public commentToSave: CommentModel = new CommentModel();
 	public isLoading: boolean;
+	public isAdding = false;
 
 	constructor(
 		private dialogRef: MatDialogRef<CommentsListComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: LobListDialogData,
 		private lobService: LobInfoService,
+		private snackbarService: SnackBarService,
 	) {
+		console.log(this.data);
 	}
 
 	ngOnInit() {
@@ -47,15 +51,18 @@ export class CommentsListComponent implements OnInit {
 	}
 
 	saveComment() {
+		this.isAdding = false;
 		this.isLoading = true;
 		this.commentToSave.EntityTypeName = this.data.entityTypeName;
 		this.commentToSave.Identifier = this.data.identifier;
 		const service = this.commentToSave.Id ? this.lobService.editComment(this.commentToSave) : this.lobService.addComment(this.commentToSave);
 		service.subscribe(
 			(res: any) => {
+				this.commentToSave = new CommentModel();
 				this.getCommentList();
 			}, (error: any) => {
-
+				this.snackbarService.open(error.statusText);
+				this.isLoading = false;
 			}
 		);
 	}
@@ -72,14 +79,19 @@ export class CommentsListComponent implements OnInit {
 	}
 
 	switchToEditMode(item: CommentModel) {
+		this.isAdding = true;
+		this.data.mode = 2;
 		this.comments.forEach(element => {
 			element.IsEditing = false;
 		});
+
 		item.IsEditing = true;
 		this.commentToSave = JSON.parse(JSON.stringify(item));
 	}
 
 	switchToAddMode() {
+		this.isAdding = true;
+		this.data.mode = 2;
 		this.comments.forEach(element => {
 			element.IsEditing = false;
 		});
@@ -89,6 +101,7 @@ export class CommentsListComponent implements OnInit {
 	}
 
 	cancelEditMode(comment: CommentModel) {
+		this.isAdding = false;
 		comment.IsEditing = false;
 		this.commentToSave = new CommentModel();
 		if (!comment.Id) {

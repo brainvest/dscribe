@@ -17,6 +17,10 @@ namespace Brainvest.Dscribe.Abstractions.Models
 		public long? RequestSize { get; set; }
 		public string IpAddress { get; set; }
 
+		public int? EntityTypeId { get; set; }
+		public int? PropertyId { get; set; }
+		public int? AppTypeId { get; set; }
+		public int? AppInstanceId { get; set; }
 		//public ActionTypeEnum? ActionTypeId { get; set; }
 
 		public string ProcessDuration { get; set; }
@@ -24,7 +28,7 @@ namespace Brainvest.Dscribe.Abstractions.Models
 		public bool HadException { get; set; }
 		public string Response { get; set; }
 		public int ResponseStatusCode { get; set; }
-		public long ResponseSize { get; set; }
+		public long? ResponseSize { get; set; }
 
 		public string ExceptionTitle { get; set; }
 		public string ExceptionMessage { get; set; }

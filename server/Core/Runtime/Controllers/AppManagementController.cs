@@ -1,3 +1,4 @@
+using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.AppManagement;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
@@ -79,7 +80,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return StatusCode(400, validationMessage);
 			}
-			_dbContext.AppInstances.Add(new AppInstance
+			var appInstance = new AppInstance
 			{
 				AppTypeId = model.AppTypeId,
 				DatabaseProviderId = model.DatabaseProviderId,
@@ -91,8 +92,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				DataConnectionString = GenerateConnectionString(model.DataConnectionString),
 				MetadataReleaseId = model.MetadataReleaseId,
 
-			});
+			};
+			_dbContext.AppInstances.Add(appInstance);
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).AppInstanceId = appInstance.Id;
 			return Ok();
 		}
 
@@ -117,6 +120,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			appInstance.DataConnectionString = GenerateConnectionString(model.DataConnectionString);
 			appInstance.MetadataReleaseId = model.MetadataReleaseId;
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).AppInstanceId = appInstance.Id;
 			return Ok();
 		}
 
@@ -131,6 +135,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var appInstance = await _dbContext.AppInstances.FindAsync(model.Id);
 			_dbContext.AppInstances.Remove(appInstance);
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).AppInstanceId = appInstance.Id;
 			return Ok();
 		}
 
@@ -154,13 +159,15 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				return StatusCode(400, validationMessage);
 			}
-			_dbContext.AppTypes.Add(new AppType
+			var appType = new AppType
 			{
 				Title = model.Title,
 				Name = model.Name,
 				Id = model.Id
-			});
+			};
+			_dbContext.AppTypes.Add(appType);
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).AppTypeId = appType.Id;
 			return Ok();
 		}
 
@@ -178,6 +185,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			appType.Title = model.Title;
 
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).AppTypeId = appType.Id;
 			return Ok();
 		}
 
@@ -192,6 +200,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			var appType = await _dbContext.AppTypes.FindAsync(model.Id);
 			_dbContext.AppTypes.Remove(appType);
 			await _dbContext.SaveChangesAsync();
+			((RequestLogModel)HttpContext.Items["RequestLog"]).AppTypeId = appType.Id;
 			return Ok();
 		}
 
