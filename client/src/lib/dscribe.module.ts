@@ -1,3 +1,4 @@
+import { PropertyHistoryComponent } from './administration/history/property-history/property-history.component';
 import {NgModule} from '@angular/core';
 import {DscribeComponent} from './dscribe.component';
 import {ListContainerComponent} from './list/list-container/list-container.component';
@@ -27,7 +28,8 @@ import {
 	MatTableModule,
 	MatTabsModule,
 	MatToolbarModule,
-	MatTooltipModule
+	MatTooltipModule,
+	MatProgressBarModule
 } from '@angular/material';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -75,6 +77,7 @@ import {AddNEditAppInstanceComponent} from './administration/settings/add-n-edit
 import {CommentsListComponent} from './lob-tools/comments/comments-list/comments-list.component';
 import {AttachmentsListComponent} from './lob-tools/attachments/attachments-list/attachments-list.component';
 import {ReportsListComponent} from './lob-tools/reporting/reports-list/reports-list.component';
+import { EntityHistoryComponent } from './administration/history/entity-history/entity-history.component';
 
 @NgModule({
 	imports: [
@@ -110,11 +113,14 @@ import {ReportsListComponent} from './lob-tools/reporting/reports-list/reports-l
 		MatProgressSpinnerModule,
 		ReactiveFormsModule,
 		MatSnackBarModule,
+		MatProgressBarModule,
 	],
 	declarations: [
 		ArithmeticFilterNodeComponent,
 		AddNEditComponent,
 		AddNEditEntityTypeComponent,
+		EntityHistoryComponent,
+		PropertyHistoryComponent,
 		AddNEditPropertyComponent,
 		AutoCompleteMoreDialogComponent,
 		BoolEditorComponent,
@@ -174,7 +180,9 @@ import {ReportsListComponent} from './lob-tools/reporting/reports-list/reports-l
 		AddNEditAppInstanceComponent,
 		CommentsListComponent,
 		AttachmentsListComponent,
-		ReportsListComponent
+		ReportsListComponent,
+		EntityHistoryComponent,
+		PropertyHistoryComponent,
 	]
 })
 export class DscribeModule {

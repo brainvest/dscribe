@@ -1,10 +1,10 @@
-using Brainvest.Dscribe.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Brainvest.Dscribe.LobTools.Entities
+namespace Brainvest.Dscribe.Abstractions.Models
 {
-	public class RequestLog
+	public class RequestLogModel
 	{
 		public long Id { get; set; }
 

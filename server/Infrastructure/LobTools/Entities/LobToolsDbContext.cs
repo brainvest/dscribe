@@ -19,5 +19,6 @@ namespace Brainvest.Dscribe.LobTools.Entities
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<Draft> Drafts { get; set; }
 		public DbSet<User> Users { get; set; }
+		public DbSet<RequestLog> RequestLogs { get; set; }
 	}
 }

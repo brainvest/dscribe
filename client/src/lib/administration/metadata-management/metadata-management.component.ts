@@ -13,6 +13,11 @@ import { ReleaseMetadataSettingsComponent } from '../release-metadata-settings/r
 import { DscribeService } from '../../dscribe.service';
 import { SnackBarService } from '../../common/notifications/snackbar.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EntityHistoryComponent } from '../history/entity-history/entity-history.component';
+import { EntityTypeHistoryModel } from '../models/history/entity-type-history-model';
+import { PropertyHistoryModel } from '../models/history/property-type-history-model';
+import { PropertyHistoryComponent } from '../history/property-history/property-history.component';
+import { HistoryType } from '../models/history/history-type';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -158,6 +163,79 @@ export class MetadataManagementComponent implements OnInit {
 			});
 	}
 
+	showEntityHistory() {
+		const data = new EntityTypeHistoryModel();
+		data.EntityType.Id = this.selectedEntityType.Id;
+		data.EntityType.Name = this.selectedEntityType.Name;
+		data.basicInfo = this.basicInfo;
+		data.historyType = HistoryType.addEdit;
+		const dialogRef = this.dialog.open(EntityHistoryComponent, {
+			width: '90%',
+			data: data
+		});
+		dialogRef.afterClosed().subscribe(
+			(res => {
+
+			})
+		);
+	}
+
+	showDeletedEntityTypeHistory() {
+		const data = new EntityTypeHistoryModel();
+		data.basicInfo = this.basicInfo;
+		data.historyType = HistoryType.deleted;
+		const dialogRef = this.dialog.open(EntityHistoryComponent, {
+			width: '90%',
+			data: data
+		});
+		dialogRef.afterClosed().subscribe(
+			(res => {
+
+			})
+		);
+	}
+
+	showPropertyHistory() {
+		const data = new PropertyHistoryModel();
+		data.Property.Id = this.selectedProperty.Id;
+		data.Property.Name = this.selectedProperty.Name;
+		data.basicInfo = this.basicInfo;
+		data.entityTypes = this.entityTypes;
+		data.properties = this.properties;
+		data.allPropertiesInfo = this.allPropertiesInfo;
+		data.historyType = HistoryType.addEdit;
+
+		const dialogRef = this.dialog.open(PropertyHistoryComponent, {
+			width: '90%',
+			data: data
+		});
+		dialogRef.afterClosed().subscribe(
+			(res => {
+
+			})
+		);
+	}
+
+	showDeletedPropertiesTypeHistory() {
+		const data = new PropertyHistoryModel();
+		data.properties = this.properties;
+		data.basicInfo = this.basicInfo;
+		data.entityTypes = this.entityTypes;
+		data.properties = this.properties;
+		data.allPropertiesInfo = this.allPropertiesInfo;
+		data.historyType = HistoryType.deleted;
+
+		const dialogRef = this.dialog.open(PropertyHistoryComponent, {
+			width: '90%',
+			data: data
+		});
+		dialogRef.afterClosed().subscribe(
+			(res => {
+
+			})
+		);
+	}
+
 	openAddNEditEntityTypeDialog(instance: any, isNew: boolean) {
 		const dialogRef = this.dialog.open(AddNEditEntityTypeComponent, {
 			width: '800px',
@@ -208,9 +286,8 @@ export class MetadataManagementComponent implements OnInit {
 						(errors: any) => {
 							this.snackbarService.open(errors);
 						});
-				} else {
-					this.deletePropertyLoading = false;
 				}
+				this.deletePropertyLoading = false;
 			}, (errors: any) => {
 				this.snackbarService.open(errors);
 				this.deletePropertyLoading = false;
