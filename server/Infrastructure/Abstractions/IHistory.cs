@@ -7,7 +7,7 @@ namespace Brainvest.Dscribe.Abstractions
 		string Action { get; set; }
 		DateTime StartTime { get; set; }
 		Guid? UserId { get; set; }
-		TimeSpan ProcessDuration { get; set; }
+		double ProcessDuration { get; set; }
 		long LogId { get; set; }
 	}
 }

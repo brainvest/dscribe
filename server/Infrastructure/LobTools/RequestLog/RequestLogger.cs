@@ -75,7 +75,7 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 			request.AppInstanceId = ((RequestLogModel)httpContext.Items["RequestLog"]).AppInstanceId;
 			request.AppTypeId = ((RequestLogModel)httpContext.Items["RequestLog"]).AppTypeId;
 			_stopwatch.Stop();
-			request.ProcessDuration = _stopwatch.Elapsed;
+			request.ProcessDuration = _stopwatch.Elapsed.TotalSeconds;
 			await _dbContext.SaveChangesAsync();
 		}
 
@@ -88,7 +88,7 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 			request.HadException = true;
 			request.Failed = true;
 			_stopwatch.Stop();
-			request.ProcessDuration = _stopwatch.Elapsed;
+			request.ProcessDuration = _stopwatch.Elapsed.TotalSeconds;
 			await _dbContext.SaveChangesAsync();
 		}
 
