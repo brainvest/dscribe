@@ -1,5 +1,4 @@
 using Brainvest.Dscribe.Abstractions.Models;
-using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.LobTools.RequestLog;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -19,7 +18,7 @@ namespace MiddleWare.Log
 			_next = next;
 		}
 
-		public async Task Invoke(HttpContext httpContext, LobToolsDbContext dbContext, RequestLogger requestLogger)
+		public async Task Invoke(HttpContext httpContext, RequestLogger requestLogger)
 		{
 			var log = new RequestLogModel();
 			try
@@ -38,7 +37,6 @@ namespace MiddleWare.Log
 					memStream.Position = 0;
 					await memStream.CopyToAsync(originalResponseBody);
 					httpContext.Response.Body = originalResponseBody;
-
 				}
 				await requestLogger.ResponseIndiactor(httpContext, log);
 			}

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -67,6 +68,11 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			services.AddScoped<IEmailSender, FakeEmailSender>();
 
 			var clients = Configuration.GetSection("Clients").Get<IEnumerable<ClientInfo>>();
+			Console.WriteLine();
+			Console.WriteLine("Clients");
+			Console.WriteLine("==================");
+			Console.WriteLine(JsonConvert.SerializeObject(clients));
+			Console.WriteLine("==================");
 
 			services.Configure<ConfigModel>(Configuration.GetSection("Config"));
 

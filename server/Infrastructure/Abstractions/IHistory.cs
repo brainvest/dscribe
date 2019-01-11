@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Brainvest.Dscribe.Abstractions
 {
@@ -9,7 +7,7 @@ namespace Brainvest.Dscribe.Abstractions
 		string Action { get; set; }
 		DateTime StartTime { get; set; }
 		Guid? UserId { get; set; }
-		string ProcessDuration { get; set; }
+		TimeSpan ProcessDuration { get; set; }
 		long LogId { get; set; }
 	}
 }

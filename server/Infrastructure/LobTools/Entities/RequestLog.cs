@@ -23,7 +23,7 @@ namespace Brainvest.Dscribe.LobTools.Entities
 		public int? AppInstanceId { get; set; }
 		//public ActionTypeEnum? ActionTypeId { get; set; }
 
-		public string ProcessDuration { get; set; }
+		public TimeSpan ProcessDuration { get; set; }
 		public bool Failed { get; set; }
 		public bool HadException { get; set; }
 		public string Response { get; set; }

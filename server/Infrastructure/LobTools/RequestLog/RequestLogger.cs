@@ -1,3 +1,4 @@
+using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.LobTools.Entities;
@@ -11,12 +12,16 @@ using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.LobTools.RequestLog
 {
-	public class RequestLogger : IRequestLogger
+	public class RequestLogger : IRequestLogger, IDisposable
 	{
-		public LobToolsDbContext _dbContext;
-		public RequestLogger(LobToolsDbContext dbContext)
+		private IImplementationsContainer _implementationsContainer;
+		private LobToolsDbContext _dbContext;
+		private Stopwatch _stopwatch = new Stopwatch();
+
+		public RequestLogger(IImplementationsContainer implementationsContainer, IHttpContextAccessor httpContextAccessor)
 		{
-			_dbContext = dbContext;
+			_implementationsContainer = implementationsContainer;
+			_dbContext = _implementationsContainer.GetLobDbContext<LobToolsDbContext>(httpContextAccessor.HttpContext);
 		}
 
 		public async Task<RequestLogModel> RequestIndiactor(HttpContext httpContext)
@@ -25,6 +30,7 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 			// ActionTypeId - not now
 			// EntityChanges - not now
 			// QueryString - route parameter
+			_stopwatch.Start();
 			var request = new Entities.RequestLog
 			{
 				IpAddress = httpContext.Connection.RemoteIpAddress.ToString(),
@@ -62,26 +68,33 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 		{
 			var request = await _dbContext.RequestLogs.FindAsync(requestLog.Id);
 			request.ResponseStatusCode = httpContext.Response.StatusCode;
-			request.ProcessDuration = (DateTime.Now - request.StartTime).TotalMilliseconds.ToString();
 			request.ResponseSize = httpContext.Response.ContentLength;
 			request.Failed = httpContext.Response.StatusCode == 200 ? false : true;
 			request.EntityTypeId = ((RequestLogModel)httpContext.Items["RequestLog"]).EntityTypeId;
 			request.PropertyId = ((RequestLogModel)httpContext.Items["RequestLog"]).PropertyId;
 			request.AppInstanceId = ((RequestLogModel)httpContext.Items["RequestLog"]).AppInstanceId;
 			request.AppTypeId = ((RequestLogModel)httpContext.Items["RequestLog"]).AppTypeId;
+			_stopwatch.Stop();
+			request.ProcessDuration = _stopwatch.Elapsed;
 			await _dbContext.SaveChangesAsync();
 		}
+
 		public async Task ExceptionIndiactor(HttpContext httpContext, RequestLogModel requestLog, Exception ex)
 		{
 			var request = await _dbContext.RequestLogs.FindAsync(requestLog.Id);
-
 			request.ResponseStatusCode = httpContext.Response.StatusCode;
-			request.ProcessDuration = (DateTime.Now - request.StartTime).TotalMilliseconds.ToString();
 			request.ExceptionMessage = ex.GetFullMessage();
 			request.ExceptionTitle = ex.Message;
 			request.HadException = true;
 			request.Failed = true;
+			_stopwatch.Stop();
+			request.ProcessDuration = _stopwatch.Elapsed;
 			await _dbContext.SaveChangesAsync();
+		}
+
+		public void Dispose()
+		{
+			_dbContext.Dispose();
 		}
 	}
 }
