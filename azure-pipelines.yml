@@ -16,7 +16,7 @@ variables:
 
 steps:
 - script: |
-    dotnet build --configuration $(buildConfiguration)
+    dotnet build server/host/host.csproj  --configuration $(buildConfiguration)
     dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
     dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
 # - task: NuGetToolInstaller@0
