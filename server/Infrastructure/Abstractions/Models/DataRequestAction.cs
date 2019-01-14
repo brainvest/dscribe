@@ -6,9 +6,12 @@ namespace Brainvest.Dscribe.Abstractions.Models
 {
 	public enum DataRequestAction
 	{
-		Add = 1,
-		Edit = 2,
-		List = 3,
-		Delete = 4
+		Detached = 0,
+		Unchanged = 1,
+		Deleted = 2,
+		Modified = 3,
+		Added = 4,
+		Listed = 5,
+		None = 6
 	}
 }
