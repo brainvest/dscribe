@@ -8,13 +8,18 @@ trigger:
 
 pool:
   vmImage: 'VS2017-Win2016'
-
+  
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
+- task: DotNetCoreInstaller@0
+  inputs:
+    packageType: 'sdk'
+    version: '2.2' 
+
 - script: dotnet build server/host/host.csproj  --configuration $(buildConfiguration)
     # dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
     # dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
