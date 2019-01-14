@@ -17,8 +17,8 @@ variables:
 steps:
 - task: DotNetCoreInstaller@0
   inputs:
-    packageType: 'sdk'
-    version: '2.2' 
+    packageType: 'sdk' # Options: runtime, sdk
+    version: '2.2.100'
 
 - script: dotnet build server/host/host.csproj  --configuration $(buildConfiguration)
     # dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
