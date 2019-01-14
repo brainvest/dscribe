@@ -260,11 +260,11 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 		{
 			try
 			{
-				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Update, actionContext);
-				if (validationResult?.IsValid == false)
-				{
-					return new BadRequestObjectResult(validationResult);
-				}
+				// var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Update, actionContext);
+				//if (validationResult?.IsValid == false)
+				//{
+				//	return new BadRequestObjectResult(validationResult);
+				//}
 
 				var set = dbContext.Set<TEntity>();
 				var existing = await set.FindAsync(_entityHelper.GetPrimaryKey(request.Entity));
