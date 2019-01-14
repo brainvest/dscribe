@@ -20,5 +20,6 @@ namespace Brainvest.Dscribe.LobTools.Entities
 		public DbSet<Draft> Drafts { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<RequestLog> RequestLogs { get; set; }
+		public DbSet<DataLog> DataLogs { get; set; }
 	}
 }
