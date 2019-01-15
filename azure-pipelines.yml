@@ -11,11 +11,11 @@ variables:
   frontDirName: 'client'
 
 steps:
-- task: DotNetCoreInstaller@0
-  displayName: Install .Net core 2.2
-  inputs:
-    packageType: 'sdk' # Options: runtime, sdk
-    version: '2.2.100'
+# - task: DotNetCoreInstaller@0
+#   displayName: Install .Net core 2.2
+#   inputs:
+#     packageType: 'sdk' # Options: runtime, sdk
+#     version: '2.2.100'
 
 - script: 'dotnet build $(backendDirName)/server.sln'
   displayName: Build
