@@ -13,6 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  backendDirName: 'server'
 
 steps:
 - task: DotNetCoreInstaller@0
@@ -21,7 +22,7 @@ steps:
     packageType: 'sdk' # Options: runtime, sdk
     version: '2.2.100'
 
-- script: 'dotnet build server/server.sln'
+- script: 'dotnet build $(backendDirName)/server.sln'
   displayName: Build
 
 # - task: DotNetCoreCLI@2
