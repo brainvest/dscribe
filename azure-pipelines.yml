@@ -14,6 +14,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   backendDirName: 'server'
+  frontDirName: 'client'
 
 steps:
 - task: DotNetCoreInstaller@0
@@ -24,6 +25,12 @@ steps:
 
 - script: 'dotnet build $(backendDirName)/server.sln'
   displayName: Build
+
+- script: 'dotnet test $(backendDirName)'
+  displayName: Test
+
+- script: 'npm install $(frontDirName)'
+  displayName: Npm install
 
 # - task: DotNetCoreCLI@2
 #   displayName: Restore packages
