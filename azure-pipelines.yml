@@ -5,39 +5,17 @@
 
 trigger:
 - master
-
-pool:
-  vmImage: 'VS2017-Win2016'
-  
+ 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  backendDirName: 'server'
+  frontDirName: 'client'
 
 steps:
-- task: DotNetCoreInstaller@0
-  inputs:
-    packageType: 'sdk' # Options: runtime, sdk
-    version: '2.2.100'
+- script: 'dotnet build $(backendDirName)/server.sln'
+  displayName: Build
 
-- script: dotnet build server/host/host.csproj  --configuration $(buildConfiguration)
-- script: dotnet test
-    # dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
-    # dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
-# - task: NuGetToolInstaller@0
+- script: 'dotnet test $(backendDirName)'
+  displayName: Test
 
-# - task: NuGetCommand@2
-#   inputs:
-#     restoreSolution: '$(solution)'
-
-# - task: VSBuild@1
-#   inputs:
-#     solution: '$(solution)'
-#     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
-
-# - task: VSTest@2
-#   inputs:
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
+- script: 'npm install $(frontDirName)'
+  displayName: Npm install
