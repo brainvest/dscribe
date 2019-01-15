@@ -7,6 +7,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {DscribeModule} from '../../../src/lib/dscribe.module';
 import {DataTypeCardComponent} from './custom-templates/data-type-card/data-type-card.component';
 import {MatButtonModule, MatCardModule} from '@angular/material';
+import { SampleListComponent } from './sample-list/sample-list.component';
 
 @NgModule({
 	imports: [
@@ -20,6 +21,7 @@ import {MatButtonModule, MatCardModule} from '@angular/material';
 		AppComponent,
 		AuthCallbackComponent,
 		DataTypeCardComponent,
+		SampleListComponent,
 	],
 	entryComponents: [
 		DataTypeCardComponent
