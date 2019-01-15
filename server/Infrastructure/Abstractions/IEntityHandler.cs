@@ -19,6 +19,6 @@ namespace Brainvest.Dscribe.Abstractions
 		Task<ActionResult<object>> Edit(ManageEntityRequest request, object businessRepository);
 		Task<ActionResult<object>> Add(ManageEntityRequest request, object businessRepository, IActionContextInfo actionContext);
 		Task<ActionResult<object>> Delete(ManageEntityRequest request, object businessRepository);
-		Task<ActionResult> SaveChanges(object businessRepository);
+		Task<ActionResult> SaveChanges(object businessRepository,string entityTypeName);
 	}
 }

@@ -12,5 +12,7 @@ namespace Brainvest.Dscribe.LobTools.Entities
 		public DataRequestAction DataRequestAction { get; set; }
 		public RequestLog RequestLog { get; set; }
 		public long RequestLogId { get; set; }
+		public long DataId { get; set; }
+		public long EntityId { get; set; }
 	}
 }
