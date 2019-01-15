@@ -16,22 +16,28 @@ variables:
 
 steps:
 - task: DotNetCoreInstaller@0
-  displayName: Install .Net core 2
+  displayName: Install .Net core 2.2
   inputs:
     packageType: 'sdk' # Options: runtime, sdk
     version: '2.2.100'
 
-- task: DotNetCoreCLI@2
-  displayName: Restore packages
-  inputs:
-    command: 'restore'
-    projects: '**/*.csproj'
+# - task: DotNetCoreCLI@2
+#   displayName: Restore packages
+#   inputs:
+#     command: 'restore'
+#     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
     command: 'build'
     projects: '**/*.sln'
+
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: 'test'
+    projects: '**/*.sln'    
    
 # - script: dotnet build server/host/host.csproj  --configuration $(buildConfiguration)
 # - script: dotnet test
