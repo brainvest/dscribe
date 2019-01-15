@@ -20,8 +20,12 @@ steps:
     packageType: 'sdk' # Options: runtime, sdk
     version: '2.2.100'
 
-- script: dotnet build server/host/host.csproj  --configuration $(buildConfiguration)
-- script: dotnet test
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+# - script: dotnet build server/host/host.csproj  --configuration $(buildConfiguration)
+# - script: dotnet test
     # dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
     # dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
 # - task: NuGetToolInstaller@0
