@@ -36,7 +36,7 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 					Type = ActionContextType.Add
 				};
 				var result = await AddRecursive(request, repository, map, "", actionContext);
-				await _entityHandler.SaveChanges(repository);
+				await _entityHandler.SaveChanges(repository, request.EntityTypeName);
 				return map[""];
 			}
 		}
@@ -194,7 +194,7 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 			using (var repository = _implementations.RepositoryFactory())
 			{
 				var result = await _entityHandler.Edit(request, repository);
-				await _entityHandler.SaveChanges(repository);
+				await _entityHandler.SaveChanges(repository, request.EntityTypeName);
 				return result;
 			}
 		}
@@ -204,7 +204,7 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 			using (var repository = _implementations.RepositoryFactory())
 			{
 				var result = await _entityHandler.Delete(request, repository);
-				await _entityHandler.SaveChanges(repository);
+				await _entityHandler.SaveChanges(repository, request.EntityTypeName);
 				return result;
 			}
 		}

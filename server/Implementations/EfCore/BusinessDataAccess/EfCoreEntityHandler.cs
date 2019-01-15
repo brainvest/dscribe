@@ -3,7 +3,6 @@ using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.Helpers.FilterNodeConverter;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,7 +12,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 {
@@ -150,9 +148,9 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			};
 		}
 
-		public async Task<ActionResult> SaveChanges(object businessRepository)
+		public async Task<ActionResult> SaveChanges(object businessRepository, string entityTypeName)
 		{
-			await _dataLogImplementation.SaveDataChanges(businessRepository);
+			await _dataLogImplementation.SaveDataChanges(businessRepository, entityTypeName);
 			await (businessRepository as DbContext).SaveChangesAsync();
 			return new OkResult();
 		}
