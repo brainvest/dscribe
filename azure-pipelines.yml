@@ -21,9 +21,17 @@ steps:
     version: '2.2.100'
 
 - task: DotNetCoreCLI@2
+  displayName: Restore packages
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: Build solution
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+   
 # - script: dotnet build server/host/host.csproj  --configuration $(buildConfiguration)
 # - script: dotnet test
     # dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
