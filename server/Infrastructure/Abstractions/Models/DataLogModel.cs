@@ -6,7 +6,7 @@ namespace Brainvest.Dscribe.Abstractions.Models
 {
 	public class DataLogModel
 	{
-		public long Id { get; set; }
+		public long Id { get; set; } 
 		public string Body { get; set; }
 		public DataRequestAction DataRequestAction { get; set; }
 		public RequestLogModel RequestLog { get; set; }
