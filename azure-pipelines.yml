@@ -16,6 +16,7 @@ variables:
 
 steps:
 - task: DotNetCoreInstaller@0
+  displayName: Install .Net core 2
   inputs:
     packageType: 'sdk' # Options: runtime, sdk
     version: '2.2.100'
@@ -27,10 +28,10 @@ steps:
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
-  displayName: Build solution
+  displayName: Build
   inputs:
     command: 'build'
-    projects: '**/*.csproj'
+    projects: '**/*.sln'
    
 # - script: dotnet build server/host/host.csproj  --configuration $(buildConfiguration)
 # - script: dotnet test
