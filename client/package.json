@@ -29,7 +29,7 @@
     "file-saver": "^2.0.0",
     "oidc-client": "^1.6.1",
     "rxjs": "^6.3.3",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.27"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.12.1",
@@ -50,7 +50,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.4",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
-    "ng-packagr": "~4.4.5",
+    "ng-packagr": "~4.6.0",
     "protractor": "~5.4.2",
     "scss-bundle": "^2.4.0",
     "ts-node": "~7.0.1",
