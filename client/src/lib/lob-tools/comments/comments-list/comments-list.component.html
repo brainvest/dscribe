@@ -33,7 +33,7 @@
 			<button mat-icon-button (click)="cancelEditMode(comment)" [disabled]="submitLoading" *ngIf="comment.IsEditing">
 				<mat-icon color="warn">cancel</mat-icon>
 			</button>
-			<button mat-icon-button (click)="saveComment(comment)" *ngIf="comment.IsEditing">
+			<button mat-icon-button (click)="saveComment()" *ngIf="comment.IsEditing">
 				<mat-icon color="accent">save</mat-icon>
 			</button>
 		</mat-card-actions>

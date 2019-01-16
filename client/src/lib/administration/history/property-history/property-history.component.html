@@ -1,5 +1,5 @@
 <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-<h1 mat-dialog-title *ngIf="data.historyType === 1">History of {{data.Name}}</h1>
+<h1 mat-dialog-title *ngIf="data.historyType === 1">History of {{data.Property.Name}}</h1>
 <h1 mat-dialog-title *ngIf="data.historyType === 2">Deleted propertied history</h1>
 
 <mat-dialog-content>
@@ -62,7 +62,7 @@
 			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedPropertyColumns"></tr>
-			<tr mat-row *matRowDef="let property; columns: displayedPropertyColumns;" [ngClass]="{'highlight': selectedProperty?.Id === property.Id}"
+			<tr mat-row *matRowDef="let property; columns: displayedPropertyColumns;" [ngClass]="{'highlight': selectedProperty?.Property.Id === property.Id}"
 			 (click)="selectProperty(property)"></tr>
 		</table>
 		<mat-paginator id="propertiesPaginator" #propertiesPaginator [length]="propertiesDataSource.data.length" [pageSize]="5"></mat-paginator>
