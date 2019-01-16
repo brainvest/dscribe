@@ -2,9 +2,9 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatTableDataSource} from '@angular/material';
 import {EntityTypeHistoryModel} from '../../models/history/entity-type-history-model';
-import {SnackBarService} from 'src/lib/common/notifications/snackbar.service';
-import {HistoryService} from 'src/lib/lob-tools/history-service';
 import {HistoryType} from '../../models/history/history-type';
+import {SnackBarService} from '../../../common/notifications/snackbar.service';
+import {HistoryService} from '../../../lob-tools/history-service';
 
 @Component({
 	selector: 'dscribe-entity-history',

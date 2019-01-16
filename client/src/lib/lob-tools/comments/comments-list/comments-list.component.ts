@@ -3,7 +3,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {LobListDialogData} from '../../models/common-models';
 import {LobInfoService} from '../../lob-info.service';
-import {SnackBarService} from 'src/lib/common/notifications/snackbar.service';
+import {SnackBarService} from '../../../common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-comments-list',

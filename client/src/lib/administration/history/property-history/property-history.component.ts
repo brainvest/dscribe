@@ -2,9 +2,9 @@ import {PropertyHistoryModel} from './../../models/history/property-type-history
 import {HttpErrorResponse} from '@angular/common/http';
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatTableDataSource} from '@angular/material';
-import {SnackBarService} from 'src/lib/common/notifications/snackbar.service';
-import {HistoryService} from 'src/lib/lob-tools/history-service';
 import {HistoryType} from '../../models/history/history-type';
+import {SnackBarService} from '../../../common/notifications/snackbar.service';
+import {HistoryService} from '../../../lob-tools/history-service';
 
 @Component({
 	selector: 'dscribe-property-history',
