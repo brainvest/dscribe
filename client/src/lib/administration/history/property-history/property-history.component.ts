@@ -1,10 +1,10 @@
-import { PropertyHistoryModel } from './../../models/history/property-type-history-model';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatTableDataSource } from '@angular/material';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
-import { HistoryService } from 'src/lib/lob-tools/history-service';
-import { HistoryType } from '../../models/history/history-type';
+import {PropertyHistoryModel} from './../../models/history/property-type-history-model';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatTableDataSource} from '@angular/material';
+import {HistoryType} from '../../models/history/history-type';
+import {SnackBarService} from '../../../common/notifications/snackbar.service';
+import {HistoryService} from '../../../lob-tools/history-service';
 
 @Component({
 	selector: 'dscribe-property-history',
@@ -14,7 +14,8 @@ import { HistoryType } from '../../models/history/history-type';
 export class PropertyHistoryComponent implements OnInit {
 
 	private propertyHistories: PropertyHistoryModel[] = [];
-	private isLoading = false;
+	isLoading = false;
+	selectedProperty: PropertyHistoryModel;
 	displayedPropertyColumns = this.data.historyType === HistoryType.addEdit ?
 		['action', 'name', 'title', 'dataType', 'nullable', 'dataEntityType', 'usage', 'foreignKey', 'inverse', 'ActionDate'] :
 		['action', 'name', 'title', 'dataType', 'nullable', 'usage', 'ActionDate'];
@@ -26,7 +27,8 @@ export class PropertyHistoryComponent implements OnInit {
 		private dialogRef: MatDialogRef<PropertyHistoryComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: PropertyHistoryModel,
 		private snackbarService: SnackBarService,
-		private historyService: HistoryService) { }
+		private historyService: HistoryService) {
+	}
 
 	ngOnInit() {
 		this.propertiesDataSource.paginator = this.propertyPaginator;
@@ -68,19 +70,21 @@ export class PropertyHistoryComponent implements OnInit {
 				return 'edit';
 			case 'deleteProperty':
 				return 'delete';
-			default: break;
+			default:
+				break;
 		}
 	}
 
 	setActionColor(data: PropertyHistoryModel) {
 		switch (data.Action) {
 			case 'addProperty':
-				return { 'color': 'green' };
+				return {'color': 'green'};
 			case 'editProperty':
-				return { 'color': 'accent' };
+				return {'color': 'accent'};
 			case 'deleteProperty':
-				return { 'color': 'red' };
-			default: return {};
+				return {'color': 'red'};
+			default:
+				return {};
 		}
 	}
 
@@ -118,6 +122,10 @@ export class PropertyHistoryComponent implements OnInit {
 
 	cancel() {
 		this.dialogRef.close();
+	}
+
+	selectProperty(prop: PropertyHistoryModel) {
+		this.selectedProperty = prop;
 	}
 
 }

@@ -1,9 +1,9 @@
-import { CommentModel, GetCommentRequestModel } from '../../models/comment.model';
-import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { LobListDialogData } from '../../models/common-models';
-import { LobInfoService } from '../../lob-info.service';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
+import {CommentModel, GetCommentRequestModel} from '../../models/comment.model';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {LobListDialogData} from '../../models/common-models';
+import {LobInfoService} from '../../lob-info.service';
+import {SnackBarService} from '../../../common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-comments-list',
@@ -15,7 +15,9 @@ export class CommentsListComponent implements OnInit {
 	public comments: CommentModel[] = [];
 	public commentToSave: CommentModel = new CommentModel();
 	public isLoading: boolean;
+	public submitLoading: boolean;
 	public isAdding = false;
+	commentToSaveError: any;
 
 	constructor(
 		private dialogRef: MatDialogRef<CommentsListComponent>,

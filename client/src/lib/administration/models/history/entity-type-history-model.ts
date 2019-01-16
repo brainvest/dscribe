@@ -1,7 +1,7 @@
 import { IHistory } from './history-model';
-import { EntityTypeBase } from 'src/lib/metadata/entity-type-base';
-import { MetadataBasicInfoModel } from 'src/lib/metadata/metadata-basic-info-model';
 import { HistoryType } from './history-type';
+import {EntityTypeBase} from '../../../metadata/entity-type-base';
+import {MetadataBasicInfoModel} from '../../../metadata/metadata-basic-info-model';
 
 export class EntityTypeHistoryModel implements IHistory {
 	EntityType: EntityTypeBase;
