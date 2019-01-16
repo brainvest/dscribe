@@ -19,3 +19,6 @@ steps:
 
 - script: 'npm install $(frontDirName)'
   displayName: Npm install
+
+- script: 'npm run build --prefix $(frontDirName)'
+  displayName: Npm Run Build
