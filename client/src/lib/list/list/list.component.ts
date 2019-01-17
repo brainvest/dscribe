@@ -1,43 +1,43 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, Type, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog, MatPaginator, MatSort } from '@angular/material';
-import { MetadataService } from '../../common/services/metadata.service';
-import { DataHandlerService } from '../../common/services/data-handler.service';
-import { EntityTypeMetadata } from '../../metadata/entity-type-metadata';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { merge, of } from 'rxjs';
-import { EntityListRequest } from '../../common/models/entity-list-request';
-import { SortItem } from '../../common/models/sort-item';
-import { ListColumn } from '../models/list-column';
-import { KnownFacets } from '../../metadata/facets/known-facet';
-import { MasterReference } from '../models/master-reference';
-import { HasId } from '../../common/models/has-id';
-import { ListAddNEditDialogComponent } from '../list-add-n-edit-dialog/list-add-n-edit-dialog.component';
-import { ListDeleteDialogComponent } from '../list-delete-dialog/list-delete-dialog.component';
-import { LambdaFilterNode } from '../../filtering/models/filter-nodes/lambda-filter-node';
-import { StorageFilterNode } from '../../filtering/models/storage-filter-node';
-import { LambdaHelper } from '../../helpers/lambda-helper';
-import { FilterNode } from '../../filtering/models/filter-nodes/filter-node';
-import { FilterNodeFactory } from '../../filtering/models/filter-node-factory';
-import { SelectionModel } from '@angular/cdk/collections';
-import { DataTypes } from '../../metadata/data-types';
-import { TableTemplateComponent } from '../list-templating/table-template/table-template.component';
-import { EntityTypeTemplateMapper } from '../list-templating/entity-type-template-mapper';
-import { DscribeService } from '../../dscribe.service';
-import { DscribeFeatureArea } from '../../models/dscribe-feature-area.enum';
-import { DscribeCommand } from '../../models/dscribe-command';
-import { DscribeCommandCallbackInput } from '../../models/dscribe-command-callback-input';
-import { DscribeCommandDisplayPredicate } from '../../models/dscribe-command-display-predicate';
-import { SnackBarService } from '../../common/notifications/snackbar.service';
-import { ManageEntityModes } from '../../add-n-edit/models/manage-entity-modes';
-import { AddNEditResult } from '../../common/models/add-n-edit-result';
-import { AddNEditStructure, ListBehaviors } from '../../add-n-edit/models/add-n-edit-structure';
-import { LobInfoService } from '../../lob-tools/lob-info.service';
-import { CommentsListComponent } from '../../lob-tools/comments/comments-list/comments-list.component';
-import { LobListDialogData } from '../../lob-tools/models/common-models';
-import { AttachmentsListComponent } from '../../lob-tools/attachments/attachments-list/attachments-list.component';
-import { ReportsListResponse } from '../../lob-tools/models/report-models';
-import { ReportsListComponent } from '../../lob-tools/reporting/reports-list/reports-list.component';
-import { ManageCommentModes } from '../../lob-tools/models/manage-comment-modes';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
+import {MatDialog, MatPaginator, MatSort} from '@angular/material';
+import {MetadataService} from '../../common/services/metadata.service';
+import {DataHandlerService} from '../../common/services/data-handler.service';
+import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
+import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+import {merge, of} from 'rxjs';
+import {EntityListRequest} from '../../common/models/entity-list-request';
+import {SortItem} from '../../common/models/sort-item';
+import {ListColumn} from '../models/list-column';
+import {KnownFacets} from '../../metadata/facets/known-facet';
+import {MasterReference} from '../models/master-reference';
+import {HasId} from '../../common/models/has-id';
+import {ListAddNEditDialogComponent} from '../list-add-n-edit-dialog/list-add-n-edit-dialog.component';
+import {ListDeleteDialogComponent} from '../list-delete-dialog/list-delete-dialog.component';
+import {LambdaFilterNode} from '../../filtering/models/filter-nodes/lambda-filter-node';
+import {StorageFilterNode} from '../../filtering/models/storage-filter-node';
+import {LambdaHelper} from '../../helpers/lambda-helper';
+import {FilterNode} from '../../filtering/models/filter-nodes/filter-node';
+import {FilterNodeFactory} from '../../filtering/models/filter-node-factory';
+import {SelectionModel} from '@angular/cdk/collections';
+import {DataTypes} from '../../metadata/data-types';
+import {TableTemplateComponent} from '../list-templating/table-template/table-template.component';
+import {EntityTypeTemplateMapper} from '../list-templating/entity-type-template-mapper';
+import {DscribeService} from '../../dscribe.service';
+import {DscribeFeatureArea} from '../../models/dscribe-feature-area.enum';
+import {DscribeCommand} from '../../models/dscribe-command';
+import {DscribeCommandCallbackInput} from '../../models/dscribe-command-callback-input';
+import {DscribeCommandDisplayPredicate} from '../../models/dscribe-command-display-predicate';
+import {SnackBarService} from '../../common/notifications/snackbar.service';
+import {ManageEntityModes} from '../../add-n-edit/models/manage-entity-modes';
+import {AddNEditResult} from '../../common/models/add-n-edit-result';
+import {AddNEditStructure, ListBehaviors} from '../../add-n-edit/models/add-n-edit-structure';
+import {LobInfoService} from '../../lob-tools/lob-info.service';
+import {CommentsListComponent} from '../../lob-tools/comments/comments-list/comments-list.component';
+import {LobListDialogData} from '../../lob-tools/models/common-models';
+import {AttachmentsListComponent} from '../../lob-tools/attachments/attachments-list/attachments-list.component';
+import {ReportsListResponse} from '../../lob-tools/models/report-models';
+import {ReportsListComponent} from '../../lob-tools/reporting/reports-list/reports-list.component';
+import {ManageCommentModes} from '../../lob-tools/models/manage-comment-modes';
 import { DataHistoryComponent } from '../data-history/data-history.component';
 
 @Component({
@@ -342,8 +342,6 @@ export class ListComponent implements OnInit, OnChanges {
 				title: this.entityType.SingularTitle,
 				masters: this.masters,
 				addNEditStructure: this.addNEditStructure,
-				columns: this.columns,
-				displayedColumns: this.displayedColumns,
 				historyType: 1,
 			}
 		});
