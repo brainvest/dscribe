@@ -1,5 +1,6 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
+using Brainvest.Dscribe.Abstractions.Models.History;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.LobTools.Models;
@@ -36,7 +37,7 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 
 		}
 
-		public async Task<List<string>> GetDataHistory(string entityName,string data)
+		public async Task<List<DataHistoryResponseModel>> GetDataHistory(string entityName,string data)
 		{
 			var entityType = await _metadataDbContext.EntityTypes
 				.Where(x => x.Name == entityName)
@@ -49,7 +50,14 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 
 			var result = await _lobToolsDbContext.DataLogs
 				.Where(x => x.DataId == Convert.ToInt64(primaryKey) && x.EntityId == entityType.Id)
-				.Select(x => x.Body)
+				.Include(x => x.RequestLog)
+				.Select(x => new DataHistoryResponseModel
+				{
+					Action = x.DataRequestAction,
+					ActionTime = x.RequestLog.StartTime,
+					Data = x.Body,
+					ProcessDuration = x.RequestLog.ProcessDuration
+				})
 				.ToListAsync();
 
 			return result;
