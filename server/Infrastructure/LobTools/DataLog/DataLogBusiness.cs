@@ -1,5 +1,6 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
+using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.LobTools.Models;
 using Brainvest.Dscribe.MetadataDbAccess;
@@ -7,10 +8,12 @@ using Brainvest.Dscribe.MetadataDbAccess.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.LobTools.DataLog
@@ -31,6 +34,29 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 			_metadataDbContext = metadataDbContext;
 
 		}
+
+		public async Task<List<string>> GetDataHistory(string entityName,string data)
+		{
+			var entityType = await _metadataDbContext.EntityTypes
+				.Where(x => x.Name == entityName)
+				.Include(x => x.Properties)
+				.Include("Properties.GeneralUsageCategory")
+				.FirstOrDefaultAsync();
+
+			// var entityData = JsonConvert.DeserializeObject<object>(data);
+			var primaryKeyName = entityType.Properties.Where(x => x.GeneralUsageCategory.Name == "PrimaryKey").FirstOrDefault().Name;
+			var primaryKey = JObject.Parse(data)[primaryKeyName].Value<string>();
+
+
+
+			var result = await _lobToolsDbContext.DataLogs
+				.Where(x => x.DataId == Convert.ToInt64(primaryKey) && x.EntityId == entityType.Id)
+				.Select(x => JsonConvert.SerializeObject(x.Body))
+				.ToListAsync();
+
+			return result;
+		}
+
 		public async Task SaveDataChanges(object businessRepository, string entityTypeName)
 		{
 			var entityType = await _metadataDbContext.EntityTypes
@@ -38,6 +64,7 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 				.Include(x => x.Properties)
 				.Include("Properties.GeneralUsageCategory")
 				.FirstOrDefaultAsync();
+
 
 			var dataChanges = (businessRepository as DbContext).ChangeTracker
 				.Entries()

@@ -17,6 +17,9 @@
 				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="deleteSelected()" color="warn" matTooltip="Delete selected {{entityType?.SingularTitle}}">
 					<mat-icon>delete</mat-icon>
 				</button>
+				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="showHistory()" color="warn" matTooltip="Show {{entityType?.SingularTitle}} history">
+					<mat-icon>history</mat-icon>
+				</button>
 				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="manageComment()" color="primary" matTooltip="Comment for selected {{entityType?.SingularTitle}}">
 					<mat-icon>insert_comment</mat-icon>
 				</button>
