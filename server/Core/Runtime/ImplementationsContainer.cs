@@ -72,6 +72,18 @@ namespace Brainvest.Dscribe.Runtime
 				InstanceInfo = instanceInfo
 			};
 
+			var lobToolsDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext>();
+			switch (instanceInfo.Provider)
+			{
+				case DatabaseProviderEnum.MySql:
+					implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseMySql(instanceInfo.LobConnectionString).Options;
+					break;
+				case DatabaseProviderEnum.SqlServer:
+					implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseSqlServer(instanceInfo.LobConnectionString).Options;
+					break;
+				default:
+					throw new NotImplementedException($"The provider {instanceInfo.Provider} is not implemented");
+			}
 			if (bridge.BusinessDbContextFactory == null)
 			{
 				scope.ServiceProvider.GetRequiredService<ILogger<ImplementationContainer>>().LogError($"Business assembly not loaded");
@@ -81,22 +93,19 @@ namespace Brainvest.Dscribe.Runtime
 				var dbContextType = bridge.BusinessDbContextFactory.GetType().Assembly.GetTypes().Single(x => x.IsSubclassOf(typeof(DbContext)));
 				reflector.RegisterAssembly(dbContextType.Assembly);
 				var dbContextOptionsBuilder = Activator.CreateInstance(typeof(DbContextOptionsBuilder<>).MakeGenericType(dbContextType)) as DbContextOptionsBuilder;
-				var lobToolsDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext>();
 				switch (instanceInfo.Provider)
 				{
 					case DatabaseProviderEnum.MySql:
 						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseMySql(instanceInfo.DataConnectionString).Options;
-						implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseMySql(instanceInfo.LobConnectionString).Options;
 						break;
 					case DatabaseProviderEnum.SqlServer:
 						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.DataConnectionString).Options;
-						implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseSqlServer(instanceInfo.LobConnectionString).Options;
 						break;
 					default:
 						throw new NotImplementedException($"The provider {instanceInfo.Provider} is not implemented");
 				}
 			}
-			return implementationsContainer;
+      return implementationsContainer;
 		}
 
 		public IMetadataCache Metadata { get; private set; }

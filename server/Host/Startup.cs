@@ -29,24 +29,7 @@ namespace Brainvest.Dscribe.Host
 					.AllowAnyOrigin()
 					.AllowAnyHeader()));
 
-			services.AddDbContext<MetadataDbContext>(options =>
-				{
-					var provider = Configuration.GetSection("EfProvider").Get<string>();
-					switch (provider)
-					{
-						case "MySql":
-							options.UseMySql(
-									Configuration.GetConnectionString("Engine_MySql"));
-							return;
-						case "SqlServer":
-							options.UseSqlServer(
-									Configuration.GetConnectionString("Engine_SqlServer"));
-							return;
-						default:
-							throw new NotImplementedException($"The provider {provider} is not implemented yet.");
-					}
-				});
-			RuntimeStartup.ConfigureServices(services, Configuration);
+			RuntimeStartup.ConfigureServices(services, Configuration, SetupProvider);
 			services.RegisterEfCore();
 
 			services.AddMvc()
@@ -59,6 +42,24 @@ namespace Brainvest.Dscribe.Host
 						options.Authority = "http://localhost:5001";
 						options.RequireHttpsMetadata = false;
 					});
+		}
+
+		private void SetupProvider(DbContextOptionsBuilder options, string connectionStringName)
+		{
+			var provider = Configuration.GetSection("EfProvider").Get<string>();
+			switch (provider)
+			{
+				case "MySql":
+					options.UseMySql(
+							Configuration.GetConnectionString(connectionStringName));
+					return;
+				case "SqlServer":
+					options.UseSqlServer(
+							Configuration.GetConnectionString(connectionStringName));
+					return;
+				default:
+					throw new NotImplementedException($"The provider {provider} is not implemented yet.");
+			}
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)

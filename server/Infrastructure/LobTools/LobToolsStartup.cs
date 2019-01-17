@@ -14,27 +14,12 @@ namespace Brainvest.Dscribe.LobTools
 {
 	public static class LobToolsStartup
 	{
-		public static void ConfigureServices(IServiceCollection services, IConfiguration configuration, int? defaultAppInstanceId = null)
+		public static void ConfigureServices(IServiceCollection services, IConfiguration configuration
+			, Action<DbContextOptionsBuilder, string> efProviderSetup, int? defaultAppInstanceId = null)
 		{
 			services.AddScoped<IRichTextDocumentHandler, RichTextDocumentHandler>();
 			services.AddScoped<RequestLogger>();
-			services.AddDbContext<LobToolsDbContext>(options =>
-			{
-				var provider = configuration.GetSection("EfProvider").Get<string>();
-				switch (provider)
-				{
-					case "MySql":
-						options.UseMySql(
-								configuration.GetConnectionString("DefaultLob"));
-						return;
-					case "SqlServer":
-						options.UseSqlServer(
-								configuration.GetConnectionString("DefaultLob"));
-						return;
-					default:
-						throw new NotImplementedException($"The provider {provider} is not implemented yet.");
-				}
-			});
+			services.AddDbContext<LobToolsDbContext>(options => efProviderSetup(options, "DefaultLob"));
 		}
 
 		public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
