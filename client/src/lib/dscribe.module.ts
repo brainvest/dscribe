@@ -79,7 +79,6 @@ import {AttachmentsListComponent} from './lob-tools/attachments/attachments-list
 import {ReportsListComponent} from './lob-tools/reporting/reports-list/reports-list.component';
 import { EntityHistoryComponent } from './administration/history/entity-history/entity-history.component';
 import { DataHistoryComponent } from './list/data-history/data-history.component';
-import { UsersAndRolesManagementComponent } from './security/components/users-and-roles-management/users-and-roles-management.component';
 
 @NgModule({
 	imports: [
@@ -163,10 +162,9 @@ import { UsersAndRolesManagementComponent } from './security/components/users-an
 		AddNEditAppInstanceComponent,
 		CommentsListComponent,
 		AttachmentsListComponent,
-		ReportsListComponent,
-		UsersAndRolesManagementComponent
+		ReportsListComponent
 	],
-	exports: [DscribeComponent, ListComponent, DisplayValuePipe, ConfirmationDialogComponent],
+	exports: [DscribeComponent, ListComponent, DisplayValuePipe],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: DscribeInterceptor, multi: true},
 		FilterTreeManipulator,
