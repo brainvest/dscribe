@@ -1,75 +1,15 @@
-<!-- <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-<h1 mat-dialog-title *ngIf="data.historyType === 1">History of {{data.EntityType.Name}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<h1 mat-dialog-title *ngIf="data.historyType === 1">History of {{data.title}}</h1>
 <h1 mat-dialog-title *ngIf="data.historyType === 2">Deleted entities history</h1>
 
 <mat-dialog-content *ngIf="!isLoading">
-	<table mat-table [dataSource]="entityTypesDataSource" matSort>
-
-		<ng-container matColumnDef="action">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
-			<td mat-cell *matCellDef="let entityHistory">
-				<button mat-icon-button>
-					<mat-icon color="accent" [ngStyle]="setActionColor(entityHistory)">{{setActionIcon(entityHistory)}}</mat-icon>
-				</button>
-			</td>
-		</ng-container>
-
-		<ng-container matColumnDef="name">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-			<td mat-cell *matCellDef="let entityHistory">{{entityHistory.EntityType.Name}}</td>
-		</ng-container>
-
-		<ng-container matColumnDef="tableName">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Table Name</th>
-			<td mat-cell *matCellDef="let entityHistory">{{entityHistory.EntityType.TableName}}</td>
-		</ng-container>
-
-		<ng-container matColumnDef="schema">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Schema</th>
-			<td mat-cell *matCellDef="let entityHistory">{{entityHistory.EntityType.SchemaName}}</td>
-		</ng-container>
-
-		<ng-container matColumnDef="usage">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Usage</th>
-			<td mat-cell *matCellDef="let entityHistory">
-				{{getEntityTypeUsageName(entityHistory.EntityType.EntityTypeGeneralUsageCategoryId)}}
-			</td>
-		</ng-container>
-
-		<ng-container matColumnDef="singular">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Singular</th>
-			<td mat-cell *matCellDef="let entityHistory">{{entityHistory.EntityType.SingularTitle}}</td>
-		</ng-container>
-
-		<ng-container matColumnDef="plural">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Plural</th>
-			<td mat-cell *matCellDef="let entityHistory">{{entityHistory.EntityType.PluralTitle}}</td>
-		</ng-container>
-
-		<ng-container matColumnDef="code">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
-			<td mat-cell *matCellDef="let entityHistory">{{entityHistory.EntityType.CodePath}}</td>
-		</ng-container>
-
-		<ng-container matColumnDef="displayName">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Display Name</th>
-			<td mat-cell *matCellDef="let entityHistory">{{entityHistory.EntityType.DisplayNamePath}}</td>
-		</ng-container>
-
-		<ng-container matColumnDef="ActionDate">
-			<th mat-header-cell *matHeaderCellDef mat-sort-header>Action Date</th>
-			<td mat-cell *matCellDef="let entityHistory" [matTooltip]="entityHistory.StartTime | date:'shortTime'">{{entityHistory.StartTime | date}}</td>
-		</ng-container>
-
-
-		<tr mat-header-row *matHeaderRowDef="displayedEntityTypeColumns"></tr>
-		<tr mat-row *matRowDef="let entityHistory; columns: displayedEntityTypeColumns;"></tr>
-	</table>
-	<mat-paginator id="entityTypesPaginator" #entityTypesPaginator [length]="entityTypesDataSource.data.length" [pageSize]="5"></mat-paginator>
+	<dscribe-table-template (rowClick)="selectRow($event)" [data]="historyData" [selection]="selection" [columns]="data.columns"
+	 [displayedColumns]="data.displayedColumns" [hideAdditionFeature]="true">
+	</dscribe-table-template>
 </mat-dialog-content>
 
 <!-- <mat-dialog-actions>
 	<button mat-icon-button (click)="cancel()" [disabled]="submitLoading">
 		<mat-icon color="warn">cancel</mat-icon>
 	</button>
-</mat-dialog-actions> --> -->
+</mat-dialog-actions> -->
