@@ -34,14 +34,16 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 		public async Task SaveDataChanges(object businessRepository, string entityTypeName)
 		{
 			var entityType = await _metadataDbContext.EntityTypes
-				.Where(x => x.Name == entityTypeName)
 				.Include(x => x.Properties)
 				.Include("Properties.GeneralUsageCategory")
+				.Where(x => x.Name == entityTypeName)
 				.FirstOrDefaultAsync();
 
 			var dataChanges = (businessRepository as DbContext).ChangeTracker
 				.Entries()
-				.Where(x => x.State == EntityState.Modified)
+				.Where(x => x.State == EntityState.Modified 
+							|| x.State == EntityState.Added
+							|| x.State == EntityState.Deleted)
 				.Select(x => new
 				{
 					Entity = x.Entity,
