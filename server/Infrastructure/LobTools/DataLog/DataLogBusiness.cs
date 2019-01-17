@@ -51,7 +51,7 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 
 			var result = await _lobToolsDbContext.DataLogs
 				.Where(x => x.DataId == Convert.ToInt64(primaryKey) && x.EntityId == entityType.Id)
-				.Select(x => JsonConvert.SerializeObject(x.Body))
+				.Select(x => x.Body)
 				.ToListAsync();
 
 			return result;
