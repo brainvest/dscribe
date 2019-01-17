@@ -1,6 +1,7 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.AppManagement;
+using Brainvest.Dscribe.Abstractions.Models.History;
 using Brainvest.Dscribe.Abstractions.Models.ManageMetadata;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using Brainvest.Dscribe.LobTools.Entities;
@@ -184,7 +185,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			}).ToList();
 			return result;
 		}
-		public async Task<List<string>> GetDataHistory([FromBody]DataHistoryModel model)
+		public async Task<List<DataHistoryResponseModel>> GetDataHistory([FromBody]DataHistoryModel model)
 		{
 			return await _dataLogImplementation.GetDataHistory(model.EntityName,model.Data);
 		}
