@@ -32,6 +32,7 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 			_lobToolsDbContext = lobToolsDbContext;
 			_httpContextAccessor = httpContextAccessor;
 			_metadataDbContext = metadataDbContext;
+			// Todo. Should use ImplementationContainer here.
 
 		}
 
@@ -43,11 +44,8 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 				.Include("Properties.GeneralUsageCategory")
 				.FirstOrDefaultAsync();
 
-			// var entityData = JsonConvert.DeserializeObject<object>(data);
 			var primaryKeyName = entityType.Properties.Where(x => x.GeneralUsageCategory.Name == "PrimaryKey").FirstOrDefault().Name;
 			var primaryKey = JObject.Parse(data)[primaryKeyName].Value<string>();
-
-
 
 			var result = await _lobToolsDbContext.DataLogs
 				.Where(x => x.DataId == Convert.ToInt64(primaryKey) && x.EntityId == entityType.Id)
