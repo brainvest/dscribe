@@ -38,6 +38,7 @@ import {AttachmentsListComponent} from '../../lob-tools/attachments/attachments-
 import {ReportsListResponse} from '../../lob-tools/models/report-models';
 import {ReportsListComponent} from '../../lob-tools/reporting/reports-list/reports-list.component';
 import {ManageCommentModes} from '../../lob-tools/models/manage-comment-modes';
+import { DataHistoryComponent } from '../data-history/data-history.component';
 
 @Component({
 	selector: 'dscribe-list',
@@ -330,6 +331,25 @@ export class ListComponent implements OnInit, OnChanges {
 
 	editSelectedRow() {
 		this.openAddNEditDialog(this.selection.selected[0], false);
+	}
+
+	showHistory() {
+		const dialogRef = this.dialog.open(DataHistoryComponent, {
+			width: '90%',
+			data: {
+				entity: this.selection.selected[0],
+				entityTypeName: this.entityType.Name,
+				title: this.entityType.SingularTitle,
+				masters: this.masters,
+				addNEditStructure: this.addNEditStructure,
+				historyType: 1,
+			}
+		});
+		dialogRef.afterClosed().subscribe(
+			(res => {
+
+			})
+		);
 	}
 
 	deleteSelected() {

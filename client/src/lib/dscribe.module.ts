@@ -78,6 +78,7 @@ import {CommentsListComponent} from './lob-tools/comments/comments-list/comments
 import {AttachmentsListComponent} from './lob-tools/attachments/attachments-list/attachments-list.component';
 import {ReportsListComponent} from './lob-tools/reporting/reports-list/reports-list.component';
 import { EntityHistoryComponent } from './administration/history/entity-history/entity-history.component';
+import { DataHistoryComponent } from './list/data-history/data-history.component';
 
 @NgModule({
 	imports: [
@@ -143,6 +144,7 @@ import { EntityHistoryComponent } from './administration/history/entity-history/
 		ListComponent,
 		ListContainerComponent,
 		ListAddNEditDialogComponent,
+		DataHistoryComponent,
 		LogicalFilterNodeComponent,
 		MetadataManagementComponent,
 		NavigationComponent,
@@ -170,6 +172,7 @@ import { EntityHistoryComponent } from './administration/history/entity-history/
 	],
 	entryComponents: [
 		ListAddNEditDialogComponent,
+		DataHistoryComponent,
 		ListDeleteDialogComponent,
 		AddNEditEntityTypeComponent,
 		AddNEditPropertyComponent,

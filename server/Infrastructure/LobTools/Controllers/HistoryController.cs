@@ -1,6 +1,8 @@
+using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.AppManagement;
 using Brainvest.Dscribe.Abstractions.Models.ManageMetadata;
+using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.LobTools.Models;
 using Brainvest.Dscribe.LobTools.Models.History;
@@ -20,9 +22,17 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 	public class HistoryController : ControllerBase
 	{
 		public LobToolsDbContext _dbContext;
-		public HistoryController(LobToolsDbContext dbContext)
+		public IDataLogImplementation _dataLogImplementation;
+		private readonly IEntityHandler _entityHandler;
+
+		public HistoryController(
+			LobToolsDbContext dbContext,
+			IDataLogImplementation dataLogImplementation,
+			IEntityHandler entityHandler)
 		{
 			_dbContext = dbContext;
+			_dataLogImplementation = dataLogImplementation;
+			_entityHandler = entityHandler;
 		}
 		public async Task<IEnumerable<EntityTypeHistoryModel>> GetEntityTypeHistory(EntityTypeHistoryModel model)
 		{
@@ -173,6 +183,10 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				UserId = x.UserId
 			}).ToList();
 			return result;
+		}
+		public async Task<List<string>> GetDataHistory([FromBody]DataHistoryModel model)
+		{
+			return await _dataLogImplementation.GetDataHistory(model.EntityName,model.Data);
 		}
 		private bool PathChecker(string body, string action)
 		{
