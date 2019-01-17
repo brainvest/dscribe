@@ -6,6 +6,8 @@
 import {Injectable} from '@angular/core';
 import {User, UserManager, UserManagerSettings} from 'oidc-client';
 import {environment} from '../../environments/environment';
+import { of, from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
 	providedIn: 'root'
@@ -18,12 +20,17 @@ export class AuthService {
 	};
 
 	constructor() {
-		this.manager.getUser().then(user => this.user = user);
 		this.manager.events.addSilentRenewError(console.error);
 	}
 
-	isLoggedIn(): boolean {
-		return this.user && !this.user.expired;
+	isLoggedIn(): Observable<boolean> {
+		if(this.user) {
+			return of(this.user && !this.user.expired);
+		}
+		return from(this.manager.getUser()).pipe(map(user => {
+			this.user = user;
+			return this.user && !this.user.expired;
+		}));
 	}
 
 	getClaims(): any {
