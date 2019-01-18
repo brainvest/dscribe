@@ -3,8 +3,8 @@
 <h1 mat-dialog-title *ngIf="data.historyType === 2">Deleted entities history</h1>
 
 <mat-dialog-content *ngIf="!isLoading">
-	<dscribe-table-template (rowClick)="selectRow($event)" [data]="historyData" [selection]="selection" [columns]="data.columns"
-	 [displayedColumns]="data.displayedColumns" [hideAdditionFeature]="true">
+	<dscribe-table-template (rowClick)="selectRow($event)" [data]="historyData" [selection]="selection" [columns]="columns"
+	 [displayedColumns]="displayedColumns" [hideAdditionFeature]="true">
 	</dscribe-table-template>
 </mat-dialog-content>
 
