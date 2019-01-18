@@ -1,6 +1,7 @@
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Services;
 using Brainvest.Dscribe.Security.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -64,6 +65,17 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 					.AddEntityFrameworkStores<SecurityDbContext>()
 					.AddDefaultTokenProviders();
 
+			services.ConfigureApplicationCookie(options =>
+			{
+				options.Cookie.SameSite = SameSiteMode.None;
+			});
+
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+					.AddCookie("Cookies", options =>
+			 {
+				 options.Cookie.SameSite = SameSiteMode.None;
+			 });
+
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 			services.AddScoped<IEmailSender, FakeEmailSender>();
 
@@ -108,7 +120,10 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 				logger.LogInformation($"Using path {options.Value.PathBase}");
 			}
 			app.UseStaticFiles();
-			app.UseCookiePolicy();
+			app.UseCookiePolicy(new CookiePolicyOptions
+			{
+				MinimumSameSitePolicy = SameSiteMode.None
+			});
 
 			var forwardedHeaderOptions = new ForwardedHeadersOptions
 			{
