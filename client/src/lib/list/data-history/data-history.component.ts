@@ -1,12 +1,12 @@
-import { ListColumn } from './../models/list-column';
-import { SelectionModel } from '@angular/cdk/collections';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatTableDataSource } from '@angular/material';
-import { SnackBarService } from 'src/lib/common/notifications/snackbar.service';
-import { HistoryType } from 'src/lib/administration/models/history/history-type';
-import { HistoryService } from 'src/lib/lob-tools/history-service';
-import { DatePipe } from '@angular/common';
+import {ListColumn} from '../models/list-column';
+import {SelectionModel} from '@angular/cdk/collections';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef, MatPaginator} from '@angular/material';
+import {DatePipe} from '@angular/common';
+import {SnackBarService} from '../../common/notifications/snackbar.service';
+import {HistoryType} from '../../administration/models/history/history-type';
+import {HistoryService} from '../../lob-tools/history-service';
 
 @Component({
 	selector: 'dscribe-data-history',
@@ -18,7 +18,7 @@ export class DataHistoryComponent implements OnInit {
 
 	// private entityHistories: EntityTypeHistoryModel[] = [];
 	isLoading = false;
-	private historyData: any[];
+	historyData: any[];
 	// entityTypesDataSource = new MatTableDataSource<EntityTypeHistoryModel>(this.entityHistories);
 	initialSelection = [];
 	allowMultiSelect = false;
@@ -91,6 +91,10 @@ export class DataHistoryComponent implements OnInit {
 				this.isLoading = false;
 			}
 		);
+	}
+
+	selectRow(row: any) {
+
 	}
 
 	getAction(value: number) {

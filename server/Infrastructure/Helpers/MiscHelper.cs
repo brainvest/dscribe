@@ -6,16 +6,6 @@ namespace Brainvest.Dscribe.Helpers
 {
 	public static class MiscHelper
 	{
-		public static string GetFullMessage(this Exception ex)
-		{
-			string text = ex.GetType().ToString() + ":" + ex.Message;
-			if (ex.InnerException == null)
-			{
-				return text;
-			}
-			return text + Environment.NewLine + ex.InnerException.GetFullMessage();
-		}
-
 		public static TValue GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default)
 		{
 			if (dictionary.TryGetValue(key, out TValue value))
