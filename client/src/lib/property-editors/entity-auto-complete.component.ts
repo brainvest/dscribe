@@ -155,7 +155,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			</dscribe-list>
 		</mat-dialog-content>
 		<mat-dialog-actions>
-			<button mat-raised-button color="primary" (click)="doneClicked()">تایید</button>
+			<button mat-raised-button color="primary" (click)="doneClicked()">Ok</button>
 		</mat-dialog-actions>
 	`
 })

@@ -44,7 +44,7 @@ export class EntityTypeMetadata extends DigestEntityType {
 		// if (parentProperty && parentProperty._entityTypeName === DataTypes.NavigationList) {
 		//   props.push(new PropertyMetadata('Count', 'count',
 		// 'NormalData', DataTypes.int, null, null, null,
-		//     null, this, null, null, null, 'تعداد', false));
+		//     null, this, null, null, null, 'Count', false));
 		// }
 
 		for (const propertyName of this.PropertyNames) {
