@@ -48,7 +48,7 @@ export class DataHandlerService {
 
 	getName(entityTypeName: string, id: number): Observable<string> {
 		if (id === null || id === undefined || id.toString().length === 0) {
-			return null;
+			return of(null);
 		}
 		let existing = this.cache2[entityTypeName];
 		if (!existing) {
