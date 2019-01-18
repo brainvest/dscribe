@@ -10,7 +10,7 @@ import {HttpClient} from '@angular/common/http';
 import {DscribeService} from '../../dscribe.service';
 import {ManageEntityModes} from '../../add-n-edit/models/manage-entity-modes';
 import {AddNEditHelper} from '../../add-n-edit/add-n-edit-helper';
-
+import {Result} from '../models/Result';
 
 @Injectable({
 	providedIn: 'root',
@@ -173,15 +173,15 @@ export class DataHandlerService {
 		return this.http.post<any[]>(this.groupAPI, request.getRequestObject());
 	}
 
-	manageEntity(entity: EntityBase, entityTypeName: string, action: ManageEntityModes): Observable<EntityBase> {
-		return this.http.post<EntityBase>(this.managementURL + AddNEditHelper.actionName(action), {
+	manageEntity(entity: EntityBase, entityTypeName: string, action: ManageEntityModes): Observable<Result<EntityBase>> {
+		return this.http.post<Result<EntityBase>>(this.managementURL + AddNEditHelper.actionName(action), {
 			entityTypeName: entityTypeName,
 			entity: entity
 		});
 	}
 
-	deleteEntity(entityTypeName: string, entity: EntityBase): Observable<EntityBase> {
-		return this.http.post<EntityBase>(this.managementURL + 'delete', {
+	deleteEntity(entityTypeName: string, entity: EntityBase): Observable<Result<EntityBase>> {
+		return this.http.post<Result<EntityBase>>(this.managementURL + 'delete', {
 			entityTypeName: entityTypeName,
 			entity: entity
 		});

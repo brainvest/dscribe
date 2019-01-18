@@ -12,3 +12,9 @@
 		{{ item.DisplayName ? item.DisplayName : item.Name }}
 	</option>
 </select>
+
+<div *ngIf="property?.ValidationErrors">
+	<p *ngFor="let validationError of property.ValidationErrors" class="error-message">
+		{{validationError.Message}}
+	</p>
+</div>

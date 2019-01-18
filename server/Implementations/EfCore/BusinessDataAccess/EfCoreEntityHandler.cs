@@ -99,28 +99,28 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			return await awaitable;
 		}
 
-		public async Task<ActionResult<object>> Edit(ManageEntityRequest request, object businessRepository)
+		public async Task<Result<object>> Edit(ManageEntityRequest request, object businessRepository)
 		{
 			return await CallMethod(nameof(EfCoreEntityHandlerInternal.EditInternal), request, businessRepository, null);
 		}
 
-		public async Task<ActionResult<object>> Add(ManageEntityRequest request, object businessRepository, IActionContextInfo actionContext)
+		public async Task<Result<object>> Add(ManageEntityRequest request, object businessRepository, IActionContextInfo actionContext)
 		{
 			return await CallMethod(nameof(EfCoreEntityHandlerInternal.AddInternal), request, businessRepository, actionContext);
 		}
 
-		public async Task<ActionResult<object>> Delete(ManageEntityRequest request, object businessRepository)
+		public async Task<Result<object>> Delete(ManageEntityRequest request, object businessRepository)
 		{
 			return await CallMethod(nameof(EfCoreEntityHandlerInternal.DeleteInternal), request, businessRepository, null);
 		}
 
-		private async Task<ActionResult<object>> CallMethod(string internalMethodName
+		private async Task<Result<object>> CallMethod(string internalMethodName
 			, ManageEntityRequest request, object businessRepository, IActionContextInfo actionContext)
 		{
 			var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 			var method = _handlerInternal.GetType().GetMethod(internalMethodName, BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 			object r = EntityHelper.CreateGenericObject(request, entityType);
-			var awaitable = method.Invoke(_handlerInternal, new object[] { r, businessRepository, actionContext }) as Task<ActionResult<object>>;
+			var awaitable = method.Invoke(_handlerInternal, new object[] { r, businessRepository, actionContext }) as Task<Result<object>>;
 			return await awaitable;
 		}
 
@@ -148,11 +148,11 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			};
 		}
 
-		public async Task<ActionResult> SaveChanges(object businessRepository, string entityTypeName)
+		public async Task<Result> SaveChanges(object businessRepository, string entityTypeName)
 		{
 			await _dataLogImplementation.SaveDataChanges(businessRepository, entityTypeName);
 			await (businessRepository as DbContext).SaveChangesAsync();
-			return new OkResult();
+			return Result.Success();
 		}
 	}
 }
