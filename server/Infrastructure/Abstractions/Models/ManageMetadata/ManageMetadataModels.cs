@@ -40,8 +40,6 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		[Required]
 		public string Name { get; set; }
 		public string Title { get; set; }
-		[Required]
-		[Range(1, int.MaxValue, ErrorMessage = "The General usage category field is required.")]
 		[IntegerRequired]
 		public int PropertyGeneralUsageCategoryId { get; set; }
 		[IntegerRequired]

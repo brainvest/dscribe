@@ -73,7 +73,7 @@ export class AddNEditAppInstanceComponent implements OnInit {
 			this.submitLoading = false;
 			this.snackbarService.open('Success');
 		}, (error: HttpErrorResponse) => {
-			this.appInstanceError = error.error ? error.error : new AppInstanceModel();
+			this.appInstanceError = error.error.errors ? error.error.errors : new AppInstanceModel();
 			this.snackbarService.open(error.statusText);
 			this.submitLoading = false;
 		});

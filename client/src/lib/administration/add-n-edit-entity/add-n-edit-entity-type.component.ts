@@ -126,8 +126,8 @@ export class AddNEditEntityTypeComponent implements OnInit {
 		request.subscribe((data: any) => {
 			this.dialogRef.close('saved');
 			this.submitLoading = false;
-		}, (error: HttpErrorResponse) => {
-			this.entityTypeError = error.error;
+		}, (error: any) => {
+			this.entityTypeError = error.error.errors;
 			this.snackbarService.open(error.statusText);
 			this.submitLoading = false;
 		});
