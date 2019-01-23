@@ -1,43 +1,77 @@
 trigger:
 - master
- 
-strategy:
-  matrix:
-    linux:
-      bigol : 'Linux'
-      imageName: 'ubuntu-16.04'
-    mac:
-      bigol : 'Linux'
-      imageName: 'macos-10.13'
-    windows:
-      bigol : 'Linux'
-      imageName: 'vs2017-win2016'
 
-pool:
-  name: $(bigol)
-  vmImage: $(imageName)
+jobs:
+- job: A
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    matrix:
+      debugJob:
+        configuration: debug
+        platform: x64
+      releaseJob:
+        configuration: release
+        platform: x64  
+  steps:
+  - task: DotNetCoreInstaller@0
+    inputs:
+      packageType: 'sdk' 
+      version: '2.2.100' 
 
-variables:
-  backendDirName: 'server'
-  frontDirName: 'client'
+  - script: 'dotnet clean $(backendDirName)/server.sln'
+    displayName: Server - Clean
 
-steps:
-- task: DotNetCoreInstaller@0
-  inputs:
-    packageType: 'sdk' 
-    version: '2.2.100' 
+  - script: 'dotnet build $(backendDirName)/server.sln'
+    displayName: Server - Build
 
-- script: 'dotnet clean $(backendDirName)/server.sln'
-  displayName: Server - Clean
+  - script: 'dotnet test $(backendDirName)'
+    displayName: Server - Test
 
-- script: 'dotnet build $(backendDirName)/server.sln'
-  displayName: Server - Build
+  - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
+    displayName: Client - installation
 
-- script: 'dotnet test $(backendDirName)'
-  displayName: Server - Test
+  - script: 'npm run build --prefix $(frontDirName)'
+    displayName: Client - Build        
 
-- script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
-  displayName: Client - installation
 
-- script: 'npm run build --prefix $(frontDirName)'
-  displayName: Client - Build
+# strategy:
+#   matrix:
+#     linux:
+#       bigol : 'Linux'
+#       imageName: 'ubuntu-16.04'
+#     mac:
+#       bigol : 'Linux'
+#       imageName: 'macos-10.13'
+#     windows:
+#       bigol : 'Linux'
+#       imageName: 'vs2017-win2016'
+
+# pool:
+#   name: $(bigol)
+#   vmImage: $(imageName)
+
+# variables:
+#   backendDirName: 'server'
+#   frontDirName: 'client'
+
+# steps:
+# - task: DotNetCoreInstaller@0
+#   inputs:
+#     packageType: 'sdk' 
+#     version: '2.2.100' 
+
+# - script: 'dotnet clean $(backendDirName)/server.sln'
+#   displayName: Server - Clean
+
+# - script: 'dotnet build $(backendDirName)/server.sln'
+#   displayName: Server - Build
+
+# - script: 'dotnet test $(backendDirName)'
+#   displayName: Server - Test
+
+# - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
+#   displayName: Client - installation
+
+# - script: 'npm run build --prefix $(frontDirName)'
+#   displayName: Client - Build
