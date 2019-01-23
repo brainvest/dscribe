@@ -1,4 +1,9 @@
-# dscribe
+## Welcome to Describe
+
+|Branch|Windows Pipeline|
+|:--:|:--:|
+|Master|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)|
+
 Dscribe is a library to rapidly create LOB applications by describing the logic.
 
 The application will use c#, asp.net core for the server and angular in the client.
