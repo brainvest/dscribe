@@ -1,21 +1,20 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
 trigger:
 - master
  
 strategy:
   matrix:
     linux:
+      bigol : 'Linux'
       imageName: 'ubuntu-16.04'
     mac:
+      bigol : 'Linux'
       imageName: 'macos-10.13'
     windows:
+      bigol : 'Linux'
       imageName: 'vs2017-win2016'
 
 pool:
+  name: $(bigol)
   vmImage: $(imageName)
 
 variables:
