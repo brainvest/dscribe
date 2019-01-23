@@ -1,6 +1,10 @@
 trigger:
 - master
 
+variables:
+  backendDirName: 'server'
+  frontDirName: 'client'
+
 jobs:
 - job: Linux
   pool:
@@ -31,7 +35,34 @@ jobs:
   - script: 'npm run build --prefix $(frontDirName)'
     displayName: Client - Build        
 
+- job: Windows
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    matrix:
+      Debug:
+        configuration: debug
+        platform: x64
+  steps:
+  - task: DotNetCoreInstaller@0
+    inputs:
+      packageType: 'sdk' 
+      version: '2.2.100' 
 
+  - script: 'dotnet clean $(backendDirName)/server.sln'
+    displayName: Server - Clean
+
+  - script: 'dotnet build $(backendDirName)/server.sln'
+    displayName: Server - Build
+
+  - script: 'dotnet test $(backendDirName)'
+    displayName: Server - Test
+
+  - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
+    displayName: Client - installation
+
+  - script: 'npm run build --prefix $(frontDirName)'
+    displayName: Client - Build        
 # strategy:
 #   matrix:
 #     linux:
