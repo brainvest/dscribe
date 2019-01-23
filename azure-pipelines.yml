@@ -2,17 +2,14 @@ trigger:
 - master
 
 jobs:
-- job: A
+- job: Linux
   pool:
     vmImage: 'ubuntu-16.04'
   strategy:
     matrix:
-      debugJob:
+      Debug:
         configuration: debug
         platform: x64
-      releaseJob:
-        configuration: release
-        platform: x64  
   steps:
   - task: DotNetCoreInstaller@0
     inputs:
