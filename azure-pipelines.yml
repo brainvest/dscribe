@@ -20,5 +20,7 @@ steps:
 - script: 'npm install $(frontDirName)'
   displayName: Client Npm install
 
+- script: 'npm run build --prefix ./client'
+  displayName: Client build
 # - script: 'npm run build --prefix $(frontDirName)'
 #   displayName: Npm Run Build
