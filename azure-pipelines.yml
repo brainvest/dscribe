@@ -11,7 +11,7 @@ variables:
   frontDirName: 'client'
 
 steps:
-- script: 'dotnet build $(backendDirName)/server.sln'
+- script: 'dotnet clean $(backendDirName)/server.sln'
   displayName: Server - Clean
 
 - script: 'dotnet build $(backendDirName)/server.sln'
