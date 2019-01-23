@@ -17,8 +17,8 @@ steps:
 - script: 'dotnet test $(backendDirName)'
   displayName: Server Test
 
-- script: 'npm install $(frontDirName)'
+- script: 'npm --prefix ./$(frontDirName) install'
   displayName: Client Npm install
 
-# - script: 'npm run build --prefix $(frontDirName)'
-#   displayName: Npm Run Build
+- script: 'npm run build --prefix $(frontDirName)'
+  displayName: Npm Run Build
