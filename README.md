@@ -1,8 +1,8 @@
 ## Welcome to Describe
 
-|Branch|Windows|Linux|
-|:--:|:--:|:--:|
-|Master|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master&jobName=windows)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master&jobName=linux)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)
+|Branch|Windows|Linux|Mac|
+|:--:|:--:|:--:|:--:|
+|Master|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master&jobName=windows)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master&jobName=linux)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master&jobName=mac)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)
 
 Dscribe is a library to rapidly create LOB applications by describing the logic.
 
