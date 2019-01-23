@@ -125,6 +125,9 @@ export class AddNEditPropertyComponent implements OnInit {
 				return 'check_box';
 			}
 		}
+		if (facetType.Default === undefined) {
+			return 'check_box_outline_blank';
+		}
 	}
 
 	get isNavigation() {
