@@ -9,6 +9,13 @@ jobs:
 - job: Linux
   pool:
     vmImage: 'ubuntu-16.04'
+  strategy:
+    maxParallel: 2    
+    matrix:
+      Debug:
+        configuration: debug
+      Release:
+        configuration: release
   steps:
   - task: DotNetCoreInstaller@0
     inputs:
@@ -33,11 +40,23 @@ jobs:
 - job: Windows
   pool:
     vmImage: 'vs2017-win2016'
+  strategy:
+    maxParallel: 2    
+    matrix:
+      Debug:
+        configuration: debug
+      Release:
+        configuration: release    
   steps:
   - task: DotNetCoreInstaller@0
     inputs:
       packageType: 'sdk' 
       version: '2.2.100' 
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '11.7.0' 
+      #checkLatest: false # Optional
 
   - script: 'dotnet clean $(backendDirName)/server.sln'
     displayName: Server - Clean
@@ -57,11 +76,23 @@ jobs:
 - job: Mac
   pool:
     vmImage: 'macos-10.13'
+  strategy:
+    maxParallel: 2    
+    matrix:
+      Debug:
+        configuration: debug
+      Release:
+        configuration: release
   steps:
   - task: DotNetCoreInstaller@0
     inputs:
       packageType: 'sdk' 
       version: '2.2.100' 
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.15.0' 
+      #checkLatest: false # Optional
 
   - script: 'dotnet clean $(backendDirName)/server.sln'
     displayName: Server - Clean
@@ -78,43 +109,4 @@ jobs:
   - script: 'npm run build --prefix $(frontDirName)'
     displayName: Client - Build
 
-# strategy:
-#   matrix:
-#     linux:
-#       bigol : 'Linux'
-#       imageName: 'ubuntu-16.04'
-#     mac:
-#       bigol : 'Linux'
-#       imageName: 'macos-10.13'
-#     windows:
-#       bigol : 'Linux'
-#       imageName: 'vs2017-win2016'
 
-# pool:
-#   name: $(bigol)
-#   vmImage: $(imageName)
-
-# variables:
-#   backendDirName: 'server'
-#   frontDirName: 'client'
-
-# steps:
-# - task: DotNetCoreInstaller@0
-#   inputs:
-#     packageType: 'sdk' 
-#     version: '2.2.100' 
-
-# - script: 'dotnet clean $(backendDirName)/server.sln'
-#   displayName: Server - Clean
-
-# - script: 'dotnet build $(backendDirName)/server.sln'
-#   displayName: Server - Build
-
-# - script: 'dotnet test $(backendDirName)'
-#   displayName: Server - Test
-
-# - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
-#   displayName: Client - installation
-
-# - script: 'npm run build --prefix $(frontDirName)'
-#   displayName: Client - Build
