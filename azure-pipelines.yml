@@ -9,6 +9,15 @@ jobs:
 - job: Linux
   pool:
     vmImage: 'ubuntu-16.04'
+  strategy:
+    maxParallel: 2    
+    matrix:
+      Debug:
+        configuration: debug
+        platform: x64
+      Release:
+        configuration: release
+        platform: x64     
   steps:
   - task: DotNetCoreInstaller@0
     inputs:
@@ -33,6 +42,15 @@ jobs:
 - job: Windows
   pool:
     vmImage: 'vs2017-win2016'
+  strategy:
+    maxParallel: 2    
+    matrix:
+      Debug:
+        configuration: debug
+        platform: x64
+      Release:
+        configuration: release
+        platform: x64    
   steps:
   - task: DotNetCoreInstaller@0
     inputs:
@@ -62,6 +80,15 @@ jobs:
 - job: Mac
   pool:
     vmImage: 'macos-10.13'
+  strategy:
+    maxParallel: 2    
+    matrix:
+      Debug:
+        configuration: debug
+        platform: x64
+      Release:
+        configuration: release
+        platform: x64     
   steps:
   - task: DotNetCoreInstaller@0
     inputs:
