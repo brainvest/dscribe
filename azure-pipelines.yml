@@ -47,10 +47,8 @@ jobs:
     matrix:
       Debug:
         configuration: debug
-        platform: x64
       Release:
-        configuration: release
-        platform: x64    
+        configuration: release    
   steps:
   - task: DotNetCoreInstaller@0
     inputs:
@@ -85,10 +83,10 @@ jobs:
     matrix:
       Debug:
         configuration: debug
-        platform: x64
+        platform: x86
       Release:
         configuration: release
-        platform: x64     
+        platform: x86     
   steps:
   - task: DotNetCoreInstaller@0
     inputs:
