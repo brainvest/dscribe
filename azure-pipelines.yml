@@ -39,6 +39,11 @@ jobs:
       packageType: 'sdk' 
       version: '2.2.100' 
 
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.15.0' 
+      #checkLatest: false # Optional
+
   - script: 'dotnet clean $(backendDirName)/server.sln'
     displayName: Server - Clean
 
