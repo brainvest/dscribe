@@ -53,6 +53,13 @@ jobs:
       packageType: 'sdk' 
       version: '2.2.100' 
 
+  - task: PublishBuildArtifacts@1
+    displayName: Publish log
+    inputs:
+      pathToPublish: 'C:\npm\cache\_logs'
+      artifactName: log
+      artifactType: container
+
   - task: NodeTool@0
     inputs:
       versionSpec: '11.7.0' 
@@ -67,8 +74,8 @@ jobs:
   - script: 'dotnet test $(backendDirName)'
     displayName: Server - Test
 
-  # - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
-  #   displayName: Client - installation
+  - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
+    displayName: Client - installation
 
   # - script: 'npm run build --prefix $(frontDirName)'
   #   displayName: Client - Build        
