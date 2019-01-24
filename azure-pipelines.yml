@@ -56,7 +56,7 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: Publish log
     inputs:
-      pathToPublish: 'C:\npm\cache\_logs'
+      pathToPublish: './_logs'
       artifactName: log
       artifactType: container
 
