@@ -67,11 +67,11 @@ jobs:
   - script: 'dotnet test $(backendDirName)'
     displayName: Server - Test
 
-  - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
-    displayName: Client - installation
+  # - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
+  #   displayName: Client - installation
 
-  - script: 'npm run build --prefix $(frontDirName)'
-    displayName: Client - Build        
+  # - script: 'npm run build --prefix $(frontDirName)'
+  #   displayName: Client - Build        
 
 - job: Mac
   pool:
