@@ -53,13 +53,6 @@ jobs:
       packageType: 'sdk' 
       version: '2.2.100' 
 
-  - task: PublishBuildArtifacts@1
-    displayName: Publish log
-    inputs:
-      pathToPublish: './_logs'
-      artifactName: log
-      artifactType: container
-
   - task: NodeTool@0
     inputs:
       versionSpec: '11.7.0' 
@@ -77,8 +70,8 @@ jobs:
   - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
     displayName: Client - installation
 
-  # - script: 'npm run build --prefix $(frontDirName)'
-  #   displayName: Client - Build        
+  - script: 'npm run build --prefix $(frontDirName)'
+    displayName: Client - Build        
 
 - job: Mac
   pool:
