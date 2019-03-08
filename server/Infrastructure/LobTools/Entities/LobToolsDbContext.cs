@@ -12,7 +12,7 @@ namespace Brainvest.Dscribe.LobTools.Entities
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			modelBuilder.HasDefaultSchema("lob");
+			//modelBuilder.HasDefaultSchema("lob");
 		}
 
 		public DbSet<Attachment> Attachments { get; set; }
