@@ -112,7 +112,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				try
 				{
-					System.IO.File.Copy(r.SourceCodeFileName, copyFileName);
+					System.IO.File.Copy(r.SourceCodeFileName, copyFileName, true);
 				}
 				catch (Exception ex)
 				{
