@@ -164,7 +164,7 @@ import { DataHistoryComponent } from './list/data-history/data-history.component
 		AttachmentsListComponent,
 		ReportsListComponent
 	],
-	exports: [DscribeComponent, ListComponent, DisplayValuePipe],
+	exports: [DscribeComponent, ListComponent, DisplayValuePipe, ConfirmationDialogComponent],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: DscribeInterceptor, multi: true},
 		FilterTreeManipulator,
