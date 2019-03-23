@@ -1,30 +1,29 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
+namespace Migrations_Runtime_MySql.Migrations.MetadataDbContext_MySqlMigrations
 {
-    public partial class Initialize_Metadata : Migration
+    public partial class initialize_metadata : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AppTypes",
+                name: "apptypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "nvarchar(200)", nullable: false),
                     Title = table.Column<string>(maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppTypes", x => x.Id);
+                    table.PrimaryKey("PK_apptypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DatabaseProviders",
+                name: "databaseproviders",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -32,11 +31,11 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DatabaseProviders", x => x.Id);
+                    table.PrimaryKey("PK_databaseproviders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DataTypes",
+                name: "datatypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -47,11 +46,11 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DataTypes", x => x.Id);
+                    table.PrimaryKey("PK_datatypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EntityActionTypes",
+                name: "entityactiontypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -59,40 +58,38 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EntityActionTypes", x => x.Id);
+                    table.PrimaryKey("PK_entityactiontypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EntityTypeGeneralUsageCategories",
+                name: "entitytypegeneralusagecategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EntityTypeGeneralUsageCategories", x => x.Id);
+                    table.PrimaryKey("PK_entitytypegeneralusagecategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EnumTypes",
+                name: "enumtypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     Identifier = table.Column<string>(type: "varchar(200)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EnumTypes", x => x.Id);
+                    table.PrimaryKey("PK_enumtypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExpressionFormats",
+                name: "expressionformats",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -101,11 +98,11 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExpressionFormats", x => x.Id);
+                    table.PrimaryKey("PK_expressionformats", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "FacetTypes",
+                name: "facettypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -114,25 +111,24 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FacetTypes", x => x.Id);
+                    table.PrimaryKey("PK_facettypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PropertyGeneralUsageCategories",
+                name: "propertygeneralusagecategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropertyGeneralUsageCategories", x => x.Id);
+                    table.PrimaryKey("PK_propertygeneralusagecategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ReportFormats",
+                name: "reportformats",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -141,11 +137,11 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReportFormats", x => x.Id);
+                    table.PrimaryKey("PK_reportformats", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "roles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -153,16 +149,15 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "MetadataReleases",
+                name: "metadatareleases",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Version = table.Column<string>(type: "varchar(200)", nullable: true),
                     VersionCode = table.Column<int>(nullable: true),
                     AppTypeId = table.Column<int>(nullable: false),
@@ -172,22 +167,21 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MetadataReleases", x => x.Id);
+                    table.PrimaryKey("PK_metadatareleases", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MetadataReleases_AppTypes_AppTypeId",
+                        name: "FK_metadatareleases_apptypes_AppTypeId",
                         column: x => x.AppTypeId,
-                        principalTable: "AppTypes",
+                        principalTable: "apptypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EntityTypes",
+                name: "entitytypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     AppTypeId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(type: "varchar(200)", nullable: true),
                     TableName = table.Column<string>(nullable: true),
@@ -201,112 +195,108 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EntityTypes", x => x.Id);
+                    table.PrimaryKey("PK_entitytypes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EntityTypes_AppTypes_AppTypeId",
+                        name: "FK_entitytypes_apptypes_AppTypeId",
                         column: x => x.AppTypeId,
-                        principalTable: "AppTypes",
+                        principalTable: "apptypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EntityTypes_EntityTypes_BaseEntityTypeId",
+                        name: "FK_entitytypes_entitytypes_BaseEntityTypeId",
                         column: x => x.BaseEntityTypeId,
-                        principalTable: "EntityTypes",
+                        principalTable: "entitytypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EntityTypes_EntityTypeGeneralUsageCategories_GeneralUsageCategoryId",
+                        name: "FK_entitytypes_entitytypegeneralusagecategories_GeneralUsageCat~",
                         column: x => x.GeneralUsageCategoryId,
-                        principalTable: "EntityTypeGeneralUsageCategories",
+                        principalTable: "entitytypegeneralusagecategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EnumValues",
+                name: "enumvalues",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     EnumTypeId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Identifier = table.Column<string>(type: "varchar(200)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EnumValues", x => x.Id);
+                    table.PrimaryKey("PK_enumvalues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EnumValues_EnumTypes_EnumTypeId",
+                        name: "FK_enumvalues_enumtypes_EnumTypeId",
                         column: x => x.EnumTypeId,
-                        principalTable: "EnumTypes",
+                        principalTable: "enumtypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EntityTypeFacetDefinitions",
+                name: "entitytypefacetdefinitions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     FacetTypeId = table.Column<int>(nullable: false),
                     EnumTypeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EntityTypeFacetDefinitions", x => x.Id);
+                    table.PrimaryKey("PK_entitytypefacetdefinitions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EntityTypeFacetDefinitions_EnumTypes_EnumTypeId",
+                        name: "FK_entitytypefacetdefinitions_enumtypes_EnumTypeId",
                         column: x => x.EnumTypeId,
-                        principalTable: "EnumTypes",
+                        principalTable: "enumtypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EntityTypeFacetDefinitions_FacetTypes_FacetTypeId",
+                        name: "FK_entitytypefacetdefinitions_facettypes_FacetTypeId",
                         column: x => x.FacetTypeId,
-                        principalTable: "FacetTypes",
+                        principalTable: "facettypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PropertyFacetDefinitions",
+                name: "propertyfacetdefinitions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     FacetTypeId = table.Column<int>(nullable: false),
                     EnumTypeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropertyFacetDefinitions", x => x.Id);
+                    table.PrimaryKey("PK_propertyfacetdefinitions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PropertyFacetDefinitions_EnumTypes_EnumTypeId",
+                        name: "FK_propertyfacetdefinitions_enumtypes_EnumTypeId",
                         column: x => x.EnumTypeId,
-                        principalTable: "EnumTypes",
+                        principalTable: "enumtypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PropertyFacetDefinitions_FacetTypes_FacetTypeId",
+                        name: "FK_propertyfacetdefinitions_facettypes_FacetTypeId",
                         column: x => x.FacetTypeId,
-                        principalTable: "FacetTypes",
+                        principalTable: "facettypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AppInstances",
+                name: "appinstances",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     AppTypeId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(type: "varchar(200)", nullable: false),
                     Title = table.Column<string>(maxLength: 200, nullable: false),
@@ -322,34 +312,33 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppInstances", x => x.Id);
+                    table.PrimaryKey("PK_appinstances", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AppInstances_AppTypes_AppTypeId",
+                        name: "FK_appinstances_apptypes_AppTypeId",
                         column: x => x.AppTypeId,
-                        principalTable: "AppTypes",
+                        principalTable: "apptypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AppInstances_DatabaseProviders_DatabaseProviderId",
+                        name: "FK_appinstances_databaseproviders_DatabaseProviderId",
                         column: x => x.DatabaseProviderId,
-                        principalTable: "DatabaseProviders",
+                        principalTable: "databaseproviders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AppInstances_MetadataReleases_MetadataReleaseId",
+                        name: "FK_appinstances_metadatareleases_MetadataReleaseId",
                         column: x => x.MetadataReleaseId,
-                        principalTable: "MetadataReleases",
+                        principalTable: "metadatareleases",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ReportDefinitions",
+                name: "reportdefinitions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     EntityTypeId = table.Column<int>(nullable: false),
                     ReportFormatId = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true),
@@ -358,28 +347,27 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReportDefinitions", x => x.Id);
+                    table.PrimaryKey("PK_reportdefinitions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ReportDefinitions_EntityTypes_EntityTypeId",
+                        name: "FK_reportdefinitions_entitytypes_EntityTypeId",
                         column: x => x.EntityTypeId,
-                        principalTable: "EntityTypes",
+                        principalTable: "entitytypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ReportDefinitions_ReportFormats_ReportFormatId",
+                        name: "FK_reportdefinitions_reportformats_ReportFormatId",
                         column: x => x.ReportFormatId,
-                        principalTable: "ReportFormats",
+                        principalTable: "reportformats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SavedFilters",
+                name: "savedfilters",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     InputEntityTypeId = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: false),
                     Body = table.Column<string>(nullable: false),
@@ -387,50 +375,48 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SavedFilters", x => x.Id);
+                    table.PrimaryKey("PK_savedfilters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SavedFilters_EntityTypes_InputEntityTypeId",
+                        name: "FK_savedfilters_entitytypes_InputEntityTypeId",
                         column: x => x.InputEntityTypeId,
-                        principalTable: "EntityTypes",
+                        principalTable: "entitytypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EntityTypeFacetValues",
+                name: "entitytypefacetvalues",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     EntityTypeId = table.Column<int>(nullable: false),
                     FacetDefinitionId = table.Column<int>(nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EntityTypeFacetValues", x => x.Id);
+                    table.PrimaryKey("PK_entitytypefacetvalues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EntityTypeFacetValues_EntityTypes_EntityTypeId",
+                        name: "FK_entitytypefacetvalues_entitytypes_EntityTypeId",
                         column: x => x.EntityTypeId,
-                        principalTable: "EntityTypes",
+                        principalTable: "entitytypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EntityTypeFacetValues_EntityTypeFacetDefinitions_FacetDefinitionId",
+                        name: "FK_entitytypefacetvalues_entitytypefacetdefinitions_FacetDefini~",
                         column: x => x.FacetDefinitionId,
-                        principalTable: "EntityTypeFacetDefinitions",
+                        principalTable: "entitytypefacetdefinitions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EntityTypeFacetDefaultValues",
+                name: "entitytypefacetdefaultvalues",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FacetDefinitionId = table.Column<int>(nullable: false),
                     GeneralUsageCategoryId = table.Column<int>(nullable: false),
                     AppTypeId = table.Column<int>(nullable: true),
@@ -439,40 +425,39 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EntityTypeFacetDefaultValues", x => x.Id);
+                    table.PrimaryKey("PK_entitytypefacetdefaultvalues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EntityTypeFacetDefaultValues_AppInstances_AppInstanceId",
+                        name: "FK_entitytypefacetdefaultvalues_appinstances_AppInstanceId",
                         column: x => x.AppInstanceId,
-                        principalTable: "AppInstances",
+                        principalTable: "appinstances",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EntityTypeFacetDefaultValues_AppTypes_AppTypeId",
+                        name: "FK_entitytypefacetdefaultvalues_apptypes_AppTypeId",
                         column: x => x.AppTypeId,
-                        principalTable: "AppTypes",
+                        principalTable: "apptypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EntityTypeFacetDefaultValues_EntityTypeFacetDefinitions_FacetDefinitionId",
+                        name: "FK_entitytypefacetdefaultvalues_entitytypefacetdefinitions_Face~",
                         column: x => x.FacetDefinitionId,
-                        principalTable: "EntityTypeFacetDefinitions",
+                        principalTable: "entitytypefacetdefinitions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EntityTypeFacetDefaultValues_EntityTypeGeneralUsageCategories_GeneralUsageCategoryId",
+                        name: "FK_entitytypefacetdefaultvalues_entitytypegeneralusagecategorie~",
                         column: x => x.GeneralUsageCategoryId,
-                        principalTable: "EntityTypeGeneralUsageCategories",
+                        principalTable: "entitytypegeneralusagecategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Permissions",
+                name: "permissions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     EntityTypeId = table.Column<int>(nullable: true),
                     RoleId = table.Column<Guid>(nullable: true),
                     UserId = table.Column<Guid>(nullable: true),
@@ -483,40 +468,39 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Permissions", x => x.Id);
+                    table.PrimaryKey("PK_permissions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Permissions_EntityActionTypes_ActionTypeId",
+                        name: "FK_permissions_entityactiontypes_ActionTypeId",
                         column: x => x.ActionTypeId,
-                        principalTable: "EntityActionTypes",
+                        principalTable: "entityactiontypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Permissions_AppInstances_AppInstanceId",
+                        name: "FK_permissions_appinstances_AppInstanceId",
                         column: x => x.AppInstanceId,
-                        principalTable: "AppInstances",
+                        principalTable: "appinstances",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Permissions_EntityTypes_EntityTypeId",
+                        name: "FK_permissions_entitytypes_EntityTypeId",
                         column: x => x.EntityTypeId,
-                        principalTable: "EntityTypes",
+                        principalTable: "entitytypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Permissions_Roles_RoleId",
+                        name: "FK_permissions_roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Roles",
+                        principalTable: "roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PropertyFacetDefaultValues",
+                name: "propertyfacetdefaultvalues",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FacetDefinitionId = table.Column<int>(nullable: false),
                     GeneralUsageCategoryId = table.Column<int>(nullable: false),
                     AppTypeId = table.Column<int>(nullable: true),
@@ -525,40 +509,39 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropertyFacetDefaultValues", x => x.Id);
+                    table.PrimaryKey("PK_propertyfacetdefaultvalues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PropertyFacetDefaultValues_AppInstances_AppInstanceId",
+                        name: "FK_propertyfacetdefaultvalues_appinstances_AppInstanceId",
                         column: x => x.AppInstanceId,
-                        principalTable: "AppInstances",
+                        principalTable: "appinstances",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PropertyFacetDefaultValues_AppTypes_AppTypeId",
+                        name: "FK_propertyfacetdefaultvalues_apptypes_AppTypeId",
                         column: x => x.AppTypeId,
-                        principalTable: "AppTypes",
+                        principalTable: "apptypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PropertyFacetDefaultValues_PropertyFacetDefinitions_FacetDefinitionId",
+                        name: "FK_propertyfacetdefaultvalues_propertyfacetdefinitions_FacetDef~",
                         column: x => x.FacetDefinitionId,
-                        principalTable: "PropertyFacetDefinitions",
+                        principalTable: "propertyfacetdefinitions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PropertyFacetDefaultValues_PropertyGeneralUsageCategories_GeneralUsageCategoryId",
+                        name: "FK_propertyfacetdefaultvalues_propertygeneralusagecategories_Ge~",
                         column: x => x.GeneralUsageCategoryId,
-                        principalTable: "PropertyGeneralUsageCategories",
+                        principalTable: "propertygeneralusagecategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExpressionDefinitions",
+                name: "expressiondefinitions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     AppTypeId = table.Column<int>(nullable: false),
                     Identifier = table.Column<string>(type: "varchar(200)", nullable: false),
                     ShortDescription = table.Column<string>(nullable: false),
@@ -568,28 +551,27 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExpressionDefinitions", x => x.Id);
+                    table.PrimaryKey("PK_expressiondefinitions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExpressionDefinitions_AppTypes_AppTypeId",
+                        name: "FK_expressiondefinitions_apptypes_AppTypeId",
                         column: x => x.AppTypeId,
-                        principalTable: "AppTypes",
+                        principalTable: "apptypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ExpressionDefinitions_EntityTypes_MainInputEntityTypeId",
+                        name: "FK_expressiondefinitions_entitytypes_MainInputEntityTypeId",
                         column: x => x.MainInputEntityTypeId,
-                        principalTable: "EntityTypes",
+                        principalTable: "entitytypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExpressionBodies",
+                name: "expressionbodies",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DefinitionId = table.Column<int>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     CreationTime = table.Column<DateTime>(nullable: false),
@@ -600,28 +582,27 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExpressionBodies", x => x.Id);
+                    table.PrimaryKey("PK_expressionbodies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExpressionBodies_ExpressionDefinitions_DefinitionId",
+                        name: "FK_expressionbodies_expressiondefinitions_DefinitionId",
                         column: x => x.DefinitionId,
-                        principalTable: "ExpressionDefinitions",
+                        principalTable: "expressiondefinitions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ExpressionBodies_ExpressionFormats_FormatId",
+                        name: "FK_expressionbodies_expressionformats_FormatId",
                         column: x => x.FormatId,
-                        principalTable: "ExpressionFormats",
+                        principalTable: "expressionformats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Properties",
+                name: "properties",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     OwnerEntityTypeId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(type: "varchar(200)", nullable: true),
                     Title = table.Column<string>(nullable: true),
@@ -636,81 +617,89 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Properties", x => x.Id);
+                    table.PrimaryKey("PK_properties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Properties_EntityTypes_DataEntityTypeId",
+                        name: "FK_properties_entitytypes_DataEntityTypeId",
                         column: x => x.DataEntityTypeId,
-                        principalTable: "EntityTypes",
+                        principalTable: "entitytypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Properties_DataTypes_DataTypeId",
+                        name: "FK_properties_datatypes_DataTypeId",
                         column: x => x.DataTypeId,
-                        principalTable: "DataTypes",
+                        principalTable: "datatypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Properties_ExpressionDefinitions_ExpressionDefinitionId",
+                        name: "FK_properties_expressiondefinitions_ExpressionDefinitionId",
                         column: x => x.ExpressionDefinitionId,
-                        principalTable: "ExpressionDefinitions",
+                        principalTable: "expressiondefinitions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Properties_Properties_ForeignKeyPropertyId",
+                        name: "FK_properties_properties_ForeignKeyPropertyId",
                         column: x => x.ForeignKeyPropertyId,
-                        principalTable: "Properties",
+                        principalTable: "properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Properties_PropertyGeneralUsageCategories_GeneralUsageCategoryId",
+                        name: "FK_properties_propertygeneralusagecategories_GeneralUsageCatego~",
                         column: x => x.GeneralUsageCategoryId,
-                        principalTable: "PropertyGeneralUsageCategories",
+                        principalTable: "propertygeneralusagecategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Properties_Properties_InversePropertyId",
+                        name: "FK_properties_properties_InversePropertyId",
                         column: x => x.InversePropertyId,
-                        principalTable: "Properties",
+                        principalTable: "properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Properties_EntityTypes_OwnerEntityTypeId",
+                        name: "FK_properties_entitytypes_OwnerEntityTypeId",
                         column: x => x.OwnerEntityTypeId,
-                        principalTable: "EntityTypes",
+                        principalTable: "entitytypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PropertyFacetValues",
+                name: "propertyfacetvalues",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     PropertyId = table.Column<int>(nullable: false),
                     FacetDefinitionId = table.Column<int>(nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropertyFacetValues", x => x.Id);
+                    table.PrimaryKey("PK_propertyfacetvalues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PropertyFacetValues_PropertyFacetDefinitions_FacetDefinitionId",
+                        name: "FK_propertyfacetvalues_propertyfacetdefinitions_FacetDefinition~",
                         column: x => x.FacetDefinitionId,
-                        principalTable: "PropertyFacetDefinitions",
+                        principalTable: "propertyfacetdefinitions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PropertyFacetValues_Properties_PropertyId",
+                        name: "FK_propertyfacetvalues_properties_PropertyId",
                         column: x => x.PropertyId,
-                        principalTable: "Properties",
+                        principalTable: "properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
-                table: "DataTypes",
+                table: "databaseproviders",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 2, "SqlServer" },
+                    { 1, "MySql" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "datatypes",
                 columns: new[] { "Id", "ClrType", "Identifier", "IsValueType", "Name" },
                 values: new object[,]
                 {
@@ -721,28 +710,19 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                     { 13, "System.Int64", "long", true, "Long Integer" },
                     { 12, "System.Decimal", "decimal", true, "Decimal" },
                     { 10, null, "NavigationList", false, "Navigation List" },
-                    { 9, null, "Enum", true, "Enum" },
                     { 11, "System.Guid", "Guid", true, "Guid" },
+                    { 8, null, "NavigationEntity", false, "Navigation Property" },
                     { 7, null, "ForeignKey", true, "Foreign Key" },
                     { 6, "System.DateTime", "DateTime", true, "Date and Time" },
                     { 5, "System.TimeSpan", "Time", true, "Time Of Day" },
                     { 4, "System.DateTime", "Date", true, "Date" },
                     { 3, "System.Boolean", "bool", true, "Boolean" },
                     { 2, "System.String", "string", false, "String" },
-                    { 8, null, "NavigationEntity", false, "Navigation Property" }
+                    { 9, null, "Enum", true, "Enum" }
                 });
 
             migrationBuilder.InsertData(
-                table: "DatabaseProviders",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1, "MySql" },
-                    { 2, "SqlServer" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "EntityActionTypes",
+                table: "entityactiontypes",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
@@ -756,7 +736,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "EntityTypeGeneralUsageCategories",
+                table: "entitytypegeneralusagecategories",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
@@ -766,7 +746,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ExpressionFormats",
+                table: "expressionformats",
                 columns: new[] { "Id", "Identifier", "Title" },
                 values: new object[,]
                 {
@@ -776,7 +756,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "FacetTypes",
+                table: "facettypes",
                 columns: new[] { "Id", "Identifier", "Name" },
                 values: new object[,]
                 {
@@ -786,7 +766,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "PropertyGeneralUsageCategories",
+                table: "propertygeneralusagecategories",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
@@ -798,7 +778,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Roles",
+                table: "roles",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
@@ -807,17 +787,17 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "EntityTypeFacetDefinitions",
+                table: "entitytypefacetdefinitions",
                 columns: new[] { "Id", "EnumTypeId", "FacetTypeId", "Name" },
                 values: new object[] { 1, null, 1, "NotMapped" });
 
             migrationBuilder.InsertData(
-                table: "Permissions",
+                table: "permissions",
                 columns: new[] { "Id", "ActionName", "ActionTypeId", "AppInstanceId", "EntityTypeId", "PermissionType", "RoleId", "UserId" },
                 values: new object[] { 1, null, null, null, null, 1, new Guid("7555dd25-ee7f-4a21-9156-3867dcbced77"), null });
 
             migrationBuilder.InsertData(
-                table: "PropertyFacetDefinitions",
+                table: "propertyfacetdefinitions",
                 columns: new[] { "Id", "EnumTypeId", "FacetTypeId", "Name" },
                 values: new object[,]
                 {
@@ -829,7 +809,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "PropertyFacetDefaultValues",
+                table: "propertyfacetdefaultvalues",
                 columns: new[] { "Id", "AppInstanceId", "AppTypeId", "DefaultValue", "FacetDefinitionId", "GeneralUsageCategoryId" },
                 values: new object[,]
                 {
@@ -851,254 +831,252 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppInstances_AppTypeId",
-                table: "AppInstances",
+                name: "IX_appinstances_AppTypeId",
+                table: "appinstances",
                 column: "AppTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppInstances_DatabaseProviderId",
-                table: "AppInstances",
+                name: "IX_appinstances_DatabaseProviderId",
+                table: "appinstances",
                 column: "DatabaseProviderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppInstances_MetadataReleaseId",
-                table: "AppInstances",
+                name: "IX_appinstances_MetadataReleaseId",
+                table: "appinstances",
                 column: "MetadataReleaseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppInstances_Name",
-                table: "AppInstances",
+                name: "IX_appinstances_Name",
+                table: "appinstances",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppInstances_Title",
-                table: "AppInstances",
+                name: "IX_appinstances_Title",
+                table: "appinstances",
                 column: "Title",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppTypes_Name",
-                table: "AppTypes",
+                name: "IX_apptypes_Name",
+                table: "apptypes",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppTypes_Title",
-                table: "AppTypes",
+                name: "IX_apptypes_Title",
+                table: "apptypes",
                 column: "Title",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityTypeFacetDefaultValues_AppInstanceId",
-                table: "EntityTypeFacetDefaultValues",
+                name: "IX_entitytypefacetdefaultvalues_AppInstanceId",
+                table: "entitytypefacetdefaultvalues",
                 column: "AppInstanceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityTypeFacetDefaultValues_AppTypeId",
-                table: "EntityTypeFacetDefaultValues",
+                name: "IX_entitytypefacetdefaultvalues_AppTypeId",
+                table: "entitytypefacetdefaultvalues",
                 column: "AppTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityTypeFacetDefaultValues_FacetDefinitionId",
-                table: "EntityTypeFacetDefaultValues",
+                name: "IX_entitytypefacetdefaultvalues_FacetDefinitionId",
+                table: "entitytypefacetdefaultvalues",
                 column: "FacetDefinitionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityTypeFacetDefaultValues_GeneralUsageCategoryId",
-                table: "EntityTypeFacetDefaultValues",
+                name: "IX_entitytypefacetdefaultvalues_GeneralUsageCategoryId",
+                table: "entitytypefacetdefaultvalues",
                 column: "GeneralUsageCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityTypeFacetDefinitions_EnumTypeId",
-                table: "EntityTypeFacetDefinitions",
+                name: "IX_entitytypefacetdefinitions_EnumTypeId",
+                table: "entitytypefacetdefinitions",
                 column: "EnumTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityTypeFacetDefinitions_FacetTypeId",
-                table: "EntityTypeFacetDefinitions",
+                name: "IX_entitytypefacetdefinitions_FacetTypeId",
+                table: "entitytypefacetdefinitions",
                 column: "FacetTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityTypeFacetValues_EntityTypeId",
-                table: "EntityTypeFacetValues",
+                name: "IX_entitytypefacetvalues_EntityTypeId",
+                table: "entitytypefacetvalues",
                 column: "EntityTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityTypeFacetValues_FacetDefinitionId",
-                table: "EntityTypeFacetValues",
+                name: "IX_entitytypefacetvalues_FacetDefinitionId",
+                table: "entitytypefacetvalues",
                 column: "FacetDefinitionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityTypes_BaseEntityTypeId",
-                table: "EntityTypes",
+                name: "IX_entitytypes_BaseEntityTypeId",
+                table: "entitytypes",
                 column: "BaseEntityTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityTypes_GeneralUsageCategoryId",
-                table: "EntityTypes",
+                name: "IX_entitytypes_GeneralUsageCategoryId",
+                table: "entitytypes",
                 column: "GeneralUsageCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityTypes_AppTypeId_Name",
-                table: "EntityTypes",
+                name: "IX_entitytypes_AppTypeId_Name",
+                table: "entitytypes",
                 columns: new[] { "AppTypeId", "Name" },
-                unique: true,
-                filter: "[Name] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EnumValues_EnumTypeId",
-                table: "EnumValues",
+                name: "IX_enumvalues_EnumTypeId",
+                table: "enumvalues",
                 column: "EnumTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExpressionBodies_DefinitionId",
-                table: "ExpressionBodies",
+                name: "IX_expressionbodies_DefinitionId",
+                table: "expressionbodies",
                 column: "DefinitionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExpressionBodies_FormatId",
-                table: "ExpressionBodies",
+                name: "IX_expressionbodies_FormatId",
+                table: "expressionbodies",
                 column: "FormatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExpressionDefinitions_ActiveBodyId",
-                table: "ExpressionDefinitions",
+                name: "IX_expressiondefinitions_ActiveBodyId",
+                table: "expressiondefinitions",
                 column: "ActiveBodyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExpressionDefinitions_MainInputEntityTypeId",
-                table: "ExpressionDefinitions",
+                name: "IX_expressiondefinitions_MainInputEntityTypeId",
+                table: "expressiondefinitions",
                 column: "MainInputEntityTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExpressionDefinitions_AppTypeId_Identifier",
-                table: "ExpressionDefinitions",
+                name: "IX_expressiondefinitions_AppTypeId_Identifier",
+                table: "expressiondefinitions",
                 columns: new[] { "AppTypeId", "Identifier" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_MetadataReleases_AppTypeId",
-                table: "MetadataReleases",
+                name: "IX_metadatareleases_AppTypeId",
+                table: "metadatareleases",
                 column: "AppTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Permissions_ActionTypeId",
-                table: "Permissions",
+                name: "IX_permissions_ActionTypeId",
+                table: "permissions",
                 column: "ActionTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Permissions_AppInstanceId",
-                table: "Permissions",
+                name: "IX_permissions_AppInstanceId",
+                table: "permissions",
                 column: "AppInstanceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Permissions_EntityTypeId",
-                table: "Permissions",
+                name: "IX_permissions_EntityTypeId",
+                table: "permissions",
                 column: "EntityTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Permissions_RoleId",
-                table: "Permissions",
+                name: "IX_permissions_RoleId",
+                table: "permissions",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_DataEntityTypeId",
-                table: "Properties",
+                name: "IX_properties_DataEntityTypeId",
+                table: "properties",
                 column: "DataEntityTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_DataTypeId",
-                table: "Properties",
+                name: "IX_properties_DataTypeId",
+                table: "properties",
                 column: "DataTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_ExpressionDefinitionId",
-                table: "Properties",
+                name: "IX_properties_ExpressionDefinitionId",
+                table: "properties",
                 column: "ExpressionDefinitionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_ForeignKeyPropertyId",
-                table: "Properties",
+                name: "IX_properties_ForeignKeyPropertyId",
+                table: "properties",
                 column: "ForeignKeyPropertyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_GeneralUsageCategoryId",
-                table: "Properties",
+                name: "IX_properties_GeneralUsageCategoryId",
+                table: "properties",
                 column: "GeneralUsageCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_InversePropertyId",
-                table: "Properties",
+                name: "IX_properties_InversePropertyId",
+                table: "properties",
                 column: "InversePropertyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_OwnerEntityTypeId_Name",
-                table: "Properties",
+                name: "IX_properties_OwnerEntityTypeId_Name",
+                table: "properties",
                 columns: new[] { "OwnerEntityTypeId", "Name" },
-                unique: true,
-                filter: "[Name] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyFacetDefaultValues_AppInstanceId",
-                table: "PropertyFacetDefaultValues",
+                name: "IX_propertyfacetdefaultvalues_AppInstanceId",
+                table: "propertyfacetdefaultvalues",
                 column: "AppInstanceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyFacetDefaultValues_AppTypeId",
-                table: "PropertyFacetDefaultValues",
+                name: "IX_propertyfacetdefaultvalues_AppTypeId",
+                table: "propertyfacetdefaultvalues",
                 column: "AppTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyFacetDefaultValues_FacetDefinitionId",
-                table: "PropertyFacetDefaultValues",
+                name: "IX_propertyfacetdefaultvalues_FacetDefinitionId",
+                table: "propertyfacetdefaultvalues",
                 column: "FacetDefinitionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyFacetDefaultValues_GeneralUsageCategoryId",
-                table: "PropertyFacetDefaultValues",
+                name: "IX_propertyfacetdefaultvalues_GeneralUsageCategoryId",
+                table: "propertyfacetdefaultvalues",
                 column: "GeneralUsageCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyFacetDefinitions_EnumTypeId",
-                table: "PropertyFacetDefinitions",
+                name: "IX_propertyfacetdefinitions_EnumTypeId",
+                table: "propertyfacetdefinitions",
                 column: "EnumTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyFacetDefinitions_FacetTypeId",
-                table: "PropertyFacetDefinitions",
+                name: "IX_propertyfacetdefinitions_FacetTypeId",
+                table: "propertyfacetdefinitions",
                 column: "FacetTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyFacetValues_FacetDefinitionId",
-                table: "PropertyFacetValues",
+                name: "IX_propertyfacetvalues_FacetDefinitionId",
+                table: "propertyfacetvalues",
                 column: "FacetDefinitionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyFacetValues_PropertyId",
-                table: "PropertyFacetValues",
+                name: "IX_propertyfacetvalues_PropertyId",
+                table: "propertyfacetvalues",
                 column: "PropertyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportDefinitions_EntityTypeId",
-                table: "ReportDefinitions",
+                name: "IX_reportdefinitions_EntityTypeId",
+                table: "reportdefinitions",
                 column: "EntityTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportDefinitions_ReportFormatId",
-                table: "ReportDefinitions",
+                name: "IX_reportdefinitions_ReportFormatId",
+                table: "reportdefinitions",
                 column: "ReportFormatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SavedFilters_InputEntityTypeId",
-                table: "SavedFilters",
+                name: "IX_savedfilters_InputEntityTypeId",
+                table: "savedfilters",
                 column: "InputEntityTypeId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ExpressionDefinitions_ExpressionBodies_ActiveBodyId",
-                table: "ExpressionDefinitions",
+                name: "FK_expressiondefinitions_expressionbodies_ActiveBodyId",
+                table: "expressiondefinitions",
                 column: "ActiveBodyId",
-                principalTable: "ExpressionBodies",
+                principalTable: "expressionbodies",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -1106,105 +1084,105 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_EntityTypes_AppTypes_AppTypeId",
-                table: "EntityTypes");
+                name: "FK_entitytypes_apptypes_AppTypeId",
+                table: "entitytypes");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_ExpressionDefinitions_AppTypes_AppTypeId",
-                table: "ExpressionDefinitions");
+                name: "FK_expressiondefinitions_apptypes_AppTypeId",
+                table: "expressiondefinitions");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_EntityTypes_EntityTypeGeneralUsageCategories_GeneralUsageCategoryId",
-                table: "EntityTypes");
+                name: "FK_entitytypes_entitytypegeneralusagecategories_GeneralUsageCat~",
+                table: "entitytypes");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_ExpressionDefinitions_EntityTypes_MainInputEntityTypeId",
-                table: "ExpressionDefinitions");
+                name: "FK_expressiondefinitions_entitytypes_MainInputEntityTypeId",
+                table: "expressiondefinitions");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_ExpressionBodies_ExpressionDefinitions_DefinitionId",
-                table: "ExpressionBodies");
+                name: "FK_expressionbodies_expressiondefinitions_DefinitionId",
+                table: "expressionbodies");
 
             migrationBuilder.DropTable(
-                name: "EntityTypeFacetDefaultValues");
+                name: "entitytypefacetdefaultvalues");
 
             migrationBuilder.DropTable(
-                name: "EntityTypeFacetValues");
+                name: "entitytypefacetvalues");
 
             migrationBuilder.DropTable(
-                name: "EnumValues");
+                name: "enumvalues");
 
             migrationBuilder.DropTable(
-                name: "Permissions");
+                name: "permissions");
 
             migrationBuilder.DropTable(
-                name: "PropertyFacetDefaultValues");
+                name: "propertyfacetdefaultvalues");
 
             migrationBuilder.DropTable(
-                name: "PropertyFacetValues");
+                name: "propertyfacetvalues");
 
             migrationBuilder.DropTable(
-                name: "ReportDefinitions");
+                name: "reportdefinitions");
 
             migrationBuilder.DropTable(
-                name: "SavedFilters");
+                name: "savedfilters");
 
             migrationBuilder.DropTable(
-                name: "EntityTypeFacetDefinitions");
+                name: "entitytypefacetdefinitions");
 
             migrationBuilder.DropTable(
-                name: "EntityActionTypes");
+                name: "entityactiontypes");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "roles");
 
             migrationBuilder.DropTable(
-                name: "AppInstances");
+                name: "appinstances");
 
             migrationBuilder.DropTable(
-                name: "PropertyFacetDefinitions");
+                name: "propertyfacetdefinitions");
 
             migrationBuilder.DropTable(
-                name: "Properties");
+                name: "properties");
 
             migrationBuilder.DropTable(
-                name: "ReportFormats");
+                name: "reportformats");
 
             migrationBuilder.DropTable(
-                name: "DatabaseProviders");
+                name: "databaseproviders");
 
             migrationBuilder.DropTable(
-                name: "MetadataReleases");
+                name: "metadatareleases");
 
             migrationBuilder.DropTable(
-                name: "EnumTypes");
+                name: "enumtypes");
 
             migrationBuilder.DropTable(
-                name: "FacetTypes");
+                name: "facettypes");
 
             migrationBuilder.DropTable(
-                name: "DataTypes");
+                name: "datatypes");
 
             migrationBuilder.DropTable(
-                name: "PropertyGeneralUsageCategories");
+                name: "propertygeneralusagecategories");
 
             migrationBuilder.DropTable(
-                name: "AppTypes");
+                name: "apptypes");
 
             migrationBuilder.DropTable(
-                name: "EntityTypeGeneralUsageCategories");
+                name: "entitytypegeneralusagecategories");
 
             migrationBuilder.DropTable(
-                name: "EntityTypes");
+                name: "entitytypes");
 
             migrationBuilder.DropTable(
-                name: "ExpressionDefinitions");
+                name: "expressiondefinitions");
 
             migrationBuilder.DropTable(
-                name: "ExpressionBodies");
+                name: "expressionbodies");
 
             migrationBuilder.DropTable(
-                name: "ExpressionFormats");
+                name: "expressionformats");
         }
     }
 }

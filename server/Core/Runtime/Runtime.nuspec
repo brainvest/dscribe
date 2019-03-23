@@ -34,7 +34,9 @@
 		<file src="bin/$configuration$/netcoreapp2.2/Brainvest.Dscribe.Helpers.dll"  target="lib\netcoreapp2.2"/>
 		<file src="bin/$configuration$/netcoreapp2.2/Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling.dll"  target="lib\netcoreapp2.2"/>
 		<file src="bin/$configuration$/netcoreapp2.2/Brainvest.Dscribe.LobTools.dll"  target="lib\netcoreapp2.2"/>
+		<file src="bin/$configuration$/netcoreapp2.2/Brainvest.Dscribe.LobTools.Entities.dll"  target="lib\netcoreapp2.2"/>
 		<file src="bin/$configuration$/netcoreapp2.2/Brainvest.Dscribe.Metadata.dll"  target="lib\netcoreapp2.2"/>
 		<file src="bin/$configuration$/netcoreapp2.2/Brainvest.Dscribe.MetadataDbAccess.dll"  target="lib\netcoreapp2.2"/>
+		<file src="bin/$configuration$/netcoreapp2.2/Brainvest.Dscribe.Migrations.Runtime.MySql.dll"  target="lib\netcoreapp2.2"/>
 	</files>
 </package>

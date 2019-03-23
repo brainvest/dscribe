@@ -11,7 +11,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 {
 	public class MetadataDbContext : DbContext
 	{
-		public MetadataDbContext(DbContextOptions<MetadataDbContext> options)
+		public MetadataDbContext(DbContextOptions options)
 			: base(options)
 		{
 

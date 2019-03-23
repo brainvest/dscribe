@@ -4,7 +4,7 @@ namespace Brainvest.Dscribe.LobTools.Entities
 {
 	public class LobToolsDbContext : DbContext
 	{
-		public LobToolsDbContext(DbContextOptions<LobToolsDbContext> options)
+		public LobToolsDbContext(DbContextOptions options)
 			: base(options)
 		{
 		}

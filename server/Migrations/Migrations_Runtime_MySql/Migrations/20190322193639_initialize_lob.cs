@@ -1,20 +1,19 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Brainvest.Dscribe.LobTools.Migrations
+namespace Migrations_Runtime_MySql.Migrations
 {
-    public partial class Initialize_LOB : Migration
+    public partial class initialize_lob : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Attachments",
+                name: "attachments",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     EntityTypeId = table.Column<int>(nullable: false),
                     Identifier = table.Column<int>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -27,16 +26,15 @@ namespace Brainvest.Dscribe.LobTools.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Attachments", x => x.Id);
+                    table.PrimaryKey("PK_attachments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "comments",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     EntityTypeId = table.Column<int>(nullable: false),
                     Identifier = table.Column<int>(nullable: false),
                     RequestLogId = table.Column<long>(nullable: true),
@@ -45,11 +43,11 @@ namespace Brainvest.Dscribe.LobTools.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_comments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Drafts",
+                name: "drafts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -64,16 +62,15 @@ namespace Brainvest.Dscribe.LobTools.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Drafts", x => x.Id);
+                    table.PrimaryKey("PK_drafts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "RequestLogs",
+                name: "requestlogs",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     StartTime = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<Guid>(nullable: true),
                     Path = table.Column<string>(nullable: true),
@@ -97,11 +94,11 @@ namespace Brainvest.Dscribe.LobTools.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RequestLogs", x => x.Id);
+                    table.PrimaryKey("PK_requestlogs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "users",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -111,16 +108,15 @@ namespace Brainvest.Dscribe.LobTools.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DataLogs",
+                name: "datalogs",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-												.Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Body = table.Column<string>(nullable: true),
                     DataRequestAction = table.Column<int>(nullable: false),
                     RequestLogId = table.Column<long>(nullable: false),
@@ -129,40 +125,40 @@ namespace Brainvest.Dscribe.LobTools.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DataLogs", x => x.Id);
+                    table.PrimaryKey("PK_datalogs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DataLogs_RequestLogs_RequestLogId",
+                        name: "FK_datalogs_requestlogs_RequestLogId",
                         column: x => x.RequestLogId,
-                        principalTable: "RequestLogs",
+                        principalTable: "requestlogs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DataLogs_RequestLogId",
-                table: "DataLogs",
+                name: "IX_datalogs_RequestLogId",
+                table: "datalogs",
                 column: "RequestLogId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Attachments");
+                name: "attachments");
 
             migrationBuilder.DropTable(
-                name: "Comments");
+                name: "comments");
 
             migrationBuilder.DropTable(
-                name: "DataLogs");
+                name: "datalogs");
 
             migrationBuilder.DropTable(
-                name: "Drafts");
+                name: "drafts");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "users");
 
             migrationBuilder.DropTable(
-                name: "RequestLogs");
+                name: "requestlogs");
         }
     }
 }

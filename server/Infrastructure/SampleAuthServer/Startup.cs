@@ -10,10 +10,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Migrations_Auth_MySql;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -43,32 +45,39 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 				Console.WriteLine($"{pair.Key}:{pair.Value}");
 			}
 
-			services.AddDbContext<SecurityDbContext>(options =>
+			var provider = Configuration.GetSection("EfProvider").Get<string>();
+			if (string.IsNullOrWhiteSpace(provider))
 			{
-				var provider = Configuration.GetSection("EfProvider").Get<string>();
-				switch (provider)
-				{
-					case "MySql":
-						options.UseMySql(
-								Configuration.GetConnectionString("Auth_MySql"));
-						return;
-					case "SqlServer":
-						options.UseSqlServer(
-								Configuration.GetConnectionString("Auth_SqlServer"));
-						return;
-					default:
-						throw new NotImplementedException($"The provider {provider} is not implemented yet.");
-				}
-			});
+				Console.WriteLine("Error: database provider is not set, the expected name is: EfProvider");
+			}
+			var connectionString = Configuration.GetConnectionString("Auth");
+			if (string.IsNullOrWhiteSpace(connectionString))
+			{
+				Console.WriteLine("Error: Connection string is not set, the expected name is: Auth");
+			}
+
+			switch (provider)
+			{
+				case "MySql":
+					services.AddDbContext<SecurityDbContext, SecurityDbContext_MySql>(
+						options => options.UseMySql(connectionString,
+						x => x.MigrationsAssembly(typeof(SecurityDbContext_MySql).Assembly.GetName().Name)
+							.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
+					break;
+				case "SqlServer":
+					services.AddDbContext<SecurityDbContext>(options => options.UseSqlServer(connectionString)); break;
+				default:
+					throw new NotImplementedException($"The provider {provider} is not implemented yet.");
+			}
 
 			services.AddIdentity<User, Role>()
-					.AddEntityFrameworkStores<SecurityDbContext>()
-					.AddDefaultTokenProviders();
+						.AddEntityFrameworkStores<SecurityDbContext>()
+						.AddDefaultTokenProviders();
 
 			services.ConfigureApplicationCookie(options =>
-			{
-				options.Cookie.SameSite = SameSiteMode.None;
-			});
+				{
+					options.Cookie.SameSite = SameSiteMode.None;
+				});
 
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 					.AddCookie("Cookies", options =>

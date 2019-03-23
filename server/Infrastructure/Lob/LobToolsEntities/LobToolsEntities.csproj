@@ -2,22 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>Brainvest.Dscribe.Helpers</AssemblyName>
-    <RootNamespace>Brainvest.Dscribe.Helpers</RootNamespace>
+    <AssemblyName>Brainvest.Dscribe.LobTools.Entities</AssemblyName>
+    <RootNamespace>Brainvest.Dscribe.LobTools.Entities</RootNamespace>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
-	<Import Project="..\..\SolutionInfo.xml" />
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Abstractions\Abstractions.csproj" />
+    <ProjectReference Include="..\..\Abstractions\Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

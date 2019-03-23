@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Brainvest.Dscribe.Migrations.Runtime.MySql</AssemblyName>
+    <RootNamespace>Brainvest.Dscribe.Migrations.Runtime.MySql</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\MetadataDbAccess\MetadataDbAccess.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Lob\LobToolsEntities\LobToolsEntities.csproj" />
+  </ItemGroup>
+
+</Project>

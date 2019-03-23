@@ -79,6 +79,7 @@ import {AttachmentsListComponent} from './lob-tools/attachments/attachments-list
 import {ReportsListComponent} from './lob-tools/reporting/reports-list/reports-list.component';
 import { EntityHistoryComponent } from './administration/history/entity-history/entity-history.component';
 import { DataHistoryComponent } from './list/data-history/data-history.component';
+import { UsersAndRolesManagementComponent } from './security/components/users-and-roles-management/users-and-roles-management.component';
 
 @NgModule({
 	imports: [
@@ -162,7 +163,8 @@ import { DataHistoryComponent } from './list/data-history/data-history.component
 		AddNEditAppInstanceComponent,
 		CommentsListComponent,
 		AttachmentsListComponent,
-		ReportsListComponent
+		ReportsListComponent,
+		UsersAndRolesManagementComponent
 	],
 	exports: [DscribeComponent, ListComponent, DisplayValuePipe, ConfirmationDialogComponent],
 	providers: [
