@@ -70,9 +70,30 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 					throw new NotImplementedException($"The provider {provider} is not implemented yet.");
 			}
 
-			services.AddIdentity<User, Role>()
-						.AddEntityFrameworkStores<SecurityDbContext>()
-						.AddDefaultTokenProviders();
+			services.Configure<ConfigModel>(Configuration.GetSection("Config"));
+			var config = Configuration.GetSection("Config").Get<ConfigModel>();
+
+			services.AddIdentity<User, Role>(options =>
+			{
+				options.Password.RequireDigit = config?.Password?.RequireDigit ?? true;
+				options.Password.RequireLowercase = config?.Password?.RequireLowercase ?? true;
+				options.Password.RequireNonAlphanumeric = config?.Password?.RequireNonAlphanumeric ?? true;
+				options.Password.RequireUppercase = config?.Password?.RequireUppercase ?? true;
+				options.Password.RequiredLength = config?.Password?.RequiredLength ?? 6;
+				options.Password.RequiredUniqueChars = config?.Password?.RequiredUniqueChars ?? 1;
+			})
+			.AddEntityFrameworkStores<SecurityDbContext>()
+			.AddDefaultTokenProviders();
+
+			services.Configure<IdentityOptions>(options =>
+			{
+				options.Password.RequireDigit = config?.Password?.RequireDigit ?? true;
+				options.Password.RequireLowercase = config?.Password?.RequireLowercase ?? true;
+				options.Password.RequireNonAlphanumeric = config?.Password?.RequireNonAlphanumeric ?? true;
+				options.Password.RequireUppercase = config?.Password?.RequireUppercase ?? true;
+				options.Password.RequiredLength = config?.Password?.RequiredLength ?? 6;
+				options.Password.RequiredUniqueChars = config?.Password?.RequiredUniqueChars ?? 1;
+			});
 
 			services.ConfigureApplicationCookie(options =>
 				{
@@ -94,8 +115,6 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			Console.WriteLine("==================");
 			Console.WriteLine(JsonConvert.SerializeObject(clients));
 			Console.WriteLine("==================");
-
-			services.Configure<ConfigModel>(Configuration.GetSection("Config"));
 
 			services.AddIdentityServer(options =>
 			{
