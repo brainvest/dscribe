@@ -25,7 +25,7 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 
 		public async Task<Result<object>> Add(ManageEntityRequest request)
 		{
-			using (var repository = _implementations.RepositoryFactory())
+			using (var repository = _implementations.GetBusinessRepository())
 			{
 				var map = new Dictionary<string, object>();
 				var actionContext = new ActionContextInfo
@@ -199,7 +199,7 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 
 		public async Task<Result<object>> Edit(ManageEntityRequest request)
 		{
-			using (var repository = _implementations.RepositoryFactory())
+			using (var repository = _implementations.GetBusinessRepository())
 			{
 				var result = await _entityHandler.Edit(request, repository);
 				await _entityHandler.SaveChanges(repository, request.EntityTypeName);
@@ -209,7 +209,7 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 
 		public async Task<Result<object>> Delete(ManageEntityRequest request)
 		{
-			using (var repository = _implementations.RepositoryFactory())
+			using (var repository = _implementations.GetBusinessRepository())
 			{
 				var result = await _entityHandler.Delete(request, repository);
 				await _entityHandler.SaveChanges(repository, request.EntityTypeName);

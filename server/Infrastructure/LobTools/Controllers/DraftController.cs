@@ -24,7 +24,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 
 		public async Task<ActionResult<SaveDraftResponse>> SaveDraft(SaveDraftRequest request)
 		{
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var draft = new Draft
 				{
@@ -60,7 +60,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 
 		public async Task<ActionResult<DraftsListResponse>> GetDraftsList(DraftsListRequest request)
 		{
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var query = dbContext.Drafts.Where(x => x.IsLastVersion);
 				if (request.ActionTypeId.HasValue)
@@ -106,7 +106,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 
 		public async Task<ActionResult<DraftHistoryResponse>> GetHistory(DraftHistoryRequest request)
 		{
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var query = dbContext.Drafts.Where(x => x.Identifier == request.Identifier);
 				var totalCount = query.CountAsync();
@@ -133,7 +133,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 
 		public async Task<ActionResult<RemoveDraftResponse>> Remove(RemoveDraftRequest request)
 		{
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var drafts = await dbContext.Drafts.Where(x => x.Identifier == request.Identifier).ToListAsync();
 				dbContext.Drafts.RemoveRange(drafts);

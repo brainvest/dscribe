@@ -1,5 +1,4 @@
 using Brainvest.Dscribe.Implementations.EfCore.All;
-using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.Runtime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,7 +38,7 @@ namespace Brainvest.Dscribe.Host
 			services.AddAuthentication("Bearer")
 					.AddIdentityServerAuthentication(options =>
 					{
-						options.Authority = "http://localhost:5001";
+						options.Authority = Configuration.GetSection("AuthAuthority").Get<string>();
 						options.RequireHttpsMetadata = false;
 					});
 		}

@@ -108,7 +108,7 @@ namespace Brainvest.Dscribe.Runtime
 						throw new NotImplementedException($"The provider {instanceInfo.Provider} is not implemented");
 				}
 			}
-      return implementationsContainer;
+			return implementationsContainer;
 		}
 
 		public IMetadataCache Metadata { get; private set; }
@@ -119,31 +119,22 @@ namespace Brainvest.Dscribe.Runtime
 
 		private DbContextOptions _lobToolsDbContextOptions;
 
-		public Func<IDisposable> RepositoryFactory
+		public IDisposable GetBusinessRepository()
 		{
-			get
-			{
-				return () => BusinessAssemblyBridge.BusinessDbContextFactory.GetDbContext(_dbContextOptions);
-			}
+			return BusinessAssemblyBridge.BusinessDbContextFactory.GetDbContext(_dbContextOptions);
 		}
 
-		public Func<DbContext> LobToolsRepositoryFactory
+		public DbContext GetLobToolsRepository()
 		{
-			get
+			switch (InstanceInfo.Provider)
 			{
-				return () =>
-				{
-					switch (InstanceInfo.Provider)
-					{
-						case DatabaseProviderEnum.MySql:
-							return new LobToolsDbContext_MySql(_lobToolsDbContextOptions as DbContextOptions<LobToolsDbContext_MySql>);
-						case DatabaseProviderEnum.SqlServer:
-							return new LobToolsDbContext(_lobToolsDbContextOptions);
-						default:
-							throw new NotImplementedException($"The provider {InstanceInfo.Provider} is not implemented");
-					};
-				};
-			}
+				case DatabaseProviderEnum.MySql:
+					return new LobToolsDbContext_MySql(_lobToolsDbContextOptions as DbContextOptions<LobToolsDbContext_MySql>);
+				case DatabaseProviderEnum.SqlServer:
+					return new LobToolsDbContext(_lobToolsDbContextOptions);
+				default:
+					throw new NotImplementedException($"The provider {InstanceInfo.Provider} is not implemented");
+			};
 		}
 
 		public bool MigrationsExecuted { get; set; }

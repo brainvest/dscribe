@@ -26,7 +26,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		public async Task<ActionResult<LobSummaryResponse>> GetSummary(LobSummaryRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var commentCountTask = dbContext.Comments
 					.Where(x => x.EntityTypeId == entityTypeId && request.Identifiers.Contains(x.Identifier))

@@ -9,14 +9,14 @@ namespace Brainvest.Dscribe.Abstractions
 		public static TLobDbContext GetLobDbContext<TLobDbContext>(this IImplementationsContainer implementationsContainer, HttpContext httpContext)
 			where TLobDbContext : DbContext
 		{
-			var factory = implementationsContainer?.LobToolsRepositoryFactory;
-			if (factory != null)
+			if (implementationsContainer == null)
 			{
-				var dbContext = factory();
-				if (dbContext != null && dbContext is TLobDbContext lobDbContext)
-				{
-					return lobDbContext;
-				}
+				return httpContext.RequestServices.GetRequiredService<TLobDbContext>();
+			}
+			var dbContext = implementationsContainer?.GetLobToolsRepository();
+			if (dbContext != null && dbContext is TLobDbContext lobDbContext)
+			{
+				return lobDbContext;
 			}
 			return httpContext.RequestServices.GetRequiredService<TLobDbContext>();
 		}

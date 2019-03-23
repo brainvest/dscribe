@@ -24,7 +24,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		public async Task<ActionResult<AttachmentsListResponse>> GetAttachmentsList(AttachmentsListRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var attachmets = await dbContext.Attachments.Where(x => x.EntityTypeId == entityTypeId && x.Identifier == request.Identifier)
 					.Select(x => new AttachmentsListResponse.Item
@@ -49,7 +49,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 
 		public async Task<ActionResult> Download(DownloadAttachmentRequest request)
 		{
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var attachment = await dbContext.Attachments.FindAsync(request.Id);
 				HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");

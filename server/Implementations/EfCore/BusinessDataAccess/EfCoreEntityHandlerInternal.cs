@@ -44,21 +44,21 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				{
 					return;
 				}
-				EfCoreHelper.PerformMigrations(() => _implementationsContainer.RepositoryFactory() as DbContext);
+				EfCoreHelper.PerformMigrations(() => _implementationsContainer.GetBusinessRepository() as DbContext);
 			}
 		}
 
 		private async Task<DbContext> GetReadBusinessDbContext()
 		{
 			CheckMigrations();
-			var dbContext = _implementationsContainer.RepositoryFactory() as DbContext;
+			var dbContext = _implementationsContainer.GetBusinessRepository() as DbContext;
 			return await Task.FromResult(dbContext);
 		}
 
 		private DbContext GetWriteBusinessDbContext()
 		{
 			CheckMigrations();
-			return _implementationsContainer.RepositoryFactory() as DbContext;
+			return _implementationsContainer.GetBusinessRepository() as DbContext;
 		}
 
 		internal async Task<int> CountByFilterInternal<TEntity>(EntityListRequest<TEntity> request)
