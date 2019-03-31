@@ -23,13 +23,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\MetadataDbAccess\MetadataDbAccess.csproj" />
     <ProjectReference Include="..\..\InterfacesTo3rdParty\RichTextDocumentHandling\RichTextDocumentHandling.csproj" />
+    <ProjectReference Include="..\..\Migrations\Migrations_Runtime_MySql\Migrations_Runtime_MySql.csproj" />
     <ProjectReference Include="..\Abstractions\Abstractions.csproj" />
+    <ProjectReference Include="..\Lob\LobToolsEntities\LobToolsEntities.csproj" />
   </ItemGroup>
 
 </Project>
