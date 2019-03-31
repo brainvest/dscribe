@@ -21,13 +21,14 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			_usersService = usersService;
 		}
 
+		[HttpPost]
 		public async Task<ActionResult<CommentsListResponse>> GetCommentsList(CommentsListRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
 			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
 			{
 				var attachmets = await dbContext.Comments.Where(x => x.EntityTypeId == entityTypeId && x.Identifier == request.Identifier)
-					.Select(x => new CommentsListResponse.Item
+					.Select(x => new CommentsListResponse.CommentItem
 					{
 						Description = x.Description,
 						EntityTypeId = x.EntityTypeId,
@@ -44,7 +45,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				};
 			}
 		}
-
+		[HttpPost]
 		public async Task<ActionResult<ManageCommentResponse>> AddComment(ManageCommentRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
@@ -66,7 +67,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				};
 			}
 		}
-
+		[HttpPost]
 		public async Task<ActionResult<ManageCommentResponse>> EditComment(ManageCommentRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
@@ -89,7 +90,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				};
 			}
 		}
-
+		[HttpPost]
 		public async Task<ActionResult<ManageCommentResponse>> DeleteComment(ManageCommentRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;

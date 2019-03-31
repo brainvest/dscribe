@@ -11,9 +11,9 @@ namespace Brainvest.Dscribe.LobTools.Models
 
 	public class CommentsListResponse
 	{
-		public IEnumerable<Item> Items { get; set; }
+		public IEnumerable<CommentItem> Items { get; set; }
 
-		public class Item
+		public class CommentItem
 		{
 			public string Description { get; set; }
 			public int EntityTypeId { get; set; }

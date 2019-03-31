@@ -22,7 +22,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			_implementationsContainer = implementationsContainer;
 			_usersService = usersService;
 		}
-
+		[HttpPost]
 		public async Task<ActionResult<LobSummaryResponse>> GetSummary(LobSummaryRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;

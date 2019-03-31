@@ -10,9 +10,9 @@ namespace Brainvest.Dscribe.LobTools.Models
 
 	public class AttachmentsListResponse
 	{
-		public IEnumerable<Item> Items { get; set; }
+		public IEnumerable<AttachmentItem> Items { get; set; }
 
-		public class Item
+		public class AttachmentItem
 		{
 			public string Description { get; set; }
 			public int EntityTypeId { get; set; }
