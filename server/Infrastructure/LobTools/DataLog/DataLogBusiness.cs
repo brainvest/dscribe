@@ -1,5 +1,7 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
+using Brainvest.Dscribe.Abstractions.Models.History;
+using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.LobTools.Models;
 using Brainvest.Dscribe.MetadataDbAccess;
@@ -34,6 +36,33 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 			// Todo. Should use ImplementationContainer here.
 
 		}
+
+		public async Task<List<DataHistoryResponseModel>> GetDataHistory(string entityName,string data)
+		{
+			var entityType = await _metadataDbContext.EntityTypes
+				.Where(x => x.Name == entityName)
+				.Include(x => x.Properties)
+				.Include("Properties.GeneralUsageCategory")
+				.FirstOrDefaultAsync();
+
+			var primaryKeyName = entityType.Properties.Where(x => x.GeneralUsageCategory.Name == "PrimaryKey").FirstOrDefault().Name;
+			var primaryKey = JObject.Parse(data)[primaryKeyName].Value<string>();
+
+			var result = await _lobToolsDbContext.DataLogs
+				.Where(x => x.DataId == Convert.ToInt64(primaryKey) && x.EntityId == entityType.Id)
+				.Include(x => x.RequestLog)
+				.Select(x => new DataHistoryResponseModel
+				{
+					Action = x.DataRequestAction,
+					ActionTime = x.RequestLog.StartTime,
+					Data = x.Body,
+					ProcessDuration = x.RequestLog.ProcessDuration
+				})
+				.ToListAsync();
+
+			return result;
+		}
+
 		public async Task SaveDataChanges(object businessRepository, string entityTypeName)
 		{
 			var entityType = await _metadataDbContext.EntityTypes
