@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System;
 
@@ -35,6 +36,11 @@ namespace Brainvest.Dscribe.Host
 				.AddJsonOptions(opt => opt.SerializerSettings.ContractResolver = new DefaultContractResolver())
 				.SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 
+			services.AddSwaggerGen(c =>
+			{
+				c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+			});
+
 			services.AddAuthentication("Bearer")
 					.AddIdentityServerAuthentication(options =>
 					{
@@ -63,8 +69,14 @@ namespace Brainvest.Dscribe.Host
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
+
 			app.UseCors("AllowAll");
 			RuntimeStartup.Configure(app, env);
+			app.UseSwagger();
+			app.UseSwaggerUI(c =>
+			{
+				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+			});
 			app.UseAuthentication();
 			app.UseMvc();
 		}

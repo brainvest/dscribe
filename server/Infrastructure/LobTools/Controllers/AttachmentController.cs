@@ -21,13 +21,14 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			_usersService = usersService;
 		}
 
+		[HttpPost]
 		public async Task<ActionResult<AttachmentsListResponse>> GetAttachmentsList(AttachmentsListRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
 			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var attachmets = await dbContext.Attachments.Where(x => x.EntityTypeId == entityTypeId && x.Identifier == request.Identifier)
-					.Select(x => new AttachmentsListResponse.Item
+					.Select(x => new AttachmentsListResponse.AttachmentItem
 					{
 						Description = x.Description,
 						EntityTypeId = x.EntityTypeId,
@@ -46,7 +47,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				};
 			}
 		}
-
+		[HttpPost]
 		public async Task<ActionResult> Download(DownloadAttachmentRequest request)
 		{
 			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)

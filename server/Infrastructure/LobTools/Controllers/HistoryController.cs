@@ -185,10 +185,6 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			}).ToList();
 			return result;
 		}
-		public async Task<List<DataHistoryResponseModel>> GetDataHistory([FromBody]DataHistoryModel model)
-		{
-			return await _dataLogImplementation.GetDataHistory(model.EntityName,model.Data);
-		}
 		private bool PathChecker(string body, string action)
 		{
 			var requestAction = body.Split('/').Last();
