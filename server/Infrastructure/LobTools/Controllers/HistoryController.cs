@@ -35,6 +35,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			_dataLogImplementation = dataLogImplementation;
 			_entityHandler = entityHandler;
 		}
+		[HttpPost]
 		public async Task<IEnumerable<EntityTypeHistoryModel>> GetEntityTypeHistory(EntityTypeHistoryModel model)
 		{
 			var logs = await _dbContext.RequestLogs.Where(x => x.EntityTypeId == model.EntityType.Id && x.Failed == false).OrderByDescending(x => x.Id).ToListAsync();
@@ -50,6 +51,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			}).ToList();
 			return result;
 		}
+		[HttpPost]
 		public async Task<IEnumerable<EntityTypeHistoryModel>> GetDeletedEntityTypeHistory()
 		{
 			// TODO. THIS ACTION MAY BE SLOW WHEN REQUEST LOG TABLE WOULD BE LARGE	
@@ -74,6 +76,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				Action = GetActionFromUrl(x.Path)
 			}).ToList();
 		}
+		[HttpPost]
 		public async Task<IEnumerable<PropertyHistoryModel>> GetPropertyHistory(PropertyHistoryModel model)
 		{
 			var logs = await _dbContext.RequestLogs.Where(x => x.PropertyId == model.Property.Id && x.Failed == false).OrderByDescending(x => x.Id).ToListAsync();
@@ -88,6 +91,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			}).ToList();
 			return result;
 		}
+		[HttpPost]
 		public async Task<IEnumerable<PropertyHistoryModel>> GetDeletedPropertyHistory()
 		{
 			var logs = await _dbContext.RequestLogs
@@ -110,6 +114,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				Action = GetActionFromUrl(x.Path)
 			}).ToList();
 		}
+		[HttpPost]
 		public async Task<IEnumerable<AppInstanceHistoryModel>> GetAppInstanceHistory(AppInstanceHistoryModel model)
 		{
 			var logs = await _dbContext.RequestLogs.Where(x => x.AppInstanceId == model.AppInstance.Id && x.Failed == false).OrderByDescending(x => x.Id).ToListAsync();
@@ -124,6 +129,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			}).ToList();
 			return result;
 		}
+		[HttpPost]
 		public async Task<IEnumerable<AppInstanceHistoryModel>> GetDeletedAppInstanceHistory(AppInstanceHistoryModel model)
 		{
 			// TODO. THIS ACTION MAY BE SLOW WHEN REQUEST LOG TABLE WOULD BE LARGE	
@@ -148,6 +154,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				Action = GetActionFromUrl(x.Path)
 			}).ToList();
 		}
+		[HttpPost]
 		public async Task<IEnumerable<AppTypeHistoryModel>> GetAppTypeHistory(AppTypeHistoryModel model)
 		{
 			var logs = await _dbContext.RequestLogs.Where(x => x.AppTypeId == model.AppType.Id && x.Failed == false).OrderByDescending(x => x.Id).ToListAsync();
@@ -161,6 +168,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			}).ToList();
 			return result;
 		}
+		[HttpPost]
 		public async Task<IEnumerable<AppTypeHistoryModel>> GetDeletedAppTypeHistory(AppTypeHistoryModel model)
 		{
 			// TODO. THIS ACTION MAY BE SLOW WHEN REQUEST LOG TABLE WOULD BE LARGE	
@@ -185,6 +193,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			}).ToList();
 			return result;
 		}
+		[HttpPost]
 		public async Task<List<DataHistoryResponseModel>> GetDataHistory([FromBody]DataHistoryModel model)
 		{
 			return await _dataLogImplementation.GetDataHistory(model.EntityName,model.Data);

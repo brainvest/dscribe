@@ -214,7 +214,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					Name = x.Name
 				}).ToListAsync();
 		}
-		public string GenerateConnectionString(DataConnectionStringModel model)
+		protected string GenerateConnectionString(DataConnectionStringModel model)
 		{
 			var result = "Server=" + model.Server + ";" +
 								"Database=" + model.Database + ";" +
@@ -226,7 +226,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			return result;
 		}
 
-		public DataConnectionStringModel DeserializeConnectionString(string connectionString)
+		protected DataConnectionStringModel DeserializeConnectionString(string connectionString)
 		{
 			var result = new DataConnectionStringModel();
 			Match server = Regex.Match(connectionString, @"server=([^;]*)", RegexOptions.IgnoreCase);

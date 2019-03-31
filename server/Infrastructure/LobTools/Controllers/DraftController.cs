@@ -21,7 +21,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			_implementationsContainer = implementationsContainer;
 			_usersService = usersService;
 		}
-
+		[HttpPost]
 		public async Task<ActionResult<SaveDraftResponse>> SaveDraft(SaveDraftRequest request)
 		{
 			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
@@ -57,7 +57,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				};
 			}
 		}
-
+		[HttpPost]
 		public async Task<ActionResult<DraftsListResponse>> GetDraftsList(DraftsListRequest request)
 		{
 			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
@@ -103,7 +103,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				};
 			}
 		}
-
+		[HttpPost]
 		public async Task<ActionResult<DraftHistoryResponse>> GetHistory(DraftHistoryRequest request)
 		{
 			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
@@ -130,7 +130,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				};
 			}
 		}
-
+		[HttpPost]
 		public async Task<ActionResult<RemoveDraftResponse>> Remove(RemoveDraftRequest request)
 		{
 			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
