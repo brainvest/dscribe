@@ -41,7 +41,7 @@ else
 	{
 		<div class="col-sm-3">
 			@{
-				var urls = SignInManager.IsSignedIn(User) ? client.RedirectUris : client.PostLogoutRedirectUris;
+				var urls = client.PostLogoutRedirectUris;
 			}
 			<div class="panel panel-default">
 				<div class="panel-heading">
