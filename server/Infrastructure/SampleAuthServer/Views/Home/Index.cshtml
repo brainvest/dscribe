@@ -1,16 +1,77 @@
-@inject IOptions<ConfigModel> Options;
+@using Microsoft.AspNetCore.Identity
+@using Brainvest.Dscribe.Security.Entities
+
+@inject IOptions<ConfigModel> Options
+@inject IEnumerable<ClientInfo> Clients
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
 @{
-	ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Authentication server for " + Options.Value.Organization;
 }
 
-<br />
-<br />
-<br />
-<br />
+<h3>@Options.Value.ApplicationName</h3>
 
 @Html.Raw(Options.Value.Description)
 
+@if (SignInManager.IsSignedIn(User))
+{
+	<h3>You are signed in as: @UserManager.GetUserName(User)</h3>
+	<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm">
+		<button type="submit" class="btn btn-link">Logout</button>
+	</form>
+}
+else
+{
+	<h3>You are not signed in.</h3>
+	<a asp-area="Identity" asp-page="/Account/Login">Login</a>
+	@if (Options.Value.AllowRegistration)
+	{
+		<span>or</span>
+		<a asp-area="Identity" asp-page="/Account/Register">Register</a>
+	}
+}
 
-<br />
-<br />
-<br />
+
+<h3>Known Applications:</h3>
+<p>There applications are connected to @Options.Value.ApplicationName : </p>
+
+<div class="row">
+	@foreach (var client in Clients)
+	{
+		<div class="col-sm-3">
+			@{
+				var urls = SignInManager.IsSignedIn(User) ? client.RedirectUris : client.PostLogoutRedirectUris;
+			}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					@if (urls != null && urls.Length >= 0)
+					{
+						<a href="@urls[0]">@client.ClientName</a>
+					}
+					else
+					{
+						@client.ClientName
+					}
+				</div>
+				<div class="panel-body">
+					@if (!string.IsNullOrWhiteSpace(client.ImageUrl))
+					{
+						<img src="@client.ImageUrl" class="img-responsive">
+					}
+					@if (!string.IsNullOrWhiteSpace(client.Description))
+					{
+						<p>
+							@Html.Raw(@client.Description)
+						</p>
+					}
+
+					@if (urls != null && urls.Length >= 0)
+					{
+						<a href="@urls[0]">Visit</a>
+					}
+				</div>
+			</div>
+		</div>
+	}
+</div>

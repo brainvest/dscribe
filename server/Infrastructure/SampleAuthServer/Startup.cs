@@ -110,6 +110,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			services.AddScoped<IEmailSender, FakeEmailSender>();
 
 			var clients = Configuration.GetSection("Clients").Get<IEnumerable<ClientInfo>>();
+			services.AddSingleton(clients);
 			Console.WriteLine();
 			Console.WriteLine("Clients");
 			Console.WriteLine("==================");
