@@ -81,9 +81,19 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 				options.Password.RequireUppercase = config?.Password?.RequireUppercase ?? true;
 				options.Password.RequiredLength = config?.Password?.RequiredLength ?? 6;
 				options.Password.RequiredUniqueChars = config?.Password?.RequiredUniqueChars ?? 1;
+				options.SignIn.RequireConfirmedEmail = config?.SignIn?.RequireConfirmedEmail ?? false;
 			})
 			.AddEntityFrameworkStores<SecurityDbContext>()
 			.AddDefaultTokenProviders();
+
+			if (string.IsNullOrWhiteSpace(config?.Email?.Server))
+			{
+				services.AddScoped<IEmailSender, FakeEmailSender>();
+			}
+			else
+			{
+				services.AddTransient<IEmailSender, SmtpEmailSender>();
+			}
 
 			services.Configure<IdentityOptions>(options =>
 			{
@@ -107,7 +117,6 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			 });
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-			services.AddScoped<IEmailSender, FakeEmailSender>();
 
 			var clients = Configuration.GetSection("Clients").Get<IEnumerable<ClientInfo>>();
 			services.AddSingleton(clients);
