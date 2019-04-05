@@ -80,7 +80,8 @@ export class ListComponent implements OnInit, OnChanges {
 	@ViewChild(TableTemplateComponent) table: TableTemplateComponent;
 	sort: MatSort;
 	private customTemplate: { component: Type<any>; options?: any };
-	filterCommands: DscribeCommand[];
+	filterCommands: DscribeCommand[] = [];
+	listCommands: DscribeCommand[] = [];
 
 	constructor(
 		private metadataService: MetadataService,
@@ -101,9 +102,12 @@ export class ListComponent implements OnInit, OnChanges {
 	ngOnInit() {
 		FilterNode.factory = new FilterNodeFactory();
 		this.dscribeService.getCommands().subscribe(
-			(commands: any) => {
+			(commands: DscribeCommand[]) => {
 				this.filterCommands = commands.filter(x =>
-					x.featureAreas === DscribeFeatureArea.Filter || x.featureAreas.includes(DscribeFeatureArea.Filter)
+					x.featureAreas === DscribeFeatureArea.Filter || (Array.isArray(x.featureAreas) && x.featureAreas.includes(DscribeFeatureArea.Filter))
+				);
+				this.listCommands = commands.filter(x =>
+					x.featureAreas === DscribeFeatureArea.List || (Array.isArray(x.featureAreas) && x.featureAreas.includes(DscribeFeatureArea.List))
 				);
 			}, (errors: any) => {
 				this.snackbarService.open(errors);
@@ -411,6 +415,12 @@ export class ListComponent implements OnInit, OnChanges {
 	callFilterCommand(command: DscribeCommand) {
 		command.callback(<DscribeCommandCallbackInput<ListComponent>>{
 			area: DscribeFeatureArea.Filter, sourceComponent: this
+		});
+	}
+
+	callListCommand(command: DscribeCommand) {
+		command.callback(<DscribeCommandCallbackInput<ListComponent>>{
+			area: DscribeFeatureArea.List, sourceComponent: this
 		});
 	}
 

@@ -80,6 +80,7 @@ import {ReportsListComponent} from './lob-tools/reporting/reports-list/reports-l
 import { EntityHistoryComponent } from './administration/history/entity-history/entity-history.component';
 import { DataHistoryComponent } from './list/data-history/data-history.component';
 import { UsersAndRolesManagementComponent } from './security/components/users-and-roles-management/users-and-roles-management.component';
+import { CommandButtonComponent } from './common/command-button/command-button.component';
 
 @NgModule({
 	imports: [
@@ -164,7 +165,8 @@ import { UsersAndRolesManagementComponent } from './security/components/users-an
 		CommentsListComponent,
 		AttachmentsListComponent,
 		ReportsListComponent,
-		UsersAndRolesManagementComponent
+		UsersAndRolesManagementComponent,
+		CommandButtonComponent
 	],
 	exports: [DscribeComponent, ListComponent, DisplayValuePipe, ConfirmationDialogComponent],
 	providers: [

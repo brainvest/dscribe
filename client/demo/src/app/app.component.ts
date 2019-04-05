@@ -31,6 +31,28 @@ export class AppComponent {
 			featureAreas: DscribeFeatureArea.Filter,
 			callback: clbck,
 			displayPredicate: dispPred
+		}, {
+			name: 'cart',
+			title: 'add to cart',
+			iconName: 'add_shopping_cart',
+			featureAreas: DscribeFeatureArea.List,
+			badge: {
+				text: '2'
+			},
+			callback: clbck,
+			displayPredicate: dispPred
+		}, {
+			name: 'textCommand',
+			title: 'Test Text Command',
+			featureAreas: DscribeFeatureArea.List,
+			badge: {
+				text: '3',
+				position: 'below after',
+				size: 'large',
+				color: 'warn'
+			},
+			callback: clbck,
+			displayPredicate: dispPred
 		}]);
 	}
 }
