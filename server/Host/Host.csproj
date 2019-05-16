@@ -7,6 +7,10 @@
     <UserSecretsId>2a8a1ba1-bde9-4c00-846d-723874ad9d1c</UserSecretsId>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<RuntimeFrameworkVersion>2.2.4</RuntimeFrameworkVersion>
+	</PropertyGroup>
+
 	<Import Project="..\SolutionInfo.xml" />
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
