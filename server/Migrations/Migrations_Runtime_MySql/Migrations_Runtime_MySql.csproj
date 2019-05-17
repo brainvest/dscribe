@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -6,7 +6,9 @@
     <RootNamespace>Brainvest.Dscribe.Migrations.Runtime.MySql</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
+	<Import Project="..\..\SolutionInfo.xml" />
+
+	<ItemGroup>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -6,6 +6,8 @@
     <RootNamespace>Brainvest.Dscribe.LobTools.Entities</RootNamespace>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+	<Import Project="..\..\..\SolutionInfo.xml" />
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
