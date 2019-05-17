@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Migrations_Auth_MySql;
+using Migrations_Auth_PostgreSql;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,12 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 							.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
 					break;
 				case "SqlServer":
-					services.AddDbContext<SecurityDbContext>(options => options.UseSqlServer(connectionString)); break;
+					services.AddDbContext<SecurityDbContext>(options => options.UseSqlServer(connectionString));
+					break;
+				case "PostgreSql":
+				case "PostgreSQL":
+					services.AddDbContext<SecurityDbContext, SecurityDbContext_PostgreSql>(options => options.UseNpgsql(connectionString));
+					break;
 				default:
 					throw new NotImplementedException($"The provider {provider} is not implemented yet.");
 			}

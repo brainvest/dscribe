@@ -30,6 +30,7 @@
     <PackageReference Include="Microsoft.Composition" Version="1.0.31" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
     <PackageReference Include="SaasKit.Multitenancy" Version="1.1.4" />
   </ItemGroup>
@@ -37,6 +38,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Abstractions\Abstractions.csproj" />
     <ProjectReference Include="..\..\Infrastructure\LobTools\LobTools.csproj" />
+    <ProjectReference Include="..\..\Migrations\Migrations_Runtime_PostgreSql\Migrations_Runtime_PostgreSql.csproj" />
     <ProjectReference Include="..\MetadataDbAccess\MetadataDbAccess.csproj" />
     <ProjectReference Include="..\Metadata\Metadata.csproj" />
   </ItemGroup>

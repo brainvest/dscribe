@@ -46,7 +46,7 @@ namespace Brainvest.Dscribe.Host
 		private void SetupProvider(DbContextOptionsBuilder options, string connectionStringName)
 		{
 			var provider = Configuration.GetSection("EfProvider").Get<string>();
-			switch (provider)
+			switch (provider)  // TODO: use a case-insensitive comparison
 			{
 				case "MySql":
 					options.UseMySql(
@@ -54,6 +54,11 @@ namespace Brainvest.Dscribe.Host
 					return;
 				case "SqlServer":
 					options.UseSqlServer(
+							Configuration.GetConnectionString(connectionStringName));
+					return;
+				case "PostgreSql":
+				case "PostgreSQL":
+					options.UseNpgsql(
 							Configuration.GetConnectionString(connectionStringName));
 					return;
 				default:

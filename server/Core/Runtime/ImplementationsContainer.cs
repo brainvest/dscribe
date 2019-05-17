@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Migrations_Runtime_MySql;
+using Migrations_Runtime_PostgreSql;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -84,6 +85,10 @@ namespace Brainvest.Dscribe.Runtime
 					var lobToolsDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext>();
 					implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseSqlServer(instanceInfo.LobConnectionString).Options;
 					break;
+				case DatabaseProviderEnum.PostgreSql:
+					var postgreSqlDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext_PostgreSql>();
+					implementationsContainer._lobToolsDbContextOptions = postgreSqlDbContextOptionsBuilder.UseNpgsql(instanceInfo.LobConnectionString).Options;
+					break;
 				default:
 					throw new NotImplementedException($"The provider {instanceInfo.Provider} is not implemented");
 			}
@@ -132,6 +137,8 @@ namespace Brainvest.Dscribe.Runtime
 					return new LobToolsDbContext_MySql(_lobToolsDbContextOptions as DbContextOptions<LobToolsDbContext_MySql>);
 				case DatabaseProviderEnum.SqlServer:
 					return new LobToolsDbContext(_lobToolsDbContextOptions);
+				case DatabaseProviderEnum.PostgreSql:
+					return new LobToolsDbContext_PostgreSql(_lobToolsDbContextOptions as DbContextOptions<LobToolsDbContext_PostgreSql>);
 				default:
 					throw new NotImplementedException($"The provider {InstanceInfo.Provider} is not implemented");
 			};

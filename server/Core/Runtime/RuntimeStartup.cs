@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Migrations_Runtime_MySql;
+using Migrations_Runtime_PostgreSql;
 using System;
 
 namespace Brainvest.Dscribe.Runtime
@@ -40,7 +41,12 @@ namespace Brainvest.Dscribe.Runtime
 							.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
 					break;
 				case "SqlServer":
-					services.AddDbContext<MetadataDbContext>(options => options.UseSqlServer(connectionString)); break;
+					services.AddDbContext<MetadataDbContext>(options => options.UseSqlServer(connectionString));
+					break;
+				case "PostgreSql":
+				case "PostgreSQL":
+					services.AddDbContext<MetadataDbContext, MetadataDbContext_PostgreSql>(options => options.UseNpgsql(connectionString));
+					break;
 				default:
 					throw new NotImplementedException($"The provider {provider} is not implemented yet.");
 			}

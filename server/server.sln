@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{63D3069E-C884-4A16-B748-35515165E76A}"
 EndProject
@@ -56,11 +56,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auth", "Auth", "{E5A1817E-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthEntities", "Infrastructure\Auth\AuthEntities\AuthEntities.csproj", "{BDD93FE3-DC0F-429A-AF92-28B208EA9AE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations_Runtime_MySql", "Migrations\Migrations_Runtime_MySql\Migrations_Runtime_MySql.csproj", "{2A5FAF47-AC49-4920-B6F5-BE34208DC57A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrations_Runtime_MySql", "Migrations\Migrations_Runtime_MySql\Migrations_Runtime_MySql.csproj", "{2A5FAF47-AC49-4920-B6F5-BE34208DC57A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lob", "Lob", "{77B84C69-DF6A-46D2-9A56-F66091E853EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LobToolsEntities", "Infrastructure\Lob\LobToolsEntities\LobToolsEntities.csproj", "{7246BD63-3DDF-47AA-B2D6-60FDBBEFCC45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LobToolsEntities", "Infrastructure\Lob\LobToolsEntities\LobToolsEntities.csproj", "{7246BD63-3DDF-47AA-B2D6-60FDBBEFCC45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations_Auth_PostgreSql", "Migrations\Migrations_Auth_PostgreSql\Migrations_Auth_PostgreSql.csproj", "{25CD6F06-55F6-436D-BC43-7276413C8D58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations_Runtime_PostgreSql", "Migrations\Migrations_Runtime_PostgreSql\Migrations_Runtime_PostgreSql.csproj", "{4A009805-4603-4795-A05C-8C2B2A57C7D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,6 +144,14 @@ Global
 		{7246BD63-3DDF-47AA-B2D6-60FDBBEFCC45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7246BD63-3DDF-47AA-B2D6-60FDBBEFCC45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7246BD63-3DDF-47AA-B2D6-60FDBBEFCC45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25CD6F06-55F6-436D-BC43-7276413C8D58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25CD6F06-55F6-436D-BC43-7276413C8D58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25CD6F06-55F6-436D-BC43-7276413C8D58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25CD6F06-55F6-436D-BC43-7276413C8D58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A009805-4603-4795-A05C-8C2B2A57C7D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A009805-4603-4795-A05C-8C2B2A57C7D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A009805-4603-4795-A05C-8C2B2A57C7D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A009805-4603-4795-A05C-8C2B2A57C7D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -165,6 +177,8 @@ Global
 		{2A5FAF47-AC49-4920-B6F5-BE34208DC57A} = {1D4F0FCA-4AC0-4037-9EBF-66872CFA9568}
 		{77B84C69-DF6A-46D2-9A56-F66091E853EF} = {63D3069E-C884-4A16-B748-35515165E76A}
 		{7246BD63-3DDF-47AA-B2D6-60FDBBEFCC45} = {77B84C69-DF6A-46D2-9A56-F66091E853EF}
+		{25CD6F06-55F6-436D-BC43-7276413C8D58} = {1D4F0FCA-4AC0-4037-9EBF-66872CFA9568}
+		{4A009805-4603-4795-A05C-8C2B2A57C7D7} = {1D4F0FCA-4AC0-4037-9EBF-66872CFA9568}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80FA172E-CD42-4E4F-A1D2-AC3D48E03B87}

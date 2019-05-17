@@ -29,6 +29,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" PrivateAssets="All" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
   </ItemGroup>
 
@@ -38,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Migrations\Migrations_Auth_MySql\Migrations_Auth_MySql.csproj" />
+    <ProjectReference Include="..\..\Migrations\Migrations_Auth_PostgreSql\Migrations_Auth_PostgreSql.csproj" />
     <ProjectReference Include="..\Auth\AuthEntities\AuthEntities.csproj" />
     <ProjectReference Include="..\Helpers\Helpers.csproj" />
   </ItemGroup>

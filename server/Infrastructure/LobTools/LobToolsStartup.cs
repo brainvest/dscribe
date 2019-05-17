@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MiddleWare.Log;
 using Migrations_Runtime_MySql;
+using Migrations_Runtime_PostgreSql;
 using System;
 
 namespace Brainvest.Dscribe.LobTools
@@ -42,7 +43,13 @@ namespace Brainvest.Dscribe.LobTools
 							.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
 					break;
 				case "SqlServer":
-					services.AddDbContext<LobToolsDbContext>(options => options.UseSqlServer(connectionString)); break;
+					services.AddDbContext<LobToolsDbContext>(options => options.UseSqlServer(connectionString));
+					break;
+				case "PostgreSql":
+				case "PostgreSQL":
+					services.AddDbContext<LobToolsDbContext, LobToolsDbContext_PostgreSql>(
+						options => options.UseNpgsql(connectionString));
+					break;
 				default:
 					throw new NotImplementedException($"The provider {provider} is not implemented yet.");
 			}
