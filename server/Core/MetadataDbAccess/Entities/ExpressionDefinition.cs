@@ -12,7 +12,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		[ForeignKey(nameof(AppTypeId))]
 		public AppType AppType { get; set; }
 
-		[Required, Column(TypeName = "varchar(200)")]
+		[Required, MaxLength(200)]
 		public string Identifier { get; set; }
 		[Required]
 		public string ShortDescription { get; set; }

@@ -8,7 +8,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 	public class DataType : IDataTypeInfo
 	{
 		public DataTypeEnum Id { get; set; }
-		[Column(TypeName = "varchar(200)")]
+		[MaxLength(200)]
 		public string Name { get; set; }
 		[MaxLength(200)]
 		public string Identifier { get; set; }
