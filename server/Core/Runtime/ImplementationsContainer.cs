@@ -109,6 +109,9 @@ namespace Brainvest.Dscribe.Runtime
 					case DatabaseProviderEnum.SqlServer:
 						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.DataConnectionString).Options;
 						break;
+					case DatabaseProviderEnum.PostgreSql:
+						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseNpgsql(instanceInfo.DataConnectionString).Options;
+						break;
 					default:
 						throw new NotImplementedException($"The provider {instanceInfo.Provider} is not implemented");
 				}
