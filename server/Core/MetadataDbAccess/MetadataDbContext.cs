@@ -125,7 +125,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 
 			modelBuilder.Entity<DatabaseProvider>().HasData(
 				new DatabaseProvider { Id = DatabaseProviderEnum.MySql, Name = "MySql" },
-				new DatabaseProvider { Id = DatabaseProviderEnum.SqlServer, Name = "SqlServer" }
+				new DatabaseProvider { Id = DatabaseProviderEnum.SqlServer, Name = "SqlServer" },
+				new DatabaseProvider { Id = DatabaseProviderEnum.PostgreSql, Name = "PostgreSql" }
 			);
 
 			#endregion
