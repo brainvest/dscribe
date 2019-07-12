@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Migrations_Runtime_MySql;
+using Migrations_Runtime_PostgreSql;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,7 +37,8 @@ namespace Brainvest.Dscribe.Runtime
 			var metadataCache = new MetadataCache(bundle);
 			var metadataModel = new MetadataModel(bundle);
 			var globalConfig = scope.ServiceProvider.GetRequiredService<IOptions<GlobalConfiguration>>().Value;
-			InstanceSettings instanceSettings = globalConfig?.InstanceSettings?[instance.Name];
+			InstanceSettings instanceSettings = null;
+			globalConfig?.InstanceSettings?.TryGetValue(instance.Name, out instanceSettings);
 			var instanceInfo = new InstanceInfo
 			{
 				AppInstanceId = appInstanceId,
@@ -72,14 +75,19 @@ namespace Brainvest.Dscribe.Runtime
 				InstanceInfo = instanceInfo
 			};
 
-			var lobToolsDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext>();
 			switch (instanceInfo.Provider)
 			{
 				case DatabaseProviderEnum.MySql:
-					implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseMySql(instanceInfo.LobConnectionString).Options;
+					var mySqlDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext_MySql>();
+					implementationsContainer._lobToolsDbContextOptions = mySqlDbContextOptionsBuilder.UseMySql(instanceInfo.LobConnectionString).Options;
 					break;
 				case DatabaseProviderEnum.SqlServer:
+					var lobToolsDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext>();
 					implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseSqlServer(instanceInfo.LobConnectionString).Options;
+					break;
+				case DatabaseProviderEnum.PostgreSql:
+					var postgreSqlDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext_PostgreSql>();
+					implementationsContainer._lobToolsDbContextOptions = postgreSqlDbContextOptionsBuilder.UseNpgsql(instanceInfo.LobConnectionString).Options;
 					break;
 				default:
 					throw new NotImplementedException($"The provider {instanceInfo.Provider} is not implemented");
@@ -90,7 +98,7 @@ namespace Brainvest.Dscribe.Runtime
 			}
 			else
 			{
-				var dbContextType = bridge.BusinessDbContextFactory.GetType().Assembly.GetTypes().Single(x => x.IsSubclassOf(typeof(DbContext)));
+				var dbContextType = bridge.BusinessDbContextFactory.GetType().Assembly.GetTypes().Single(x => x.IsPublic && x.IsSubclassOf(typeof(DbContext)));
 				reflector.RegisterAssembly(dbContextType.Assembly);
 				var dbContextOptionsBuilder = Activator.CreateInstance(typeof(DbContextOptionsBuilder<>).MakeGenericType(dbContextType)) as DbContextOptionsBuilder;
 				switch (instanceInfo.Provider)
@@ -101,11 +109,14 @@ namespace Brainvest.Dscribe.Runtime
 					case DatabaseProviderEnum.SqlServer:
 						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.DataConnectionString).Options;
 						break;
+					case DatabaseProviderEnum.PostgreSql:
+						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseNpgsql(instanceInfo.DataConnectionString).Options;
+						break;
 					default:
 						throw new NotImplementedException($"The provider {instanceInfo.Provider} is not implemented");
 				}
 			}
-      return implementationsContainer;
+			return implementationsContainer;
 		}
 
 		public IMetadataCache Metadata { get; private set; }
@@ -114,22 +125,26 @@ namespace Brainvest.Dscribe.Runtime
 		public IBusinessReflector Reflector { get; private set; }
 		public IInstanceInfo InstanceInfo { get; private set; }
 
-		private DbContextOptions<LobToolsDbContext> _lobToolsDbContextOptions;
+		private DbContextOptions _lobToolsDbContextOptions;
 
-		public Func<IDisposable> RepositoryFactory
+		public IDisposable GetBusinessRepository()
 		{
-			get
-			{
-				return () => BusinessAssemblyBridge.BusinessDbContextFactory.GetDbContext(_dbContextOptions);
-			}
+			return BusinessAssemblyBridge.BusinessDbContextFactory.GetDbContext(_dbContextOptions);
 		}
 
-		public Func<DbContext> LobToolsRepositoryFactory
+		public DbContext GetLobToolsRepository()
 		{
-			get
+			switch (InstanceInfo.Provider)
 			{
-				return () => new LobToolsDbContext(_lobToolsDbContextOptions);
-			}
+				case DatabaseProviderEnum.MySql:
+					return new LobToolsDbContext_MySql(_lobToolsDbContextOptions as DbContextOptions<LobToolsDbContext_MySql>);
+				case DatabaseProviderEnum.SqlServer:
+					return new LobToolsDbContext(_lobToolsDbContextOptions);
+				case DatabaseProviderEnum.PostgreSql:
+					return new LobToolsDbContext_PostgreSql(_lobToolsDbContextOptions as DbContextOptions<LobToolsDbContext_PostgreSql>);
+				default:
+					throw new NotImplementedException($"The provider {InstanceInfo.Provider} is not implemented");
+			};
 		}
 
 		public bool MigrationsExecuted { get; set; }

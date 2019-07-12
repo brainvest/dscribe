@@ -53,7 +53,7 @@ export class AuthService {
 export function getClientSettings(): UserManagerSettings {
 	return {
 		authority: environment.auth.authority,
-		client_id: 'dscribe',
+		client_id: environment.auth.client_id,
 		redirect_uri: environment.auth.redirect_uri,
 		post_logout_redirect_uri: environment.auth.post_logout_redirect_uri,
 		response_type: 'id_token token',

@@ -72,7 +72,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		{
 			var report = await _metadataDbContext.ReportDefinitions.FindAsync(request.ReportDefinitionId);
 			var (bytes, contentType, fileName) = await ProcessReport(report, request.EntityIdentifier);
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var attachment = new Attachment
 				{
@@ -96,7 +96,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			switch (report.ReportFormatId)
 			{
 				case ReportFormats.RichTextDocument:
-					using (var dbContext = _implementationsContainer.RepositoryFactory())
+					using (var dbContext = _implementationsContainer.GetBusinessRepository())
 					{
 						var processed = await _richTextDocumentHandler.Process(report.Definition
 							, expressions => GetTemplateValues(expressions, entityIdentifier, entityTypeName));

@@ -9,6 +9,7 @@ import {AddNEditResult} from '../common/models/add-n-edit-result';
 import {AddNEditStructure, EditorComponentTypes, ListBehaviors} from './models/add-n-edit-structure';
 import {ManageEntityModes} from './models/manage-entity-modes';
 import {AddNEditStructureLogic} from './add-n-edit-structure-logic';
+import {Result} from '../common/models/Result';
 
 @Component({
 	selector: 'dscribe-add-n-edit',
@@ -57,6 +58,14 @@ export class AddNEditComponent implements OnInit {
 	}
 
 	saveEntity() {
+
+		for (let i = 0; i < this.structure.directProperties.length; i++) {
+			const prop = this.structure.directProperties[i];
+			if (prop.Name) {
+				this.structure.directProperties[i].ValidationErrors = null;
+			}
+		}
+
 		if (this.parentStructure && this.parentStructure.listBehavior === ListBehaviors.SaveInObject) {
 			this.parentStructure.currentEntity.push(this.entity);
 			this.afterEntitySaved(this.action, this.entity);
@@ -64,8 +73,12 @@ export class AddNEditComponent implements OnInit {
 		}
 
 		this.dataHandler.manageEntity(this.entity, this.entityTypeName, this.action).subscribe(
-			(res: any) => {
-				this.processSaveResponse(res, this.action);
+			(res) => {
+				if (res.Succeeded) {
+					this.processSaveResponse(res.Data, this.action);
+				} else {
+					this.processFailure(res);
+				}
 			},
 			(errors: any) => {
 				this.processFailure(errors);
@@ -79,12 +92,12 @@ export class AddNEditComponent implements OnInit {
 		this.canceled.emit();
 	}
 
-	processFailure(error: any) {
-		if (error.modelState) {
+	processFailure(error: Result<any>) {
+		if (error.Errors) {
 			for (let i = 0; i < this.structure.directProperties.length; i++) {
 				const prop = this.structure.directProperties[i];
-				if (prop.Name && error.modelState[prop.Name]) {
-					this.structure.directProperties[i].ValidationErrors = error.modelState[prop.Name].errors;
+				if (prop.Name && error.Errors[prop.Name]) {
+					this.structure.directProperties[i].ValidationErrors = error.Errors[prop.Name];
 				}
 			}
 		}

@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import {SelectionModel} from '@angular/cdk/collections';
-import {ListColumn} from '../../models/list-column';
-import {MatSort} from '@angular/material';
+import { Component, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
+import { SelectionModel } from '@angular/cdk/collections';
+import { ListColumn } from '../../models/list-column';
+import { MatSort } from '@angular/material';
 
 @Component({
 	selector: 'dscribe-table-template',
@@ -13,6 +13,7 @@ export class TableTemplateComponent {
 	@Input() selection: SelectionModel<any>;
 	@Input() columns: ListColumn[];
 	@Input() displayedColumns: string[];
+	@Input() hideAdditionFeature: boolean;
 
 	@Output() rowClick = new EventEmitter<any>();
 	@Output() commentsClick = new EventEmitter<any>();

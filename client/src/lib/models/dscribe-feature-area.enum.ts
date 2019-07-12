@@ -1,3 +1,4 @@
 export enum DscribeFeatureArea {
-	Filter = 1
+	Filter = 1,
+	List
 }

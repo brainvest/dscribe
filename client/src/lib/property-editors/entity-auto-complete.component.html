@@ -38,3 +38,9 @@
 		{{ item.DisplayName ? item.DisplayName : '' }}
 	</mat-option>
 </mat-autocomplete>
+
+<div *ngIf="property?.ValidationErrors">
+	<p *ngFor="let validationError of property.ValidationErrors" class="error-message">
+		{{validationError.Message}}
+	</p>
+</div>

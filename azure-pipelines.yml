@@ -1,24 +1,112 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
 trigger:
 - master
- 
+
 variables:
   backendDirName: 'server'
   frontDirName: 'client'
 
-steps:
-- script: 'dotnet build $(backendDirName)/server.sln'
-  displayName: Server Build
+jobs:
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    maxParallel: 2    
+    matrix:
+      Debug:
+        configuration: debug
+      Release:
+        configuration: release
+  steps:
+  - task: DotNetCoreInstaller@0
+    inputs:
+      packageType: 'sdk' 
+      version: '2.2.100' 
 
-- script: 'dotnet test $(backendDirName)'
-  displayName: Server Test
+  - script: 'dotnet clean $(backendDirName)/server.sln'
+    displayName: Server - Clean
 
-- script: 'npm install $(frontDirName)'
-  displayName: Client Npm install
+  - script: 'dotnet build $(backendDirName)/server.sln'
+    displayName: Server - Build
 
-# - script: 'npm run build --prefix $(frontDirName)'
-#   displayName: Npm Run Build
+  - script: 'dotnet test $(backendDirName)'
+    displayName: Server - Test
+
+  - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
+    displayName: Client - installation
+
+  - script: 'npm run build --prefix $(frontDirName)'
+    displayName: Client - Build        
+
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
+  strategy:
+    maxParallel: 2    
+    matrix:
+      Debug:
+        configuration: debug
+      Release:
+        configuration: release    
+  steps:
+  - task: DotNetCoreInstaller@0
+    inputs:
+      packageType: 'sdk' 
+      version: '2.2.100' 
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '11.7.0' 
+      #checkLatest: false # Optional
+
+  - script: 'dotnet clean $(backendDirName)/server.sln'
+    displayName: Server - Clean
+
+  - script: 'dotnet build $(backendDirName)/server.sln'
+    displayName: Server - Build
+
+  - script: 'dotnet test $(backendDirName)'
+    displayName: Server - Test
+
+  - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
+    displayName: Client - installation
+
+  - script: 'npm run build --prefix $(frontDirName)'
+    displayName: Client - Build        
+
+- job: Mac
+  pool:
+    vmImage: 'macos-10.13'
+  strategy:
+    maxParallel: 2    
+    matrix:
+      Debug:
+        configuration: debug
+      Release:
+        configuration: release
+  steps:
+  - task: DotNetCoreInstaller@0
+    inputs:
+      packageType: 'sdk' 
+      version: '2.2.100' 
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.15.0' 
+      #checkLatest: false # Optional
+
+  - script: 'dotnet clean $(backendDirName)/server.sln'
+    displayName: Server - Clean
+
+  - script: 'dotnet build $(backendDirName)/server.sln'
+    displayName: Server - Build
+
+  - script: 'dotnet test $(backendDirName)'
+    displayName: Server - Test
+
+  - script: 'npm --prefix ./$(frontDirName) install ./$(frontDirName)'
+    displayName: Client - installation
+
+  - script: 'npm run build --prefix $(frontDirName)'
+    displayName: Client - Build
+
+

@@ -24,9 +24,14 @@ export class HistoryService {
 	private getDeletedAppInstanceHistoryAPI = this.dscribeService.url('api/History/GetDeletedAppInstanceHistory');
 	private getAppTypeHistoryAPI = this.dscribeService.url('api/History/GetAppTypeHistory');
 	private getDeletedAppTypeHistoryAPI = this.dscribeService.url('api/History/GetDeletedAppTypeHistory');
+	private getDataHistoryAPI = this.dscribeService.url('api/History/GetDataHistory');
 
 	getEntityTypeHistory(data: EntityTypeHistoryModel): Observable<EntityTypeHistoryModel[]> {
 		return this.http.post<EntityTypeHistoryModel[]>(this.getEntityTypeHistoryAPI, data);
+	}
+
+	getDataHistory(entityName: string, data: string): Observable<any[]> {
+		return this.http.post<any[]>(this.getDataHistoryAPI, { EntityName: entityName, Data: data });
 	}
 
 	getDeletedEntityTypeHistory(): Observable<any> {

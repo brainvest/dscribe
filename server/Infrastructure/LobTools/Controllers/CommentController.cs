@@ -24,7 +24,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		public async Task<ActionResult<CommentsListResponse>> GetCommentsList(CommentsListRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var attachmets = await dbContext.Comments.Where(x => x.EntityTypeId == entityTypeId && x.Identifier == request.Identifier)
 					.Select(x => new CommentsListResponse.Item
@@ -48,7 +48,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		public async Task<ActionResult<ManageCommentResponse>> AddComment(ManageCommentRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var comment = new Comment
 				{
@@ -70,7 +70,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		public async Task<ActionResult<ManageCommentResponse>> EditComment(ManageCommentRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var comment = await dbContext.Comments.FindAsync(request.Id);
 				if (comment.EntityTypeId != entityTypeId || comment.Identifier != request.Identifier)
@@ -93,7 +93,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		public async Task<ActionResult<ManageCommentResponse>> DeleteComment(ManageCommentRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
-			using (var dbContext = _implementationsContainer.LobToolsRepositoryFactory() as LobToolsDbContext)
+			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var comment = await dbContext.Comments.FindAsync(request.Id);
 				dbContext.Remove(comment);

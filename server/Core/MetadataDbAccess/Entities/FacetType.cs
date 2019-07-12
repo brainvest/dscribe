@@ -1,5 +1,5 @@
 using Brainvest.Dscribe.Abstractions.Metadata;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 {
@@ -7,7 +7,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 	{
 		public FacetDataType Id { get; set; }
 		public string Name { get; set; }
-		[Column(TypeName = "varchar(200)")]
+		[MaxLength(200)]
 		public string Identifier { get; set; }
 	}
 }

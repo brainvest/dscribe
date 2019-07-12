@@ -17,18 +17,31 @@
 				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="deleteSelected()" color="warn" matTooltip="Delete selected {{entityType?.SingularTitle}}">
 					<mat-icon>delete</mat-icon>
 				</button>
+				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="showHistory()" color="warn" matTooltip="Show {{entityType?.SingularTitle}} history">
+					<mat-icon>history</mat-icon>
+				</button>
 				<button [disabled]="!selection.hasValue()" mat-icon-button (click)="manageComment()" color="primary" matTooltip="Comment for selected {{entityType?.SingularTitle}}">
 					<mat-icon>insert_comment</mat-icon>
 				</button>
+
+				<ng-container *ngFor="let command of listCommands">
+					<dscribe-command-button
+						[command]="command"
+						*ngIf="shouldDisplayCommand(command)"
+						(execute)="callListCommand(command)">
+					</dscribe-command-button>
+				</ng-container>
+
 				<span *ngIf="!hideFilter">
 					<mat-button-toggle (change)="toggleFilter()" [checked]="filterVisible" matTooltip="{{filterVisible ? 'Hide' : 'Show'}} Filter">
 						<mat-icon>filter_list</mat-icon>
 					</mat-button-toggle>
 					<ng-container *ngFor="let command of filterCommands">
-						<button *ngIf="shouldDisplayCommand(command)" matTooltip="{{command.title}}" mat-icon-button (click)="callFilterCommand(command)">
-							<mat-icon *ngIf="command.iconName">{{command.iconName}}</mat-icon>
-							<span *ngIf="!command.iconName">{{command.title}}</span>
-						</button>
+						<dscribe-command-button
+							[command]="command"
+							*ngIf="shouldDisplayCommand(command)"
+							(execute)="callFilterCommand(command)">
+						</dscribe-command-button>
 					</ng-container>
 				</span>
 				<button [disabled]="!selection.hasValue() || !reports?.length" mat-icon-button (click)="showReports()" color="accent"

@@ -3,7 +3,6 @@ using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.Runtime.ActionContext;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
@@ -24,9 +23,9 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 			_entityHandler = entityHandler;
 		}
 
-		public async Task<ActionResult<object>> Add(ManageEntityRequest request)
+		public async Task<Result<object>> Add(ManageEntityRequest request)
 		{
-			using (var repository = _implementations.RepositoryFactory())
+			using (var repository = _implementations.GetBusinessRepository())
 			{
 				var map = new Dictionary<string, object>();
 				var actionContext = new ActionContextInfo
@@ -36,12 +35,16 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 					Type = ActionContextType.Add
 				};
 				var result = await AddRecursive(request, repository, map, "", actionContext);
+				if (!result.Succeeded)
+				{
+					return result;
+				}
 				await _entityHandler.SaveChanges(repository, request.EntityTypeName);
 				return map[""];
 			}
 		}
 
-		private async Task<ActionResult<object>> AddRecursive(ManageEntityRequest request, IDisposable repository, Dictionary<string, object> map
+		private async Task<Result<object>> AddRecursive(ManageEntityRequest request, IDisposable repository, Dictionary<string, object> map
 			, string currentObjectPath, ActionContextInfo actionContext)
 		{
 			var entityType = _implementations.Metadata[request.EntityTypeName];
@@ -61,7 +64,12 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 					(actionContext.ExcludedProperties as List<string>).Add(prop.ForeignKey.Name);
 				}
 				var result = await _entityHandler.Add(request, repository, actionContext);
-				entity = result.Value;
+				if (!result.Succeeded)
+				{
+					// TODO: Here, the error messages should be prepended by the path to the current entity
+					return result;
+				}
+				entity = result.Data;
 			}
 			else
 			{
@@ -189,9 +197,9 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 			return part1 + "." + part2;
 		}
 
-		public async Task<ActionResult<object>> Edit(ManageEntityRequest request)
+		public async Task<Result<object>> Edit(ManageEntityRequest request)
 		{
-			using (var repository = _implementations.RepositoryFactory())
+			using (var repository = _implementations.GetBusinessRepository())
 			{
 				var result = await _entityHandler.Edit(request, repository);
 				await _entityHandler.SaveChanges(repository, request.EntityTypeName);
@@ -199,9 +207,9 @@ namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 			}
 		}
 
-		public async Task<ActionResult<object>> Delete(ManageEntityRequest request)
+		public async Task<Result<object>> Delete(ManageEntityRequest request)
 		{
-			using (var repository = _implementations.RepositoryFactory())
+			using (var repository = _implementations.GetBusinessRepository())
 			{
 				var result = await _entityHandler.Delete(request, repository);
 				await _entityHandler.SaveChanges(repository, request.EntityTypeName);

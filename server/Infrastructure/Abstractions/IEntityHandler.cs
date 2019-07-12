@@ -1,6 +1,5 @@
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
-using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,9 +15,9 @@ namespace Brainvest.Dscribe.Abstractions
 		Task<IEnumerable> GetGroupped(GrouppedListRequest request);
 		Task<IEnumerable<NameResponseItem>> GetIdAndName(IdAndNameRequest request);
 		Task<IEnumerable<NameResponseItem>> GetAutocomplteItems(AutocompleteItemsRequest request);
-		Task<ActionResult<object>> Edit(ManageEntityRequest request, object businessRepository);
-		Task<ActionResult<object>> Add(ManageEntityRequest request, object businessRepository, IActionContextInfo actionContext);
-		Task<ActionResult<object>> Delete(ManageEntityRequest request, object businessRepository);
-		Task<ActionResult> SaveChanges(object businessRepository,string entityTypeName);
+		Task<Result<object>> Edit(ManageEntityRequest request, object businessRepository);
+		Task<Result<object>> Add(ManageEntityRequest request, object businessRepository, IActionContextInfo actionContext);
+		Task<Result<object>> Delete(ManageEntityRequest request, object businessRepository);
+		Task<Result> SaveChanges(object businessRepository, string entityTypeName);
 	}
 }

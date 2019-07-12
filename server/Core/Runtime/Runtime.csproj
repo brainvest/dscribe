@@ -5,6 +5,8 @@
     <AssemblyName>Brainvest.Dscribe.Runtime</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.Runtime</RootNamespace>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/brainvest/dscribe</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
 	<Import Project="..\..\SolutionInfo.xml" />
@@ -26,17 +28,26 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Composition" Version="1.0.31" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
     <PackageReference Include="SaasKit.Multitenancy" Version="1.1.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Abstractions\Abstractions.csproj" />
     <ProjectReference Include="..\..\Infrastructure\LobTools\LobTools.csproj" />
+    <ProjectReference Include="..\..\Migrations\Migrations_Runtime_PostgreSql\Migrations_Runtime_PostgreSql.csproj" />
     <ProjectReference Include="..\MetadataDbAccess\MetadataDbAccess.csproj" />
     <ProjectReference Include="..\Metadata\Metadata.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

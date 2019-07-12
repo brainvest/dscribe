@@ -20,7 +20,7 @@ export class GroupingInfo {
 
 	public getFakeSemantics(): EntityTypeMetadata {
 		const cols: PropertyMetadata[] = [];
-		const fakeType = new EntityTypeMetadata('Groupped' + this.entityType.name, 'گروه', 'گروه ها', null);
+		const fakeType = new EntityTypeMetadata('Groupped' + this.entityType.name, 'Group', 'Groups', null);
 
 		let propIndex = 0;
 		for (let i = 0; i < this.groupBy.length; i++) {
@@ -70,16 +70,16 @@ export class GroupingInfo {
 
 	public toString() {
 		if (!this.isValid()) {
-			return 'گروه بندی انتخاب شده صحیح نمی‌باشد.';
+			return 'Selected grouping is not valid';
 		} else if (!this.hasSelectedGrouping()) {
-			return 'گروه بندی انتخاب نشده است.';
+			return 'No grouping is selected';
 		} else {
 			let result = '';
 			this.aggregations.forEach(a => {
 				result += a.getResultName();
 			});
 			if (this.groupBy.length) {
-				result += ' به تفکیک ';
+				result += ' grouped by ';
 			}
 			this.groupBy.forEach(g => {
 				result += g.property.title;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities
@@ -10,7 +11,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public int AppTypeId { get; set; }
 		public AppType AppType { get; set; }
 
-		[Column(TypeName = "varchar(200)")]
+		[MaxLength(200)]
 		public string Name { get; set; }
 		public string TableName { get; set; }
 		public string SchemaName { get; set; }

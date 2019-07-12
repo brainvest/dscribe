@@ -4,15 +4,15 @@ export class AggregationHelper {
 	public static getPersianTitle(agg: SimpleAggregate): string {
 		switch (agg) {
 			case SimpleAggregate.Average:
-				return 'میانگین';
+				return 'Average';
 			case SimpleAggregate.Count:
-				return 'تعداد';
+				return 'Count';
 			case SimpleAggregate.Max:
-				return 'بیشترین مقدار';
+				return 'Max';
 			case SimpleAggregate.Min:
-				return 'کمترین مقدار';
+				return 'Min';
 			case SimpleAggregate.Sum:
-				return 'مجموع';
+				return 'Sum';
 		}
 	}
 }

@@ -4,6 +4,7 @@ import { MetadataManagementComponent } from './administration/metadata-managemen
 import { SettingsComponent } from './administration/settings/settings.component';
 import { AppInstanceManagementComponent } from './administration/settings/app-instance-management/app-instance-management.component';
 import { AppTypeManagementComponent } from './administration/settings/app-type-management/app-type-management.component';
+import { UsersAndRolesManagementComponent } from './security/components/users-and-roles-management/users-and-roles-management.component';
 
 export const DSCRIBE_ROUTES = [
 	{
@@ -12,6 +13,7 @@ export const DSCRIBE_ROUTES = [
 			{ path: 'entity/:entityTypeName', component: ListContainerComponent },
 			{ path: 'entity', component: ListContainerComponent },
 			{ path: 'administration', component: MetadataManagementComponent },
+			{ path: 'security', component: UsersAndRolesManagementComponent },
 			{
 				path: 'setting', component: SettingsComponent,
 				children: [

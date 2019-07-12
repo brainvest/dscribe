@@ -1,17 +1,16 @@
-import { FacetDefinitionModel } from './../../metadata/facets/facet-definition-model';
-import { element } from 'protractor';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
-import { AddNEditPropertyMetadataModel, RelatedPropertyAction } from '../models/add-n-edit-property-metadata-model';
-import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
-import { EntityTypeBase } from '../../metadata/entity-type-base';
-import { DataTypeModel } from '../../metadata/data-type-model';
-import { PropertyBase } from '../../metadata/property-base';
-import { AddNEditEntityTypeComponent } from '../add-n-edit-entity/add-n-edit-entity-type.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { MetadataManagementApiClient } from '../metadata-management-api-client';
-import { PropertyInfoModel } from '../models/property-info-model';
-import { SnackBarService } from '../../common/notifications/snackbar.service';
+import {FacetDefinitionModel} from './../../metadata/facets/facet-definition-model';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Component, Inject, OnInit} from '@angular/core';
+import {AddNEditPropertyMetadataModel, RelatedPropertyAction} from '../models/add-n-edit-property-metadata-model';
+import {MetadataBasicInfoModel} from '../../metadata/metadata-basic-info-model';
+import {EntityTypeBase} from '../../metadata/entity-type-base';
+import {DataTypeModel} from '../../metadata/data-type-model';
+import {PropertyBase} from '../../metadata/property-base';
+import {AddNEditEntityTypeComponent} from '../add-n-edit-entity/add-n-edit-entity-type.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MetadataManagementApiClient} from '../metadata-management-api-client';
+import {PropertyInfoModel} from '../models/property-info-model';
+import {SnackBarService} from '../../common/notifications/snackbar.service';
 
 @Component({
 	selector: 'dscribe-add-n-edit-property',
@@ -28,6 +27,7 @@ export class AddNEditPropertyComponent implements OnInit {
 	thisTypeProperties: PropertyBase[];
 	allProperties: PropertyInfoModel[];
 	submitLoading = false;
+	facets: FacetDefinitionModel[];
 
 	constructor(
 		private dialogRef: MatDialogRef<AddNEditEntityTypeComponent>,
@@ -40,7 +40,7 @@ export class AddNEditPropertyComponent implements OnInit {
 		this.thisTypeProperties = data.thisEntityTypeProperties;
 		this.allProperties = data.allProperties;
 		if (!this.data.isNew) {
-			this.data.basicInfo.PropertyFacetDefinitions = [];
+			this.facets = [];
 			this.setDefaultFacetValues();
 		}
 	}
@@ -48,9 +48,11 @@ export class AddNEditPropertyComponent implements OnInit {
 	setDefaultFacetValues() {
 		const currentGeneralUsageCategory = this.data.basicInfo.PropertyGeneralUsageCategories
 			.find(x => x.Id === this.data.property.PropertyGeneralUsageCategoryId);
-		this.basicInfo.PropertyFacetDefinitions.forEach((x: FacetDefinitionModel) => {
+		this.facets.forEach((x: FacetDefinitionModel) => {
 			if (this.data.basicInfo.DefaultPropertyFacetValues[currentGeneralUsageCategory.Name]) {
 				x.Default = this.data.basicInfo.DefaultPropertyFacetValues[currentGeneralUsageCategory.Name][x.Name];
+			} else {
+				x.Default = this.basicInfo.PropertyFacetDefinitions.find(t => t.Id === x.Id).Default;
 			}
 		});
 		this.setPropertyFacetDefinitions();
@@ -89,22 +91,19 @@ export class AddNEditPropertyComponent implements OnInit {
 	}
 
 	setPropertyFacetDefinitions() {
-		this.basicInfo.PropertyFacetDefinitions = [];
+		this.facets = [];
 		const generalUsageCategory =
 			this.basicInfo.PropertyGeneralUsageCategories.find(x => x.Id === this.property.PropertyGeneralUsageCategoryId);
 
-		if (generalUsageCategory) {
-			for (const g in this.basicInfo.DefaultPropertyFacetValues[generalUsageCategory.Name]) {
-				if (generalUsageCategory) {
-					let id = 0;
-					this.basicInfo.PropertyFacetDefinitions.push({
-						Id: ++id,
-						Default: this.basicInfo.DefaultPropertyFacetValues[generalUsageCategory.Name][g],
-						Name: g,
-						DataType: ''
-					});
-				}
-			}
+		for (const g of this.basicInfo.PropertyFacetDefinitions) {
+			const defaults = generalUsageCategory && this.basicInfo.DefaultPropertyFacetValues[generalUsageCategory.Name];
+			let id = 0;
+			this.facets.push({
+				Id: ++id,
+				Default: defaults ? defaults[g.Name] : g.Default,
+				Name: g.Name,
+				DataType: ''
+			});
 		}
 	}
 
@@ -125,6 +124,9 @@ export class AddNEditPropertyComponent implements OnInit {
 			} else if (facetType.Default.toLowerCase() === 'true') {
 				return 'check_box';
 			}
+		}
+		if (facetType.Default === undefined) {
+			return 'check_box_outline_blank';
 		}
 	}
 
@@ -175,7 +177,7 @@ export class AddNEditPropertyComponent implements OnInit {
 			this.dialogRef.close('saved');
 			this.submitLoading = false;
 		}, (error: HttpErrorResponse) => {
-			this.propertyError = error.error;
+			this.propertyError = error.error.errors;
 			this.snackbarService.open(error.statusText);
 			this.submitLoading = false;
 		});

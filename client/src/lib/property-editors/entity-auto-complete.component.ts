@@ -108,10 +108,10 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			if (!x) {
 				return;
 			}
-			this.dataHandler.getName(this.property.EntityTypeName, data.selectedRow.Id)
+			this.dataHandler.getName(this.property.EntityTypeName, data.selectedRow[this.property.EntityType.getPrimaryKey().Name])
 				.subscribe(y => {
 					this.selectionChange({
-						Id: data.selectedRow.Id,
+						Id: data.selectedRow[this.property.EntityType.getPrimaryKey().Name],
 						DisplayName: y
 					});
 				});
@@ -132,10 +132,10 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			if (!x) {
 				return;
 			}
-			this.dataHandler.getName(this.property.EntityTypeName, x.instance.Id)
+			this.dataHandler.getName(this.property.EntityTypeName, x.instance[this.property.EntityType.getPrimaryKey().Name])
 				.subscribe(y => {
 					this.selectionChange({
-						Id: x.instance.Id,
+						Id: x.instance[this.property.EntityType.getPrimaryKey().Name],
 						DisplayName: y
 					});
 				});
@@ -155,7 +155,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 			</dscribe-list>
 		</mat-dialog-content>
 		<mat-dialog-actions>
-			<button mat-raised-button color="primary" (click)="doneClicked()">تایید</button>
+			<button mat-raised-button color="primary" (click)="doneClicked()">Ok</button>
 		</mat-dialog-actions>
 	`
 })

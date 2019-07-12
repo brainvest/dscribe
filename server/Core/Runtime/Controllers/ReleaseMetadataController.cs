@@ -1,5 +1,6 @@
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.CodeGeneration;
+using Brainvest.Dscribe.Abstractions.Helpers;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.MetadataModels;
 using Brainvest.Dscribe.Helpers;
@@ -111,7 +112,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			{
 				try
 				{
-					System.IO.File.Copy(r.SourceCodeFileName, copyFileName);
+					System.IO.File.Copy(r.SourceCodeFileName, copyFileName, true);
 				}
 				catch (Exception ex)
 				{

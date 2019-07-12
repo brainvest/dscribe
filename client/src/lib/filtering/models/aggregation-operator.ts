@@ -19,7 +19,7 @@ export class AggregationOperator {
 			'long': 'long',
 			'decimal': 'decimal'
 		}),
-		new AggregationOperator('Average', 'میانگین', true, false, true, {
+		new AggregationOperator('Average', 'Average', true, false, true, {
 			'decimal': 'decimal',
 			'int': 'decimal',
 			'long': 'decimal'

@@ -1,5 +1,4 @@
 using Brainvest.Dscribe.Implementations.EfCore.All;
-using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.Runtime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,7 +38,7 @@ namespace Brainvest.Dscribe.Host
 			services.AddAuthentication("Bearer")
 					.AddIdentityServerAuthentication(options =>
 					{
-						options.Authority = "http://localhost:5001";
+						options.Authority = Configuration.GetSection("AuthAuthority").Get<string>();
 						options.RequireHttpsMetadata = false;
 					});
 		}
@@ -47,7 +46,7 @@ namespace Brainvest.Dscribe.Host
 		private void SetupProvider(DbContextOptionsBuilder options, string connectionStringName)
 		{
 			var provider = Configuration.GetSection("EfProvider").Get<string>();
-			switch (provider)
+			switch (provider)  // TODO: use a case-insensitive comparison
 			{
 				case "MySql":
 					options.UseMySql(
@@ -55,6 +54,11 @@ namespace Brainvest.Dscribe.Host
 					return;
 				case "SqlServer":
 					options.UseSqlServer(
+							Configuration.GetConnectionString(connectionStringName));
+					return;
+				case "PostgreSql":
+				case "PostgreSQL":
+					options.UseNpgsql(
 							Configuration.GetConnectionString(connectionStringName));
 					return;
 				default:

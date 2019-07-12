@@ -137,8 +137,8 @@
 		</mat-form-field>
 		<mat-card style="margin-bottom: 10px" *ngIf="property.PropertyGeneralUsageCategoryId">
 			<h5 style="color:gray">Facets</h5>
-			<div *ngFor="let facetType of basicInfo.PropertyFacetDefinitions">
-				<button mat-icon-button (click)="changeFacetValue(facetType)" *ngIf="facetType.Default">
+			<div *ngFor="let facetType of facets">
+				<button mat-icon-button (click)="changeFacetValue(facetType)">
 					<mat-icon color="warn">{{setFacetCheckIcon(facetType)}}</mat-icon>
 					{{getFacetName(facetType)}}
 				</button>

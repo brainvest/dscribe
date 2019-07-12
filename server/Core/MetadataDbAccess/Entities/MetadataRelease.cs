@@ -9,7 +9,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 	{
 		public int Id { get; set; }
 
-		[Column(TypeName = "varchar(200)")]
+		[MaxLength(200)]
 		public string Version { get; set; }
 		public int? VersionCode { get; set; }
 

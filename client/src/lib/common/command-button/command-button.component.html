@@ -1,0 +1,22 @@
+<button
+	*ngIf="command.iconName"
+	[matBadge]="command.badge && command.badge.text"
+	[matBadgeColor]="(command.badge && command.badge.color) || 'primary'"
+	[matBadgeSize]="(command.badge && command.badge.size) || 'medium'"
+	[matBadgePosition]="(command.badge && command.badge.position) || 'above after'"
+	matTooltip="{{command.tooltip || command.title}}"
+	mat-icon-button
+	(click)="performAction()">
+	<mat-icon>{{command.iconName}}</mat-icon>
+</button>
+
+<button
+	*ngIf="!command.iconName"
+	[matBadge]="command.badge && command.badge.text"
+	[matBadgeColor]="(command.badge && command.badge.color) || 'primary'"
+	[matBadgeSize]="(command.badge && command.badge.size) || 'medium'"
+	[matBadgePosition]="(command.badge && command.badge.position) || 'above after'"
+	matTooltip="{{command.tooltip || command.title}}"
+	(click)="performAction()">
+	<span>{{command.title}}</span>
+</button>

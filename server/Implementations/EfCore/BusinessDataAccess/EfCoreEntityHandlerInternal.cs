@@ -2,7 +2,6 @@ using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using Brainvest.Dscribe.Helpers;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
@@ -45,21 +44,21 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				{
 					return;
 				}
-				EfCoreHelper.PerformMigrations(() => _implementationsContainer.RepositoryFactory() as DbContext);
+				EfCoreHelper.PerformMigrations(() => _implementationsContainer.GetBusinessRepository() as DbContext);
 			}
 		}
 
 		private async Task<DbContext> GetReadBusinessDbContext()
 		{
 			CheckMigrations();
-			var dbContext = _implementationsContainer.RepositoryFactory() as DbContext;
+			var dbContext = _implementationsContainer.GetBusinessRepository() as DbContext;
 			return await Task.FromResult(dbContext);
 		}
 
 		private DbContext GetWriteBusinessDbContext()
 		{
 			CheckMigrations();
-			return _implementationsContainer.RepositoryFactory() as DbContext;
+			return _implementationsContainer.GetBusinessRepository() as DbContext;
 		}
 
 		internal async Task<int> CountByFilterInternal<TEntity>(EntityListRequest<TEntity> request)
@@ -232,7 +231,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			}
 		}
 
-		internal async Task<ActionResult<object>> AddInternal<TEntity>(ManageEntityRequest<TEntity> request
+		internal async Task<Result<object>> AddInternal<TEntity>(ManageEntityRequest<TEntity> request
 			, DbContext dbContext, IActionContextInfo actionContext)
 			where TEntity : class
 		{
@@ -241,20 +240,20 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Insert, actionContext);
 				if (validationResult?.IsValid == false)
 				{
-					return new BadRequestObjectResult(validationResult);
+					return validationResult;
 				}
 
 				var set = dbContext.Set<TEntity>();
 				await set.AddAsync(request.Entity);
 				return request.Entity;
 			}
-			catch
+			catch (Exception ex)
 			{
-				return new StatusCodeResult(500);
+				return ex;
 			}
 		}
 
-		internal async Task<ActionResult<object>> EditInternal<TEntity>(ManageEntityRequest<TEntity> request
+		internal async Task<Result<object>> EditInternal<TEntity>(ManageEntityRequest<TEntity> request
 			, DbContext dbContext, IActionContextInfo actionContext)
 			where TEntity : class
 		{
@@ -271,31 +270,31 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				_entityHelper.CopyPropertyValues(request.Entity, existing);
 				return existing;
 			}
-			catch
+			catch (Exception ex)
 			{
-				return new StatusCodeResult(500);
+				return ex;
 			}
 		}
 
-		internal async Task<ActionResult<object>> DeleteInternal<TEntity>(ManageEntityRequest<TEntity> request
+		internal async Task<Result<object>> DeleteInternal<TEntity>(ManageEntityRequest<TEntity> request
 			, DbContext dbContext, IActionContextInfo actionContext)
 		where TEntity : class
 		{
 			try
 			{
-				var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Delete, actionContext);
-				if (validationResult?.IsValid == false)
-				{
-					return new BadRequestObjectResult(validationResult);
-				}
+				//var validationResult = _validator.Validate(request.Entity, ActionTypeEnum.Delete, actionContext);
+				//if (validationResult?.IsValid == false)
+				//{
+				//	return validationResult;
+				//}
 				var set = dbContext.Set<TEntity>();
 				var entity = await set.FindAsync(_entityHelper.GetPrimaryKey(request.Entity));
 				set.Remove(entity);
 				return request.Entity;
 			}
-			catch
+			catch (Exception ex)
 			{
-				return new StatusCodeResult(500);
+				return ex;
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Services;
 using Brainvest.Dscribe.Security.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,10 +10,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Migrations_Auth_MySql;
+using Migrations_Auth_PostgreSql;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -42,39 +46,91 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 				Console.WriteLine($"{pair.Key}:{pair.Value}");
 			}
 
-			services.AddDbContext<SecurityDbContext>(options =>
+			var provider = Configuration.GetSection("EfProvider").Get<string>();
+			if (string.IsNullOrWhiteSpace(provider))
 			{
-				var provider = Configuration.GetSection("EfProvider").Get<string>();
-				switch (provider)
-				{
-					case "MySql":
-						options.UseMySql(
-								Configuration.GetConnectionString("Auth_MySql"));
-						return;
-					case "SqlServer":
-						options.UseSqlServer(
-								Configuration.GetConnectionString("Auth_SqlServer"));
-						return;
-					default:
-						throw new NotImplementedException($"The provider {provider} is not implemented yet.");
-				}
+				Console.WriteLine("Error: database provider is not set, the expected name is: EfProvider");
+			}
+			var connectionString = Configuration.GetConnectionString("Auth");
+			if (string.IsNullOrWhiteSpace(connectionString))
+			{
+				Console.WriteLine("Error: Connection string is not set, the expected name is: Auth");
+			}
+
+			switch (provider)
+			{
+				case "MySql":
+					services.AddDbContext<SecurityDbContext, SecurityDbContext_MySql>(
+						options => options.UseMySql(connectionString,
+						x => x.MigrationsAssembly(typeof(SecurityDbContext_MySql).Assembly.GetName().Name)
+							.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
+					break;
+				case "SqlServer":
+					services.AddDbContext<SecurityDbContext>(options => options.UseSqlServer(connectionString));
+					break;
+				case "PostgreSql":
+				case "PostgreSQL":
+					services.AddDbContext<SecurityDbContext, SecurityDbContext_PostgreSql>(options => options.UseNpgsql(connectionString));
+					break;
+				default:
+					throw new NotImplementedException($"The provider {provider} is not implemented yet.");
+			}
+
+			services.Configure<ConfigModel>(Configuration.GetSection("Config"));
+			var config = Configuration.GetSection("Config").Get<ConfigModel>();
+
+			services.AddIdentity<User, Role>(options =>
+			{
+				options.Password.RequireDigit = config?.Password?.RequireDigit ?? true;
+				options.Password.RequireLowercase = config?.Password?.RequireLowercase ?? true;
+				options.Password.RequireNonAlphanumeric = config?.Password?.RequireNonAlphanumeric ?? true;
+				options.Password.RequireUppercase = config?.Password?.RequireUppercase ?? true;
+				options.Password.RequiredLength = config?.Password?.RequiredLength ?? 6;
+				options.Password.RequiredUniqueChars = config?.Password?.RequiredUniqueChars ?? 1;
+				options.SignIn.RequireConfirmedEmail = config?.SignIn?.RequireConfirmedEmail ?? false;
+			})
+			.AddEntityFrameworkStores<SecurityDbContext>()
+			.AddDefaultTokenProviders();
+
+			if (string.IsNullOrWhiteSpace(config?.Email?.Server))
+			{
+				services.AddScoped<IEmailSender, FakeEmailSender>();
+			}
+			else
+			{
+				services.AddTransient<IEmailSender, SmtpEmailSender>();
+			}
+
+			services.Configure<IdentityOptions>(options =>
+			{
+				options.Password.RequireDigit = config?.Password?.RequireDigit ?? true;
+				options.Password.RequireLowercase = config?.Password?.RequireLowercase ?? true;
+				options.Password.RequireNonAlphanumeric = config?.Password?.RequireNonAlphanumeric ?? true;
+				options.Password.RequireUppercase = config?.Password?.RequireUppercase ?? true;
+				options.Password.RequiredLength = config?.Password?.RequiredLength ?? 6;
+				options.Password.RequiredUniqueChars = config?.Password?.RequiredUniqueChars ?? 1;
 			});
 
-			services.AddIdentity<User, Role>()
-					.AddEntityFrameworkStores<SecurityDbContext>()
-					.AddDefaultTokenProviders();
+			services.ConfigureApplicationCookie(options =>
+				{
+					options.Cookie.SameSite = SameSiteMode.None;
+				});
+
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+					.AddCookie("Cookies", options =>
+			 {
+				 options.Cookie.SameSite = SameSiteMode.None;
+			 });
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-			services.AddScoped<IEmailSender, FakeEmailSender>();
 
 			var clients = Configuration.GetSection("Clients").Get<IEnumerable<ClientInfo>>();
+			services.AddSingleton(clients);
 			Console.WriteLine();
 			Console.WriteLine("Clients");
 			Console.WriteLine("==================");
 			Console.WriteLine(JsonConvert.SerializeObject(clients));
 			Console.WriteLine("==================");
-
-			services.Configure<ConfigModel>(Configuration.GetSection("Config"));
 
 			services.AddIdentityServer(options =>
 			{
@@ -108,7 +164,10 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 				logger.LogInformation($"Using path {options.Value.PathBase}");
 			}
 			app.UseStaticFiles();
-			app.UseCookiePolicy();
+			app.UseCookiePolicy(new CookiePolicyOptions
+			{
+				MinimumSameSitePolicy = SameSiteMode.None
+			});
 
 			var forwardedHeaderOptions = new ForwardedHeadersOptions
 			{

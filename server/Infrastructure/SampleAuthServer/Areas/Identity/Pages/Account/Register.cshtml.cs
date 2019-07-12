@@ -49,7 +49,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages
 			public string Email { get; set; }
 
 			[Required]
-			[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+			[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
 			[DataType(DataType.Password)]
 			[Display(Name = "Password")]
 			public string Password { get; set; }
@@ -95,7 +95,10 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages
 					await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
 							$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-					await _signInManager.SignInAsync(user, isPersistent: false);
+					if (!(_options.Value?.SignIn?.RequireConfirmedEmail ?? false))
+					{
+						await _signInManager.SignInAsync(user, isPersistent: false);
+					}
 					return LocalRedirect(returnUrl);
 				}
 				foreach (var error in result.Errors)

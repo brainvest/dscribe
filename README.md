@@ -1,4 +1,10 @@
-# dscribe
+## Welcome to Describe
+
+|Branch|Build|Windows|Linux|Mac|
+|:--:|:--:|:--:|:--:|:--:|
+|**Master**|Debug|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master&jobName=windows&Debug)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master&jobName=linux&Debug)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master&jobName=mac&debug)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)
+|**Master**|Release|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master&jobName=windows&Release)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master&jobName=linux&Release)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)|[![Build Status](https://dev.azure.com/brainvest/dscribe/_apis/build/status/brainvest.dscribe?branchName=master&jobName=mac&Release)](https://dev.azure.com/brainvest/dscribe/_build/latest?definitionId=3?branchName=master)
+
 Dscribe is a library to rapidly create LOB applications by describing the logic.
 
 The application will use c#, asp.net core for the server and angular in the client.

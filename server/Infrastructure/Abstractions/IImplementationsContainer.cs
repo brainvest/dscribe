@@ -11,8 +11,8 @@ namespace Brainvest.Dscribe.Abstractions
 		IMetadataModel MetadataModel { get; }
 		IBusinessReflector Reflector { get; }
 		IMetadataCache Metadata { get; }
-		Func<IDisposable> RepositoryFactory { get; }
-		Func<DbContext> LobToolsRepositoryFactory { get; }
+		IDisposable GetBusinessRepository();
+		DbContext GetLobToolsRepository();
 		bool MigrationsExecuted { get; set; }
 	}
 }
