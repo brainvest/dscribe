@@ -2,10 +2,9 @@
  *  Based on https://www.scottbrady91.com/Angular/SPA-Authentiction-using-OpenID-Connect-Angular-CLI-and-oidc-client
  */
 
-
-import {Injectable} from '@angular/core';
-import {User, UserManager, UserManagerSettings} from 'oidc-client';
-import {environment} from '../../environments/environment';
+import { Injectable } from '@angular/core';
+import { User, UserManager, UserManagerSettings } from 'oidc-client';
+import { environment } from '../../environments/environment';
 import { of, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -20,17 +19,22 @@ export class AuthService {
 	};
 
 	constructor() {
+		this.manager.events.addUserLoaded(user => {
+			this.user = user;
+		});
 		this.manager.events.addSilentRenewError(console.error);
 	}
 
 	isLoggedIn(): Observable<boolean> {
-		if(this.user) {
+		if (this.user) {
 			return of(this.user && !this.user.expired);
 		}
-		return from(this.manager.getUser()).pipe(map(user => {
-			this.user = user;
-			return this.user && !this.user.expired;
-		}));
+		return from(this.manager.getUser()).pipe(
+			map(user => {
+				this.user = user;
+				return this.user && !this.user.expired;
+			})
+		);
 	}
 
 	getClaims(): any {
@@ -46,8 +50,6 @@ export class AuthService {
 			this.user = user;
 		});
 	}
-
-
 }
 
 export function getClientSettings(): UserManagerSettings {
