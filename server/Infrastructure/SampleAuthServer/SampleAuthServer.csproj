@@ -1,47 +1,47 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <UserSecretsId>aspnet-IdentityServerHost-C2CA2F30-CEF5-4399-8037-AB2C48FD5EE6</UserSecretsId>
-    <LangVersion>latest</LangVersion>
-    <AssemblyName>Brainvest.Dscribe.Infrastructure.SampleAuthServer</AssemblyName>
-    <RootNamespace>Brainvest.Dscribe.Infrastructure.SampleAuthServer</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<UserSecretsId>aspnet-IdentityServerHost-C2CA2F30-CEF5-4399-8037-AB2C48FD5EE6</UserSecretsId>
+		<LangVersion>latest</LangVersion>
+		<AssemblyName>Brainvest.Dscribe.Infrastructure.SampleAuthServer</AssemblyName>
+		<RootNamespace>Brainvest.Dscribe.Infrastructure.SampleAuthServer</RootNamespace>
+	</PropertyGroup>
 
 	<PropertyGroup>
-		<RuntimeFrameworkVersion>2.2.4</RuntimeFrameworkVersion>
+		<RuntimeFrameworkVersion>2.2.6</RuntimeFrameworkVersion>
 	</PropertyGroup>
 
 	<Import Project="..\..\SolutionInfo.xml" />
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<WarningsAsErrors />
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<WarningsAsErrors />
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" PrivateAssets="All" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.4.0" />
+		<PackageReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.6" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" PrivateAssets="All" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Identity\Services\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Areas\Identity\Services\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Migrations\Migrations_Auth_MySql\Migrations_Auth_MySql.csproj" />
-    <ProjectReference Include="..\..\Migrations\Migrations_Auth_PostgreSql\Migrations_Auth_PostgreSql.csproj" />
-    <ProjectReference Include="..\Auth\AuthEntities\AuthEntities.csproj" />
-    <ProjectReference Include="..\Helpers\Helpers.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Migrations\Migrations_Auth_MySql\Migrations_Auth_MySql.csproj" />
+		<ProjectReference Include="..\..\Migrations\Migrations_Auth_PostgreSql\Migrations_Auth_PostgreSql.csproj" />
+		<ProjectReference Include="..\Auth\AuthEntities\AuthEntities.csproj" />
+		<ProjectReference Include="..\Helpers\Helpers.csproj" />
+	</ItemGroup>
 
 </Project>
