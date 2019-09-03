@@ -48,7 +48,8 @@ namespace Brainvest.Dscribe.LobTools
 				case "PostgreSql":
 				case "PostgreSQL":
 					services.AddDbContext<LobToolsDbContext, LobToolsDbContext_PostgreSql>(
-						options => options.UseNpgsql(connectionString));
+						options => options.UseNpgsql(connectionString,
+						x => x.MigrationsAssembly(typeof(LobToolsDbContext_PostgreSql).Assembly.GetName().Name)));
 					break;
 				default:
 					throw new NotImplementedException($"The provider {provider} is not implemented yet.");
