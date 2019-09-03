@@ -45,7 +45,8 @@ namespace Brainvest.Dscribe.Runtime
 					break;
 				case "PostgreSql":
 				case "PostgreSQL":
-					services.AddDbContext<MetadataDbContext, MetadataDbContext_PostgreSql>(options => options.UseNpgsql(connectionString));
+					services.AddDbContext<MetadataDbContext, MetadataDbContext_PostgreSql>(options => options.UseNpgsql(connectionString,
+						x => x.MigrationsAssembly(typeof(MetadataDbContext_PostgreSql).Assembly.GetName().Name)));
 					break;
 				default:
 					throw new NotImplementedException($"The provider {provider} is not implemented yet.");
