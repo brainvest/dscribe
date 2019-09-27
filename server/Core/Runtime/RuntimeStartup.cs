@@ -18,7 +18,7 @@ namespace Brainvest.Dscribe.Runtime
 	public class RuntimeStartup
 	{
 		public static void ConfigureServices(IServiceCollection services, IConfiguration configuration
-			, Action<DbContextOptionsBuilder, string> efProviderSetup, int? defaultAppInstanceId = null)
+			, Action<DbContextOptionsBuilder, string> efProviderSetup, ImplementationResolverOptions implementationResolverOptions = null)
 		{
 
 			var provider = configuration.GetSection("EfProvider").Get<string>();
@@ -53,15 +53,12 @@ namespace Brainvest.Dscribe.Runtime
 			}
 
 			services.AddMultitenancy<IImplementationsContainer, ImplementationResolver>();
-			services.AddSingleton(new ImplementationResolverOptions
-			{
-				DefaultAppInstanceId = defaultAppInstanceId
-			});
+			services.AddSingleton(implementationResolverOptions ?? new ImplementationResolverOptions{});
 			services.AddScoped<EntityHelper, EntityHelper>();
 			services.AddSingleton<IPermissionService, PermissionCache>();
 			services.AddSingleton<IUsersService, UsersCache>();
 			services.Configure<GlobalConfiguration>(configuration.GetSection(nameof(GlobalConfiguration)));
-			LobToolsStartup.ConfigureServices(services, configuration, efProviderSetup, defaultAppInstanceId);
+			LobToolsStartup.ConfigureServices(services, configuration, efProviderSetup, implementationResolverOptions?.DefaultAppInstanceId);
 		}
 
 		public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
