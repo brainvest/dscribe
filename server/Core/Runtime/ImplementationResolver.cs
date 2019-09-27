@@ -18,25 +18,38 @@ namespace Brainvest.Dscribe.Runtime
 
 		public static async Task<ImplementationContainer> GetContainer(HttpContext httpContext, ImplementationResolverOptions options)
 		{
-			int appInstanceId;
+			int? appInstanceId;
+			if (options.AppInstanceExtractor != null)
+			{
+				appInstanceId = options.AppInstanceExtractor(httpContext);
+			}
+			else
+			{
+				appInstanceId = GetAppInstanceIdFromHeader(httpContext, options);
+			}
+			if (appInstanceId == null)
+			{
+				return null;
+			}
+			var task = _implementations.GetOrAdd(appInstanceId.Value, id => new Lazy<Task<ImplementationContainer>>(() => CreateImplementation(id, httpContext)));
+			return await task.Value;
+		}
+
+		public static int? GetAppInstanceIdFromHeader(HttpContext httpContext, ImplementationResolverOptions options)
+		{
 			if (!httpContext.Request.Headers.TryGetValue("AppInstance", out var appInstanceHeaders) || appInstanceHeaders.Count == 0)
 			{
-				if (options?.DefaultAppInstanceId == null)
-				{
-					return null;
-				}
-				appInstanceId = options.DefaultAppInstanceId.Value;
+				return options?.DefaultAppInstanceId;
 			}
 			else if (appInstanceHeaders.Count > 1)
 			{
 				throw new Exception("The AppInstance header should be specified exactly once");
 			}
-			else if (!int.TryParse(appInstanceHeaders.Single(), out appInstanceId))
+			else if (int.TryParse(appInstanceHeaders.Single(), out var appInstanceId))
 			{
-				throw new Exception("The AppInstance header should be an integer");
+				return appInstanceId;
 			}
-			var task = _implementations.GetOrAdd(appInstanceId, id => new Lazy<Task<ImplementationContainer>>(() => CreateImplementation(id, httpContext)));
-			return await task.Value;
+			throw new Exception("The AppInstance header should be an integer");
 		}
 
 		private static async Task<ImplementationContainer> CreateImplementation(int appInstanceId, HttpContext httpContext)
@@ -54,7 +67,10 @@ namespace Brainvest.Dscribe.Runtime
 	{
 		// if this is provided, it will be used if the request does not contain the app instance header
 		public int? DefaultAppInstanceId { get; set; }
+		public AppInstanceExtractor AppInstanceExtractor { get; set; }
 	}
+
+	public delegate int? AppInstanceExtractor(HttpContext httpContext);
 
 	public class ImplementationResolver : ITenantResolver<IImplementationsContainer>
 	{
