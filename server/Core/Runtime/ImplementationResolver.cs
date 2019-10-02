@@ -31,7 +31,8 @@ namespace Brainvest.Dscribe.Runtime
 			{
 				return null;
 			}
-			var task = _implementations.GetOrAdd(appInstanceId.Value, id => new Lazy<Task<ImplementationContainer>>(() => CreateImplementation(id, httpContext)));
+			var scopeFactory = options?.ServiceScopeFactory ?? httpContext.RequestServices.GetRequiredService<IServiceScopeFactory>();
+			var task = _implementations.GetOrAdd(appInstanceId.Value, id => new Lazy<Task<ImplementationContainer>>(() => CreateImplementation(id, scopeFactory)));
 			return await task.Value;
 		}
 
@@ -52,9 +53,8 @@ namespace Brainvest.Dscribe.Runtime
 			throw new Exception("The AppInstance header should be an integer");
 		}
 
-		private static async Task<ImplementationContainer> CreateImplementation(int appInstanceId, HttpContext httpContext)
+		private static async Task<ImplementationContainer> CreateImplementation(int appInstanceId, IServiceScopeFactory scopeFactory)
 		{
-			var scopeFactory = httpContext.RequestServices.GetService<IServiceScopeFactory>();
 			using (var scope = scopeFactory.CreateScope())
 			using (var dbContext = scope.ServiceProvider.GetService<MetadataDbContext>())
 			{
@@ -68,6 +68,7 @@ namespace Brainvest.Dscribe.Runtime
 		// if this is provided, it will be used if the request does not contain the app instance header
 		public int? DefaultAppInstanceId { get; set; }
 		public AppInstanceExtractor AppInstanceExtractor { get; set; }
+		public IServiceScopeFactory ServiceScopeFactory { get; set; }
 	}
 
 	public delegate int? AppInstanceExtractor(HttpContext httpContext);
