@@ -3,6 +3,7 @@ using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,7 +45,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 							IdentityServerConstants.StandardScopes.Profile,
 							"roles"
 					},
-				AllowedCorsOrigins = x.PostLogoutRedirectUris.ToList(),
+				AllowedCorsOrigins = x.PostLogoutRedirectUris.Select(s => new Uri(s).GetLeftPart(UriPartial.Authority)).ToList(),
 				AllowOfflineAccess = true,
 				AllowAccessTokensViaBrowser = true,
 				AlwaysIncludeUserClaimsInIdToken = true,
