@@ -9,10 +9,11 @@ namespace Brainvest.Dscribe.Runtime
 		public string TempDirectory { get; set; }
 		public Dictionary<string, InstanceSettings> InstanceSettings { get; set; }
 		public string LoadBusinessFromAssemblyName { get; set; }
+		public InstanceSettings DefaultInstanceSettings { get; set; }
 
 		public InstanceSettings GetInstanceSettings(string instaneName)
 		{
-			if (InstanceSettings == null)
+			if (InstanceSettings == null || instaneName == null)
 			{
 				return null;
 			}

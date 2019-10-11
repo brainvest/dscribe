@@ -43,7 +43,7 @@ namespace MiddleWare.Log
 			catch (Exception ex)
 			{
 				await requestLogger.ExceptionIndiactor(httpContext, log, ex);
-        throw;
+				throw;
 			}
 		}
 	}

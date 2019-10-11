@@ -33,6 +33,8 @@ namespace Brainvest.Dscribe.Abstractions.Models
 		public string ExceptionTitle { get; set; }
 		public string ExceptionMessage { get; set; }
 
+		public object SavedLog { get; set; }
+
 		//public ICollection<RequestException> Exceptions { get; set; }
 		//public ICollection<EntityChangeLog> EntityChanges { get; set; }
 	}
