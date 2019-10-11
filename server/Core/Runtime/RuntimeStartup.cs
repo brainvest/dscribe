@@ -58,6 +58,8 @@ namespace Brainvest.Dscribe.Runtime
 			services.AddSingleton<IPermissionService, PermissionCache>();
 			services.AddSingleton<IUsersService, UsersCache>();
 			services.Configure<GlobalConfiguration>(configuration.GetSection(nameof(GlobalConfiguration)));
+			var globaConfig = configuration.GetSection(nameof(GlobalConfiguration)).Get<GlobalConfiguration>();
+			services.AddSingleton<IGlobalConfiguration, GlobalConfiguration>();
 			LobToolsStartup.ConfigureServices(services, configuration, efProviderSetup, implementationResolverOptions?.DefaultAppInstanceId);
 		}
 

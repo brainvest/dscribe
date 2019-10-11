@@ -4,6 +4,7 @@ using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.LobTools.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MiddleWare.Log;
 using System;
 using System.Diagnostics;
@@ -22,7 +23,11 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 		private readonly ILogger<RequestLogger> _logger;
 		private readonly IGlobalConfiguration _globalConfiguration;
 
-		public RequestLogger(IImplementationsContainer implementationsContainer, IHttpContextAccessor httpContextAccessor, ILogger<RequestLogger> logger, IGlobalConfiguration globalConfiguration)
+		public RequestLogger(
+			IImplementationsContainer implementationsContainer, 
+			IHttpContextAccessor httpContextAccessor, 
+			ILogger<RequestLogger> logger, 
+			IGlobalConfiguration globalConfiguration)
 		{
 			_implementationsContainer = implementationsContainer;
 			_dbContext = _implementationsContainer.GetLobDbContext<LobToolsDbContext>(httpContextAccessor.HttpContext);
