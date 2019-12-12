@@ -46,7 +46,7 @@ export class CustomTemplateHostComponent {
 		return this._entityTypeName;
 	}
 
-	@ViewChild('host', {read: ViewContainerRef}) host: ViewContainerRef;
+	@ViewChild('host', { read: ViewContainerRef, static: true }) host: ViewContainerRef;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 	}

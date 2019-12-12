@@ -21,7 +21,7 @@ export class PropertyHistoryComponent implements OnInit {
 		['action', 'name', 'title', 'dataType', 'nullable', 'usage', 'ActionDate'];
 	propertiesDataSource = new MatTableDataSource<PropertyHistoryModel>(this.propertyHistories);
 
-	@ViewChild('propertiesPaginator') propertyPaginator: MatPaginator;
+	@ViewChild('propertiesPaginator', { static: true }) propertyPaginator: MatPaginator;
 
 	constructor(
 		private dialogRef: MatDialogRef<PropertyHistoryComponent>,

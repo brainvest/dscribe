@@ -19,7 +19,7 @@ export class AppInstanceManagementComponent implements OnInit {
 	appInstancesDataSource = new MatTableDataSource<AppInstanceModel>(this.appInstances);
 
 
-	@ViewChild('entitiyTypesPaginator') AppInstancePaginator: MatPaginator;
+	@ViewChild('entitiyTypesPaginator', { static: false }) AppInstancePaginator: MatPaginator;
 
 
 	constructor(
