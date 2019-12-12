@@ -2,13 +2,13 @@
 	"name": "dscribe",
 	"version": "0.3.1",
 	"peerDependencies": {
-		"@angular/common": "^7.0.0",
-		"@angular/core": "^7.0.0",
-		"@angular/animations": "^7.0.0",
-		"@angular/cdk": "^7.0.0",
-		"@angular/compiler": "^7.0.0",
-		"@angular/material": "^7.0.0",
-		"@angular/router": "^7.0.0",
+		"@angular/common": "^8.0.0",
+		"@angular/core": "^8.0.0",
+		"@angular/animations": "^8.0.0",
+		"@angular/cdk": "^8.0.0",
+		"@angular/compiler": "^8.0.0",
+		"@angular/material": "^8.0.0",
+		"@angular/router": "^8.0.0",
 		"file-saver": "^2.0.0"
 	}
 }
