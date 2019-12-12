@@ -110,6 +110,9 @@ export class DataHandlerService {
 					array[id] = 1;
 				}
 			}
+			if (!ids.length) {
+				continue;
+			}
 			request.push({
 				entityTypeName: entityTypeName,
 				ids: ids
