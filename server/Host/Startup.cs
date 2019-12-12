@@ -32,11 +32,10 @@ namespace Brainvest.Dscribe.Host
 			RuntimeStartup.ConfigureServices(services, Configuration, SetupProvider);
 			services.RegisterEfCore();
 
-            services.AddControllers(setupAction=> {
-            }).AddJsonOptions(jsonOptions =>
-            {
-                jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
-            });
+			services.AddControllers().AddJsonOptions(jsonOptions =>
+			{
+				jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+			});
 
 			services.AddAuthentication("Bearer")
 					.AddIdentityServerAuthentication(options =>
@@ -73,11 +72,12 @@ namespace Brainvest.Dscribe.Host
 		{
 			app.UseCors("AllowAll");
 			RuntimeStartup.Configure(app, env);
+			app.UseRouting();
 			app.UseAuthentication();
 			app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+			{
+				endpoints.MapControllers();
+			});
 		}
 	}
 }
