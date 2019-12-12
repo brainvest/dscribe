@@ -63,7 +63,7 @@ namespace Brainvest.Dscribe.Runtime
 			LobToolsStartup.ConfigureServices(services, configuration, efProviderSetup, implementationResolverOptions?.DefaultAppInstanceId);
 		}
 
-		public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			app.UseMultitenancy<IImplementationsContainer>();
 			LobToolsStartup.Configure(app, env);

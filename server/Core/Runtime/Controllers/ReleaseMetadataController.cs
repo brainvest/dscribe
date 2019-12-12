@@ -24,7 +24,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	public class ReleaseMetadataController : ControllerBase
 	{
 
-		private readonly IHostingEnvironment _hostingEnvironment;
+		private readonly IWebHostEnvironment _hostingEnvironment;
 		private readonly MetadataDbContext _dbContext;
 		private readonly IBusinessAssemblyGenerator _assemblyGenerator;
 		private readonly IImplementationsContainer _implementationContainer;
@@ -32,7 +32,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		private readonly IPermissionService _permissionService;
 
 		public ReleaseMetadataController(
-			IHostingEnvironment hostingEnvironment,
+			IWebHostEnvironment hostingEnvironment,
 			MetadataDbContext dbContext,
 			IBusinessAssemblyGenerator assemblyGenerator,
 			IImplementationsContainer implementationContainer,
