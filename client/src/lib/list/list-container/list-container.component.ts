@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {flatMap, map} from 'rxjs/operators';
 import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
 import {Observable, of} from 'rxjs';
+import { DscribeService } from '../../dscribe.service';
 
 @Component({
 	selector: 'dscribe-list-container',
@@ -14,11 +15,13 @@ export class ListContainerComponent implements OnInit {
 	entityType: EntityTypeMetadata;
 	entityTypes: EntityTypeMetadata[];
 	navFixed: boolean;
+	clientRoot: string;
 
 	private entityTypeName: string;
 
 	constructor(private metadata: MetadataService, private route: ActivatedRoute,
-							private router: Router) {
+							private router: Router, private config: DscribeService) {
+		this.clientRoot = config.getClientRoot();
 	}
 
 	ngOnInit() {

@@ -1,17 +1,17 @@
 <nav class="dscribe-main-navbar mat-elevation-z6">
 	<mat-toolbar class="main-nav">
 		<div class="main-nav-tabs-container">
-			<a mat-button class="main-nav-tab" routerLink="entity" routerLinkActive="active">
+			<a mat-button class="main-nav-tab" routerLink="{{clientRoot}}entity" routerLinkActive="active">
 				Entity Types
 			</a>
-			<a mat-button class="main-nav-tab" routerLink="administration" routerLinkActive="active">
+			<a mat-button class="main-nav-tab" routerLink="{{clientRoot}}administration" routerLinkActive="active">
 				Administration
 			</a>
-			<a mat-button class="main-nav-tab" routerLink="security" routerLinkActive="active">
+			<a mat-button class="main-nav-tab" routerLink="{{clientRoot}}security" routerLinkActive="active">
 				Security
 			</a>
 		</div>
-		<a mat-button routerLink="setting" routerLinkActive="active">
+		<a mat-button routerLink="{{clientRoot}}setting" routerLinkActive="active">
 			<mat-icon>settings</mat-icon>
 		</a>
 		<button mat-button [matMenuTriggerFor]="menu">

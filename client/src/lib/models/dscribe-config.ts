@@ -5,4 +5,5 @@ export interface DscribeConfig {
 	appInstance: AppInstanceInformation;
 	authHeaderFetcher: () => string;
 	serverRoot: string;
+	clientRoot: string;
 }

@@ -1,6 +1,7 @@
 export const environment = {
 	production: true,
-	apiServerRoot: 'http://localhost:5000/',
+	apiServerRoot: '/',
+	clientRoot: '/',
 	auth: {
 		authority: 'http://localhost:5001/',
 		client_id: 'dscribe',

@@ -46,6 +46,14 @@ export class DscribeService {
 		this.config.serverRoot = value;
 	}
 
+	getClientRoot() {
+		return this.config.clientRoot || '/';
+	}
+
+	setClientRoot(value: string) {
+		this.config.clientRoot = value;
+	}
+
 	url(relativeToRoot: string) {
 		const server = this.config.serverRoot || '';
 		if (server.endsWith('/')) {
