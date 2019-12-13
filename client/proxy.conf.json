@@ -1,0 +1,8 @@
+{
+	"/api": {
+		"target": "https://my.enjoyn.ai/",
+		"secure": false,
+		"logLevel": "debug",
+		"changeOrigin": true
+	}
+}
