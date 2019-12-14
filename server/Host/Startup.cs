@@ -32,7 +32,11 @@ namespace Brainvest.Dscribe.Host
 			RuntimeStartup.ConfigureServices(services, Configuration, SetupProvider);
 			services.RegisterEfCore();
 
-			services.AddControllers().AddJsonOptions(jsonOptions =>
+			services.AddControllers()
+			.AddNewtonsoftJson(options => {
+				options.UseMemberCasing();
+			})
+			.AddJsonOptions(jsonOptions =>
 			{
 				jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
 			});
