@@ -179,13 +179,19 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 
 			app.UseForwardedHeaders(forwardedHeaderOptions);
 
+			app.UseRouting();
+
 			app.UseIdentityServer();
+
+            app.UseAuthentication();
+			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllerRoute(
-					name: "area_default",
-					pattern: "{area}/{controller=Home}/{action=Index}/{id?}");
+				endpoints.MapRazorPages();
+				// endpoints.MapControllerRoute(
+				// 	name: "area_default",
+				// 	pattern: "{area}/{controller=Home}/{action=Index}/{id?}");
 
 				endpoints.MapControllerRoute(
 					name: "default",
