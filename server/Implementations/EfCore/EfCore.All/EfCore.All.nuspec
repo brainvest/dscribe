@@ -16,16 +16,16 @@
 		<!--<tags>Tag1 Tag2</tags>-->
 		<repository type="git" url="https://github.com/brainvest/dscribe" />
 		<dependencies>
-			<dependency id="Humanizer.Core" version="2.5.16" />
-			<dependency id="Microsoft.CodeAnalysis.CSharp.Workspaces" version="2.10.0" />
-			<dependency id="Microsoft.EntityFrameworkCore" version="2.2.0" />
-			<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.2.0" />
-			<dependency id="System.CodeDom" version="4.5.0" />
-			<dependency id="System.Composition.AttributedModel" version="1.2.0" />
+			<dependency id="Humanizer.Core" version="2.7.9" />
+			<dependency id="Microsoft.CodeAnalysis.CSharp.Workspaces" version="3.4.0" />
+			<dependency id="Microsoft.EntityFrameworkCore" version="3.1.0" />
+			<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="3.1.0" />
+			<dependency id="System.CodeDom" version="4.7.0" />
+			<dependency id="System.Composition.AttributedModel" version="1.4.0" />
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="bin/$configuration$/netcoreapp2.2/Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess.dll" target="lib\netcoreapp2.2"/>
-		<file src="bin/$configuration$/netcoreapp2.2/Brainvest.Dscribe.Implementations.EfCore.CodeGenerator.dll"  target="lib\netcoreapp2.2"/>
+		<file src="bin/$configuration$/netcoreapp3.1/Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess.dll" target="lib\netcoreapp3.1"/>
+		<file src="bin/$configuration$/netcoreapp3.1/Brainvest.Dscribe.Implementations.EfCore.CodeGenerator.dll"  target="lib\netcoreapp3.1"/>
 	</files>
 </package>

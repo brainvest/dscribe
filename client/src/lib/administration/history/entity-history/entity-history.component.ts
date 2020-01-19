@@ -18,7 +18,7 @@ export class EntityHistoryComponent implements OnInit {
 	displayedEntityTypeColumns = ['action', 'name', 'tableName', 'schema', 'usage', 'singular', 'plural', 'code', 'displayName', 'ActionDate'];
 	entityTypesDataSource = new MatTableDataSource<EntityTypeHistoryModel>(this.entityHistories);
 
-	@ViewChild('entityTypesPaginator') entityTypesPaginator: MatPaginator;
+	@ViewChild('entityTypesPaginator', { static: false }) entityTypesPaginator: MatPaginator;
 
 	constructor(
 		private dialogRef: MatDialogRef<EntityHistoryComponent>,

@@ -16,7 +16,7 @@ namespace Migrations_Auth_MySql
 			base.OnModelCreating(modelBuilder);
 			foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
 			{
-				entityType.Relational().TableName = entityType.Relational().TableName.ToLowerInvariant();
+				entityType.SetTableName(entityType.GetTableName().ToLowerInvariant());
 			}
 		}
 	}

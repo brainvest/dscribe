@@ -1,15 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.Host</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.Host</RootNamespace>
     <UserSecretsId>2a8a1ba1-bde9-4c00-846d-723874ad9d1c</UserSecretsId>
   </PropertyGroup>
-
-	<PropertyGroup>
-		<RuntimeFrameworkVersion>2.2.4</RuntimeFrameworkVersion>
-	</PropertyGroup>
 
 	<Import Project="..\SolutionInfo.xml" />
 
@@ -30,10 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>

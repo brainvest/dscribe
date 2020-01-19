@@ -12,9 +12,10 @@ import {AppInstanceInformation} from '../common/models/app-instance-information'
 export class NavigationComponent implements OnInit {
 	appInstances: AppInstanceInformation[] = [];
 	selectedAppInstance: AppInstanceInformation;
+	clientRoot: string;
 
 	constructor(private router: Router, private httpClient: HttpClient, private config: DscribeService) {
-
+		this.clientRoot = config.getClientRoot();
 	}
 
 	ngOnInit() {

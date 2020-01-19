@@ -26,7 +26,7 @@ export class DataHistoryComponent implements OnInit {
 	public columns: ListColumn[] = [];
 	public displayedColumns: string[] = [];
 
-	@ViewChild('entityTypesPaginator') entityTypesPaginator: MatPaginator;
+	@ViewChild('entityTypesPaginator', { static: false }) entityTypesPaginator: MatPaginator;
 
 	constructor(
 		private dialogRef: MatDialogRef<DataHistoryComponent>,

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.Implementations.EfCore.CodeGenerator</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.Implementations.EfCore.CodeGenerator</RootNamespace>
   </PropertyGroup>
@@ -21,11 +21,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Humanizer.Core" Version="2.6.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.2.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
-    <PackageReference Include="System.CodeDom" Version="4.5.0" />
-    <PackageReference Include="System.Composition.AttributedModel" Version="1.2.0" />
+    <PackageReference Include="Humanizer.Core" Version="2.7.9" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="System.CodeDom" Version="4.7.0" />
+    <PackageReference Include="System.Composition.AttributedModel" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup>

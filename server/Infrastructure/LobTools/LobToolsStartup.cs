@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MiddleWare.Log;
@@ -56,7 +57,7 @@ namespace Brainvest.Dscribe.LobTools
 			}
 		}
 
-		public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			app.UseLogger();
 		}

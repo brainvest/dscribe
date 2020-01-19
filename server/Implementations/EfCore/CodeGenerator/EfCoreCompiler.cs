@@ -3,6 +3,7 @@ using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Composition;
@@ -20,6 +21,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			, string assembliesPath)
 		{
 			var referenceAssembliesPath = Path.GetDirectoryName(typeof(string).Assembly.Location);
+			var localPath = Path.GetDirectoryName(typeof(ExportAttribute).Assembly.Location);
 			var references = new List<MetadataReference>
 			{
 				MetadataReference.CreateFromFile(Path.Combine(referenceAssembliesPath, "netstandard.dll")),
@@ -30,6 +32,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 				MetadataReference.CreateFromFile(typeof(KeyAttribute).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(IBusinessRepositoryFactory).Assembly.Location),
 				MetadataReference.CreateFromFile(typeof(JsonIgnoreAttribute).Assembly.Location),
+				MetadataReference.CreateFromFile(Path.Combine(localPath, "Microsoft.Bcl.AsyncInterfaces.dll")),
 			};
 			string sourceCode;
 			using (var fileStream = new FileStream(sourceCodeFile, FileMode.Open, FileAccess.Read))

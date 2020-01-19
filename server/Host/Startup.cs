@@ -2,6 +2,7 @@ using Brainvest.Dscribe.Implementations.EfCore.All;
 using Brainvest.Dscribe.Runtime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,9 +32,14 @@ namespace Brainvest.Dscribe.Host
 			RuntimeStartup.ConfigureServices(services, Configuration, SetupProvider);
 			services.RegisterEfCore();
 
-			services.AddMvc()
-				.AddJsonOptions(opt => opt.SerializerSettings.ContractResolver = new DefaultContractResolver())
-				.SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
+			services.AddControllers()
+			.AddNewtonsoftJson(options => {
+				options.UseMemberCasing();
+			})
+			.AddJsonOptions(jsonOptions =>
+			{
+				jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+			});
 
 			services.AddAuthentication("Bearer")
 					.AddIdentityServerAuthentication(options =>
@@ -66,12 +72,16 @@ namespace Brainvest.Dscribe.Host
 			}
 		}
 
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			app.UseCors("AllowAll");
 			RuntimeStartup.Configure(app, env);
+			app.UseRouting();
 			app.UseAuthentication();
-			app.UseMvc();
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllers();
+			});
 		}
 	}
 }

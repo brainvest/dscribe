@@ -24,7 +24,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	public class ReleaseMetadataController : ControllerBase
 	{
 
-		private readonly IHostingEnvironment _hostingEnvironment;
+		private readonly IWebHostEnvironment _hostingEnvironment;
 		private readonly MetadataDbContext _dbContext;
 		private readonly IBusinessAssemblyGenerator _assemblyGenerator;
 		private readonly IImplementationsContainer _implementationContainer;
@@ -32,7 +32,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		private readonly IPermissionService _permissionService;
 
 		public ReleaseMetadataController(
-			IHostingEnvironment hostingEnvironment,
+			IWebHostEnvironment hostingEnvironment,
 			MetadataDbContext dbContext,
 			IBusinessAssemblyGenerator assemblyGenerator,
 			IImplementationsContainer implementationContainer,
@@ -131,10 +131,13 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			}
 			//var errors = new List<string>();
 			var errors = new MetadataValidationResponse();
-			var duplicateTypes = await _dbContext.EntityTypes.Where(x => x.AppTypeId == _implementationContainer.InstanceInfo.AppTypeId)
-				.GroupBy(x => x.Name).Where(g => g.Count() > 1).ToListAsync();
+			var appTypeId = _implementationContainer.InstanceInfo.AppTypeId;
+			var duplicateTypes = await _dbContext.EntityTypes.Where(x => x.AppTypeId == appTypeId)
+				.GroupBy(x => x.Name).Where(g => g.Count() > 1)
+				.Select(x => x.Key)
+				.ToListAsync();
 			if (duplicateTypes.Count() > 0)
-				errors.Errors.AddRange(duplicateTypes.Select(g => $"Entity {g.Key} has repeated more than once"));
+				errors.Errors.AddRange(duplicateTypes.Select(g => $"Entity {g} has repeated more than once"));
 
 			var entityTypes = await _dbContext.EntityTypes.Where(x => x.AppTypeId == _implementationContainer.InstanceInfo.AppTypeId).ToListAsync();
 			foreach (var entityType in entityTypes)

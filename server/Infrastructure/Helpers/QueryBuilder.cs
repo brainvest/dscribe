@@ -94,7 +94,7 @@ namespace Brainvest.Dscribe.Helpers
 			return Expression.Lambda(init, param);
 		}
 
-		public static Expression<Func<TEntity, NameResponseItem>> GetIdAndNameSelectionExpression<TEntity, Tkey>(IEntityTypeMetadata entityTypeMetadata)
+		public static Expression<Func<TEntity, IdAndNameResponseItem<Tkey>>> GetIdAndNameSelectionExpression<TEntity, Tkey>(IEntityTypeMetadata entityTypeMetadata)
 		{
 			var param = Expression.Parameter(typeof(TEntity), "s");
 			var entityIdExpression = Expression.Property(param, entityTypeMetadata.GetPrimaryKey().Name); //TODO:Hardcoded Primary key name
@@ -128,7 +128,7 @@ namespace Brainvest.Dscribe.Helpers
 			}
 			var nameAssignment = Expression.Bind(typeof(NameResponseItem).GetProperty(nameof(NameResponseItem.DisplayName)), path);
 			var selection = Expression.MemberInit(Expression.New(modelType), idAssignment, nameAssignment);
-			return Expression.Lambda<Func<TEntity, NameResponseItem>>(selection, param);
+			return Expression.Lambda<Func<TEntity, IdAndNameResponseItem<Tkey>>>(selection, param);
 		}
 
 		public static LambdaExpression GetExpressionValueSelection<TEntity, TKey>(IEnumerable<PropertyInfoModel> properties)
@@ -168,15 +168,15 @@ namespace Brainvest.Dscribe.Helpers
 			return Expression.Lambda(selection, param);
 		}
 
-		public static Expression<Func<object, object>> GetIdAndNameSelectionExpression<TEntity, Tkey>(object displayNameProperty) where TEntity : class
-		{
-			throw new NotImplementedException();
-		}
-
 		public static LambdaExpression ReplaceParameters(this LambdaExpression expression, params ParameterExpression[] parameters)
 		{
 			var visitor = new ParameterReplacer(parameters);
 			return visitor.Visit(expression) as LambdaExpression;
+		}
+
+		public class IdsContainer<TKey> 
+		{
+			public TKey[] Ids;
 		}
 
 		public static Expression<Func<TEntity, bool>> FilterByIds<TEntity, TKey>(TKey[] ids, IEntityTypeMetadata entityTypeMetadata)
@@ -185,7 +185,7 @@ namespace Brainvest.Dscribe.Helpers
 			var containsMethod = typeof(Enumerable).GetMethods().Single(x => x.Name == nameof(Enumerable.Contains) && x.GetParameters().Length == 2);
 			containsMethod = containsMethod.MakeGenericMethod(typeof(TKey));
 			var property = Expression.Property(param, entityTypeMetadata.GetPrimaryKey().Name);
-			var idsExp = Expression.Constant(ids, typeof(IEnumerable<TKey>));
+			var idsExp = Expression.Field(Expression.Constant(new IdsContainer<TKey> { Ids = ids }), nameof(IdsContainer<TKey>.Ids));
 			var call = Expression.Call(containsMethod, idsExp, property);
 			var lambda = Expression.Lambda<Func<TEntity, bool>>(call, param);
 			return lambda;

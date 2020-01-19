@@ -8,7 +8,7 @@
 			</button>
 		</mat-toolbar>
 		<mat-list dense>
-			<a mat-list-item *ngFor="let entityType of entityTypes" routerLink="../../entity/{{entityType.Name}}"
+			<a mat-list-item *ngFor="let entityType of entityTypes" routerLink="{{clientRoot}}entity/{{entityType.Name}}"
 				 routerLinkActive="active">
 				{{entityType.PluralTitle || entityType.Name}}
 			</a>

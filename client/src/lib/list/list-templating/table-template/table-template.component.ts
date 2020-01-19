@@ -18,6 +18,6 @@ export class TableTemplateComponent {
 	@Output() rowClick = new EventEmitter<any>();
 	@Output() commentsClick = new EventEmitter<any>();
 	@Output() attachmentsClick = new EventEmitter<any>();
-	@ViewChild(MatSort) sort: MatSort;
+	@ViewChild(MatSort, { static: true }) sort: MatSort;
 
 }

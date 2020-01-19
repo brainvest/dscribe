@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Migrations_Auth_MySql;
@@ -122,7 +123,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 				 options.Cookie.SameSite = SameSiteMode.None;
 			 });
 
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+			services.AddRazorPages();
 
 			var clients = Configuration.GetSection("Clients").Get<IEnumerable<ClientInfo>>();
 			services.AddSingleton(clients);
@@ -145,7 +146,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			 .AddAspNetIdentity<User>();
 		}
 
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptions<ConfigModel> options, ILogger<Startup> logger)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<ConfigModel> options, ILogger<Startup> logger)
 		{
 			if (env.IsDevelopment())
 			{
@@ -178,16 +179,23 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 
 			app.UseForwardedHeaders(forwardedHeaderOptions);
 
+			app.UseRouting();
+
 			app.UseIdentityServer();
 
-			app.UseMvc(routes =>
+            app.UseAuthentication();
+			app.UseAuthorization();
+
+			app.UseEndpoints(endpoints =>
 			{
-				routes.MapRoute(
-									name: "area_default",
-									template: "{area}/{controller=Home}/{action=Index}/{id?}");
-				routes.MapRoute(
-									name: "default",
-									template: "{controller=Home}/{action=Index}/{id?}");
+				endpoints.MapRazorPages();
+				// endpoints.MapControllerRoute(
+				// 	name: "area_default",
+				// 	pattern: "{area}/{controller=Home}/{action=Index}/{id?}");
+
+				endpoints.MapControllerRoute(
+					name: "default",
+					pattern: "{controller=Home}/{action=Index}/{id?}");
 			});
 		}
 	}

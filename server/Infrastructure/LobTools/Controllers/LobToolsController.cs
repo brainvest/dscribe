@@ -26,17 +26,20 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		public async Task<ActionResult<LobSummaryResponse>> GetSummary(LobSummaryRequest request)
 		{
 			var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
-			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
+			using (var dbContext1 = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
+			using (var dbContext2 = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
-				var commentCountTask = dbContext.Comments
+				var commentCountTask = dbContext1.Comments
 					.Where(x => x.EntityTypeId == entityTypeId && request.Identifiers.Contains(x.Identifier))
 					.GroupBy(x => x.Identifier)
-					.ToDictionaryAsync(g => g.Key, g => g.Count());
+					.Select(x => new {x.Key, Count = x.Count()})
+					.ToDictionaryAsync(g => g.Key, g => g.Count);
 
-				var attachmentCountTask = dbContext.Attachments
+				var attachmentCountTask = dbContext2.Attachments
 					.Where(x => x.EntityTypeId == entityTypeId && request.Identifiers.Contains(x.Identifier))
 					.GroupBy(x => x.Identifier)
-					.ToDictionaryAsync(g => g.Key, g => g.Count());
+					.Select(x => new {x.Key, Count = x.Count()})
+					.ToDictionaryAsync(g => g.Key, g => g.Count);
 
 				var commentCounts = await commentCountTask;
 				var attachmentCounts = await attachmentCountTask;
