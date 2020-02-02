@@ -1,4 +1,6 @@
 {
-	"entry": "src/lib/themes/_core.scss",
-	"dest": "dist/dscribe/themes/_theme.scss"
+	"bundlerOptions": {
+		"entryFile": "src/lib/themes/_core.scss",
+		"outFile": "dist/dscribe/themes/_theme.scss"	
+	}
 }

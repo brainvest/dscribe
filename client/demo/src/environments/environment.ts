@@ -3,7 +3,7 @@ export const environment = {
 	apiServerRoot: '/',
 	clientRoot: '/',
 	auth: {
-		authority: 'http://localhost:5001/auth/',
+		authority: 'https://my.enjoyn.ai/auth/',
 		client_id: 'invoice',
 		redirect_uri: 'http://localhost:4200/auth-callback',
 		post_logout_redirect_uri: 'http://localhost:4200/',

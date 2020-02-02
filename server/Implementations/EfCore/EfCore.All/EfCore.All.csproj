@@ -5,9 +5,16 @@
 		<AssemblyName>Brainvest.Dscribe.Implementations.EfCore.All</AssemblyName>
 		<LangVersion>latest</LangVersion>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
 	</PropertyGroup>
 
-	<Import Project="..\..\..\SolutionInfo.xml" />
+	<Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
+		<ItemGroup>
+			<BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))"/>
+		</ItemGroup>
+	</Target>
+
+	<Import Project="../../../SolutionInfo.xml" />
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -20,12 +27,24 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.1" />
+
+		<PackageReference Include="Humanizer.Core" Version="2.7.9" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.4.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+		<PackageReference Include="System.CodeDom" Version="4.7.0" />
+		<PackageReference Include="System.Composition.AttributedModel" Version="1.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\BusinessDataAccess\EfCore.BusinessDataAccess.csproj" />
-		<ProjectReference Include="..\CodeGenerator\EfCore.CodeGenerator.csproj" />
+		<ProjectReference Include="../BusinessDataAccess/EfCore.BusinessDataAccess.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<IncludeAssets>Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess.dll</IncludeAssets>
+		</ProjectReference>
+		<ProjectReference Include="../CodeGenerator/EfCore.CodeGenerator.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<IncludeAssets>Brainvest.Dscribe.Implementations.EfCore.CodeGenerator.dll</IncludeAssets>
+		</ProjectReference>
 	</ItemGroup>
 
 </Project>

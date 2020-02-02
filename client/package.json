@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "npm run build-lib && npm run bundle-styles",
     "build-lib": "ng build dscribe --prod",
-    "bundle-styles": "scss-bundle -c ./src/scss-bundle.config.json",
+    "bundle-styles": "scss-bundle -p ./src/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

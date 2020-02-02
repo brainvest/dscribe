@@ -7,9 +7,18 @@
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageProjectUrl>https://github.com/brainvest/dscribe</PackageProjectUrl>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
 	</PropertyGroup>
 
-	<Import Project="..\..\SolutionInfo.xml" />
+
+	<Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
+		<ItemGroup>
+			<BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))"/>
+		</ItemGroup>
+	</Target>
+
+	<Import Project="../../SolutionInfo.xml" />
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -27,30 +36,57 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Composition" Version="1.0.31" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.1" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.0" />
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.0.1" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.0" />
 		<PackageReference Include="SaasKit.Multitenancy" Version="1.1.4" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Infrastructure\Abstractions\Abstractions.csproj" />
-		<ProjectReference Include="..\..\Infrastructure\LobTools\LobTools.csproj" />
-		<ProjectReference Include="..\..\Migrations\Migrations_Runtime_PostgreSql\Migrations_Runtime_PostgreSql.csproj" />
-		<ProjectReference Include="..\MetadataDbAccess\MetadataDbAccess.csproj" />
-		<ProjectReference Include="..\Metadata\Metadata.csproj" />
+		<ProjectReference Include="../../Infrastructure/Abstractions/Abstractions.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<IncludeAssets>Brainvest.Dscribe.Abstractions.dll</IncludeAssets>
+		</ProjectReference>
+		<ProjectReference Include="../../Infrastructure/LobTools/LobTools.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<IncludeAssets>Brainvest.Dscribe.LobTools.dll</IncludeAssets>
+		</ProjectReference>
+		<ProjectReference Include="../../Infrastructure/Lob/LobToolsEntities/LobToolsEntities.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<IncludeAssets>Brainvest.Dscribe.LobTools.Entities.dll</IncludeAssets>
+		</ProjectReference>
+		<ProjectReference Include="../../InterfacesTo3rdParty/RichTextDocumentHandling/RichTextDocumentHandling.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<IncludeAssets>Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling.dll</IncludeAssets>
+		</ProjectReference>
+		<ProjectReference Include="../../Infrastructure/Helpers/Helpers.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<IncludeAssets>Brainvest.Dscribe.Helpers.dll</IncludeAssets>
+		</ProjectReference>
+		<ProjectReference Include="../MetadataDbAccess/MetadataDbAccess.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<IncludeAssets>Brainvest.Dscribe.MetadataDbAccess.dll</IncludeAssets>
+		</ProjectReference>
+		<ProjectReference Include="../../Migrations/Migrations_Runtime_PostgreSql/Migrations_Runtime_PostgreSql.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<IncludeAssets>Brainvest.Dscribe.Migrations.Runtime.PostgreSql.dll</IncludeAssets>
+		</ProjectReference>
+		<ProjectReference Include="../../Migrations/Migrations_Runtime_MySql/Migrations_Runtime_MySql.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<IncludeAssets>Brainvest.Dscribe.Migrations.Runtime.MySql.dll</IncludeAssets>
+		</ProjectReference>
+		<ProjectReference Include="../Metadata/Metadata.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<IncludeAssets>Brainvest.Dscribe.Metadata.dll</IncludeAssets>
+		</ProjectReference>
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\..\..\LICENSE.txt">
+		<None Include="../../../LICENSE.txt">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
 </Project>
