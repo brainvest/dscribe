@@ -1,3 +1,4 @@
+using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models.ManageMetadata;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +18,11 @@ namespace Brainvest.Dscribe.Runtime.Validations
 			return string.Empty;
 		}
 
-		public static async Task<string> AddEntityTypeValidation(EntityTypeModel model, MetadataDbContext dbContext)
+		public static async Task<string> AddEntityTypeValidation(EntityTypeModel model, MetadataDbContext dbContext, IImplementationsContainer implementationsContainer)
 		{
-			if (await dbContext.EntityTypes.AnyAsync(x => x.Name == model.Name))
+			if (await dbContext.EntityTypes.AnyAsync(x => x.Name == model.Name && x.AppTypeId == implementationsContainer.InstanceInfo.AppTypeId))
 			{
-				return "Entity " + model.Name + " is already exist.";
+				return $"Another entity with name: \"{ model.Name }\" is already defiend.";
 			}
 			return await Task.FromResult(string.Empty);
 		}
@@ -49,7 +50,7 @@ namespace Brainvest.Dscribe.Runtime.Validations
 			var relativeProperty = await dbContext.Properties.Where(x => x.DataEntityTypeId == model.Id).Include(x => x.OwnerEntityType).ToListAsync();
 			if (relativeProperty.Any())
 			{
-				return "The selected entity is navigated to '" + relativeProperty.FirstOrDefault().Name + 
+				return "The selected entity is navigated to '" + relativeProperty.FirstOrDefault().Name +
 					@"' in entity '" + relativeProperty.FirstOrDefault().OwnerEntityType.Name + "'";
 			}
 			return string.Empty;

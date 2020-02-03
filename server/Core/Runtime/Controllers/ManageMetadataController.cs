@@ -79,7 +79,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				return Unauthorized();
 			}
 
-			var validationMessage = await MetadataValidationLogic.AddEntityTypeValidation(model, _dbContext);
+			var validationMessage = await MetadataValidationLogic.AddEntityTypeValidation(model, _dbContext, _implementations);
 			if (!string.IsNullOrEmpty(validationMessage))
 			{
 				return StatusCode(400, validationMessage);
