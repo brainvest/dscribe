@@ -59,7 +59,7 @@ namespace Brainvest.Dscribe.Runtime
 			services.AddSingleton<IUsersService, UsersCache>();
 			services.Configure<GlobalConfiguration>(configuration.GetSection(nameof(GlobalConfiguration)));
 			var globaConfig = configuration.GetSection(nameof(GlobalConfiguration)).Get<GlobalConfiguration>();
-			services.AddSingleton<IGlobalConfiguration, GlobalConfiguration>();
+			services.AddSingleton<IGlobalConfiguration>(globaConfig);
 			LobToolsStartup.ConfigureServices(services, configuration, efProviderSetup, implementationResolverOptions?.DefaultAppInstanceId);
 		}
 
