@@ -1,5 +1,6 @@
 using Brainvest.Dscribe.Abstractions;
-using Brainvest.Dscribe.LobTools.Entities;
+using Brainvest.Dscribe.MetadataDbAccess;
+using Brainvest.Dscribe.MetadataDbAccess.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace Brainvest.Dscribe.Runtime.AccessControl
 		private CachedInfo FillCache()
 		{
 			using (var scope = _serviceScopeFactory.CreateScope())
-			using (var dbContext = scope.ServiceProvider.GetRequiredService<LobToolsDbContext>())
+			using (var dbContext = scope.ServiceProvider.GetRequiredService<MetadataDbContext>())
 			{
 				var userIds = dbContext.Users.ToDictionary(x => x.UnifiedExternalUserId, x => x.Id);
 				return new CachedInfo
@@ -57,7 +58,7 @@ namespace Brainvest.Dscribe.Runtime.AccessControl
 		{
 			var unified = UnifyUserName(externalUserId);
 			using (var scope = _serviceScopeFactory.CreateScope())
-			using (var dbContext = scope.ServiceProvider.GetRequiredService<LobToolsDbContext>())
+			using (var dbContext = scope.ServiceProvider.GetRequiredService<MetadataDbContext>())
 			using (var transaction = new TransactionScope(TransactionScopeOption.RequiresNew,
 				new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
 			{

@@ -162,6 +162,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 		public DbSet<Role> Roles { get; set; }
 		public DbSet<EntityActionType> EntityActionTypes { get; set; }
 		public DbSet<Permission> Permissions { get; set; }
+		public DbSet<User> Users { get; set; }
 
 		public DbSet<ReportDefinition> ReportDefinitions { get; set; }
 		public DbSet<ReportFormat> ReportFormats { get; set; }
