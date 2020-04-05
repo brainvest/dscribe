@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {LobInfoService} from '../../lob-info.service';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {LobListDialogData} from '../../models/common-models';
 import {ReportsListResponse} from '../../models/report-models';
 import {SelectionModel} from '@angular/cdk/collections';

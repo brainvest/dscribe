@@ -1,5 +1,5 @@
 import { Component, Optional } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { DataHandlerService } from '../../common/services/data-handler.service';
 import {SnackBarService} from '../../common/notifications/snackbar.service';
 

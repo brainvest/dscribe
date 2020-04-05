@@ -1,4 +1,6 @@
-import {MatDialog, MatPaginator, MatTableDataSource} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AddNEditAppInstanceComponent, AddNEditAppInstanceComponentData} from '../add-n-edit-app-instance/add-n-edit-app-instancecomponent';
 import {AppInstanceModel} from '../../../common/models/app-instance-model';
@@ -19,7 +21,7 @@ export class AppInstanceManagementComponent implements OnInit {
 	appInstancesDataSource = new MatTableDataSource<AppInstanceModel>(this.appInstances);
 
 
-	@ViewChild('entitiyTypesPaginator', { static: false }) AppInstancePaginator: MatPaginator;
+	@ViewChild('entitiyTypesPaginator') AppInstancePaginator: MatPaginator;
 
 
 	constructor(

@@ -6,7 +6,8 @@ import {AuthCallbackComponent} from './auth/auth-callback/auth-callback.componen
 import {AppRoutingModule} from './app-routing.module';
 import {DscribeModule} from '../../../src/lib/dscribe.module';
 import {DataTypeCardComponent} from './custom-templates/data-type-card/data-type-card.component';
-import {MatButtonModule, MatCardModule} from '@angular/material';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
 import { SampleListComponent } from './sample-list/sample-list.component';
 
 @NgModule({

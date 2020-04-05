@@ -1,3 +1,8 @@
+export class LocalFacetModel {
+	FacetName: string;
+	Value: string;
+}
+
 export class PropertyBase {
 	Id: number;
 	DataTypeId: number;
@@ -10,9 +15,4 @@ export class PropertyBase {
 	InversePropertyId: number;
 	Title: string;
 	LocalFacets: LocalFacetModel[];
-}
-
-export class LocalFacetModel {
-	FacetName: string;
-	Value: string;
 }

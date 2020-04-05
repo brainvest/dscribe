@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppInstanceModel } from '../../../common/models/app-instance-model';
 import { AppTypeModel } from '../../../common/models/app-type.model';
@@ -7,6 +7,17 @@ import { DatabaseProviderModel } from '../../../common/models/database-provider.
 import { AppManagementService } from '../../../common/services/app-management.service';
 import { SnackBarService } from '../../../common/notifications/snackbar.service';
 import { ConnectionStringModel } from '../../../common/models/connection-string.model';
+
+export class AddNEditAppInstanceComponentData {
+	constructor(
+		public appInstance: AppInstanceModel,
+		public isNew: boolean) {
+	}
+
+	get action() {
+		return this.isNew ? 'Add' : 'Edit';
+	}
+}
 
 @Component({
 	selector: 'dscribe-host-add-n-edit-app-instance',
@@ -28,15 +39,10 @@ export class AddNEditAppInstanceComponent implements OnInit {
 		private appManagementService: AppManagementService,
 		private snackbarService: SnackBarService) {
 		this.appInstanceError = new AppInstanceModel();
-		this.appInstanceError.DataConnectionString = new ConnectionStringModel();
 	}
 
 	ngOnInit() {
 		this.appInstance = JSON.parse(JSON.stringify(this.data.appInstance));
-		if (!this.appInstance.DataConnectionString) {
-			this.appInstance.DataConnectionString = new ConnectionStringModel();
-		}
-
 		this.getAppTypes();
 		this.getDatabaseProvider();
 	}
@@ -81,16 +87,5 @@ export class AddNEditAppInstanceComponent implements OnInit {
 
 	cancel() {
 		this.dialogRef.close();
-	}
-}
-
-export class AddNEditAppInstanceComponentData {
-	constructor(
-		public appInstance: AppInstanceModel,
-		public isNew: boolean) {
-	}
-
-	get action() {
-		return this.isNew ? 'Add' : 'Edit';
 	}
 }

@@ -41,58 +41,32 @@
 			<p class="form-error-message" *ngFor="let e of appInstanceError?.DatabaseProviderId">
 				{{e}}
 			</p>
+        </mat-form-field>
+        
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>Data Connection String</mat-label>
+			<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="appInstance.DataConnectionString">
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.DataConnectionString">
+				{{e}}
+			</p>
 		</mat-form-field>
 
-		<mat-card style="margin-bottom: 10px">
-			<h5 style="color:gray">Connection string</h5>
-			<mat-form-field class="full-width" appearance="outline">
-				<mat-label>Server name</mat-label>
-				<input matInput type="text" placeholder="Server name" name="serverName" [(ngModel)]="appInstance.DataConnectionString.Server"
-				 required>
-				<p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.Server']">
-					{{e}}
-				</p>
-			</mat-form-field>
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>LOB Connection String</mat-label>
+			<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="appInstance.LobConnectionString">
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.LobConnectionString">
+				{{e}}
+			</p>
+		</mat-form-field>
 
-			<mat-form-field class="full-width" appearance="outline">
-				<mat-label>Database name</mat-label>
-				<input matInput type="text" placeholder="Database name" name="databaseName" [(ngModel)]="appInstance.DataConnectionString.Database"
-				 required>
-				 <p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.Database']">
-						{{e}}
-				</p>
-			</mat-form-field>
-
-			<mat-form-field class="full-width" appearance="outline">
-				<mat-label>User name</mat-label>
-				<input matInput type="text" placeholder="User name" name="userName" [(ngModel)]="appInstance.DataConnectionString.User">
-				<p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.User']">
-						{{e}}
-				</p>
-			</mat-form-field>
-
-			<mat-form-field class="full-width" appearance="outline">
-				<mat-label>Password</mat-label>
-				<input matInput type="password" placeholder="Password" name="password" [(ngModel)]="appInstance.DataConnectionString.Password">
-				<p class="form-error-message" *ngFor="let e of appInstanceError['DataConnectionString.Password']">
-						{{e}}
-				</p>
-			</mat-form-field>
-			<div>
-				<mat-checkbox name="trusted_Connection" [(ngModel)]="appInstance.DataConnectionString.Trusted_Connection">Truested
-					connection</mat-checkbox>
-			</div>
-			<div>
-				<mat-checkbox name="multipleActiveResultSets" [(ngModel)]="appInstance.DataConnectionString.MultipleActiveResultSets">Multiple
-					active resultSet</mat-checkbox>
-			</div>
-		</mat-card>
-
-		<div>
+        <div>
 			<mat-checkbox name="isEnabled" [(ngModel)]="appInstance.IsEnabled">Is Enable</mat-checkbox>
 		</div>
 		<div>
 			<mat-checkbox name="isProduction" [(ngModel)]="appInstance.IsProduction">Is Production</mat-checkbox>
+        </div>
+        <div>
+			<mat-checkbox name="migrateDatabase" [(ngModel)]="appInstance.MigrateDatabase">Migrate Database</mat-checkbox>
 		</div>
 	</form>
 

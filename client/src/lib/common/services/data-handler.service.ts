@@ -12,6 +12,25 @@ import {ManageEntityModes} from '../../add-n-edit/models/manage-entity-modes';
 import {AddNEditHelper} from '../../add-n-edit/add-n-edit-helper';
 import {Result} from '../models/Result';
 
+class IdAndNameCacheEntry {
+	public observable: Observable<HasIdName[]>;
+	public data: HasIdName[];
+}
+
+class IdAndNameModel {
+	Id: number;
+	DisplayName: string;
+}
+
+class IdAndNameResponse {
+	EntityTypeName: string;
+	Names: IdAndNameModel[];
+}
+
+class EntityIdAndNames {
+	[id: number]: string;
+}
+
 @Injectable({
 	providedIn: 'root',
 })
@@ -204,25 +223,4 @@ export class DataHandlerService {
 	private escapeRegExp(str: string): string {
 		return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\^\$\|]/g, '\\$&');
 	}
-
-
-}
-
-class IdAndNameCacheEntry {
-	public observable: Observable<HasIdName[]>;
-	public data: HasIdName[];
-}
-
-class IdAndNameModel {
-	Id: number;
-	DisplayName: string;
-}
-
-class IdAndNameResponse {
-	EntityTypeName: string;
-	Names: IdAndNameModel[];
-}
-
-class EntityIdAndNames {
-	[id: number]: string;
 }

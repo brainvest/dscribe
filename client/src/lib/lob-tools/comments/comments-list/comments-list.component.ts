@@ -1,6 +1,6 @@
 import {CommentModel, GetCommentRequestModel} from '../../models/comment.model';
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {LobListDialogData} from '../../models/common-models';
 import {LobInfoService} from '../../lob-info.service';
 import {SnackBarService} from '../../../common/notifications/snackbar.service';

@@ -1,12 +1,12 @@
+export enum ReportFormats {
+	RichTextDocument = 1
+}
+
 export class ReportsListResponse {
 	EntityTypeName: string;
 	Format: ReportFormats;
 	Id: number;
 	Title: string;
-}
-
-export enum ReportFormats {
-	RichTextDocument = 1
 }
 
 export class DownloadReportRequest {

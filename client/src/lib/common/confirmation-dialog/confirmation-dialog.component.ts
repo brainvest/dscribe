@@ -1,7 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {ConfirmationDialogData} from './confirmation-dialog-data';
 
 @Component({
 	selector: 'dscribe-confirmation-dialog',
@@ -34,11 +35,4 @@ export class ConfirmationDialogComponent implements OnInit {
 		this.dialogRef.close();
 	}
 
-}
-
-export class ConfirmationDialogData {
-	constructor(
-		public title: string,
-		public message?: string) {
-	}
 }

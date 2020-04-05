@@ -1,4 +1,6 @@
-import {MatDialog, MatPaginator, MatTableDataSource} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AddNEditAppTypeComponent, AddNEditAppTypeComponentData} from '../add-n-edit-app-type/add-n-edit-app-type.component';
 import {AppTypeModel} from '../../../common/models/app-type.model';
@@ -19,7 +21,7 @@ export class AppTypeManagementComponent implements OnInit {
 	appTypesDataSource = new MatTableDataSource<AppTypeModel>(this.appTypes);
 
 
-	@ViewChild('entitiyTypesPaginator', { static: false }) AppTypePaginator: MatPaginator;
+	@ViewChild('entitiyTypesPaginator') AppTypePaginator: MatPaginator;
 
 
 	constructor(
