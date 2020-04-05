@@ -68,7 +68,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				Title = x.Title,
 				UseUnreleasedMetadata = x.UseUnreleasedMetadata,
 				DatabaseProviderId = x.DatabaseProviderId,
-				DataConnectionString = DeserializeConnectionString(x.DataConnectionString)
+				DataConnectionString = x.DataConnectionString,
+				LobConnectionString = x.LobConnectionString,
+                MigrateDatabase = x.MigrateDatabase,
+                MetadataReleaseId = x.MetadataReleaseId
 			}).ToListAsync();
 		}
 
@@ -89,9 +92,11 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				IsProduction = model.IsProduction,
 				Name = model.Name,
 				Title = model.Title,
-				DataConnectionString = GenerateConnectionString(model.DataConnectionString),
+				DataConnectionString = model.DataConnectionString,
+				LobConnectionString = model.LobConnectionString,
 				MetadataReleaseId = model.MetadataReleaseId,
-
+                MigrateDatabase = model.MigrateDatabase,
+                UseUnreleasedMetadata = model.UseUnreleasedMetadata
 			};
 			_dbContext.AppInstances.Add(appInstance);
 			await _dbContext.SaveChangesAsync();
@@ -117,8 +122,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			appInstance.IsProduction = model.IsProduction;
 			appInstance.Name = model.Name;
 			appInstance.Title = model.Title;
-			appInstance.DataConnectionString = GenerateConnectionString(model.DataConnectionString);
+			appInstance.DataConnectionString = model.DataConnectionString;
+			appInstance.LobConnectionString = model.LobConnectionString;
 			appInstance.MetadataReleaseId = model.MetadataReleaseId;
+            appInstance.UseUnreleasedMetadata = model.UseUnreleasedMetadata;
 			await _dbContext.SaveChangesAsync();
 			((RequestLogModel)HttpContext.Items["RequestLog"]).AppInstanceId = appInstance.Id;
 			return Ok();

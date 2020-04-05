@@ -1,6 +1,9 @@
 import {Component, Inject, Input, OnChanges, OnInit, Optional, SimpleChanges, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatAutocompleteTrigger, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {MatDialog} from '@angular/material/dialog';
+import {MatDialogRef} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
 import {DataHandlerService} from '../common/services/data-handler.service';
 import {PropertyMetadata} from '../metadata/property-metadata';
@@ -9,6 +12,43 @@ import {EntityTypeMetadata} from '../metadata/entity-type-metadata';
 import {ListAddNEditDialogComponent} from '../list/list-add-n-edit-dialog/list-add-n-edit-dialog.component';
 import {AddNEditResult} from '../common/models/add-n-edit-result';
 import {ManageEntityModes} from '../add-n-edit/models/manage-entity-modes';
+
+@Component({
+	template: `
+		<mat-dialog-content>
+			<h1 class="page-header">{{inputs.entityType.PluralTitle}}</h1>
+			<dscribe-list
+				[hideFilter]="false"
+				[entityType]="inputs.entityType"
+				(selectionChanged)="listRowSelectionChanged($event)">
+			</dscribe-list>
+		</mat-dialog-content>
+		<mat-dialog-actions>
+			<button mat-raised-button color="primary" (click)="doneClicked()">Ok</button>
+		</mat-dialog-actions>
+	`
+})
+export class AutoCompleteMoreDialogComponent {
+	inputs: {
+		entityType: EntityTypeMetadata,
+		title: string,
+		selectedRow: any
+	};
+
+	constructor(@Optional() public dialogRef: MatDialogRef<AutoCompleteMoreDialogComponent>,
+							@Inject(MAT_DIALOG_DATA) public data: any) {
+		this.inputs = data;
+	}
+
+	listRowSelectionChanged(row: any) {
+		this.inputs.selectedRow = row;
+	}
+
+	doneClicked() {
+		this.dialogRef.close(this.inputs.selectedRow);
+	}
+
+}
 
 @Component({
 	selector: 'dscribe-entity-auto-complete-component',
@@ -29,7 +69,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 	loading = false;
 	isAutoCompleteOpen: boolean;
 
-	@ViewChild(MatAutocompleteTrigger, { static: false })
+	@ViewChild(MatAutocompleteTrigger)
 	trigger: MatAutocompleteTrigger;
 
 	constructor(private dataHandler: DataHandlerService, private dialog: MatDialog) {
@@ -140,43 +180,6 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 					});
 				});
 		});
-	}
-
-}
-
-@Component({
-	template: `
-		<mat-dialog-content>
-			<h1 class="page-header">{{inputs.entityType.PluralTitle}}</h1>
-			<dscribe-list
-				[hideFilter]="false"
-				[entityType]="inputs.entityType"
-				(selectionChanged)="listRowSelectionChanged($event)">
-			</dscribe-list>
-		</mat-dialog-content>
-		<mat-dialog-actions>
-			<button mat-raised-button color="primary" (click)="doneClicked()">Ok</button>
-		</mat-dialog-actions>
-	`
-})
-export class AutoCompleteMoreDialogComponent {
-	inputs: {
-		entityType: EntityTypeMetadata,
-		title: string,
-		selectedRow: any
-	};
-
-	constructor(@Optional() public dialogRef: MatDialogRef<AutoCompleteMoreDialogComponent>,
-							@Inject(MAT_DIALOG_DATA) public data: any) {
-		this.inputs = data;
-	}
-
-	listRowSelectionChanged(row: any) {
-		this.inputs.selectedRow = row;
-	}
-
-	doneClicked() {
-		this.dialogRef.close(this.inputs.selectedRow);
 	}
 
 }

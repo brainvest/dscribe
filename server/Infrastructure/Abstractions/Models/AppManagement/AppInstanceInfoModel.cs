@@ -25,9 +25,11 @@ namespace Brainvest.Dscribe.Abstractions.Models.AppManagement
 		[Required]
 		public DatabaseProviderEnum DatabaseProviderId { get; set; }
 		[Required]
-		public DataConnectionStringModel DataConnectionString { get; set; }
+		public string DataConnectionString { get; set; }
+		public string LobConnectionString { get; set; }
 		public int? MetadataReleaseId { get; set; }
-	}
+        public bool MigrateDatabase { get; set; }
+    }
 
 	public class DataConnectionStringModel
 	{

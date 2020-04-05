@@ -1,7 +1,9 @@
 import {PropertyHistoryModel} from './../../models/history/property-type-history-model';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatTableDataSource} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
 import {HistoryType} from '../../models/history/history-type';
 import {SnackBarService} from '../../../common/notifications/snackbar.service';
 import {HistoryService} from '../../../lob-tools/history-service';

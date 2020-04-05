@@ -1,12 +1,3 @@
-export class AttachmentsListRequest {
-	EntityTypeName: string;
-	Identifier: number;
-}
-
-export class AttachmentsListResponse {
-	Items: AttachmentListItem[];
-}
-
 export class AttachmentListItem {
 	Description: string;
 	EntityTypeId: number;
@@ -17,4 +8,13 @@ export class AttachmentListItem {
 	Url: string;
 	FileName: string;
 	Size: number;
+}
+
+export class AttachmentsListRequest {
+	EntityTypeName: string;
+	Identifier: number;
+}
+
+export class AttachmentsListResponse {
+	Items: AttachmentListItem[];
 }

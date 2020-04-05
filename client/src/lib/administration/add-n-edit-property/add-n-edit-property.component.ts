@@ -7,10 +7,11 @@ import {EntityTypeBase} from '../../metadata/entity-type-base';
 import {DataTypeModel} from '../../metadata/data-type-model';
 import {PropertyBase} from '../../metadata/property-base';
 import {AddNEditEntityTypeComponent} from '../add-n-edit-entity/add-n-edit-entity-type.component';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MetadataManagementApiClient} from '../metadata-management-api-client';
 import {PropertyInfoModel} from '../models/property-info-model';
 import {SnackBarService} from '../../common/notifications/snackbar.service';
+import {AddNEditPropertyComponentData} from './add-n-edit-property-component-data';
 
 @Component({
 	selector: 'dscribe-add-n-edit-property',
@@ -187,15 +188,4 @@ export class AddNEditPropertyComponent implements OnInit {
 		this.dialogRef.close();
 	}
 
-}
-
-export class AddNEditPropertyComponentData {
-	constructor(
-		public property: AddNEditPropertyMetadataModel,
-		public isNew,
-		public basicInfo: MetadataBasicInfoModel,
-		public entityTypes: EntityTypeBase[],
-		public thisEntityTypeProperties: PropertyBase[],
-		public allProperties: PropertyInfoModel[]) {
-	}
 }

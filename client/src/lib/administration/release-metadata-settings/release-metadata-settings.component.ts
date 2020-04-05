@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {ReleaseMetadataRequest} from '../models/release-metadata-request';
 import {MetadataManagementApiClient} from '../metadata-management-api-client';
 import {HttpErrorResponse} from '@angular/common/http';

@@ -1,6 +1,8 @@
 import {HttpErrorResponse} from '@angular/common/http';
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatTableDataSource} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
 import {EntityTypeHistoryModel} from '../../models/history/entity-type-history-model';
 import {HistoryType} from '../../models/history/history-type';
 import {SnackBarService} from '../../../common/notifications/snackbar.service';
@@ -18,7 +20,7 @@ export class EntityHistoryComponent implements OnInit {
 	displayedEntityTypeColumns = ['action', 'name', 'tableName', 'schema', 'usage', 'singular', 'plural', 'code', 'displayName', 'ActionDate'];
 	entityTypesDataSource = new MatTableDataSource<EntityTypeHistoryModel>(this.entityHistories);
 
-	@ViewChild('entityTypesPaginator', { static: false }) entityTypesPaginator: MatPaginator;
+	@ViewChild('entityTypesPaginator') entityTypesPaginator: MatPaginator;
 
 	constructor(
 		private dialogRef: MatDialogRef<EntityHistoryComponent>,

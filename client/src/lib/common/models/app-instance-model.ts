@@ -13,7 +13,9 @@ export class AppInstanceModel {
 	Name: string;
 	Title: string;
 	UseUnreleasedMetadata: boolean;
-	DataConnectionString: ConnectionStringModel;
+	DataConnectionString: string;
+	LobConnectionString: string;
 	DatabaseProviderId: number;
+	MigrateDatabase: boolean;
 }
 

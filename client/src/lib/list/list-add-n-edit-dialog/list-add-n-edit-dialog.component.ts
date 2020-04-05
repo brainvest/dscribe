@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AddNEditResult} from '../../common/models/add-n-edit-result';
 import {AddNEditHelper} from '../../add-n-edit/add-n-edit-helper';
 
