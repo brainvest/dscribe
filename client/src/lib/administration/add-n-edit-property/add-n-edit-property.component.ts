@@ -7,7 +7,7 @@ import {EntityTypeBase} from '../../metadata/entity-type-base';
 import {DataTypeModel} from '../../metadata/data-type-model';
 import {PropertyBase} from '../../metadata/property-base';
 import {AddNEditEntityTypeComponent} from '../add-n-edit-entity/add-n-edit-entity-type.component';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MetadataManagementApiClient} from '../metadata-management-api-client';
 import {PropertyInfoModel} from '../models/property-info-model';
 import {SnackBarService} from '../../common/notifications/snackbar.service';

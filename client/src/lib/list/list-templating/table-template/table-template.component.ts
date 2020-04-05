@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ListColumn } from '../../models/list-column';
-import { MatSort } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
 	selector: 'dscribe-table-template',

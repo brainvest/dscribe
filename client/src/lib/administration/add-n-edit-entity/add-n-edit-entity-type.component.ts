@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EntityTypeBase } from '../../metadata/entity-type-base';
 import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
 import { MetadataManagementApiClient } from '../metadata-management-api-client';

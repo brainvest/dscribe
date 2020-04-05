@@ -1,6 +1,9 @@
 import {Component, Inject, Input, OnChanges, OnInit, Optional, SimpleChanges, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatAutocompleteTrigger, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {MatDialog} from '@angular/material/dialog';
+import {MatDialogRef} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
 import {DataHandlerService} from '../common/services/data-handler.service';
 import {PropertyMetadata} from '../metadata/property-metadata';
