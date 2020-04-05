@@ -5,7 +5,8 @@ import { EntityTypeBase } from '../../metadata/entity-type-base';
 import { MetadataBasicInfoModel } from '../../metadata/metadata-basic-info-model';
 import { MetadataManagementApiClient } from '../metadata-management-api-client';
 import { SnackBarService } from '../../common/notifications/snackbar.service';
-import {FacetDefinitionModel} from '../../metadata/facets/facet-definition-model';
+import { FacetDefinitionModel } from '../../metadata/facets/facet-definition-model';
+import { AddNEditEntityTypeComponentData } from './add-n-edit-entity-type-component-data';
 
 @Component({
 	selector: 'dscribe-add-n-edit-entity-type',
@@ -138,18 +139,6 @@ export class AddNEditEntityTypeComponent implements OnInit {
 
 	cancel() {
 		this.dialogRef.close();
-	}
-
-}
-
-export class AddNEditEntityTypeComponentData {
-	constructor(
-		public entityType: EntityTypeBase,
-		public isNew: boolean,
-		public basicInfo: MetadataBasicInfoModel) { }
-
-	get action() {
-		return this.isNew ? 'Add' : 'Edit';
 	}
 
 }

@@ -1,3 +1,8 @@
+export class LocalFacetModel {
+	FacetName: string;
+	Value: string;
+}
+
 export class EntityTypeBase {
 	public static fields = [
 		{ title: 'Name', name: 'Name', dataType: 'string' },
@@ -28,9 +33,4 @@ export class EntityTypeBase {
 	public EntityTypeGeneralUsageCategoryId: number;
 	public TableName: string;
 	LocalFacets: LocalFacetModel[];
-}
-
-export class LocalFacetModel {
-	FacetName: string;
-	Value: string;
 }

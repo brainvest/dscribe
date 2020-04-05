@@ -5,6 +5,17 @@ import {AppTypeModel} from '../../../common/models/app-type.model';
 import {AppManagementService} from '../../../common/services/app-management.service';
 import {SnackBarService} from '../../../common/notifications/snackbar.service';
 
+export class AddNEditAppTypeComponentData {
+	constructor(
+		public appType: AppTypeModel,
+		public isNew: boolean) {
+	}
+
+	get action() {
+		return this.isNew ? 'Add' : 'Edit';
+	}
+}
+
 @Component({
 	selector: 'dscribe-host-add-n-edit-app-type',
 	templateUrl: './add-n-edit-app-type.component.html',
@@ -48,15 +59,4 @@ export class AddNEditAppTypeComponent implements OnInit {
 		this.dialogRef.close();
 	}
 
-}
-
-export class AddNEditAppTypeComponentData {
-	constructor(
-		public appType: AppTypeModel,
-		public isNew: boolean) {
-	}
-
-	get action() {
-		return this.isNew ? 'Add' : 'Edit';
-	}
 }

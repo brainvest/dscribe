@@ -6,8 +6,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PropertyBase } from '../../metadata/property-base';
-import { AddNEditEntityTypeComponent, AddNEditEntityTypeComponentData } from '../add-n-edit-entity/add-n-edit-entity-type.component';
-import { AddNEditPropertyComponent, AddNEditPropertyComponentData } from '../add-n-edit-property/add-n-edit-property.component';
+import {AddNEditEntityTypeComponentData} from "../add-n-edit-entity/add-n-edit-entity-type-component-data";
+import { AddNEditPropertyComponent } from '../add-n-edit-property/add-n-edit-property.component';
+import { AddNEditPropertyComponentData } from '../add-n-edit-property/add-n-edit-property-component-data';
 import { AddNEditPropertyMetadataModel } from '../models/add-n-edit-property-metadata-model';
 import { ConfirmationDialogComponent } from '../../common/confirmation-dialog/confirmation-dialog.component';
 import { PropertyInfoModel } from '../models/property-info-model';
@@ -20,6 +21,7 @@ import { EntityTypeHistoryModel } from '../models/history/entity-type-history-mo
 import { PropertyHistoryModel } from '../models/history/property-type-history-model';
 import { PropertyHistoryComponent } from '../history/property-history/property-history.component';
 import { HistoryType } from '../models/history/history-type';
+import {AddNEditEntityTypeComponent} from '../add-n-edit-entity/add-n-edit-entity-type.component';
 
 @Component({
 	selector: 'dscribe-metadata-management',
@@ -337,5 +339,3 @@ export class MetadataManagementComponent implements OnInit {
 			});
 	}
 }
-
-

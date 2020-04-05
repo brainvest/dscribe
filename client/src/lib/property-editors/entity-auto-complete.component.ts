@@ -14,6 +14,43 @@ import {AddNEditResult} from '../common/models/add-n-edit-result';
 import {ManageEntityModes} from '../add-n-edit/models/manage-entity-modes';
 
 @Component({
+	template: `
+		<mat-dialog-content>
+			<h1 class="page-header">{{inputs.entityType.PluralTitle}}</h1>
+			<dscribe-list
+				[hideFilter]="false"
+				[entityType]="inputs.entityType"
+				(selectionChanged)="listRowSelectionChanged($event)">
+			</dscribe-list>
+		</mat-dialog-content>
+		<mat-dialog-actions>
+			<button mat-raised-button color="primary" (click)="doneClicked()">Ok</button>
+		</mat-dialog-actions>
+	`
+})
+export class AutoCompleteMoreDialogComponent {
+	inputs: {
+		entityType: EntityTypeMetadata,
+		title: string,
+		selectedRow: any
+	};
+
+	constructor(@Optional() public dialogRef: MatDialogRef<AutoCompleteMoreDialogComponent>,
+							@Inject(MAT_DIALOG_DATA) public data: any) {
+		this.inputs = data;
+	}
+
+	listRowSelectionChanged(row: any) {
+		this.inputs.selectedRow = row;
+	}
+
+	doneClicked() {
+		this.dialogRef.close(this.inputs.selectedRow);
+	}
+
+}
+
+@Component({
 	selector: 'dscribe-entity-auto-complete-component',
 	templateUrl: './entity-auto-complete.component.html',
 	styleUrls: ['./entity-auto-complete.component.scss']
@@ -143,43 +180,6 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 					});
 				});
 		});
-	}
-
-}
-
-@Component({
-	template: `
-		<mat-dialog-content>
-			<h1 class="page-header">{{inputs.entityType.PluralTitle}}</h1>
-			<dscribe-list
-				[hideFilter]="false"
-				[entityType]="inputs.entityType"
-				(selectionChanged)="listRowSelectionChanged($event)">
-			</dscribe-list>
-		</mat-dialog-content>
-		<mat-dialog-actions>
-			<button mat-raised-button color="primary" (click)="doneClicked()">Ok</button>
-		</mat-dialog-actions>
-	`
-})
-export class AutoCompleteMoreDialogComponent {
-	inputs: {
-		entityType: EntityTypeMetadata,
-		title: string,
-		selectedRow: any
-	};
-
-	constructor(@Optional() public dialogRef: MatDialogRef<AutoCompleteMoreDialogComponent>,
-							@Inject(MAT_DIALOG_DATA) public data: any) {
-		this.inputs = data;
-	}
-
-	listRowSelectionChanged(row: any) {
-		this.inputs.selectedRow = row;
-	}
-
-	doneClicked() {
-		this.dialogRef.close(this.inputs.selectedRow);
 	}
 
 }

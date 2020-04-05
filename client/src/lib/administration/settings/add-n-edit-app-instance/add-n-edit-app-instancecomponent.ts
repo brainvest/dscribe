@@ -8,6 +8,17 @@ import { AppManagementService } from '../../../common/services/app-management.se
 import { SnackBarService } from '../../../common/notifications/snackbar.service';
 import { ConnectionStringModel } from '../../../common/models/connection-string.model';
 
+export class AddNEditAppInstanceComponentData {
+	constructor(
+		public appInstance: AppInstanceModel,
+		public isNew: boolean) {
+	}
+
+	get action() {
+		return this.isNew ? 'Add' : 'Edit';
+	}
+}
+
 @Component({
 	selector: 'dscribe-host-add-n-edit-app-instance',
 	templateUrl: './add-n-edit-app-instance.component.html',
@@ -76,16 +87,5 @@ export class AddNEditAppInstanceComponent implements OnInit {
 
 	cancel() {
 		this.dialogRef.close();
-	}
-}
-
-export class AddNEditAppInstanceComponentData {
-	constructor(
-		public appInstance: AppInstanceModel,
-		public isNew: boolean) {
-	}
-
-	get action() {
-		return this.isNew ? 'Add' : 'Edit';
 	}
 }
