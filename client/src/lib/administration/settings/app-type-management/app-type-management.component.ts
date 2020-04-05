@@ -19,7 +19,7 @@ export class AppTypeManagementComponent implements OnInit {
 	appTypesDataSource = new MatTableDataSource<AppTypeModel>(this.appTypes);
 
 
-	@ViewChild('entitiyTypesPaginator', { static: false }) AppTypePaginator: MatPaginator;
+	@ViewChild('entitiyTypesPaginator') AppTypePaginator: MatPaginator;
 
 
 	constructor(

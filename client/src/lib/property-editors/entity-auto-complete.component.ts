@@ -29,7 +29,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 	loading = false;
 	isAutoCompleteOpen: boolean;
 
-	@ViewChild(MatAutocompleteTrigger, { static: false })
+	@ViewChild(MatAutocompleteTrigger)
 	trigger: MatAutocompleteTrigger;
 
 	constructor(private dataHandler: DataHandlerService, private dialog: MatDialog) {

@@ -77,7 +77,7 @@ export class ListComponent implements OnInit, OnChanges {
 	displayMode = 'grid';
 
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-	@ViewChild(TableTemplateComponent, { static: false }) table: TableTemplateComponent;
+	@ViewChild(TableTemplateComponent) table: TableTemplateComponent;
 	sort: MatSort;
 	private customTemplate: { component: Type<any>; options?: any };
 	filterCommands: DscribeCommand[] = [];
