@@ -22,6 +22,7 @@ namespace Brainvest.Dscribe.Abstractions.Models.AppManagement
 		public string Title { get; set; }
 		public bool UseUnreleasedMetadata { get; set; }
 		public string GeneratedCodeNamespace { get; set; }
+		public string DbContextName { get; set; }
 		[Required]
 		public DatabaseProviderEnum DatabaseProviderId { get; set; }
 		[Required]
@@ -29,6 +30,7 @@ namespace Brainvest.Dscribe.Abstractions.Models.AppManagement
 		public string LobConnectionString { get; set; }
 		public int? MetadataReleaseId { get; set; }
         public bool MigrateDatabase { get; set; }
+        public int? SortOrder { get; set; }
     }
 
 	public class DataConnectionStringModel

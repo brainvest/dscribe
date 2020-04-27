@@ -23,7 +23,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 		public CodeDomBusinessCode CreateCode(IMetadataCache cache, IInstanceInfo instanceInfo)
 		{
 			var compileUnit = new CodeCompileUnit();
-			var codeNamespace = new CodeNamespace(instanceInfo.GeneratedCodeNamespace ?? $"Brainvest.Dscribe{instanceInfo.InstanceName}.Business");
+			var codeNamespace = new CodeNamespace(instanceInfo.GetNamespace());
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IDisposable).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(DbContext).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(IBusinessRepositoryFactory).Namespace));
@@ -33,7 +33,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(ForeignKeyAttribute).Namespace));
 			codeNamespace.Imports.Add(new CodeNamespaceImport(typeof(JsonIgnoreAttribute).Namespace));
 
-			var codeDbContext = CreateDbContextCode();
+			var codeDbContext = CreateDbContextCode(instanceInfo);
 			codeNamespace.Types.Add(codeDbContext);
 			foreach (var type in cache)
 			{
@@ -74,9 +74,12 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 					var snippet = new CodeSnippetTypeMember();
 
 					string dataType;
-					if (property.DataType == DataTypes.NavigationList)
+					if (property.DataType == DataTypes.NavigationEntity || property.DataType == DataTypes.NavigationList)
 					{
 						snippet.Text += "		[JsonIgnore]" + Environment.NewLine;
+					}
+					if (property.DataType == DataTypes.NavigationList)
+					{
 						dataType = $"System.Collections.Generic.ICollection<{property.EntityTypeName}>";
 					}
 					else if (property.DataType == DataTypes.ForeignKey)
@@ -114,7 +117,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 				IsPartial = true
 			};
 			factoryCode.BaseTypes.Add($"IBusinessRepositoryFactory");
-			factoryCode.Members.Add(new CodeSnippetTypeMember("		public virtual IDisposable GetDbContext(DbContextOptions options){ return new BusinessDbContext(options); }"));
+			factoryCode.Members.Add(new CodeSnippetTypeMember($"		public virtual IDisposable GetDbContext(DbContextOptions options){{ return new {instanceInfo.GetDbContextName()}(options as DbContextOptions<{instanceInfo.GetDbContextName()}>); }}"));
 			factoryCode.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(ExportAttribute)),
 				new CodeAttributeArgument(new CodeSnippetExpression("typeof(IBusinessRepositoryFactory)"))));
 			codeNamespace.Types.Add(factoryCode);
@@ -131,9 +134,9 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			codeDbContext.Members.Add(snippet);
 		}
 
-		private static CodeTypeDeclaration CreateDbContextCode()
+		private static CodeTypeDeclaration CreateDbContextCode(IInstanceInfo instanceInfo)
 		{
-			var codeDbContext = new CodeTypeDeclaration("BusinessDbContext")
+			var codeDbContext = new CodeTypeDeclaration(instanceInfo.GetDbContextName())
 			{
 				IsPartial = true
 			};
@@ -142,7 +145,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 			{
 				Attributes = MemberAttributes.Public
 			};
-			var optionsParameter = new CodeParameterDeclarationExpression("DbContextOptions", "options");
+			var optionsParameter = new CodeParameterDeclarationExpression($"DbContextOptions<{instanceInfo.GetDbContextName()}>", "options");
 			constructor.Parameters.Add(optionsParameter);
 			constructor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression("options"));
 			codeDbContext.Members.Add(constructor);

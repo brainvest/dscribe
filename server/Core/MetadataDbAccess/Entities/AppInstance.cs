@@ -28,8 +28,10 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public bool MigrateDatabase { get; set; }
 
 		public string GeneratedCodeNamespace { get; set; }
+		public string DbContextName { get; set; }
 
 		public int? MetadataReleaseId { get; set; }
 		public MetadataRelease MetadataRelease { get; set; }
+		public int? SortOrder { get; set; }
 	}
 }

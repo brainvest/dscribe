@@ -8,8 +8,10 @@ namespace Brainvest.Dscribe.Abstractions
 		string DataConnectionString { get; }
 		string LobConnectionString { get; }
 		bool MigrateDatabase { get; }
-		string GeneratedCodeNamespace { get; }
 		DatabaseProviderEnum Provider { get; }
 		InstanceSettings InstanceSettings { get; }
+		string GetDbContextName();
+		public string GetNamespace();
+		int? SortOrder { get; }
 	}
 }

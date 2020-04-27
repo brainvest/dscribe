@@ -49,8 +49,10 @@ namespace Brainvest.Dscribe.Runtime
 				LobConnectionString = instance.LobConnectionString,
 				MigrateDatabase = instance.MigrateDatabase,
 				GeneratedCodeNamespace = instance.GeneratedCodeNamespace,
+				DbContextName = instance.DbContextName,
 				InstanceSettings = instanceSettings,
-				LoadBusinessFromAssemblyName = instanceSettings?.LoadBusinessFromAssemblyName
+				LoadBusinessFromAssemblyName = instanceSettings?.LoadBusinessFromAssemblyName,
+				SortOrder = instance.SortOrder,
 			};
 			if (instanceSettings?.ConnectionStringMaps != null)
 			{

@@ -29,7 +29,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable<AppInstanceInfoModel>>> GetAppInstancesInfoForHome()
 		{
-			return await _dbContext.AppInstances.Select(x =>
+			return await _dbContext.AppInstances
+				.OrderBy(x => x.SortOrder).ThenBy(x => x.Name).Select(x =>
 			new AppInstanceInfoModel
 			{
 				Id = x.Id,
@@ -43,8 +44,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				MetadataReleaseVersionCode = x.MetadataRelease.VersionCode,
 				Name = x.Name,
 				GeneratedCodeNamespace = x.GeneratedCodeNamespace,
+				DbContextName = x.DbContextName,
 				Title = x.Title,
 				UseUnreleasedMetadata = x.UseUnreleasedMetadata,
+				SortOrder = x.SortOrder,
 			}).ToListAsync();
 		}
 
@@ -65,13 +68,15 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				MetadataReleaseVersionCode = x.MetadataRelease.VersionCode,
 				Name = x.Name,
 				GeneratedCodeNamespace = x.GeneratedCodeNamespace,
+				DbContextName = x.DbContextName,
 				Title = x.Title,
 				UseUnreleasedMetadata = x.UseUnreleasedMetadata,
 				DatabaseProviderId = x.DatabaseProviderId,
 				DataConnectionString = x.DataConnectionString,
 				LobConnectionString = x.LobConnectionString,
                 MigrateDatabase = x.MigrateDatabase,
-                MetadataReleaseId = x.MetadataReleaseId
+                MetadataReleaseId = x.MetadataReleaseId,
+				SortOrder = x.SortOrder
 			}).ToListAsync();
 		}
 
@@ -88,6 +93,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				AppTypeId = model.AppTypeId,
 				DatabaseProviderId = model.DatabaseProviderId,
 				GeneratedCodeNamespace = model.GeneratedCodeNamespace,
+				DbContextName = model.DbContextName,
 				IsEnabled = model.IsEnabled,
 				IsProduction = model.IsProduction,
 				Name = model.Name,
@@ -96,7 +102,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				LobConnectionString = model.LobConnectionString,
 				MetadataReleaseId = model.MetadataReleaseId,
                 MigrateDatabase = model.MigrateDatabase,
-                UseUnreleasedMetadata = model.UseUnreleasedMetadata
+                UseUnreleasedMetadata = model.UseUnreleasedMetadata,
+				SortOrder = model.SortOrder,
 			};
 			_dbContext.AppInstances.Add(appInstance);
 			await _dbContext.SaveChangesAsync();
@@ -118,6 +125,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			appInstance.AppTypeId = model.AppTypeId;
 			appInstance.DatabaseProviderId = model.DatabaseProviderId;
 			appInstance.GeneratedCodeNamespace = model.GeneratedCodeNamespace;
+			appInstance.DbContextName = model.DbContextName;
 			appInstance.IsEnabled = model.IsEnabled;
 			appInstance.IsProduction = model.IsProduction;
 			appInstance.Name = model.Name;
@@ -126,6 +134,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			appInstance.LobConnectionString = model.LobConnectionString;
 			appInstance.MetadataReleaseId = model.MetadataReleaseId;
             appInstance.UseUnreleasedMetadata = model.UseUnreleasedMetadata;
+			appInstance.SortOrder = model.SortOrder;
 			await _dbContext.SaveChangesAsync();
 			((RequestLogModel)HttpContext.Items["RequestLog"]).AppInstanceId = appInstance.Id;
 			return Ok();
