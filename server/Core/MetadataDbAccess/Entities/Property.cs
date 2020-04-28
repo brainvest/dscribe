@@ -49,5 +49,8 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public ICollection<Property> Unused1 { get; set; }
 		[InverseProperty(nameof(InverseProperty))]
 		public ICollection<Property> Unused2 { get; set; }
+
+		[InverseProperty(nameof(PropertyBehavior.Property))]
+		public ICollection<PropertyBehavior> PropertyBehaviors { get; set; }
 	}
 }

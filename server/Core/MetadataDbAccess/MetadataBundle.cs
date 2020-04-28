@@ -12,6 +12,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 
 		public static async Task<MetadataBundle> FromDbWithoutNavigations(MetadataDbContext dbContext, int appTypeId, int appInstanceId)
 		{
+			var additionalBehaviors = await dbContext.AdditionalBehaviors.AsNoTracking().ToListAsync();
 			var dataTypes = await dbContext.DataTypes.AsNoTracking().ToListAsync();
 			var entityTypes = await dbContext.EntityTypes.AsNoTracking().Where(x => x.AppTypeId == appTypeId).ToListAsync();
 			var entityTypeFacetDefaultValues = await dbContext.EntityTypeFacetDefaultValues.AsNoTracking()
@@ -25,6 +26,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 			var expressionBodies = await dbContext.ExpressionBodies.AsNoTracking().Where(x => x.Definition.AppTypeId == appTypeId && x.IsActive).ToListAsync();
 			var facetTypes = await dbContext.FacetTypes.AsNoTracking().ToListAsync();
 			var properties = await dbContext.Properties.AsNoTracking().Where(x => x.OwnerEntityType.AppTypeId == appTypeId).ToListAsync();
+			var propertyBehaviors = await dbContext.PropertyBehaviors.AsNoTracking().Where(x => x.Property.OwnerEntityType.AppTypeId == appTypeId).ToListAsync();
 			var propertyFacetDefaultValues = await dbContext.PropertyFacetDefaultValues.AsNoTracking()
 						.Where(x => (x.AppTypeId ?? appTypeId) == appTypeId && (x.AppInstanceId ?? appInstanceId) == appInstanceId).ToListAsync();
 			var propertyFacetDefinitions = await dbContext.PropertyFacetDefinitions.AsNoTracking().ToListAsync();
@@ -33,6 +35,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 
 			return new MetadataBundle
 			{
+				AdditionalBehaviors = additionalBehaviors,
 				DataTypes = dataTypes,
 				EntityTypes = entityTypes,
 				EntityTypeFacetDefaultValues = entityTypeFacetDefaultValues,
@@ -45,6 +48,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 				ExpressionBodies = expressionBodies,
 				FacetTypes = facetTypes,
 				Properties = properties,
+				PropertyBehaviors = propertyBehaviors,
 				PropertyFacetDefaultValues = propertyFacetDefaultValues,
 				PropertyFacetDefinitions = propertyFacetDefinitions,
 				PropertyFacetValues = propertyFacetValues,
@@ -54,6 +58,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 
 		public void FixupRelationships()
 		{
+			var additionalBehaviors = AdditionalBehaviors.ToDictionary(x => x.Id);
 			var entityTypes = EntityTypes.ToDictionary(x => x.Id);
 			var dataTypes = DataTypes.ToDictionary(x => x.Id);
 			var entityTypeFacetDefaultValues = EntityTypeFacetDefaultValues.ToDictionary(x => x.Id);
@@ -66,6 +71,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 			var expressionBodies = ExpressionBodies.ToDictionary(x => x.Id);
 			var facetTypes = FacetTypes.ToDictionary(x => x.Id);
 			var properties = Properties.ToDictionary(x => x.Id);
+			var propertyBehaviors = PropertyBehaviors.ToDictionary(x => x.Id);
 			var propertyFacetDefaultValues = PropertyFacetDefaultValues.ToDictionary(x => x.Id);
 			var propertyFacetDefinitions = PropertyFacetDefinitions.ToDictionary(x => x.Id);
 			var propertyFacetValues = PropertyFacetValues.ToDictionary(x => x.Id);
@@ -87,6 +93,9 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 			Fixup(Properties, entityTypes, nameof(Property.DataEntityTypeId), nameof(Property.DataEntityType));
 			Fixup(Properties, properties, nameof(Property.ForeignKeyPropertyId), nameof(Property.ForeignKeyProperty), nameof(Property.Unused1));
 			Fixup(Properties, properties, nameof(Property.InversePropertyId), nameof(Property.InverseProperty), nameof(Property.Unused2));
+
+			Fixup(PropertyBehaviors, properties, nameof(PropertyBehavior.PropertyId), nameof(PropertyBehavior.Property), nameof(Property.PropertyBehaviors));
+			Fixup(PropertyBehaviors, additionalBehaviors, nameof(PropertyBehavior.AdditionalBehaviorId), nameof(PropertyBehavior.AdditionalBehavior));
 
 			Fixup(ExpressionDefinitions, entityTypes, nameof(ExpressionDefinition.MainInputEntityTypeId), nameof(ExpressionDefinition.MainInputEntityType));
 			Fixup(ExpressionDefinitions, expressionBodies, nameof(ExpressionDefinition.ActiveBodyId), nameof(ExpressionDefinition.ActiveBody));
@@ -136,6 +145,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 			}
 		}
 
+		public List<AdditionalBehavior> AdditionalBehaviors { get; set; }
 		public List<EntityType> EntityTypes { get; set; }
 		public List<DataType> DataTypes { get; set; }
 		public List<EntityTypeFacetDefaultValue> EntityTypeFacetDefaultValues { get; set; }
@@ -148,6 +158,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 		public List<ExpressionBody> ExpressionBodies { get; set; }
 		public List<FacetType> FacetTypes { get; set; }
 		public List<Property> Properties { get; set; }
+		public List<PropertyBehavior> PropertyBehaviors { get; set; }
 		public List<PropertyFacetDefaultValue> PropertyFacetDefaultValues { get; set; }
 		public List<PropertyFacetDefinition> PropertyFacetDefinitions { get; set; }
 		public List<PropertyFacetValue> PropertyFacetValues { get; set; }

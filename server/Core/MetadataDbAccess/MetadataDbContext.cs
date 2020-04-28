@@ -27,6 +27,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 			}
 
 			#region indexes
+			modelBuilder.Entity<AdditionalBehavior>().HasIndex(x => x.Name).IsUnique();
 			modelBuilder.Entity<AppInstance>().HasIndex(x => x.Name).IsUnique();
 			modelBuilder.Entity<AppInstance>().HasIndex(x => x.Title).IsUnique();
 			modelBuilder.Entity<AppType>().HasIndex(x => x.Name).IsUnique();
@@ -129,9 +130,19 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 				new DatabaseProvider { Id = DatabaseProviderEnum.PostgreSql, Name = "PostgreSql" }
 			);
 
+			modelBuilder.Entity<AdditionalBehavior>().HasData(
+				new AdditionalBehavior { Id = (int)AdditionalBehaviorEnum.DisplayAsDate, Name = "DisplayAsDate" },
+				new AdditionalBehavior { Id = (int)AdditionalBehaviorEnum.DisplayAsDateTime, Name = "DisplayAsDateTime" },
+				new AdditionalBehavior { Id = (int)AdditionalBehaviorEnum.SetTimeOnInsert, Name = "SetTimeOnInsert" },
+				new AdditionalBehavior { Id = (int)AdditionalBehaviorEnum.SetTimeOnUpdate, Name = "SetTimeOnUpdate" },
+				new AdditionalBehavior { Id = (int)AdditionalBehaviorEnum.ShowDatePicker, Name = "ShowDatePicker" },
+				new AdditionalBehavior { Id = (int)AdditionalBehaviorEnum.ShowDateTimePicker, Name = "ShowDateTimePicker" }
+			);
+
 			#endregion
 		}
 
+		public DbSet<AdditionalBehavior> AdditionalBehaviors { get; set; }
 		public DbSet<AppType> AppTypes { get; set; }
 		public DbSet<AppInstance> AppInstances { get; set; }
 
@@ -142,6 +153,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 		public DbSet<EnumType> EnumTypes { get; set; }
 		public DbSet<EnumValue> EnumValues { get; set; }
 		public DbSet<FacetType> FacetTypes { get; set; }
+		public DbSet<PropertyBehavior> PropertyBehaviors { get; set; }
 		public DbSet<PropertyFacetDefaultValue> PropertyFacetDefaultValues { get; set; }
 		public DbSet<PropertyFacetDefinition> PropertyFacetDefinitions { get; set; }
 		public DbSet<PropertyFacetValue> PropertyFacetValues { get; set; }

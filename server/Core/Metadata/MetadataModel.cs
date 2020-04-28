@@ -13,9 +13,16 @@ namespace Brainvest.Dscribe.Metadata
 	{
 		public Dictionary<string, IPropertyGeneralUsageCategory> PropertyDefaults { get; private set; }
 		public IDictionary<string, IEntityTypeMetadataModel> EntityTypes { get; private set; }
+		public IDictionary<string, AdditionalBehaviorMetadata> AdditionalBehaviors { get; private set; }
 
 		public MetadataModel(MetadataBundle bundle)
 		{
+			AdditionalBehaviors = bundle.AdditionalBehaviors.ToDictionary(x => x.Name, 
+				x => new AdditionalBehaviorMetadata
+				{
+					Definition = x.Definition,
+					Name = x.Name
+				});
 			PropertyDefaults = bundle.PropertyFacetDefaultValues
 				.GroupBy(x => x.GeneralUsageCategory.Name)
 				.Select(x => new PropertyGeneralUsageCategory
@@ -50,7 +57,12 @@ namespace Brainvest.Dscribe.Metadata
 					InversePropertyName = p.InverseProperty?.Name,
 					Title = p.Title,
 					IsNullable = p.IsNullable,
-					IsExpression = p.IsExpression
+					IsExpression = p.IsExpression,
+					Behaviors = p.PropertyBehaviors?.Select(x => new PropertyBehaviorMetadata
+					{
+						BehaviorName = x.AdditionalBehavior.Name,
+						Parameters = x.Parameters
+					})?.ToList()
 				}).ToDictionary(p => p.Name, p => p)
 				}).ToDictionary(x => x.Name, x => x as IEntityTypeMetadataModel);
 		}
@@ -120,6 +132,19 @@ namespace Brainvest.Dscribe.Metadata
 			public string Title { get; set; }
 			public bool IsNullable { get; set; }
 			public bool IsExpression { get; set; }
+            public IEnumerable<PropertyBehaviorMetadata> Behaviors { get; set; }
+        }
+
+		public class PropertyBehaviorMetadata
+		{
+			public string BehaviorName { get; set; }
+			public string Parameters { get; set; }
+		}
+
+		public class AdditionalBehaviorMetadata
+		{
+			public string Name { get; set; }
+			public string Definition { get; set; }
 		}
 
 		public class EntityMetadata : IEntityTypeMetadataModel

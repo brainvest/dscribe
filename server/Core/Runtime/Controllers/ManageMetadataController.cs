@@ -222,7 +222,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 						{
 							FacetName = y.FacetDefinition.Name,
 							Value = y.Value
-						}).ToList()
+						}).ToList(),
 					}).ToListAsync();
 			return properties;
 		}
@@ -257,7 +257,13 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				{
 					FacetName = y.FacetDefinition.Name,
 					Value = y.Value
-				}).ToList()
+				}).ToList(),
+				PropertyBehaviors = x.PropertyBehaviors.Select(b => new PropertyBehaviorModel
+				{
+					Id = b.Id,
+					Parameters = b.Parameters,
+					AdditionalBehaviorId = b.AdditionalBehaviorId
+				}).ToList(),
 			}).SingleOrDefaultAsync(x => x.Id == request.PropertyId);
 			if (model.DataTypeId == (int)DataTypeEnum.NavigationEntity)
 			{
@@ -300,7 +306,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					Title = model.Title,
 					GeneralUsageCategoryId = model.PropertyGeneralUsageCategoryId,
 					OwnerEntityTypeId = model.OwnerEntityTypeId,
-					InversePropertyId = model.InversePropertyId
+					InversePropertyId = model.InversePropertyId,
 				};
 				if (property.DataTypeId == DataTypeEnum.NavigationEntity)
 				{
@@ -313,6 +319,18 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					property.InversePropertyId = model.NewInversePropertyId;
 				}
 				_dbContext.Properties.Add(property);
+				if (model.PropertyBehaviors != null)
+				{
+					foreach (var behavior in model.PropertyBehaviors)
+					{
+						_dbContext.PropertyBehaviors.Add(new PropertyBehavior
+						{
+							AdditionalBehaviorId = behavior.AdditionalBehaviorId,
+							Parameters = behavior.Parameters,
+							Property = property
+						});
+					}
+				}
 				await ProcessPropertyLocalFacets(model, false, property);
 				await _dbContext.SaveChangesAsync();
 				((RequestLogModel)HttpContext.Items["RequestLog"]).PropertyId = property.Id;
@@ -349,15 +367,48 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			else
 			{
 				property.ForeignKeyPropertyId = model.NewForeignKeyId;
-				property.InversePropertyId = model.NewInversePropertyId;
+				property.InversePropertyId = model.InversePropertyId;
 			}
+			await SyncBehaviors(property, model);
 			await ProcessPropertyLocalFacets(model, true, property);
 			await _dbContext.SaveChangesAsync();
 			((RequestLogModel)HttpContext.Items["RequestLog"]).PropertyId = property.Id;
 			return Ok();
 		}
 
-		private async Task ProcessPropertyLocalFacets(PropertyModel model, bool isEdit, Property property)
+        private async Task SyncBehaviors(Property property, AddNEditPropertyModel model)
+        {
+            var existingBehaviors = await _dbContext.PropertyBehaviors.Where(x => x.PropertyId == property.Id).ToListAsync();
+			if (model.PropertyBehaviors != null)
+			{
+				foreach (var behavior in model.PropertyBehaviors)
+				{
+					if (behavior.Id == default)
+					{
+						_dbContext.PropertyBehaviors.Add(new PropertyBehavior
+						{
+							AdditionalBehaviorId = behavior.AdditionalBehaviorId,
+							PropertyId = property.Id,
+						});
+					}
+					else
+					{
+						var existing = existingBehaviors.FirstOrDefault(x => x.Id == behavior.Id);
+						existing.AdditionalBehaviorId = behavior.AdditionalBehaviorId;
+						existing.Parameters = behavior.Parameters;
+					}
+				}
+			}
+			foreach (var existing in existingBehaviors)
+			{
+				if (model.PropertyBehaviors == null || !model.PropertyBehaviors.Any(b => b.Id == existing.Id))
+				{
+					_dbContext.PropertyBehaviors.Remove(existing);
+				}
+			}
+        }
+
+        private async Task ProcessPropertyLocalFacets(PropertyModel model, bool isEdit, Property property)
 		{
 			List<PropertyFacetValue> existing;
 			var definitions = await _dbContext.PropertyFacetDefinitions.ToListAsync();
@@ -431,7 +482,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				case RelatedPropertyAction.DontChange:
 					return;
 				case RelatedPropertyAction.ChooseExistingById:
-					property.InversePropertyId = model.NewInversePropertyId;
+					var inverseProperty = await _dbContext.Properties.FindAsync(model.NewInversePropertyId);
+					inverseProperty.InverseProperty = property;
 					return;
 				case RelatedPropertyAction.RenameExisting:
 					var existingInverseProperty = await _dbContext.Properties.FindAsync(model.InversePropertyId);
@@ -492,6 +544,12 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			}
 			var result = new MetadataBasicInfoModel
 			{
+				AdditionalBehaviors = await _dbContext.AdditionalBehaviors.Select(x => new AdditionalBehaviorModel
+				{
+					Id = x.Id,
+					Definition = x.Definition,
+					Name = x.Name
+				}).ToListAsync(),
 				DefaultPropertyFacetValues = (await _dbContext.PropertyFacetDefaultValues
 					.Select(v => new
 					{

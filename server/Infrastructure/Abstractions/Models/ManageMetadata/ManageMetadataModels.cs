@@ -46,6 +46,14 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public int OwnerEntityTypeId { get; set; }
 
 		public IEnumerable<LocalFacetModel> LocalFacets { get; set; }
+        public IEnumerable<PropertyBehaviorModel> PropertyBehaviors { get; set; }
+    }
+
+	public class PropertyBehaviorModel
+	{
+		public int? Id { get; set; }
+		public int AdditionalBehaviorId { get; set; }
+		public string Parameters { get; set; }
 	}
 
 	public class AddNEditPropertyModel : PropertyModel
@@ -80,6 +88,7 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 
 	public class MetadataBasicInfoModel
 	{
+		public IEnumerable<AdditionalBehaviorModel> AdditionalBehaviors { get; set; }
 		public IEnumerable<FacetDefinitionModel> PropertyFacetDefinitions { get; set; }
 		public IEnumerable<FacetDefinitionModel> EntityTypeFacetDefinitions { get; set; }
 		public Dictionary<string, Dictionary<string, string>> DefaultPropertyFacetValues { get; set; }
@@ -88,6 +97,13 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public IEnumerable<GeneralUsageCategoryModel> EntityTypeGeneralUsageCategories { get; set; }
 		public IEnumerable<DataTypeModel> DataTypes { get; set; }
 		public IEnumerable<FacetTypeModel> FacetTypes { get; set; }
+	}
+
+	public class AdditionalBehaviorModel
+	{
+		public int Id { get; set; }
+		public string Name { get; set; }
+		public string Definition { get; set; }
 	}
 
 	public class LocalFacetsModel

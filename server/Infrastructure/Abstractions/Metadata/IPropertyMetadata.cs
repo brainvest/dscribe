@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Brainvest.Dscribe.Abstractions.Metadata
@@ -13,6 +14,7 @@ namespace Brainvest.Dscribe.Abstractions.Metadata
 
 		IPropertyMetadata InverseProperty { get; }
 		IPropertyMetadata ForeignKey { get; }
+		IEnumerable<IPropertyBehaviorMetadata> Behaviors { get; }
 
 		LambdaExpression GetDefiningExpression(IBusinessReflector reflector);
 

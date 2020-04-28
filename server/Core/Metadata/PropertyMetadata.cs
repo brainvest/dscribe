@@ -3,6 +3,7 @@ using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Brainvest.Dscribe.Metadata
@@ -21,6 +22,7 @@ namespace Brainvest.Dscribe.Metadata
 
 		public IPropertyMetadata ForeignKey { get; set; }
 		public IPropertyMetadata InverseProperty { get; set; }
+		public IEnumerable<IPropertyBehaviorMetadata> Behaviors { get; set; }
 
 		#region Facets
 		public static PropertyFacet<bool> HideInInsertFacet { get; private set; }
@@ -81,7 +83,7 @@ namespace Brainvest.Dscribe.Metadata
 
 		private IMetadataCache _cache;
 		public PropertyMetadata(IMetadataCache cache, string name, EntityTypeMetadata owner, PropertyGeneralUsageCategoryStruct generalBehavior
-			, DataType dataType, bool isNullable, bool isExpression, string title, string expressionDefinitionIdentifier)
+			, DataType dataType, bool isNullable, bool isExpression, string title, string expressionDefinitionIdentifier, IEnumerable<MetadataDbAccess.Entities.PropertyBehavior> behaviors)
 		{
 			_cache = cache;
 			Name = name;
@@ -94,6 +96,15 @@ namespace Brainvest.Dscribe.Metadata
 			_expressionDefinitionIdentifier = expressionDefinitionIdentifier;
 			owner.AddProperty(this);
 			Owner = owner;
+			Behaviors = behaviors?.Select(x => new PropertyBehaviorMetadata
+			{
+				AdditionalBehavior = new AdditionalBehaviorMetadata
+				{
+					Name = x.AdditionalBehavior.Name,
+					Definition = x.AdditionalBehavior.Definition
+				},
+				Parameters = x.Parameters
+			}).ToList();
 		}
 	}
 }

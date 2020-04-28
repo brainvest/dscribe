@@ -61,7 +61,7 @@ namespace Brainvest.Dscribe.Metadata
 						PropertyGeneralUsageCategoryId = dbPropertyMetadata.GeneralUsageCategoryId,
 						Name = dbPropertyMetadata.GeneralUsageCategory.Name
 					}, dbPropertyMetadata.DataType, dbPropertyMetadata.IsNullable, dbPropertyMetadata.IsExpression, dbPropertyMetadata.Title,
-					dbPropertyMetadata.ExpressionDefinition?.Identifier)
+					dbPropertyMetadata.ExpressionDefinition?.Identifier, dbPropertyMetadata.PropertyBehaviors)
 					{
 						EntityTypeName = dbPropertyMetadata.DataEntityType?.Name
 					};
