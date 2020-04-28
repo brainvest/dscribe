@@ -121,6 +121,9 @@ export class ListComponent implements OnInit, OnChanges {
 			if (this.entityType.Name === this.displayedEntityTypeName) {
 				return;
 			}
+			if (this.filterVisible) {
+				this.filterVisible = true;
+			}
 			this.customTemplate = EntityTypeTemplateMapper.get(this.entityType.Name);
 			if (this.customTemplate) {
 				this.displayMode = 'card';
@@ -403,11 +406,15 @@ export class ListComponent implements OnInit, OnChanges {
 
 	set filterVisible(value) {
 		if (value) {
-			this.filterLambda = new LambdaFilterNode(null, this.entityType, false);
+			this.setFilterToEmpty();
 		} else {
 			this.filterLambda = null;
 			this.userDefinedFilter = null;
 		}
+	}
+
+	setFilterToEmpty() {
+		this.filterLambda = new LambdaFilterNode(null, this.entityType, false);
 	}
 
 	toggleFilter() {

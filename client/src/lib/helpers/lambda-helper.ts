@@ -19,8 +19,10 @@ export class LambdaHelper {
 
 		const body = lambda.children[0] as ComparisonFilterNode;
 		const left = body.children[0] as PropertyFilterNode;
+		const allProperties = entityType.getPropertiesForFilter();
+		const inverseProp = allProperties.find(x => x.Name == master.masterProperty.InversePropertyName);
 		left.property = entityType.getPropertiesForFilter()
-			.find(x => x.ForeignKeyName === master.masterProperty.InverseProperty.ForeignKeyName)
+			.find(x => x.ForeignKeyName === inverseProp.ForeignKeyName)
 			.ForeignKeyProperty;
 		body.operator = body.operators.find(x => x && x.name === 'Equal');
 		const masterId = master.master ? (master.master as HasId).id : -1;

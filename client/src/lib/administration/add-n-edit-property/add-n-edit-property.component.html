@@ -113,8 +113,8 @@
 			<mat-form-field *ngIf="property.InversePropertyAction == actions.ChooseExistingById" class="full-width" appearance="outline">
 				<mat-label>Inverse Property</mat-label>
 				<mat-select name="inversePropertyId" placeholder="Choose Inverse Property" [(ngModel)]="property.NewInversePropertyId">
-					<mat-option *ngFor="let prop of compatibleInverseProperties" [value]="prop.id">
-						{{prop.name}}
+					<mat-option *ngFor="let prop of compatibleInverseProperties" [value]="prop.Id">
+						{{prop.Name}}
 					</mat-option>
 				</mat-select>
 				<p class="form-error-message" *ngFor="let e of propertyError?.NewInversePropertyId">
