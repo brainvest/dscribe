@@ -15,13 +15,14 @@ table {
 	padding-right: 2px;
 }
 
-.lob-cell mat-icon {
-}
-
 .hidden {
 	display: none;
 }
 
-.even_col {
+.mat-cell:nth-child(even){
+	background-color: RGBA(0, 0, 50, 0.05);
+}
+
+.mat-row:nth-child(even){
 	background-color: RGBA(0, 0, 50, 0.05);
 }

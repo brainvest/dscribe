@@ -9,6 +9,11 @@ export class HasTypeInfo {
 	}
 }
 
+export class PropertyBehavior {
+	constructor (public BehaviorName: string, public Parameters: string) {
+	}
+}
+
 export class PropertyMetadata extends HasTypeInfo {
 
 	constructor(public Name?: string, public GeneralUsage?: string,
@@ -18,7 +23,7 @@ export class PropertyMetadata extends HasTypeInfo {
 							public EntityType?: EntityTypeMetadata,
 							public InverseProperty?: PropertyMetadata, public ForeignKeyProperty?: PropertyMetadata,
 							public FacetValues?: FacetContainer, public Title?: string, public IsNullable?: boolean,
-							public IsExpression?: boolean) {
+							public IsExpression?: boolean, public Behaviors?: PropertyBehavior[]) {
 		super(IsNullable, DataType);
 	}
 

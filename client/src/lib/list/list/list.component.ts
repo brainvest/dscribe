@@ -167,7 +167,8 @@ export class ListComponent implements OnInit, OnChanges {
 				prop.Name,
 				prop.Title,
 				prop.DataType,
-				prop.EntityTypeName
+				prop.EntityTypeName,
+				prop.Behaviors
 			));
 			if (prop && prop.FacetValues && prop.FacetValues[KnownFacets.HideInList]) {
 				continue;
@@ -216,6 +217,11 @@ export class ListComponent implements OnInit, OnChanges {
 			this.totalCount = this.data.length;
 			return;
 		}
+		if (this.masters) {
+			for (const master of this.masters) {
+				master.count = null;
+			}
+		}
 		this.isLoadingResults = true;
 		this.paginator.pageIndex = 0;
 		this.data = [];
@@ -224,6 +230,11 @@ export class ListComponent implements OnInit, OnChanges {
 			.subscribe(
 				(data: any) => {
 					this.totalCount = data;
+					if (this.masters) {
+						for (const master of this.masters) {
+							master.count = this.totalCount;
+						}
+					}
 					this.userRefresh.emit();
 				}, (errors: any) => {
 					this.snackbarService.open(errors);

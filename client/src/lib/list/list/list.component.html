@@ -88,7 +88,9 @@
 				<mat-tab-group>
 					<mat-tab *ngFor="let prop of detailLists">
 						<ng-template mat-tab-label>
-							{{prop.masterProperty.Title || prop.masterProperty.Name}}
+							<span [ngStyle]="{'font-weight': prop.count ? 'bold' : normal}">
+								{{prop.masterProperty.Title || prop.masterProperty.Name}} ({{prop.count}})
+							</span>
 						</ng-template>
 						<dscribe-list [hideFilter]="true" [entityType]="prop.masterProperty.EntityType" [masters]="[prop]">
 						</dscribe-list>

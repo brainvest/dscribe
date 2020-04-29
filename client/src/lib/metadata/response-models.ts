@@ -18,6 +18,11 @@ export class FacetResponse {
 	Value: [boolean, number, string];
 }
 
+export class PropertyBehaviorResponse {
+	BehaviorName: string;
+	Parameters: string;
+}
+
 export class PropertyResponse {
 	Name: string;
 	GeneralUsage: string;
@@ -29,6 +34,7 @@ export class PropertyResponse {
 	Title: string;
 	IsNullable: boolean;
 	IsExpression: boolean;
+	Behaviors: PropertyBehaviorResponse[];
 }
 
 export class EntityTypeResponse {

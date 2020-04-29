@@ -26,6 +26,20 @@ export class DisplayValuePipe implements PipeTransform {
 		if (property.dataType === DataTypes.Date) {
 			return of(value.toString().substr(0, 10));
 		}
+		if (property.behaviors && property.behaviors.find(x => x.BehaviorName == 'DisplayAsDate' || x.BehaviorName == 'ShowDatePicker')) {
+			if (!value) {
+				return of (null);
+			}
+			const date = new Date(value);
+			return of(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`);
+		}
+		if (property.behaviors && property.behaviors.find(x => x.BehaviorName == 'DisplayAsDateTime' || x.BehaviorName == 'ShowDateTimePicker')) {
+			if (!value) {
+				return of (null);
+			}
+			const date = new Date(value);
+			return of(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`);
+		}
 		return of(value);
 	}
 }

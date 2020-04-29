@@ -5,8 +5,8 @@ import {Observable, ReplaySubject} from 'rxjs';
 import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
 import {CompleteMetadataModel} from '../../metadata/complete-metadata-model';
 import {map} from 'rxjs/operators';
-import {PropertyResponse} from '../../metadata/response-models';
-import {PropertyMetadata} from '../../metadata/property-metadata';
+import {PropertyResponse, PropertyBehaviorResponse} from '../../metadata/response-models';
+import {PropertyMetadata, PropertyBehavior} from '../../metadata/property-metadata';
 
 @Injectable({
 	providedIn: 'root'
@@ -82,11 +82,23 @@ export class MetadataService {
 					newProperty.Title = oldProperty.Title;
 					newProperty.IsNullable = oldProperty.IsNullable;
 					newProperty.IsExpression = oldProperty.IsExpression;
+					newProperty.Behaviors = this.convertBehaviors(oldProperty.Behaviors);
 					entityTypeMetadata.Properties[propertyName] = newProperty;
 					entityTypeMetadata.PropertyNames.push(propertyName);
 				}
 			}
 			result.push(entityTypeMetadata);
+		}
+		return result;
+	}
+
+	private static convertBehaviors(behaviors: PropertyBehaviorResponse[]) : PropertyBehavior[] {
+		if (!behaviors) {
+			return null;
+		}
+		var result : PropertyBehavior[] = [];
+		for (const behavior of behaviors) {
+			result.push(new PropertyBehavior(behavior.BehaviorName, behavior.Parameters));
 		}
 		return result;
 	}
