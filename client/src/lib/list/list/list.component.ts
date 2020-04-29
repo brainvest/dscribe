@@ -122,7 +122,7 @@ export class ListComponent implements OnInit, OnChanges {
 				return;
 			}
 			if (this.filterVisible) {
-				this.filterVisible = true;
+				this.setFilterToEmpty();
 			}
 			this.customTemplate = EntityTypeTemplateMapper.get(this.entityType.Name);
 			if (this.customTemplate) {
@@ -186,13 +186,15 @@ export class ListComponent implements OnInit, OnChanges {
 		}
 	}
 
-	applyFilter() {
+	applyFilter(doNotRefres: boolean = false) {
 		if (this.filterLambda) {
 			this.userDefinedFilter = this.filterLambda.getStorageNode();
 		} else {
 			this.userDefinedFilter = null;
 		}
-		this.refreshData();
+		if (!doNotRefres) {
+			this.refreshData();
+		}
 	}
 
 	getCurrentFilters(): StorageFilterNode[] {
@@ -405,16 +407,18 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	set filterVisible(value) {
+		const isFilterEmpty = this.filterLambda == null || this.filterLambda.isEmpty();
 		if (value) {
 			this.setFilterToEmpty();
 		} else {
 			this.filterLambda = null;
-			this.userDefinedFilter = null;
+			this.applyFilter(isFilterEmpty);
 		}
-	}
+	}	
 
 	setFilterToEmpty() {
 		this.filterLambda = new LambdaFilterNode(null, this.entityType, false);
+		this.applyFilter(true);
 	}
 
 	toggleFilter() {
