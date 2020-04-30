@@ -42,17 +42,20 @@ export class DataHistoryComponent implements OnInit {
 			'Action',
 			'string',
 			null,
+			null,
 		));
 		this.columns.push(new ListColumn(
 			'ActionTime',
 			'ActionTime',
 			'string',
 			null,
+			null,
 		));
 		this.columns.push(new ListColumn(
 			'ProcessDuration',
 			'ProcessDuration',
 			'string',
+			null,
 			null,
 		));
 	}
