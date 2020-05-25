@@ -4,12 +4,14 @@ using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.Metadata;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Migrations_Runtime_MySql;
 using Migrations_Runtime_PostgreSql;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,6 +39,19 @@ namespace Brainvest.Dscribe.Runtime
 			var metadataCache = new MetadataCache(bundle);
 			var metadataModel = new MetadataModel(bundle);
 			var globalConfig = scope.ServiceProvider.GetRequiredService<IOptions<GlobalConfiguration>>().Value;
+			var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+			var dataConnectionStringTemplate = config.GetConnectionString(instance.DataConnectionStringTemplateName);
+			if (string.IsNullOrWhiteSpace(dataConnectionStringTemplate))
+			{
+				var logger = scope.ServiceProvider.GetRequiredService<ILogger<ImplementationContainer>>();
+				logger.LogError($"No connection stirng named \"{instance.DataConnectionStringTemplateName}\" which is required for app instance {instance.Name}");
+			}
+			var lobConnectionStringTemplate = config.GetConnectionString(instance.LobConnectionStringTemplateName);
+			if (string.IsNullOrWhiteSpace(lobConnectionStringTemplate))
+			{
+				var logger = scope.ServiceProvider.GetRequiredService<ILogger<ImplementationContainer>>();
+				logger.LogError($"No connection stirng named \"{instance.LobConnectionStringTemplateName}\" which is required for app instance {instance.Name}");
+			}
 			InstanceSettings instanceSettings = null;
 			globalConfig?.InstanceSettings?.TryGetValue(instance.Name, out instanceSettings);
 			var instanceInfo = new InstanceInfo
@@ -45,23 +60,15 @@ namespace Brainvest.Dscribe.Runtime
 				AppTypeId = appType.Id,
 				InstanceName = instance.Name,
 				Provider = instance.DatabaseProviderId,
-				DataConnectionString = instance.DataConnectionString,
-				LobConnectionString = instance.LobConnectionString,
+				DataConnectionString = GetConnectionString(dataConnectionStringTemplate, instance.MainDatabaseName),
+				LobConnectionString = GetConnectionString(lobConnectionStringTemplate, instance.LobDatabaseName),
 				MigrateDatabase = instance.MigrateDatabase,
 				GeneratedCodeNamespace = instance.GeneratedCodeNamespace,
 				DbContextName = instance.DbContextName,
 				InstanceSettings = instanceSettings,
-				LoadBusinessFromAssemblyName = instanceSettings?.LoadBusinessFromAssemblyName,
+				LoadBusinessFromAssemblyName = instance.LoadBusinessFromAssemblyName,
 				SortOrder = instance.SortOrder,
 			};
-			if (instanceSettings?.ConnectionStringMaps != null)
-			{
-				foreach (var map in instanceSettings?.ConnectionStringMaps)
-				{
-					instanceInfo.DataConnectionString = instanceInfo.DataConnectionString.Replace(map.From, map.To);
-					instanceInfo.LobConnectionString = instanceInfo.LobConnectionString.Replace(map.From, map.To);
-				}
-			}
 
 			var bridge = new BusinessAssemblyBridge(
 				instanceInfo, globalConfig,
@@ -119,6 +126,11 @@ namespace Brainvest.Dscribe.Runtime
 				}
 			}
 			return implementationsContainer;
+		}
+
+		private static string GetConnectionString(string template, string databaseName)
+		{
+			return template.Replace("{database}", databaseName, ignoreCase:true, CultureInfo.InvariantCulture);
 		}
 
 		public IMetadataCache Metadata { get; private set; }

@@ -10,6 +10,7 @@ namespace Brainvest.Dscribe.Runtime
 		public Dictionary<string, InstanceSettings> InstanceSettings { get; set; }
 		public string LoadBusinessFromAssemblyName { get; set; }
 		public InstanceSettings DefaultInstanceSettings { get; set; }
+		public string[] ExcludeFromRequestLog { get; set; }
 
 		public InstanceSettings GetInstanceSettings(string instaneName)
 		{

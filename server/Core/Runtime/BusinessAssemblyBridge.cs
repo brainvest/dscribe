@@ -38,17 +38,17 @@ namespace Brainvest.Dscribe.Runtime
 
 			var containerConfiguration = new ContainerConfiguration();
 			Assembly assembly;
-			if (string.IsNullOrWhiteSpace(instanceInfo.InstanceSettings?.LoadBusinessFromAssemblyName))
+			if (string.IsNullOrWhiteSpace(instanceInfo.LoadBusinessFromAssemblyName))
 			{
 				assembly = LoadAssemblyFromPath();
 			}
 			else
 			{
 				assembly = AppDomain.CurrentDomain.GetAssemblies()
-					.FirstOrDefault(x => x.GetName().Name == instanceInfo.InstanceSettings.LoadBusinessFromAssemblyName);
+					.FirstOrDefault(x => x.GetName().Name == instanceInfo.LoadBusinessFromAssemblyName);
 				if (assembly == null)
 				{
-					_logger.LogError($"Could find assembly:{instanceInfo.InstanceSettings.LoadBusinessFromAssemblyName}");
+					_logger.LogError($"Could find assembly:{instanceInfo.LoadBusinessFromAssemblyName}");
 				}
 			}
 			if (assembly == null)

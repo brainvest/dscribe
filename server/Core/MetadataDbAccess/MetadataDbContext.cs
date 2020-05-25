@@ -35,6 +35,7 @@ namespace Brainvest.Dscribe.MetadataDbAccess
 			modelBuilder.Entity<EntityType>().HasIndex(x => new { x.AppTypeId, x.Name }).IsUnique();
 			modelBuilder.Entity<ExpressionDefinition>().HasIndex(x => new { x.AppTypeId, x.Identifier }).IsUnique();
 			modelBuilder.Entity<Property>().HasIndex(x => new { x.OwnerEntityTypeId, x.Name }).IsUnique();
+			modelBuilder.Entity<User>().HasIndex(x => x.UnifiedExternalUserId).IsUnique();
 			#endregion
 
 			#region data

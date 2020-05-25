@@ -26,11 +26,14 @@ namespace Brainvest.Dscribe.Abstractions.Models.AppManagement
 		[Required]
 		public DatabaseProviderEnum DatabaseProviderId { get; set; }
 		[Required]
-		public string DataConnectionString { get; set; }
-		public string LobConnectionString { get; set; }
+		public string DataConnectionStringTemplateName { get; set; }
+		public string LobConnectionStringTemplateName { get; set; }
+		public string MainDatabaseName { get; set; }
+		public string LobDatabaseName { get; set; }
 		public int? MetadataReleaseId { get; set; }
         public bool MigrateDatabase { get; set; }
         public int? SortOrder { get; set; }
+		public string LoadBusinessFromAssemblyName { get; set; }
     }
 
 	public class DataConnectionStringModel

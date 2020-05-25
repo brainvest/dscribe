@@ -72,11 +72,14 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				Title = x.Title,
 				UseUnreleasedMetadata = x.UseUnreleasedMetadata,
 				DatabaseProviderId = x.DatabaseProviderId,
-				DataConnectionString = x.DataConnectionString,
-				LobConnectionString = x.LobConnectionString,
+				DataConnectionStringTemplateName = x.DataConnectionStringTemplateName,
+				LobConnectionStringTemplateName = x.LobConnectionStringTemplateName,
+				MainDatabaseName = x.MainDatabaseName,
+				LobDatabaseName = x.LobDatabaseName,
                 MigrateDatabase = x.MigrateDatabase,
                 MetadataReleaseId = x.MetadataReleaseId,
-				SortOrder = x.SortOrder
+				SortOrder = x.SortOrder,
+				LoadBusinessFromAssemblyName = x.LoadBusinessFromAssemblyName
 			}).ToListAsync();
 		}
 
@@ -98,12 +101,15 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				IsProduction = model.IsProduction,
 				Name = model.Name,
 				Title = model.Title,
-				DataConnectionString = model.DataConnectionString,
-				LobConnectionString = model.LobConnectionString,
+				DataConnectionStringTemplateName = model.DataConnectionStringTemplateName,
+				LobConnectionStringTemplateName = model.LobConnectionStringTemplateName,
+				MainDatabaseName = model.MainDatabaseName,
+				LobDatabaseName = model.LobDatabaseName,
 				MetadataReleaseId = model.MetadataReleaseId,
                 MigrateDatabase = model.MigrateDatabase,
                 UseUnreleasedMetadata = model.UseUnreleasedMetadata,
 				SortOrder = model.SortOrder,
+				LoadBusinessFromAssemblyName = model.LoadBusinessFromAssemblyName,
 			};
 			_dbContext.AppInstances.Add(appInstance);
 			await _dbContext.SaveChangesAsync();
@@ -130,11 +136,14 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			appInstance.IsProduction = model.IsProduction;
 			appInstance.Name = model.Name;
 			appInstance.Title = model.Title;
-			appInstance.DataConnectionString = model.DataConnectionString;
-			appInstance.LobConnectionString = model.LobConnectionString;
+			appInstance.DataConnectionStringTemplateName = model.DataConnectionStringTemplateName;
+			appInstance.LobConnectionStringTemplateName = model.LobConnectionStringTemplateName;
+			appInstance.MainDatabaseName = model.MainDatabaseName;
+			appInstance.LobDatabaseName = model.LobDatabaseName;
 			appInstance.MetadataReleaseId = model.MetadataReleaseId;
             appInstance.UseUnreleasedMetadata = model.UseUnreleasedMetadata;
 			appInstance.SortOrder = model.SortOrder;
+			appInstance.LoadBusinessFromAssemblyName = model.LoadBusinessFromAssemblyName;
 			await _dbContext.SaveChangesAsync();
 			((RequestLogModel)HttpContext.Items["RequestLog"]).AppInstanceId = appInstance.Id;
 			return Ok();
@@ -229,38 +238,6 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					Id = x.Id,
 					Name = x.Name
 				}).ToListAsync();
-		}
-		public string GenerateConnectionString(DataConnectionStringModel model)
-		{
-			var result = "Server=" + model.Server + ";" +
-								"Database=" + model.Database + ";" +
-								"Trusted_Connection=" + model.Trusted_Connection + ";" +
-								"MultipleActiveResultSets=" + model.MultipleActiveResultSets + ";" +
-								"user=" + model.User + ";" +
-								"password=" + model.Password;
-
-			return result;
-		}
-
-		public DataConnectionStringModel DeserializeConnectionString(string connectionString)
-		{
-			var result = new DataConnectionStringModel();
-			Match server = Regex.Match(connectionString, @"server=([^;]*)", RegexOptions.IgnoreCase);
-			Match Database = Regex.Match(connectionString, @"Database=([^;]*)", RegexOptions.IgnoreCase);
-			Match Trusted_Connection = Regex.Match(connectionString, @"Trusted_Connection=([^;]*)", RegexOptions.IgnoreCase);
-			Match MultipleActiveResultSets = Regex.Match(connectionString, @"MultipleActiveResultSets=([^;]*)", RegexOptions.IgnoreCase);
-			Match user = Regex.Match(connectionString, @"user=([^;]*)", RegexOptions.IgnoreCase);
-			Match password = Regex.Match(connectionString, @"password=([^;]*)", RegexOptions.IgnoreCase);
-
-			result.Server = server.Success ? server.Groups[1].Value : null;
-			result.Database = Database.Success ? Database.Groups[1].Value : null;
-			result.Trusted_Connection = Trusted_Connection.Success ? bool.Parse(Trusted_Connection.Groups[1].Value) : false;
-			result.MultipleActiveResultSets = MultipleActiveResultSets.Success ? bool.Parse(MultipleActiveResultSets.Groups[1].Value) : false;
-			result.MultipleActiveResultSets = MultipleActiveResultSets.Success ? bool.Parse(MultipleActiveResultSets.Groups[1].Value) : false;
-			result.User = user.Success ? user.Groups[1].Value : null;
-			result.Password = password.Success ? password.Groups[1].Value : null;
-
-			return result;
 		}
 	}
 }

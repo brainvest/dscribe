@@ -37,12 +37,7 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 
 		private bool IgnoreRequest(string path)
 		{
-			if (_globalConfiguration.DefaultInstanceSettings?.ExcludeFromRequestLog?.Any(x => path?.StartsWith(x, StringComparison.InvariantCultureIgnoreCase) == true) == true)
-			{
-				return true;
-			}
-			var settings = _globalConfiguration.GetInstanceSettings(_implementationsContainer?.InstanceInfo?.InstanceName);
-			return settings?.ExcludeFromRequestLog?.Any(x => path?.StartsWith(x, StringComparison.InvariantCultureIgnoreCase) == true) == true;
+			return _globalConfiguration.ExcludeFromRequestLog?.Any(x => path?.StartsWith(x, StringComparison.InvariantCultureIgnoreCase) == true) == true;
 		}
 
 		public async Task<RequestLogModel> RequestIndiactor(HttpContext httpContext)
