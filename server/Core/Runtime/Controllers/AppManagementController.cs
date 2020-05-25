@@ -79,7 +79,6 @@ namespace Brainvest.Dscribe.Runtime.Controllers
                 MigrateDatabase = x.MigrateDatabase,
                 MetadataReleaseId = x.MetadataReleaseId,
 				SortOrder = x.SortOrder,
-				LoadBusinessFromAssemblyName = x.LoadBusinessFromAssemblyName
 			}).ToListAsync();
 		}
 
@@ -109,7 +108,6 @@ namespace Brainvest.Dscribe.Runtime.Controllers
                 MigrateDatabase = model.MigrateDatabase,
                 UseUnreleasedMetadata = model.UseUnreleasedMetadata,
 				SortOrder = model.SortOrder,
-				LoadBusinessFromAssemblyName = model.LoadBusinessFromAssemblyName,
 			};
 			_dbContext.AppInstances.Add(appInstance);
 			await _dbContext.SaveChangesAsync();
@@ -143,7 +141,6 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			appInstance.MetadataReleaseId = model.MetadataReleaseId;
             appInstance.UseUnreleasedMetadata = model.UseUnreleasedMetadata;
 			appInstance.SortOrder = model.SortOrder;
-			appInstance.LoadBusinessFromAssemblyName = model.LoadBusinessFromAssemblyName;
 			await _dbContext.SaveChangesAsync();
 			((RequestLogModel)HttpContext.Items["RequestLog"]).AppInstanceId = appInstance.Id;
 			return Ok();

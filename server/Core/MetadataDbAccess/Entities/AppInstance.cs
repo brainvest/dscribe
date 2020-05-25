@@ -20,7 +20,6 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 		public DatabaseProviderEnum DatabaseProviderId { get; set; }
 		public DatabaseProvider DatabaseProvider { get; set; }
 
-		[Required]
 		public string DataConnectionStringTemplateName { get; set; }
 		public string LobConnectionStringTemplateName { get; set; }
 		public string MainDatabaseName { get; set; }
@@ -32,7 +31,6 @@ namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 
 		public string GeneratedCodeNamespace { get; set; }
 		public string DbContextName { get; set; }
-		public string LoadBusinessFromAssemblyName { get; set; }
 
 		public int? MetadataReleaseId { get; set; }
 		public MetadataRelease MetadataRelease { get; set; }

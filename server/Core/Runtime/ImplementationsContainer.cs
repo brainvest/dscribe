@@ -66,7 +66,7 @@ namespace Brainvest.Dscribe.Runtime
 				GeneratedCodeNamespace = instance.GeneratedCodeNamespace,
 				DbContextName = instance.DbContextName,
 				InstanceSettings = instanceSettings,
-				LoadBusinessFromAssemblyName = instance.LoadBusinessFromAssemblyName,
+				LoadBusinessFromAssemblyName = instanceSettings?.LoadBusinessFromAssemblyName,
 				SortOrder = instance.SortOrder,
 			};
 
