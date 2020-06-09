@@ -1,3 +1,3 @@
 export interface HasId {
-	id: number;
+	Id: number;
 }

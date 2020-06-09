@@ -25,7 +25,7 @@ export class LambdaHelper {
 			.find(x => x.ForeignKeyName === inverseProp.ForeignKeyName)
 			.ForeignKeyProperty;
 		body.operator = body.operators.find(x => x && x.name === 'Equal');
-		const masterId = master.master ? (master.master as HasId).id : -1;
+		const masterId = master.master ? (master.master as HasId).Id : -1;
 		const right = body.children[1] as ConstantFilterNode;
 		right.values = [{value: masterId}];
 		return lambda;

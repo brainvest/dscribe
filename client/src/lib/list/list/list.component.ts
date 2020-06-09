@@ -292,7 +292,7 @@ export class ListComponent implements OnInit, OnChanges {
 					&& master.masterProperty
 					&& master.masterProperty.InverseProperty
 					&& master.masterProperty.InverseProperty.ForeignKeyName) {
-					newEntity[master.masterProperty.InverseProperty.ForeignKeyName] = (master.master as HasId).id;
+					newEntity[master.masterProperty.InverseProperty.ForeignKeyName] = (master.master as HasId).Id;
 				}
 			}
 		}
