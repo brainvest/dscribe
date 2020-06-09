@@ -16,7 +16,7 @@
 		<!--<tags>Tag1 Tag2</tags>-->
 		<repository type="git" url="https://github.com/brainvest/dscribe" />
 		<dependencies>
-			<dependency id="Humanizer.Core" version="2.8.11" />
+			<dependency id="Humanizer.Core" Version="2.8.26" />
 			<dependency id="Microsoft.CodeAnalysis.CSharp.Workspaces" version="3.6.0" />
 			<dependency id="Microsoft.EntityFrameworkCore" version="3.1.4" />
 			<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="3.1.4" />
