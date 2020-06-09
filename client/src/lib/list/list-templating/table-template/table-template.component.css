@@ -2,10 +2,6 @@ table {
 	max-width: 1000px;
 }
 
-.selected {
-	background: lightskyblue;
-}
-
 .mat-cell {
 	white-space: nowrap;
 	overflow: hidden;
@@ -25,4 +21,8 @@ table {
 
 .mat-row:nth-child(even){
 	background-color: RGBA(0, 0, 50, 0.05);
+}
+
+.selected {
+	background: lightskyblue !important;
 }
