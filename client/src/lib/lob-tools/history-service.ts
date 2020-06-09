@@ -1,10 +1,10 @@
 import { PropertyHistoryModel } from './../administration/models/history/property-type-history-model';
 import { CommentModel } from './models/comment.model';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { DscribeService } from '../dscribe.service';
 import { EntityTypeHistoryModel } from '../administration/models/history/entity-type-history-model';
 import { Observable } from 'rxjs';
+import {DscribeHttpClient} from '../common/services/dscribe-http-client';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 export class HistoryService {
 
 	constructor(
-		private http: HttpClient,
+		private http: DscribeHttpClient,
 		private dscribeService: DscribeService) {
 	}
 

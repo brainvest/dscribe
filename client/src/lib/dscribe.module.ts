@@ -1,4 +1,4 @@
-import { PropertyHistoryComponent } from './administration/history/property-history/property-history.component';
+import {PropertyHistoryComponent} from './administration/history/property-history/property-history.component';
 import {NgModule} from '@angular/core';
 import {DscribeComponent} from './dscribe.component';
 import {ListContainerComponent} from './list/list-container/list-container.component';
@@ -77,10 +77,10 @@ import {AddNEditAppInstanceComponent} from './administration/settings/add-n-edit
 import {CommentsListComponent} from './lob-tools/comments/comments-list/comments-list.component';
 import {AttachmentsListComponent} from './lob-tools/attachments/attachments-list/attachments-list.component';
 import {ReportsListComponent} from './lob-tools/reporting/reports-list/reports-list.component';
-import { EntityHistoryComponent } from './administration/history/entity-history/entity-history.component';
-import { DataHistoryComponent } from './list/data-history/data-history.component';
-import { UsersAndRolesManagementComponent } from './security/components/users-and-roles-management/users-and-roles-management.component';
-import { CommandButtonComponent } from './common/command-button/command-button.component';
+import {EntityHistoryComponent} from './administration/history/entity-history/entity-history.component';
+import {DataHistoryComponent} from './list/data-history/data-history.component';
+import {UsersAndRolesManagementComponent} from './security/components/users-and-roles-management/users-and-roles-management.component';
+import {CommandButtonComponent} from './common/command-button/command-button.component';
 
 @NgModule({
 	imports: [

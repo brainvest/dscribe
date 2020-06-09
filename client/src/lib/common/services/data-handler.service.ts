@@ -6,11 +6,11 @@ import {EntityListRequest} from '../models/entity-list-request';
 import {EntityBase} from '../models/entity-base';
 import {GroupListRequest} from '../models/groupping/group-list-request';
 import {map, share} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
 import {DscribeService} from '../../dscribe.service';
 import {ManageEntityModes} from '../../add-n-edit/models/manage-entity-modes';
 import {AddNEditHelper} from '../../add-n-edit/add-n-edit-helper';
 import {Result} from '../models/Result';
+import {DscribeHttpClient} from './dscribe-http-client';
 
 class IdAndNameCacheEntry {
 	public observable: Observable<HasIdName[]>;
@@ -36,7 +36,7 @@ class EntityIdAndNames {
 })
 export class DataHandlerService {
 
-	constructor(private http: HttpClient, private dscribeService: DscribeService) {
+	constructor(private http: DscribeHttpClient, private dscribeService: DscribeService) {
 	}
 
 	private filterAPI = this.dscribeService.url('api/entity/getByFilter');

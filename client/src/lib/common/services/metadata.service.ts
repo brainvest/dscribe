@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {DscribeService} from '../../dscribe.service';
 import {Observable, ReplaySubject} from 'rxjs';
 import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
@@ -7,6 +6,7 @@ import {CompleteMetadataModel} from '../../metadata/complete-metadata-model';
 import {map} from 'rxjs/operators';
 import {PropertyResponse, PropertyBehaviorResponse} from '../../metadata/response-models';
 import {PropertyMetadata, PropertyBehavior} from '../../metadata/property-metadata';
+import {DscribeHttpClient} from './dscribe-http-client';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,8 +15,7 @@ export class MetadataService {
 	entityTypes$: ReplaySubject<EntityTypeMetadata[]> = new ReplaySubject<EntityTypeMetadata[]>(1);
 	private currentEntityTypes: EntityTypeMetadata[];
 
-	constructor(private http: HttpClient, private config: DscribeService) {
-		console.log('new instance');
+	constructor(private http: DscribeHttpClient, private config: DscribeService) {
 		this.config.appInstance$.subscribe(() => this.clearMetadata());
 	}
 

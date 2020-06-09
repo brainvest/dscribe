@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AppTypeModel} from '../models/app-type.model';
 import {AppInstanceModel} from '../models/app-instance-model';
 import {DatabaseProviderModel} from '../models/database-provider.model';
 import {DscribeService} from '../../dscribe.service';
+import {DscribeHttpClient} from './dscribe-http-client';
 
 @Injectable({
 	providedIn: 'root',
@@ -12,7 +12,7 @@ import {DscribeService} from '../../dscribe.service';
 export class AppManagementService {
 
 	constructor(
-		private http: HttpClient,
+		private http: DscribeHttpClient,
 		private dscribeService: DscribeService) {
 	}
 

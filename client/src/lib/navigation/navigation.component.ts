@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
 import {DscribeService} from '../dscribe.service';
 import {AppInstanceInformation} from '../common/models/app-instance-information';
+import {DscribeHttpClient} from '../common/services/dscribe-http-client';
 
 @Component({
 	selector: 'dscribe-navigation',
@@ -14,7 +14,7 @@ export class NavigationComponent implements OnInit {
 	selectedAppInstance: AppInstanceInformation;
 	clientRoot: string;
 
-	constructor(private router: Router, private httpClient: HttpClient, private config: DscribeService) {
+	constructor(private router: Router, private httpClient: DscribeHttpClient, private config: DscribeService) {
 		this.clientRoot = config.getClientRoot();
 	}
 

@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {PropertyBase} from '../metadata/property-base';
 import {LocalFacetsModel} from '../metadata/facets/local-facet-model';
@@ -10,6 +9,7 @@ import {PropertyInfoModel} from './models/property-info-model';
 import {ReleaseMetadataRequest} from './models/release-metadata-request';
 import {MetadataValidationResponse} from './models/metadata-validation-response';
 import {DscribeService} from '../dscribe.service';
+import {DscribeHttpClient} from '../common/services/dscribe-http-client';
 
 @Injectable({
 	providedIn: 'root'
@@ -34,7 +34,7 @@ export class MetadataManagementApiClient {
 	private generateCodeAPI = this.releaseAPI + 'generateCode';
 
 
-	constructor(private http: HttpClient, private dscribeService: DscribeService) {
+	constructor(private http: DscribeHttpClient, private dscribeService: DscribeService) {
 	}
 
 	addEntityType(entityType: EntityTypeBase) {

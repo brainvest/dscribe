@@ -13,6 +13,9 @@ export * from './lib/list/list-templating/dscribe-template-component';
 export * from './lib/list/list-templating/dscribe-list-template.decorator';
 
 export * from './lib/common/services/metadata.service';
+export * from './lib/common/services/data-handler.service';
+export * from './lib/common/services/app-management.service';
+export * from './lib/common/services/dscribe-http-client';
 export * from './lib/common/notifications/snackbar.service';
 export * from './lib/common/models/app-instance-model';
 export * from './lib/common/models/app-instance-information';
@@ -25,3 +28,5 @@ export * from './lib/dscribe.service';
 export * from './lib/metadata/entity-type-metadata';
 export * from './lib/dscribe-routes';
 export * from './lib/administration/metadata-management/metadata-management.component';
+
+export * from './lib/models/dscribe-config'

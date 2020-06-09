@@ -1,14 +1,14 @@
 import { GetCommentRequestModel, CommentModel } from './models/comment.model';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { DscribeService } from '../dscribe.service';
 import { LobSummaryInfo, LobSummaryRequest, LobSummaryResponse } from '../common/models/lob/common-models';
 import { MetadataService } from '../common/services/metadata.service';
 import { EntityTypeMetadata } from '../metadata/entity-type-metadata';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { DownloadReportRequest, ReportsListResponse, SaveReportAsAttachmentRequest } from './models/report-models';
 import { map } from 'rxjs/operators';
 import { AttachmentListItem, AttachmentsListRequest, AttachmentsListResponse } from './models/attachment-models';
+import {DscribeHttpClient} from '../common/services/dscribe-http-client';
 
 @Injectable({
 	providedIn: 'root'
@@ -18,7 +18,7 @@ export class LobInfoService {
 	private reports: ReplaySubject<ReportsListResponse[]>;
 
 	constructor(
-		private http: HttpClient,
+		private http: DscribeHttpClient,
 		private dscribeService: DscribeService,
 		private metadata: MetadataService) {
 	}
@@ -73,14 +73,14 @@ export class LobInfoService {
 	}
 
 	processReportForDownload(request: DownloadReportRequest) {
-		return this.http.post(this.downloadReportAPI, request, {
+		return this.http.postForBlob(this.downloadReportAPI, request, {
 			observe: 'response',
 			responseType: 'blob'
 		});
 	}
 
 	saveReportAsAttachment(request: SaveReportAsAttachmentRequest) {
-		return this.http.post(this.saveAsAttachmentApi, request, {
+		return this.http.postForBlob(this.saveAsAttachmentApi, request, {
 			observe: 'response',
 			responseType: 'blob'
 		});
@@ -91,7 +91,7 @@ export class LobInfoService {
 	}
 
 	downloadAttachment(attachment: AttachmentListItem) {
-		return this.http.post(this.downloadAttachmentApi, {
+		return this.http.postForBlob(this.downloadAttachmentApi, {
 			Id: attachment.Id
 		}, {
 				observe: 'response',
