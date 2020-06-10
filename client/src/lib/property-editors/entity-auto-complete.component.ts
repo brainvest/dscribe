@@ -12,6 +12,7 @@ import {EntityTypeMetadata} from '../metadata/entity-type-metadata';
 import {ListAddNEditDialogComponent} from '../list/list-add-n-edit-dialog/list-add-n-edit-dialog.component';
 import {AddNEditResult} from '../common/models/add-n-edit-result';
 import {ManageEntityModes} from '../add-n-edit/models/manage-entity-modes';
+import {PrimaryKey} from '../common/models/primary-key';
 
 @Component({
 	template: `
@@ -63,9 +64,9 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 	@Input() isFilter: boolean;
 
 	inputCtrl = new FormControl();
-	filteredOptions: Observable<{ DisplayName: string, Id: number }[]>;
+	filteredOptions: Observable<{ DisplayName: string, Id: PrimaryKey }[]>;
 	listRefresher = true;
-	selection: { DisplayName: string, Id: number };
+	selection: { DisplayName: string, Id: PrimaryKey };
 	loading = false;
 	isAutoCompleteOpen: boolean;
 
@@ -102,7 +103,7 @@ export class EntityAutoCompleteComponent implements OnInit, OnChanges {
 				, share());
 	}
 
-	filter(name: string): Observable<{ DisplayName: string, Id: number }[]> {
+	filter(name: string): Observable<{ DisplayName: string, Id: PrimaryKey }[]> {
 		if (name) {
 			this.trigger.autocompleteDisabled = false;
 		}

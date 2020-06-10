@@ -17,11 +17,10 @@ export class DisplayValuePipe implements PipeTransform {
 			if (value + '' === 'Loading...') {
 				return of('Loading...');
 			}
-			const id = parseInt(value, 10);
-			if (isNaN(id)) {
+			if (!value) {
 				return of(value);
 			}
-			return this.dataHandlerService.getName(property.dataEntityTypeName, id);
+			return this.dataHandlerService.getName(property.dataEntityTypeName, value);
 		}
 		if (property.dataType === DataTypes.Date) {
 			return of(value.toString().substr(0, 10));

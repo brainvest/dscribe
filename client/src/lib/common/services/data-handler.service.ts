@@ -11,6 +11,7 @@ import {ManageEntityModes} from '../../add-n-edit/models/manage-entity-modes';
 import {AddNEditHelper} from '../../add-n-edit/add-n-edit-helper';
 import {Result} from '../models/Result';
 import {DscribeHttpClient} from './dscribe-http-client';
+import {PrimaryKey} from '../models/primary-key';
 
 class IdAndNameCacheEntry {
 	public observable: Observable<HasIdName[]>;
@@ -18,7 +19,7 @@ class IdAndNameCacheEntry {
 }
 
 class IdAndNameModel {
-	Id: number;
+	Id: PrimaryKey;
 	DisplayName: string;
 }
 
@@ -28,7 +29,7 @@ class IdAndNameResponse {
 }
 
 class EntityIdAndNames {
-	[id: number]: string;
+	[id: string]: string;
 }
 
 @Injectable({
@@ -54,7 +55,7 @@ export class DataHandlerService {
 
 	private cache: { [id: string]: IdAndNameCacheEntry; } = {};
 	private cache2: { [entityTypeName: string]: EntityIdAndNames; } = {};
-	private uploadQueue: { [entityTypeName: string]: { [id: number]: number }; } = {};
+	private uploadQueue: { [entityTypeName: string]: { [id: string]: number }; } = {};
 	private firstAddTime: Date;
 	private queueSize = 0;
 	private nameResponse: BehaviorSubject<any> = new BehaviorSubject<any>(1);
@@ -65,9 +66,9 @@ export class DataHandlerService {
 	private expressionValueResponse: BehaviorSubject<any> = new BehaviorSubject<any>(1);
 
 
-	getName(entityTypeName: string, id: number): Observable<string> {
+	getName(entityTypeName: string, id: PrimaryKey): Observable<string> {
 		if (id === null || id === undefined || id.toString().length === 0) {
-			return of(null);
+			return of(String(id));
 		}
 		let existing = this.cache2[entityTypeName];
 		if (!existing) {
@@ -78,7 +79,7 @@ export class DataHandlerService {
 		if (name !== undefined) {
 			return of(name);
 		}
-		this.enqueueForName(entityTypeName, id);
+		this.enqueueForName(entityTypeName, String(id));
 		return Observable.create(observer => {
 			observer.next('Loading...');
 			this.nameResponse.subscribe(() => {
@@ -91,10 +92,10 @@ export class DataHandlerService {
 		});
 	}
 
-	private enqueueForName(entityTypeName: string, id: number) {
+	private enqueueForName(entityTypeName: string, id: string) {
 		let existing = this.uploadQueue[entityTypeName];
 		if (!existing) {
-			existing = [];
+			existing = {};
 			this.uploadQueue[entityTypeName] = existing;
 		}
 		if (existing[id]) {
@@ -116,16 +117,16 @@ export class DataHandlerService {
 		if (!this.queueSize) {
 			return;
 		}
-		const request: { entityTypeName: string; ids: number[] }[] = [];
+		const request: { entityTypeName: string; ids: PrimaryKey[] }[] = [];
 		for (const entityTypeName in this.uploadQueue) {
 			if (!this.uploadQueue.hasOwnProperty(entityTypeName)) {
 				continue;
 			}
-			const ids: number[] = [];
+			const ids: PrimaryKey[] = [];
 			const array = this.uploadQueue[entityTypeName];
 			for (const id in array) {
 				if (array.hasOwnProperty(id) && array[id] === -1) {
-					ids.push(+id);
+					ids.push(id);
 					array[id] = 1;
 				}
 			}
@@ -209,7 +210,7 @@ export class DataHandlerService {
 		});
 	}
 
-	getAutoCompleteItems(entityTypeName: string, searchTerm: string): Observable<{ DisplayName: string, Id: number }[]> {
+	getAutoCompleteItems(entityTypeName: string, searchTerm: string): Observable<{ DisplayName: string, Id: PrimaryKey }[]> {
 		return this.getAutocompleteItems(entityTypeName, searchTerm)
 			.pipe(map(res => {
 				if (!searchTerm || typeof searchTerm === 'number') {

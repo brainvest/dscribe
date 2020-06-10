@@ -1,4 +1,6 @@
+import {PrimaryKey} from "./primary-key";
+
 export interface HasIdName {
-	id: number;
+	id: PrimaryKey;
 	displayName: string;
 }
