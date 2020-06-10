@@ -36,8 +36,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Composition" Version="1.0.31" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.5" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.5" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
 		<PackageReference Include="SaasKit.Multitenancy" Version="1.1.4" />
