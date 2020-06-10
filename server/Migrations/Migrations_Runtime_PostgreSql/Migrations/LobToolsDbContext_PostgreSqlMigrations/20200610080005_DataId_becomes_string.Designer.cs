@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Migrations_Runtime_PostgreSql;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Migrations_Runtime_PostgreSql.Migrations.LobToolsDbContext_PostgreSqlMigrations
 {
     [DbContext(typeof(LobToolsDbContext_PostgreSql))]
-    partial class LobToolsDbContext_PostgreSqlModelSnapshot : ModelSnapshot
+    [Migration("20200610080005_DataId_becomes_string")]
+    partial class DataId_becomes_string
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

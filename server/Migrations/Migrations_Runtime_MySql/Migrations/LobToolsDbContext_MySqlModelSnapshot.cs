@@ -14,7 +14,7 @@ namespace Migrations_Runtime_MySql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Brainvest.Dscribe.LobTools.Entities.Attachment", b =>
@@ -90,8 +90,8 @@ namespace Migrations_Runtime_MySql.Migrations
                     b.Property<string>("Body")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<long>("DataId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("DataId")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("DataRequestAction")
                         .HasColumnType("int");

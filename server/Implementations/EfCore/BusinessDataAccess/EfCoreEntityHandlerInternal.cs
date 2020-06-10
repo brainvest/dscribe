@@ -186,7 +186,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 			}
 		}
 
-		internal async Task<IEnumerable<NameResponseItem>> GetIdAndNameInternal<TEntity, Tkey>(int[] ids)
+		internal async Task<IEnumerable<NameResponseItem>> GetIdAndNameInternal<TEntity, Tkey>(object[] ids)
 	where TEntity : class
 		{
 			var metadata = _implementationsContainer.Metadata.Get<TEntity>();
@@ -198,7 +198,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 					var keys = new Tkey[ids.Length];
 					for (var i = 0; i < ids.Length; i++)
 					{
-						keys[i] = (Tkey)Convert.ChangeType(ids[i], typeof(Tkey)); //TODO:Boxing/Unboxing
+						keys[i] = ReflectionHelper.ConvertValue<Tkey>(ids[i]);
 					}
 					query = query.Where(QueryBuilder.FilterByIds<TEntity, Tkey>(keys, metadata));
 				}

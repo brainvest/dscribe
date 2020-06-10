@@ -2,104 +2,101 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Migrations_Runtime_PostgreSql;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using Migrations_Runtime_MySql;
 
-namespace Migrations_Runtime_PostgreSql.Migrations.LobToolsDbContext_PostgreSqlMigrations
+namespace Migrations_Runtime_MySql.Migrations
 {
-    [DbContext(typeof(LobToolsDbContext_PostgreSql))]
-    partial class LobToolsDbContext_PostgreSqlModelSnapshot : ModelSnapshot
+    [DbContext(typeof(LobToolsDbContext_MySql))]
+    [Migration("20200610064524_DataId_becomes_string")]
+    partial class DataId_becomes_string
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Brainvest.Dscribe.LobTools.Entities.Attachment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("int");
 
                     b.Property<byte[]>("Data")
-                        .HasColumnType("bytea");
+                        .HasColumnType("longblob");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("EntityTypeId")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("FileName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("Identifier")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<long>("Size")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Title")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Url")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Attachments");
+                    b.ToTable("attachments");
                 });
 
             modelBuilder.Entity("Brainvest.Dscribe.LobTools.Entities.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("EntityTypeId")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<int>("Identifier")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<long?>("RequestLogId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Title")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Comments");
+                    b.ToTable("comments");
                 });
 
             modelBuilder.Entity("Brainvest.Dscribe.LobTools.Entities.DataLog", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Body")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("DataId")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("DataRequestAction")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<long>("EntityId")
                         .HasColumnType("bigint");
@@ -111,114 +108,113 @@ namespace Migrations_Runtime_PostgreSql.Migrations.LobToolsDbContext_PostgreSqlM
 
                     b.HasIndex("RequestLogId");
 
-                    b.ToTable("DataLogs");
+                    b.ToTable("datalogs");
                 });
 
             modelBuilder.Entity("Brainvest.Dscribe.LobTools.Entities.Draft", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("ActionTypeId")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("EntityTypeId")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<Guid>("Identifier")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("IsLastVersion")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("JsonData")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<Guid?>("OwnerUserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("Version")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Drafts");
+                    b.ToTable("drafts");
                 });
 
             modelBuilder.Entity("Brainvest.Dscribe.LobTools.Entities.RequestLog", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("bigint");
 
                     b.Property<int?>("AppInstanceId")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<int?>("AppTypeId")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("Body")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int?>("EntityTypeId")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("ExceptionMessage")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("ExceptionTitle")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<bool>("Failed")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("HadException")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("IpAddress")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Method")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Path")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<double>("ProcessDuration")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double");
 
                     b.Property<int?>("PropertyId")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("QueryString")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<long?>("RequestSize")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Response")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<long?>("ResponseSize")
                         .HasColumnType("bigint");
 
                     b.Property<int>("ResponseStatusCode")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("RequestLogs");
+                    b.ToTable("requestlogs");
                 });
 
             modelBuilder.Entity("Brainvest.Dscribe.LobTools.Entities.DataLog", b =>

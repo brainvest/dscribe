@@ -18,6 +18,19 @@ namespace Brainvest.Dscribe.Helpers
 			return true;
 		}
 
+		public static T ConvertValue<T>(object value)
+		{
+			if (typeof(T) == typeof(Guid))
+			{
+				if (value is string)
+				{
+					return (T)(object)Guid.Parse(value as string);
+				}
+				throw new ArgumentException($"Cannot convert {value.GetType()} to Guid");
+			}
+			return (T)Convert.ChangeType(value, typeof(T));
+		}
+
 		public static Type GetACommonConversionType(Type a, Type b)
 		{
 			if (a == b)

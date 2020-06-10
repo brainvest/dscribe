@@ -49,7 +49,7 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 			var primaryKey = JObject.Parse(data)[primaryKeyName].Value<string>();
 
 			var result = await _lobToolsDbContext.DataLogs
-				.Where(x => x.DataId == Convert.ToInt64(primaryKey) && x.EntityId == entityType.Id)
+				.Where(x => x.DataId == primaryKey && x.EntityId == entityType.Id)
 				.Include(x => x.RequestLog)
 				.Select(x => new DataHistoryResponseModel
 				{
@@ -92,7 +92,7 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 				{
 					EntityId = entityType.Id,
 					// Consider that data always has primary key
-					DataId = Convert.ToInt64(dataChange.Entity.GetType().GetProperty(primaryKey.Name).GetValue(dataChange.Entity)),
+					DataId = dataChange.Entity.GetType().GetProperty(primaryKey.Name).GetValue(dataChange.Entity)?.ToString(),
 					Body = JsonConvert.SerializeObject(dataChange.Entity),
 					DataRequestAction = (DataRequestAction)dataChange.Action,
 					RequestLogId = ((RequestLogModel)_httpContextAccessor.HttpContext.Items["RequestLog"]).Id

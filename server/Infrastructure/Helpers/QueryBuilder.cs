@@ -114,7 +114,7 @@ namespace Brainvest.Dscribe.Helpers
 			if (path.Type != typeof(string))
 			{
 				var type = path.Type;
-				if (type != typeof(double) && type != typeof(double?) && type != typeof(decimal) && type != typeof(decimal?))
+				if (type != typeof(double) && type != typeof(double?) && type != typeof(decimal) && type != typeof(decimal?) && type != typeof(Guid) && type != typeof(Guid?))
 				{
 					path = Expression.Convert(path, typeof(decimal?));
 					type = typeof(decimal?);
