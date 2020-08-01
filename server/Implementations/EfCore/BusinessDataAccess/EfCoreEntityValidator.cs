@@ -38,6 +38,10 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				if (property.IsRequired())
 				{
 					var reflectionProperty = typeof(TEntity).GetProperty(property.Name);
+					if (reflectionProperty.PropertyType == typeof(bool))
+					{
+						continue;
+					}
 					if (reflectionProperty.GetValue(entity) == null || (reflectionProperty.PropertyType.IsValueType && reflectionProperty.GetValue(entity).Equals(Activator.CreateInstance(reflectionProperty.PropertyType))))
 					{
 						if (propertyValidationErrors == null)
