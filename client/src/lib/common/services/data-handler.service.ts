@@ -13,8 +13,8 @@ import {Result} from '../models/Result';
 import {DscribeHttpClient} from './dscribe-http-client';
 import {PrimaryKey} from '../models/primary-key';
 import {MetadataService} from './metadata.service';
-import {DataTypes} from 'src/lib/metadata/data-types';
-import {EntityTypeMetadata} from 'src/lib/metadata/entity-type-metadata';
+import {DataTypes} from '../../metadata/data-types';
+import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
 
 class IdAndNameCacheEntry {
 	public observable: Observable<HasIdName[]>;
