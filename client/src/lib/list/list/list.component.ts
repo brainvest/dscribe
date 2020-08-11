@@ -285,7 +285,7 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	addNew() {
-		const newEntity = {};
+		const newEntity = this.dataHandler.getNewEntityForCreateDialog(this.entityType);
 		if (this.masters) {
 			for (const master of this.masters) {
 				if (master.master
@@ -297,10 +297,6 @@ export class ListComponent implements OnInit, OnChanges {
 			}
 		}
 		this.openAddNEditDialog(newEntity, true);
-	}
-
-	createNewItem(): any {
-		return {};
 	}
 
 	selectDetails(row: any) {

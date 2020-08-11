@@ -78,14 +78,44 @@ export class AddNEditComponent implements OnInit {
 					this.processSaveResponse(res.Data, this.action);
 				} else {
 					this.processFailure(res);
+					this.snackbarService.open(this.getMessageFromServerValidationError(res));
 				}
 			},
 			(errors: any) => {
 				this.processFailure(errors);
-				this.snackbarService.open(errors);
+				this.snackbarService.open(this.getMessageFromServerValidationError(errors));
 			}
 		)
 		;
+	}
+
+	private getMessageFromServerValidationError(errors) {
+		let message = errors.Message;
+		if (errors.Errors) {
+			for (const key in errors.Errors) {
+				if (!errors.Errors.hasOwnProperty(key)) {
+					continue;
+				}
+				const value = errors.Errors[key];
+				if (!value) {
+					continue;
+				}
+				for (const item of value) {
+					message = this.smartAppend(message, item.Message);
+				}
+			}
+		}
+		return message;
+	}
+
+	private smartAppend(text1, text2) {
+		if (!text1) {
+			return text2;
+		}
+		if (!text2) {
+			return text1;
+		}
+		return text1 + "\n " + text2;
 	}
 
 	cancel() {

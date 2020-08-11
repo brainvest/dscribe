@@ -12,6 +12,9 @@ import {AddNEditHelper} from '../../add-n-edit/add-n-edit-helper';
 import {Result} from '../models/Result';
 import {DscribeHttpClient} from './dscribe-http-client';
 import {PrimaryKey} from '../models/primary-key';
+import {MetadataService} from './metadata.service';
+import {DataTypes} from 'src/lib/metadata/data-types';
+import {EntityTypeMetadata} from 'src/lib/metadata/entity-type-metadata';
 
 class IdAndNameCacheEntry {
 	public observable: Observable<HasIdName[]>;
@@ -37,7 +40,7 @@ class EntityIdAndNames {
 })
 export class DataHandlerService {
 
-	constructor(private http: DscribeHttpClient, private dscribeService: DscribeService) {
+	constructor(private http: DscribeHttpClient, private dscribeService: DscribeService, private metadataService: MetadataService) {
 	}
 
 	private filterAPI = this.dscribeService.url('api/entity/getByFilter');
@@ -219,6 +222,16 @@ export class DataHandlerService {
 				const regExp = new RegExp(this.escapeRegExp(searchTerm), 'i');
 				return res.Names.filter(name => regExp.test(name.DisplayName));
 			}));
+	}
+
+	getNewEntityForCreateDialog(entityType: EntityTypeMetadata): any{
+		const entity = {};
+		for (const property of entityType.getPropertiesForManage(ManageEntityModes.Insert)) {
+			if (property.DataType === DataTypes.bool && !property.IsNullable) {
+				entity[property.Name] = false;
+			}
+		}
+		return entity;
 	}
 
 	private escapeRegExp(str: string): string {
