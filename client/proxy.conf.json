@@ -1,8 +1,8 @@
 {
 	"/api": {
-		"target": "http://127.0.0.1:5000/",
-		"target-disabled1": "https://preview.skillstreets.com/dscribeapi/",
-		"target-disabled2": "https://my.enjoyn.ai/adminapi/",
+		"target-disabled1": "http://127.0.0.1:5000/",
+		"target-disabled2": "https://preview.skillstreets.com/dscribeapi/",
+		"target": "https://my.enjoyn.ai/adminapi/",
 		"secure": false,
 		"logLevel": "debug",
 		"changeOrigin": true
