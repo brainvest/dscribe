@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Output, EventEmitter} from '@angular/core';
 import {DscribeConfig} from './models/dscribe-config';
 import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
 import {DscribeCommand} from './models/dscribe-command';
@@ -10,6 +10,9 @@ import {AppInstanceInformation} from './common/models/app-instance-information';
 export class DscribeService {
 	private config = <DscribeConfig>{};
 	private commands$: BehaviorSubject<DscribeCommand[]> = new BehaviorSubject<DscribeCommand[]>([]);
+	
+	@Output()
+	public loggedOut = new EventEmitter<any>();
 
 	appInstance$ = new ReplaySubject<AppInstanceInformation>(1);
 
@@ -17,8 +20,20 @@ export class DscribeService {
 		this.config.authHeaderFetcher = fetcher;
 	}
 
+	logout() {
+		this.loggedOut.next();
+	}
+
 	get authHeaderFetcher(): () => string {
 		return this.config.authHeaderFetcher;
+	}
+
+	get username() {
+		return this.config.username;
+	}
+
+	set username(value: string) {
+		this.config.username = value;
 	}
 
 	set appInstance(instance: AppInstanceInformation) {

@@ -14,7 +14,7 @@ export class NavigationComponent implements OnInit {
 	selectedAppInstance: AppInstanceInformation;
 	clientRoot: string;
 
-	constructor(private router: Router, private httpClient: DscribeHttpClient, private config: DscribeService) {
+	constructor(private router: Router, private httpClient: DscribeHttpClient, public config: DscribeService) {
 		this.clientRoot = config.getClientRoot();
 	}
 

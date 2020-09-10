@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {DscribeService} from './dscribe.service';
 
 @Component({
@@ -13,7 +13,18 @@ export class DscribeComponent {
 		this.config.authHeaderFetcher = value;
 	}
 
+	@Input()
+	set username(value: string) {
+		this.config.username = value;
+	}
+
+	@Output()
+	public loggedOut = new EventEmitter<any>();
+
 	constructor(private config: DscribeService) {
+		config.loggedOut.subscribe(() => {
+			this.loggedOut.next();
+		});
 	}
 
 }

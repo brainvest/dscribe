@@ -14,9 +14,18 @@ import { map } from 'rxjs/operators';
 export class AuthService {
 	private user: User = null;
 	private manager = new UserManager(getClientSettings());
+	
 	getAuthorizationHeaderValue = () => {
 		return this.user && `${this.user.token_type} ${this.user.id_token}`;
 	};
+
+	get username() {
+		return this.user && this.user.profile.email;
+	}
+
+	logout() {
+		this.manager.signoutRedirect();
+	}
 
 	constructor() {
 		this.manager.events.addUserLoaded(user => {

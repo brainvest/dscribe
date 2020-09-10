@@ -6,4 +6,5 @@ export interface DscribeConfig {
 	authHeaderFetcher: () => string;
 	serverRoot: string;
 	clientRoot: string;
+	username: string;
 }

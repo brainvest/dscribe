@@ -7,7 +7,7 @@
 				<mat-icon>{{navFixed ? 'lock' : 'lock_open'}}</mat-icon>
 			</button>
 		</mat-toolbar>
-		<mat-list dense>
+		<mat-list>
 			<a mat-list-item *ngFor="let entityType of entityTypes" routerLink="{{clientRoot}}entity/{{entityType.Name}}"
 				 routerLinkActive="active">
 				{{entityType.PluralTitle || entityType.Name}}
