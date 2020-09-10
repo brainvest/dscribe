@@ -2,6 +2,7 @@ import {FilterNode} from './filter-node';
 import {HasTypeInfo} from '../../../metadata/property-metadata';
 import {StorageFilterNode} from '../storage-filter-node';
 import {FilterNodeType} from '../filter-node-type';
+import {DataTypes} from 'src/lib/metadata/data-types';
 
 export class ConstantFilterNode extends FilterNode {
 	values: { value: any }[] = [{value: null}];
@@ -51,6 +52,9 @@ export class ConstantFilterNode extends FilterNode {
 
 	set dataType(value: HasTypeInfo) {
 		this._dataType = value;
+		if (!value.IsNullable && value.DataType == DataTypes.bool && !this.values[0].value) {
+			this.values[0].value = false;
+		}
 	}
 
 	get nodeType(): FilterNodeType {

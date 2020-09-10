@@ -14,6 +14,10 @@ namespace Brainvest.Dscribe.Helpers.FilterNodeConverter
 
 		private static object ConvertValue(object value, Type type)
 		{
+			if (type == typeof(bool) && value == null)
+			{
+				return false;
+			}
 			if (value is string)
 			{
 				if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))

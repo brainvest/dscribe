@@ -11,7 +11,7 @@ namespace Brainvest.Dscribe.Helpers.FilterNodeConverter
 	{
 		public static Expression<Func<T, bool>> ToExpression<T>(this FilterNodeModel node, IBusinessReflector reflector)
 		{
-			return ToExpression(node, reflector) as Expression<Func<T, bool>>;
+			return (Expression<Func<T, bool>>)ToExpression(node, reflector);
 		}
 
 		public static LambdaExpression ToExpression(this FilterNodeModel node, IBusinessReflector reflector)

@@ -75,11 +75,57 @@ namespace Brainvest.Dscribe.Helpers.FilterNodeConverter
 
 		private static Expression SimplifyEqualToBool(FilterNodeModel node, List<Expression> children)
 		{
-			if (children[0].Type == typeof(bool) || children[0].Type == typeof(bool?))
+			var first = children[0];
+			if (first.Type == typeof(bool?))
 			{
+				if (children.Count == 1)
+				{
+					if (node.Operator == null)
+					{
+						return Expression.Property(first, nameof(Nullable<bool>.Value));
+					}
+					else if (node.Operator == FilterOperator.IsNull)
+					{
+						Expression.Not(Expression.Property(first, nameof(Nullable<bool>.Value)));
+					}
+					else if (node.Operator == FilterOperator.IsNotNull)
+					{
+						Expression.Property(first, nameof(Nullable<bool>.Value));
+					}
+				}
+				else if (children.Count == 2)
+				{
+					var second = children[1];
+					if (second is ConstantExpression)
+					{
+						var constant = (second as ConstantExpression);
+						if (constant.Value == null)
+						{
+							first = Expression.Property(first, nameof(Nullable<bool>.HasValue));
+							if (node.Operator == FilterOperator.Equal)
+							{
+								return Expression.Not(first);
+							}
+							return first;
+						}
+						else if (constant.Value is bool)
+						{
+							first = Expression.Property(first, nameof(Nullable<bool>.Value));
+							if (node.Operator == FilterOperator.Equal ^ (bool)(children[1] as ConstantExpression).Value)
+							{
+								return Expression.Not(first);
+							}
+							return first;
+						}
+					}
+				}
+			}
+			if (first.Type == typeof(bool))
+			{
+
 				if (node.Operator == null)
 				{
-					return children[0];
+					return first;
 				}
 				if (children.Count == 2)
 				{
@@ -87,9 +133,9 @@ namespace Brainvest.Dscribe.Helpers.FilterNodeConverter
 					{
 						if (node.Operator == FilterOperator.Equal ^ (bool)(children[1] as ConstantExpression).Value)
 						{
-							return Expression.Not(children[0]);
+							return Expression.Not(first);
 						}
-						return children[0];
+						return first;
 					}
 				}
 			}

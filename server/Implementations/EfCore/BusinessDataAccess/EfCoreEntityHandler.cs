@@ -131,7 +131,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				Order = request.Order,
 				StartIndex = request.StartIndex,
 				Count = request.Count,
-				Filters = request.Filters?.Select(x => FilterNodeConverter.ToExpression(x, _implementationsContainer.Reflector)).Cast<Expression<Func<TEntity, bool>>>().ToArray()
+				Filters = request.Filters?.Select(x => FilterNodeConverter.ToExpression<TEntity>(x, _implementationsContainer.Reflector)).ToArray()
 			};
 		}
 
@@ -144,7 +144,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 				Count = request.Count,
 				Aggregations = request.Aggregations,
 				GroupBy = request.GroupBy,
-				Filters = request.Filters?.Select(x => FilterNodeConverter.ToExpression(x, _implementationsContainer.Reflector)).Cast<Expression<Func<TEntity, bool>>>().ToArray()
+				Filters = request.Filters?.Select(x => FilterNodeConverter.ToExpression<TEntity>(x, _implementationsContainer.Reflector)).ToArray()
 			};
 		}
 

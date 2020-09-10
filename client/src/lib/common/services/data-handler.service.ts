@@ -227,8 +227,12 @@ export class DataHandlerService {
 	getNewEntityForCreateDialog(entityType: EntityTypeMetadata): any{
 		const entity = {};
 		for (const property of entityType.getPropertiesForManage(ManageEntityModes.Insert)) {
-			if (property.DataType === DataTypes.bool && !property.IsNullable) {
-				entity[property.Name] = false;
+			if (property.DataType === DataTypes.bool) {
+				if (property.IsNullable) {
+					entity[property.Name] = null;	
+				} else {
+					entity[property.Name] = false;
+				}
 			}
 		}
 		return entity;
