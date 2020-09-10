@@ -23,6 +23,9 @@ export class DisplayValuePipe implements PipeTransform {
 			return this.dataHandlerService.getName(property.dataEntityTypeName, value);
 		}
 		if (property.dataType === DataTypes.Date) {
+			if (!value) {
+				return of(value);
+			}
 			return of(value.toString().substr(0, 10));
 		}
 		if (property.behaviors && property.behaviors.find(x => x.BehaviorName == 'DisplayAsDate' || x.BehaviorName == 'ShowDatePicker')) {
