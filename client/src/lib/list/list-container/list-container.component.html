@@ -1,5 +1,5 @@
 <mat-drawer-container>
-	<mat-drawer #drawer [mode]="navFixed?'side':'over'">
+	<mat-drawer #drawer [mode]="navFixed?'side':'over'" [(opened)]="navOpened">
 		<mat-toolbar>
 			<span>Entities</span>
 			<span style="flex-grow: 1">&nbsp;</span>

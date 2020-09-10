@@ -15,4 +15,8 @@ export class DateEditorComponent {
 	onModelChange(event: any) {
 		this.entity[this.overridePropertyName || this.property.Name] = event.toISOString();
 	}
+
+	makeNull() {
+		this.entity[this.overridePropertyName || this.property.Name] = null;
+	}
 }

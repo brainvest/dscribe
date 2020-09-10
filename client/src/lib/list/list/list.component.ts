@@ -67,7 +67,7 @@ export class ListComponent implements OnInit, OnChanges {
 	columns: ListColumn[] = [];
 	data = [];
 	totalCount = 0;
-	private displayedEntityTypeName: string;
+	private displayedEntityType: EntityTypeMetadata;
 	isLoadingResults = false;
 	isDataConnected = false;
 	userRefresh: EventEmitter<null> = new EventEmitter<null>();
@@ -118,7 +118,7 @@ export class ListComponent implements OnInit, OnChanges {
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (this.entityType) {
-			if (this.entityType.Name === this.displayedEntityTypeName) {
+			if (this.entityType === this.displayedEntityType) {
 				return;
 			}
 			if (this.filterVisible) {
@@ -140,10 +140,10 @@ export class ListComponent implements OnInit, OnChanges {
 				this.paginator.pageIndex = 0;
 				this.refreshData();
 			});
-			this.displayedEntityTypeName = this.entityType.Name;
+			this.displayedEntityType = this.entityType;
 			this.refreshData();
 			this.createColumns(this.entityType);
-			this.lobService.getReports(this.displayedEntityTypeName)
+			this.lobService.getReports(this.displayedEntityType.Name)
 				.subscribe(x => this.reports = x);
 		}
 	}
@@ -465,7 +465,7 @@ export class ListComponent implements OnInit, OnChanges {
 		this.dialog.open(CommentsListComponent, {
 			width: '800px',
 			data: <LobListDialogData>{
-				entityTypeName: this.displayedEntityTypeName,
+				entityTypeName: this.displayedEntityType.Name,
 				identifier: row[pkName],
 				mode: ManageCommentModes.view
 			}
@@ -477,7 +477,7 @@ export class ListComponent implements OnInit, OnChanges {
 		this.dialog.open(AttachmentsListComponent, {
 			width: '800px',
 			data: <LobListDialogData>{
-				entityTypeName: this.displayedEntityTypeName,
+				entityTypeName: this.displayedEntityType.Name,
 				identifier: row[pkName]
 			}
 		});
@@ -488,7 +488,7 @@ export class ListComponent implements OnInit, OnChanges {
 		this.dialog.open(ReportsListComponent, {
 			width: '800px',
 			data: <LobListDialogData>{
-				entityTypeName: this.displayedEntityTypeName,
+				entityTypeName: this.displayedEntityType.Name,
 				identifier: this.selection.selected[0][pkName]
 			}
 		});

@@ -14,7 +14,8 @@ import { DscribeService } from '../../dscribe.service';
 export class ListContainerComponent implements OnInit {
 	entityType: EntityTypeMetadata;
 	entityTypes: EntityTypeMetadata[];
-	navFixed: boolean;
+	navFixed = true;
+	navOpened = true;
 	clientRoot: string;
 
 	private entityTypeName: string;
