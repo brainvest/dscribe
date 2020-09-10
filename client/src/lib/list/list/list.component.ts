@@ -78,10 +78,10 @@ export class ListComponent implements OnInit, OnChanges {
 
 	displayMode = 'grid';
 
-	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+	@ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 	@ViewChild(TableTemplateComponent) table: TableTemplateComponent;
 	sort: MatSort;
-	private customTemplate: { component: Type<any>; options?: any };
+	private customTemplate: {component: Type<any>; options?: any};
 	filterCommands: DscribeCommand[] = [];
 	listCommands: DscribeCommand[] = [];
 
@@ -135,6 +135,7 @@ export class ListComponent implements OnInit, OnChanges {
 			} else {
 				this.sort = new MatSort();
 			}
+			this.sort.sort({id: this.entityType.getPrimaryKey().Name, start: "desc", disableClear: false});
 			this.sort.sortChange.subscribe(() => {
 				this.paginator.pageIndex = 0;
 				this.refreshData();
@@ -276,11 +277,11 @@ export class ListComponent implements OnInit, OnChanges {
 					return of([]);
 				})
 			).subscribe((data: any) => {
-			this.data = data;
-			this.lobService.setLobInfo(this.entityType, data);
-		}, (errors: any) => {
-			// this.snackbarService.open(errors);
-		});
+				this.data = data;
+				this.lobService.setLobInfo(this.entityType, data);
+			}, (errors: any) => {
+				// this.snackbarService.open(errors);
+			});
 	}
 
 	onMasterChanged() {
@@ -424,7 +425,7 @@ export class ListComponent implements OnInit, OnChanges {
 			this.filterLambda = null;
 			this.applyFilter(isFilterEmpty);
 		}
-	}	
+	}
 
 	setFilterToEmpty() {
 		this.filterLambda = new LambdaFilterNode(null, this.entityType, false);
