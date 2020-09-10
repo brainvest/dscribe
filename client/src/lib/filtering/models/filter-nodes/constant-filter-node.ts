@@ -2,7 +2,7 @@ import {FilterNode} from './filter-node';
 import {HasTypeInfo} from '../../../metadata/property-metadata';
 import {StorageFilterNode} from '../storage-filter-node';
 import {FilterNodeType} from '../filter-node-type';
-import {DataTypes} from 'src/lib/metadata/data-types';
+import {DataTypes} from '../../../metadata/data-types';
 
 export class ConstantFilterNode extends FilterNode {
 	values: { value: any }[] = [{value: null}];
