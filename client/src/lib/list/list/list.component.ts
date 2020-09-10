@@ -135,7 +135,10 @@ export class ListComponent implements OnInit, OnChanges {
 			} else {
 				this.sort = new MatSort();
 			}
-			this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+			this.sort.sortChange.subscribe(() => {
+				this.paginator.pageIndex = 0;
+				this.refreshData();
+			});
 			this.displayedEntityTypeName = this.entityType.Name;
 			this.refreshData();
 			this.createColumns(this.entityType);
