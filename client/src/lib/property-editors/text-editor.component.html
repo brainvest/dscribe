@@ -1,11 +1,22 @@
 <mat-form-field *ngIf="!isFilter" class="full-width" appearance="outline">
 	<mat-label>{{property.Title || property.Name}}</mat-label>
-	<input matInput type="text" [placeholder]="property.Title || property.Name"
-				 [(ngModel)]="entity[overridePropertyName || property.Name]">
+	<input 
+		matInput 
+		type="text" 
+		id="property.Name"
+		name="property.Name"
+		[placeholder]="property.Title || property.Name"
+		[(ngModel)]="entity[overridePropertyName || property.Name]" 
+		[required]="!property.IsNullable">
 </mat-form-field>
 
-<input type="text" *ngIf="isFilter" [placeholder]="property.Title || overridePropertyName || property.Name"
-			 [(ngModel)]="entity[overridePropertyName || property.Name]">
+<input 
+	type="text" 
+	*ngIf="isFilter" 
+	id="property.Name"
+	name="property.Name"
+	[placeholder]="property.Title || overridePropertyName || property.Name"
+	[(ngModel)]="entity[overridePropertyName || property.Name]">
 
 <div *ngIf="property?.ValidationErrors">
 	<p *ngFor="let validationError of property.ValidationErrors" class="error-message">

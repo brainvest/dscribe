@@ -1,7 +1,14 @@
 <mat-form-field *ngIf="!isFilter" class="full-width" appearance="outline">
 	<mat-label>{{property.Title || property.Name}}</mat-label>
-	<input matInput [placeholder]="property.Title || property.Name" [attr.id]="property.Name" [matDatepicker]="picker"
-		[ngModel]="entity[overridePropertyName || property.Name]" (ngModelChange)="onModelChange($event)">
+	<input 
+		matInput 
+		[placeholder]="property.Title || property.Name" 
+		[attr.id]="property.Name" 
+		[attr.name]="property.Name" 
+		[matDatepicker]="picker"
+		[ngModel]="entity[overridePropertyName || property.Name]" 
+		(ngModelChange)="onModelChange($event)"
+		[required]="!property.IsNullable">
 	<div matSuffix style="display: flex;flex-flow: row;">
 		<button mat-icon-button matTooltip="Clear the value" tabindex="-1" *ngIf="property?.IsNullable"
 			(click)="makeNull()">

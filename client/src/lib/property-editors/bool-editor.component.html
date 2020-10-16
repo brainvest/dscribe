@@ -1,8 +1,9 @@
-<mat-checkbox *ngIf="!isFilter" class="full-width" 
+<mat-checkbox 
+	*ngIf="!isFilter" 
+	class="full-width" 
 	[(ngModel)]="entity[overridePropertyName || property.Name]" 
-	(click)="next()" 
-	[indeterminate]="entity[overridePropertyName || property.Name] === null"
-	>
+	(click)="next()"
+	[indeterminate]="entity[overridePropertyName || property.Name] === null">
 	{{property.Title || overridePropertyName || property.Name}}
 </mat-checkbox>
 

@@ -1,7 +1,11 @@
 <mat-form-field *ngIf="!isFilter" class="full-width" appearance="outline">
 	<mat-label>{{property.Title || property.Name}}</mat-label>
-	<input type="number" matInput [placeholder]="property.Title || property.Name"
-				 [(ngModel)]="entity[overridePropertyName || property.Name]">
+	<input 
+		type="number" 
+		matInput 
+		[placeholder]="property.Title || property.Name"
+		[required]="!property.IsNullable"
+		[(ngModel)]="entity[overridePropertyName || property.Name]">
 </mat-form-field>
 
 <input *ngIf="isFilter" type="number" [placeholder]="property.Title || overridePropertyName || property.Name"

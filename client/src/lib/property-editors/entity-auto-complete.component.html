@@ -1,8 +1,14 @@
 <mat-form-field class="full-width" *ngIf="listRefresher && !isFilter" appearance="outline">
 	<mat-label>{{property.Title || property.Name}}</mat-label>
-	<input matInput [placeholder]="property.Title || property.Name" [attr.id]="property.Name"
-				 [attr.aria-label]="property.Name"
-				 [formControl]="inputCtrl" [matAutocomplete]="auto" [matAutocompleteDisabled]="true">
+	<input 
+		matInput 
+		[placeholder]="property.Title || property.Name" 
+		[attr.id]="property.Name"
+		[attr.aria-label]="property.Name"
+		[formControl]="inputCtrl" 
+		[matAutocomplete]="auto" 
+		[required]="!property.IsNullable"
+		[matAutocompleteDisabled]="true">
 	<div matSuffix class="dropdown-actions-container">
 		<button mat-icon-button (click)="toggleDropDown()" matTooltip="{{isAutoCompleteOpen ? 'Hide' : 'Show'}} DropDown" tabindex="-1">
 			<mat-icon>arrow_drop_down</mat-icon>
@@ -20,7 +26,9 @@
 		</button>
 	</div>
 	<i *ngIf="loading" class="fa fa-spinner" matSuffix></i>
-	<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+	<mat-autocomplete 
+		#auto="matAutocomplete" 
+		[displayWith]="displayFn.bind(this)">
 		<mat-option *ngFor="let item of filteredOptions | async" [value]="item.Id"
 								(onSelectionChange)="selectionChange(item)">
 			{{ item.DisplayName ? item.DisplayName : '' }}
