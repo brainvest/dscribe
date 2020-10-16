@@ -9,7 +9,7 @@
 	<Import Project="..\..\SolutionInfo.xml" />
 
 	<ItemGroup>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.3" />
   </ItemGroup>
 
   <ItemGroup>
