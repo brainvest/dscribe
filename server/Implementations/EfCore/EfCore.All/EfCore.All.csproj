@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<TargetFramework>net5.0</TargetFramework>
 		<AssemblyName>Brainvest.Dscribe.Implementations.EfCore.All</AssemblyName>
 		<LangVersion>latest</LangVersion>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -27,13 +27,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.9" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
 
 		<PackageReference Include="Humanizer.Core" Version="2.8.26" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.7.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
-		<PackageReference Include="System.CodeDom" Version="4.7.0" />
-		<PackageReference Include="System.Composition.AttributedModel" Version="1.4.1" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.8.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
+		<PackageReference Include="System.CodeDom" Version="5.0.0" />
+		<PackageReference Include="System.Composition.AttributedModel" Version="5.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

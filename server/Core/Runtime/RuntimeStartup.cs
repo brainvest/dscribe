@@ -36,7 +36,7 @@ namespace Brainvest.Dscribe.Runtime
 			{
 				case "MySql":
 					services.AddDbContext<MetadataDbContext, MetadataDbContext_MySql>(
-						options => options.UseMySql(connectionString,
+						options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
 						x => x.MigrationsAssembly(typeof(MetadataDbContext_MySql).Assembly.GetName().Name)
 							.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
 					break;

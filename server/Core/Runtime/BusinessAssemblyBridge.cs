@@ -9,7 +9,7 @@ using System.Reflection;
 namespace Brainvest.Dscribe.Runtime
 {
 	//[DebuggerNonUserCode]
-	public class BusinessAssemblyBridge : IDisposable
+	public sealed class BusinessAssemblyBridge : IDisposable
 	{
 		private readonly ILogger _logger;
 		private CompositionHost _container;

@@ -18,26 +18,26 @@
 		<dependencies>
 			<dependency id="Humanizer.Core" Version="2.8.26" />
 			<dependency id="Microsoft.Composition" version="1.0.31" />
-			<dependency id="Microsoft.EntityFrameworkCore" Version="3.1.6" />
-			<dependency id="Microsoft.EntityFrameworkCore.Relational" Version="3.1.6" />
-			<dependency id="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
-			<dependency id="Pomelo.EntityFrameworkCore.MySql" Version="3.1.2" />
-			<dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.6" />
+			<dependency id="Microsoft.EntityFrameworkCore" Version="5.0.0" />
+			<dependency id="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
+			<dependency id="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+			<dependency id="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
+			<dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
 			<dependency id="Newtonsoft.Json" version="12.0.3" />
-			<dependency id="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
+			<dependency id="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0" />
 			<dependency id="SaasKit.Multitenancy" version="1.1.4" />
 			<dependency id="NPOI" version="2.5.1" />
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="bin/$configuration$/netcoreapp3.1/Brainvest.Dscribe.Abstractions.dll" target="lib\netcoreapp3.1"/>
-		<file src="bin/$configuration$/netcoreapp3.1/Brainvest.Dscribe.Helpers.dll"  target="lib\netcoreapp3.1"/>
-		<file src="bin/$configuration$/netcoreapp3.1/Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling.dll"  target="lib\netcoreapp3.1"/>
-		<file src="bin/$configuration$/netcoreapp3.1/Brainvest.Dscribe.LobTools.dll"  target="lib\netcoreapp3.1"/>
-		<file src="bin/$configuration$/netcoreapp3.1/Brainvest.Dscribe.LobTools.Entities.dll"  target="lib\netcoreapp3.1"/>
-		<file src="bin/$configuration$/netcoreapp3.1/Brainvest.Dscribe.Metadata.dll"  target="lib\netcoreapp3.1"/>
-		<file src="bin/$configuration$/netcoreapp3.1/Brainvest.Dscribe.MetadataDbAccess.dll"  target="lib\netcoreapp3.1"/>
-		<file src="bin/$configuration$/netcoreapp3.1/Brainvest.Dscribe.Migrations.Runtime.MySql.dll"  target="lib\netcoreapp3.1"/>
-		<file src="bin/$configuration$/netcoreapp3.1/Brainvest.Dscribe.Migrations.Runtime.PostgreSql.dll"  target="lib\netcoreapp3.1"/>
+		<file src="bin/$configuration$/net5.0/Brainvest.Dscribe.Abstractions.dll" target="lib\net5.0"/>
+		<file src="bin/$configuration$/net5.0/Brainvest.Dscribe.Helpers.dll"  target="lib\net5.0"/>
+		<file src="bin/$configuration$/net5.0/Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling.dll"  target="lib\net5.0"/>
+		<file src="bin/$configuration$/net5.0/Brainvest.Dscribe.LobTools.dll"  target="lib\net5.0"/>
+		<file src="bin/$configuration$/net5.0/Brainvest.Dscribe.LobTools.Entities.dll"  target="lib\net5.0"/>
+		<file src="bin/$configuration$/net5.0/Brainvest.Dscribe.Metadata.dll"  target="lib\net5.0"/>
+		<file src="bin/$configuration$/net5.0/Brainvest.Dscribe.MetadataDbAccess.dll"  target="lib\net5.0"/>
+		<file src="bin/$configuration$/net5.0/Brainvest.Dscribe.Migrations.Runtime.MySql.dll"  target="lib\net5.0"/>
+		<file src="bin/$configuration$/net5.0/Brainvest.Dscribe.Migrations.Runtime.PostgreSql.dll"  target="lib\net5.0"/>
 	</files>
 </package>

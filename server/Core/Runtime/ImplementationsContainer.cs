@@ -88,7 +88,8 @@ namespace Brainvest.Dscribe.Runtime
 			{
 				case DatabaseProviderEnum.MySql:
 					var mySqlDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext_MySql>();
-					implementationsContainer._lobToolsDbContextOptions = mySqlDbContextOptionsBuilder.UseMySql(instanceInfo.LobConnectionString).Options;
+					implementationsContainer._lobToolsDbContextOptions = mySqlDbContextOptionsBuilder
+					.UseMySql(instanceInfo.LobConnectionString, ServerVersion.AutoDetect(instanceInfo.LobConnectionString)).Options;
 					break;
 				case DatabaseProviderEnum.SqlServer:
 					var lobToolsDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext>();
@@ -113,7 +114,8 @@ namespace Brainvest.Dscribe.Runtime
 				switch (instanceInfo.Provider)
 				{
 					case DatabaseProviderEnum.MySql:
-						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseMySql(instanceInfo.DataConnectionString).Options;
+						implementationsContainer._dbContextOptions = dbContextOptionsBuilder
+						.UseMySql(instanceInfo.DataConnectionString, ServerVersion.AutoDetect(instanceInfo.DataConnectionString)).Options;
 						break;
 					case DatabaseProviderEnum.SqlServer:
 						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.DataConnectionString).Options;

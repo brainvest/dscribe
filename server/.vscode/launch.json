@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build-host",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Host/bin/Debug/netcoreapp3.1/Brainvest.Dscribe.Host.dll",
+            "program": "${workspaceFolder}/Host/bin/Debug/net5.0/Brainvest.Dscribe.Host.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Host",
             "stopAtEntry": false,
@@ -27,7 +27,7 @@
             "request": "launch",
             "preLaunchTask": "build-auth",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Infrastructure/SampleAuthServer/bin/Debug/netcoreapp3.1/Brainvest.Dscribe.Infrastructure.SampleAuthServer.dll",
+            "program": "${workspaceFolder}/Infrastructure/SampleAuthServer/bin/Debug/net5.0/Brainvest.Dscribe.Infrastructure.SampleAuthServer.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Infrastructure/SampleAuthServer",
             "stopAtEntry": false,

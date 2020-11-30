@@ -55,8 +55,8 @@ namespace Brainvest.Dscribe.Host
 			switch (provider)  // TODO: use a case-insensitive comparison
 			{
 				case "MySql":
-					options.UseMySql(
-							Configuration.GetConnectionString(connectionStringName));
+					var connectionString = Configuration.GetConnectionString(connectionStringName);
+					options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 					return;
 				case "SqlServer":
 					options.UseSqlServer(

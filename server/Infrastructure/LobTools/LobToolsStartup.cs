@@ -39,7 +39,7 @@ namespace Brainvest.Dscribe.LobTools
 			{
 				case "MySql":
 					services.AddDbContext<LobToolsDbContext, LobToolsDbContext_MySql>(
-						options => options.UseMySql(connectionString,
+						options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
 						x => x.MigrationsAssembly(typeof(LobToolsDbContext_MySql).Assembly.GetName().Name)
 							.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
 					break;
