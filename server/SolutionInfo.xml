@@ -1,6 +1,6 @@
 <Project>
 	<PropertyGroup>
-		<Version>0.8.0-Beta2</Version>
+		<Version>0.8.1-Beta2</Version>
 		<Authors>Alireza Haghshenas, Nima Hakimi, Arash Bahreini</Authors>
 		<Company>LastInfinity</Company>
 		<Product>Dscribe</Product>

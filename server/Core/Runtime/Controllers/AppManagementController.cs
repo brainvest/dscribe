@@ -26,7 +26,6 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			_dbContext = dbContext;
 		}
 
-		[HttpPost]
 		public async Task<ActionResult<IEnumerable<AppInstanceInfoModel>>> GetAppInstancesInfoForHome()
 		{
 			return await _dbContext.AppInstances
