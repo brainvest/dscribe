@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ListAddNEditDialogComponent } from './list-add-n-edit-dialog.component';
 
@@ -6,7 +6,7 @@ describe('ListAddNEditDialogComponent', () => {
   let component: ListAddNEditDialogComponent;
   let fixture: ComponentFixture<ListAddNEditDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ListAddNEditDialogComponent ]
     })

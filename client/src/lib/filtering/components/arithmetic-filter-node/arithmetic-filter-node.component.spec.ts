@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {ArithmeticFilterNodeComponent} from './arithmetic-filter-node.component';
 
@@ -6,7 +6,7 @@ describe('ValueConditionFilterNodeComponent', () => {
 	let component: ArithmeticFilterNodeComponent;
 	let fixture: ComponentFixture<ArithmeticFilterNodeComponent>;
 
-	beforeEach(async(() => {
+	beforeEach(waitForAsync(() => {
 		TestBed.configureTestingModule({
 			declarations: [ArithmeticFilterNodeComponent]
 		})

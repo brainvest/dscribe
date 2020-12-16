@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ReleaseMetadataSettingsComponent } from './release-metadata-settings.component';
 
@@ -6,7 +6,7 @@ describe('ReleaseMetadataSettingsComponent', () => {
   let component: ReleaseMetadataSettingsComponent;
   let fixture: ComponentFixture<ReleaseMetadataSettingsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ReleaseMetadataSettingsComponent ]
     })

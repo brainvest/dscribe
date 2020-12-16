@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {ComparisonFilterNodeComponent} from './comparison-filter-node.component';
 
@@ -6,7 +6,7 @@ describe('ValueConditionFilterNodeComponent', () => {
 	let component: ComparisonFilterNodeComponent;
 	let fixture: ComponentFixture<ComparisonFilterNodeComponent>;
 
-	beforeEach(async(() => {
+	beforeEach(waitForAsync(() => {
 		TestBed.configureTestingModule({
 			declarations: [ComparisonFilterNodeComponent]
 		})

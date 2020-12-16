@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AddNEditEntityTypeComponent } from './add-n-edit-entity-type.component';
 
@@ -6,7 +6,7 @@ describe('AddNEditEntityTypeComponent', () => {
   let component: AddNEditEntityTypeComponent;
   let fixture: ComponentFixture<AddNEditEntityTypeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AddNEditEntityTypeComponent ]
     })
