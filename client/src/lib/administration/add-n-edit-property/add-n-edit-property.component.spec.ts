@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AddNEditPropertyComponent } from './add-n-edit-property.component';
 
@@ -6,7 +6,7 @@ describe('AddNEditPropertyComponent', () => {
   let component: AddNEditPropertyComponent;
   let fixture: ComponentFixture<AddNEditPropertyComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AddNEditPropertyComponent ]
     })

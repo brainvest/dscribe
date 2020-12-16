@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {NavigationListFilterNodeComponent} from './navigation-list-filter-node.component';
 
@@ -6,7 +6,7 @@ describe('NavigationListFilterNodeComponent', () => {
 	let component: NavigationListFilterNodeComponent;
 	let fixture: ComponentFixture<NavigationListFilterNodeComponent>;
 
-	beforeEach(async(() => {
+	beforeEach(waitForAsync(() => {
 		TestBed.configureTestingModule({
 			declarations: [NavigationListFilterNodeComponent]
 		})
