@@ -78,6 +78,10 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 					{
 						snippet.Text += "		[JsonIgnore]" + Environment.NewLine;
 					}
+					if (property.DataType == DataTypes.Date)
+					{
+						snippet.Text += "		[Column(TypeName=\"date\")]" + Environment.NewLine;
+					}
 					if (property.DataType == DataTypes.NavigationList)
 					{
 						dataType = $"System.Collections.Generic.ICollection<{property.EntityTypeName}>";
