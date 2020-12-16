@@ -62,7 +62,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			{
 				case "MySql":
 					services.AddDbContext<SecurityDbContext, SecurityDbContext_MySql>(
-						options => options.UseMySql(connectionString,
+						options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
 						x => x.MigrationsAssembly(typeof(SecurityDbContext_MySql).Assembly.GetName().Name)
 							.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
 					break;
@@ -151,7 +151,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-				app.UseDatabaseErrorPage();
+        		app.UseMigrationsEndPoint();			
 			}
 			else
 			{

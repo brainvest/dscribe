@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CustomTemplateHostComponent } from './custom-template-host.component';
 
@@ -6,7 +6,7 @@ describe('CustomTemplateHostComponent', () => {
   let component: CustomTemplateHostComponent;
   let fixture: ComponentFixture<CustomTemplateHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CustomTemplateHostComponent ]
     })
