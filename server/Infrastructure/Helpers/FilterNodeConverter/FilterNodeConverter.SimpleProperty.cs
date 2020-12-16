@@ -202,7 +202,7 @@ namespace Brainvest.Dscribe.Helpers.FilterNodeConverter
 			{
 				add.Invoke(list, new object[] { ConvertValue(val, type) });
 			}
-			return Constant(list, typeof(IEnumerable<>).MakeGenericType(type));
+			return Constant(list, list.GetType());
 		}
 
 		private static Expression MakeComparison(FilterOperator filterOperator, IList<Expression> children)
@@ -264,9 +264,10 @@ namespace Brainvest.Dscribe.Helpers.FilterNodeConverter
 				}
 				return Expression.NotEqual(children[0], values);
 			}
-			var contains = typeof(Enumerable).GetMethods().Single(x => x.Name == nameof(Enumerable.Contains) && x.GetParameters().Length == 2);
-			contains = contains.MakeGenericMethod(children[0].Type);
-			var containsExpression = Expression.Call(contains, children[1], children[0]);
+			var contains = children[1].Type.GetMethod(nameof(List<int>.Contains));
+			// typeof(Enumerable).GetMethods().Single(x => x.Name == nameof(Enumerable.Contains) && x.GetParameters().Length == 2);
+			// contains = contains.MakeGenericMethod(children[0].Type);
+			var containsExpression = Expression.Call(children[1], contains, children[0]);
 			if (filterOperator == FilterOperator.NotEqual)
 			{
 				return Expression.Not(containsExpression);
