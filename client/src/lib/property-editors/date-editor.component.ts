@@ -13,7 +13,9 @@ export class DateEditorComponent {
 	@Input() isFilter: boolean;
 
 	onModelChange(event: any) {
-		this.entity[this.overridePropertyName || this.property.Name] = event.toISOString();
+		event.setTime(event.getTime() - (event.getTimezoneOffset() * 60 * 1000)); // To prevent changes of date because of time zone.
+		this.entity[this.overridePropertyName || this.property.Name] = event.toJSON();
+		console.log(this.entity[this.overridePropertyName || this.property.Name]);
 	}
 
 	makeNull() {
