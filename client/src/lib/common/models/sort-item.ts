@@ -1,5 +1,5 @@
-import {DataTypes} from "src/lib/metadata/data-types";
-import {EntityTypeMetadata} from "src/lib/metadata/entity-type-metadata";
+import {DataTypes} from "../../metadata/data-types";
+import {EntityTypeMetadata} from "../../metadata/entity-type-metadata";
 
 export class SortItem {
 	constructor(public propertyName: string, public isDescending: boolean) {
