@@ -10,7 +10,8 @@ export class EntityTypeMetadata extends DigestEntityType {
 	private _parentProperty: PropertyMetadata;
 
 	constructor(public Name: string, singularTitle: string, pluralTitle: string,
-							typeGeneralUsageCategoryId: number) {
+							typeGeneralUsageCategoryId: number, public codePath: string
+							, public displayNamePath: string) {
 		super(Name, singularTitle, pluralTitle, typeGeneralUsageCategoryId);
 	}
 

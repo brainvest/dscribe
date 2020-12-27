@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewChecked, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, Type, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {MatPaginator} from '@angular/material/paginator';
@@ -48,7 +48,7 @@ import {DataHistoryComponent} from '../data-history/data-history.component';
 	styleUrls: ['./list.component.css'],
 	encapsulation: ViewEncapsulation.None,
 })
-export class ListComponent implements OnInit, OnChanges {
+export class ListComponent implements OnInit, OnChanges, AfterViewChecked {
 	initialSelection = [];
 	allowMultiSelect = false;
 	selection = new SelectionModel<any>(this.allowMultiSelect, this.initialSelection);
@@ -130,22 +130,32 @@ export class ListComponent implements OnInit, OnChanges {
 			} else {
 				this.displayMode = 'grid';
 			}
-			if (this.table) {
-				this.sort = this.table.sort;
-			} else {
-				this.sort = new MatSort();
-			}
-			this.sort.sort({id: this.entityType.getPrimaryKey().Name, start: "desc", disableClear: false});
-			this.sort.sortChange.subscribe(() => {
-				this.paginator.pageIndex = 0;
-				this.refreshData();
-			});
+			this.connectSort();
 			this.displayedEntityType = this.entityType;
 			this.refreshData();
 			this.createColumns(this.entityType);
 			this.lobService.getReports(this.displayedEntityType.Name)
 				.subscribe(x => this.reports = x);
 		}
+	}
+
+	ngAfterViewChecked() {
+		if (this.entityType && this.table && this.table.sort != this.sort) {
+			this.connectSort();
+		}
+	}
+
+	connectSort() {
+		if (this.table) {
+			this.sort = this.table.sort;
+		} else {
+			this.sort = new MatSort();
+		}
+		this.sort.sort({id: this.entityType.getPrimaryKey().Name, start: "desc", disableClear: false});
+		this.sort.sortChange.subscribe(() => {
+			this.paginator.pageIndex = 0;
+			this.refreshData();
+		});
 	}
 
 	createColumns(entityType: EntityTypeMetadata) {
@@ -257,9 +267,10 @@ export class ListComponent implements OnInit, OnChanges {
 				switchMap(() => {
 					this.isLoadingResults = true;
 					const sort = [];
-					if (this.sort.active) {
-						sort.push(new SortItem(this.sort.active, this.sort.direction === 'desc'));
+					if (this.sort.active && this.sort.direction && this.sort.active != this.entityType.getPrimaryKey().Name) {
+						sort.push(SortItem.Create(this.sort.active, this.sort.direction === 'desc', this.entityType));
 					}
+					sort.push(SortItem.Create(this.entityType.getPrimaryKey().Name, true, this.entityType));
 					return this.dataHandler.getByFilter(
 						new EntityListRequest(
 							this.entityType.Name,

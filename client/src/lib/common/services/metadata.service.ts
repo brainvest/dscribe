@@ -42,7 +42,7 @@ export class MetadataService {
 			}
 			const t = entityTypes[entityTypeName];
 			const entityTypeMetadata = new EntityTypeMetadata(t.Name, t.SingularTitle, t.PluralTitle,
-				t.TypeGeneralUsageCategoryId);
+				t.TypeGeneralUsageCategoryId, t.Code, t.DisplayName);
 			entityTypeMetadata.Properties = {};
 			entityTypeMetadata.PropertyNames = [];
 			for (const propertyName in t.Properties) {

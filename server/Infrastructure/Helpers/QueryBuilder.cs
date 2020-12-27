@@ -216,8 +216,7 @@ namespace Brainvest.Dscribe.Helpers
 			var method = typeof(Queryable).GetMethods(BindingFlags.Public | BindingFlags.Static)
 				.Single(x => x.Name == methodName && x.GetParameters().Count() == 2);
 			var param = Expression.Parameter(typeof(T), "x");
-			var property = Expression.Property(param, propertyName);
-			var lambda = Expression.Lambda(property, param);
+			var lambda = ExpressionBuilder.Path(propertyName, param);
 			method = method.MakeGenericMethod(typeof(T), lambda.ReturnType);
 			var sorted = method.Invoke(null, new object[] { query, lambda });
 			return sorted as IQueryable<T>;
