@@ -1,6 +1,6 @@
 {
 	"name": "dscribe",
-	"version": "0.14.6",
+	"version": "0.14.7",
 	"peerDependencies": {
 		"@angular/common": "^11.0.0",
 		"@angular/core": "^11.0.0",
