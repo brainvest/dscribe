@@ -16,15 +16,15 @@
 		<!--<tags>Tag1 Tag2</tags>-->
 		<repository type="git" url="https://github.com/brainvest/dscribe" />
 		<dependencies>
-			<dependency id="Humanizer.Core" Version="2.8.26" />
+			<dependency id="Humanizer.Core" Version="2.10.1" />
 			<dependency id="Microsoft.Composition" version="1.0.31" />
-			<dependency id="Microsoft.EntityFrameworkCore" Version="5.0.5" />
-			<dependency id="Microsoft.EntityFrameworkCore.Relational" Version="5.0.5" />
-			<dependency id="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
-			<dependency id="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-beta.1" />
+			<dependency id="Microsoft.EntityFrameworkCore" Version="5.0.6" />
+			<dependency id="Microsoft.EntityFrameworkCore.Relational" Version="5.0.6" />
+			<dependency id="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
+			<dependency id="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0" />
 			<dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
 			<dependency id="Newtonsoft.Json" version="13.0.1" />
-			<dependency id="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.5.1" />
+			<dependency id="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.6" />
 			<dependency id="SaasKit.Multitenancy" version="1.1.4" />
 			<dependency id="NPOI" version="2.5.1" />
 		</dependencies>
