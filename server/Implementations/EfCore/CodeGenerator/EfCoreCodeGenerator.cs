@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Composition;
 using System.IO;
+using System.Linq;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {
@@ -65,7 +66,7 @@ namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 							));
 					}
 				}
-				foreach (var property in type.GetDirectProperties())
+				foreach (var property in type.GetDirectProperties().OrderBy(x => x.Name))
 				{
 					if (property.IsExpression)
 					{
