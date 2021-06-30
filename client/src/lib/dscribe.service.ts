@@ -10,9 +10,9 @@ import {AppInstanceInformation} from './common/models/app-instance-information';
 export class DscribeService {
 	private config = <DscribeConfig>{};
 	private commands$: BehaviorSubject<DscribeCommand[]> = new BehaviorSubject<DscribeCommand[]>([]);
-	
+
 	@Output()
-	public loggedOut = new EventEmitter<any>();
+	public loggedOut = new EventEmitter<void>();
 
 	appInstance$ = new ReplaySubject<AppInstanceInformation>(1);
 
