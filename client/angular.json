@@ -52,20 +52,25 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
-            }
-          }
+            },
+            "development": {}
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "dscribe-host:build",
             "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
               "browserTarget": "dscribe-host:build:production"
+            },
+            "development": {
+              "browserTarget": "dscribe-host:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -111,14 +116,17 @@
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "demo/e2e/protractor.conf.js",
-            "devServerTarget": "dscribe-host:serve"
+            "protractorConfig": "demo/e2e/protractor.conf.js"
           },
           "configurations": {
             "production": {
               "devServerTarget": "dscribe-host:serve:production"
+            },
+            "development": {
+              "devServerTarget": "dscribe-host:serve:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -147,8 +155,10 @@
             "production": {
               "project": "src/ng-package.prod.json",
               "tsConfig": "src/tsconfig.lib.prod.json"
-            }
-          }
+            },
+            "development": {}
+          },
+          "defaultConfiguration": "production"
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
