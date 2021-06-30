@@ -60,7 +60,7 @@ export class ListComponent implements OnInit, OnChanges, AfterViewChecked {
 	@Input() hasNav: boolean;
 
 	@Output() selectionChanged = new EventEmitter<any>();
-	@Output() navToggled = new EventEmitter<any>();
+	@Output() navToggled = new EventEmitter<void>();
 
 	detailLists?: MasterReference[];
 	displayedColumns = [];

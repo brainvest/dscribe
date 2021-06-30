@@ -19,7 +19,7 @@ export class DscribeComponent {
 	}
 
 	@Output()
-	public loggedOut = new EventEmitter<any>();
+	public loggedOut = new EventEmitter<void>();
 
 	constructor(private config: DscribeService) {
 		config.loggedOut.subscribe(() => {
