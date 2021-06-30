@@ -16,9 +16,9 @@
 		<!--<tags>Tag1 Tag2</tags>-->
 		<repository type="git" url="https://github.com/brainvest/dscribe" />
 		<dependencies>
-			<dependency id="Humanizer.Core" Version="2.10.1" />
-			<dependency id="Microsoft.CodeAnalysis.CSharp.Workspaces" version="3.9.0" />
-			<dependency id="Microsoft.EntityFrameworkCore" Version="5.0.6" />
+			<dependency id="Humanizer.Core" Version="2.11.10" />
+			<dependency id="Microsoft.CodeAnalysis.CSharp.Workspaces" version="3.10.0" />
+			<dependency id="Microsoft.EntityFrameworkCore" Version="5.0.7" />
 			<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
 			<dependency id="System.CodeDom" version="5.0.0" />
 			<dependency id="System.Composition.AttributedModel" version="5.0.1" />
