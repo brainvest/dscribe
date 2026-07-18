@@ -63,7 +63,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 		{
 			var report = await _metadataDbContext.ReportDefinitions.FindAsync(request.ReportDefinitionId);
 			var (bytes, contentType, fileName) = await ProcessReport(report, request.EntityIdentifier);
-			HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
+			HttpContext.Response.Headers["Access-Control-Expose-Headers"] = "Content-Disposition";
 			return File(bytes, contentType, fileName);
 		}
 

@@ -1,5 +1,6 @@
 using Brainvest.Dscribe.Implementations.EfCore.All;
 using Brainvest.Dscribe.Runtime;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -42,10 +43,11 @@ namespace Brainvest.Dscribe.Host
 			});
 
 			services.AddAuthentication("Bearer")
-					.AddIdentityServerAuthentication(options =>
+					.AddJwtBearer(options =>
 					{
 						options.Authority = Configuration.GetSection("AuthAuthority").Get<string>();
 						options.RequireHttpsMetadata = false;
+						options.TokenValidationParameters.ValidateAudience = false;
 					});
 		}
 

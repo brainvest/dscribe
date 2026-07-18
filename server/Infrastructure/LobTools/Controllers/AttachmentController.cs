@@ -52,7 +52,7 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 			using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
 			{
 				var attachment = await dbContext.Attachments.FindAsync(request.Id);
-				HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
+				HttpContext.Response.Headers["Access-Control-Expose-Headers"] = "Content-Disposition";
 				return File(attachment.Data, "application/octet-stream", attachment.FileName);
 			}
 		}
