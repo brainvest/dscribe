@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.Host</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.Host</RootNamespace>
     <UserSecretsId>2a8a1ba1-bde9-4c00-846d-723874ad9d1c</UserSecretsId>
@@ -12,13 +12,11 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

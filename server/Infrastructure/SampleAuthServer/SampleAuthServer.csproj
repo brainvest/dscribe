@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<UserSecretsId>aspnet-IdentityServerHost-C2CA2F30-CEF5-4399-8037-AB2C48FD5EE6</UserSecretsId>
 		<LangVersion>latest</LangVersion>
 		<AssemblyName>Brainvest.Dscribe.Infrastructure.SampleAuthServer</AssemblyName>
@@ -15,7 +15,7 @@
 		<WarningsAsErrors />
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<PropertyGroup>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<WarningsAsErrors />
 	</PropertyGroup>
