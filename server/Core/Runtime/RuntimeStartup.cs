@@ -3,6 +3,7 @@ using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.LobTools;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.Runtime.AccessControl;
+using MySql.EntityFrameworkCore.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,7 @@ namespace Brainvest.Dscribe.Runtime
 			{
 				case "MySql":
 					services.AddDbContext<MetadataDbContext, MetadataDbContext_MySql>(
-						options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+						options => options.UseMySQL(connectionString,
 						x => x.MigrationsAssembly(typeof(MetadataDbContext_MySql).Assembly.GetName().Name)
 							.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
 					break;

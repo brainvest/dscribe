@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using MySqlValueGenerationStrategy = MySql.EntityFrameworkCore.Metadata.MySQLValueGenerationStrategy;
 
 namespace Migrations_Runtime_MySql.Migrations
 {

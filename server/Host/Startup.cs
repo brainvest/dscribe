@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MySql.EntityFrameworkCore.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
@@ -58,7 +59,7 @@ namespace Brainvest.Dscribe.Host
 			{
 				case "MySql":
 					var connectionString = Configuration.GetConnectionString(connectionStringName);
-					options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+					options.UseMySQL(connectionString);
 					return;
 				case "SqlServer":
 					options.UseSqlServer(
