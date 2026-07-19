@@ -5,6 +5,7 @@ import {ListColumn} from '../list/models/list-column';
 import {DataTypes} from '../metadata/data-types';
 
 @Pipe({
+	standalone: false,
 	name: 'displayValue'
 })
 export class DisplayValuePipe implements PipeTransform {

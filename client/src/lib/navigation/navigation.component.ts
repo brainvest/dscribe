@@ -5,6 +5,7 @@ import {AppInstanceInformation} from '../common/models/app-instance-information'
 import {DscribeHttpClient} from '../common/services/dscribe-http-client';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-navigation',
 	templateUrl: './navigation.component.html',
 	styleUrls: ['./navigation.component.scss'],
@@ -31,3 +32,4 @@ export class NavigationComponent implements OnInit {
 		this.selectedAppInstance = appInstance;
 	}
 }
+

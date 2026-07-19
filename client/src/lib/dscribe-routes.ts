@@ -1,3 +1,4 @@
+import { Routes } from '@angular/router';
 import { NavigationComponent } from './navigation/navigation.component';
 import { ListContainerComponent } from './list/list-container/list-container.component';
 import { MetadataManagementComponent } from './administration/metadata-management/metadata-management.component';
@@ -6,7 +7,7 @@ import { AppInstanceManagementComponent } from './administration/settings/app-in
 import { AppTypeManagementComponent } from './administration/settings/app-type-management/app-type-management.component';
 import { UsersAndRolesManagementComponent } from './security/components/users-and-roles-management/users-and-roles-management.component';
 
-export const DSCRIBE_ROUTES = [
+export const DSCRIBE_ROUTES: Routes = [
 	{
 		path: '', component: NavigationComponent,
 		children: [

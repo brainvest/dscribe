@@ -9,6 +9,7 @@ import {DscribeTemplateComponent} from '../../../../../src/lib/list/list-templat
 	}
 })
 @Component({
+	standalone: false,
 	selector: 'dscribe-host-data-type-card',
 	templateUrl: './data-type-card.component.html',
 	styleUrls: ['./data-type-card.component.css']

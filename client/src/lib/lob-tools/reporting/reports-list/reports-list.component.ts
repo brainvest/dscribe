@@ -8,6 +8,7 @@ import {saveAs} from 'file-saver';
 import {MiscHelper} from '../../../helpers/misc-helper';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-reports-list',
 	templateUrl: './reports-list.component.html',
 	styleUrls: ['./reports-list.component.css']
@@ -63,3 +64,4 @@ export class ReportsListComponent implements OnInit {
 	}
 
 }
+

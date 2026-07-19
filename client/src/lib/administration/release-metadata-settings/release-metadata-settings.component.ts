@@ -6,6 +6,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {SnackBarService} from '../../common/notifications/snackbar.service';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-release-metadata-settings',
 	templateUrl: './release-metadata-settings.component.html',
 	styleUrls: ['./release-metadata-settings.component.css']
@@ -43,3 +44,4 @@ export class ReleaseMetadataSettingsComponent implements OnInit {
 		this.dialogRef.close();
 	}
 }
+

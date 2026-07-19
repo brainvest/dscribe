@@ -14,6 +14,7 @@ import {SnackBarService} from '../../common/notifications/snackbar.service';
 import {AddNEditPropertyComponentData} from './add-n-edit-property-component-data';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-add-n-edit-property',
 	templateUrl: './add-n-edit-property.component.html',
 	styleUrls: ['./add-n-edit-property.component.css']
@@ -189,3 +190,4 @@ export class AddNEditPropertyComponent implements OnInit {
 	}
 
 }
+

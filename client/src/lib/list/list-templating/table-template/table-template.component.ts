@@ -4,6 +4,7 @@ import { ListColumn } from '../../models/list-column';
 import { MatSort } from '@angular/material/sort';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-table-template',
 	templateUrl: './table-template.component.html',
 	styleUrls: ['./table-template.component.css']
@@ -21,3 +22,4 @@ export class TableTemplateComponent {
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 
 }
+

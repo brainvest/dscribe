@@ -4,6 +4,7 @@ import {AddNEditResult} from '../../common/models/add-n-edit-result';
 import {AddNEditHelper} from '../../add-n-edit/add-n-edit-helper';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-list-add-n-edit-dialog',
 	templateUrl: './list-add-n-edit-dialog.component.html',
 	styleUrls: ['./list-add-n-edit-dialog.component.css']
@@ -27,3 +28,4 @@ export class ListAddNEditDialogComponent {
 		this.dialogRef.close(null);
 	}
 }
+

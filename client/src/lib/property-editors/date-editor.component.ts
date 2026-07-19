@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {PropertyMetadata} from '../metadata/property-metadata';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-date-editor',
 	templateUrl: './date-editor.component.html'
 })

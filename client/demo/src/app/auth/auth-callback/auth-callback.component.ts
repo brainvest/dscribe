@@ -3,6 +3,7 @@ import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-host-auth-callback',
 	templateUrl: './auth-callback.component.html',
 	styleUrls: ['./auth-callback.component.css']

@@ -3,6 +3,7 @@ import {HasTypeInfo} from '../metadata/property-metadata';
 import {DataTypes} from '../metadata/data-types';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-property-editor',
 	templateUrl: './property-editor.component.html'
 })
@@ -47,3 +48,4 @@ export class PropertyEditorComponent implements OnChanges {
 		}
 	}
 }
+

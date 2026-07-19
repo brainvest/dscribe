@@ -15,6 +15,7 @@ import {ManageEntityModes} from '../add-n-edit/models/manage-entity-modes';
 import {PrimaryKey} from '../common/models/primary-key';
 
 @Component({
+	standalone: false,
 	template: `
 		<mat-dialog-content>
 			<h1 class="page-header">{{inputs.entityType.PluralTitle}}</h1>
@@ -52,6 +53,7 @@ export class AutoCompleteMoreDialogComponent {
 }
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-entity-auto-complete-component',
 	templateUrl: './entity-auto-complete.component.html',
 	styleUrls: ['./entity-auto-complete.component.scss']

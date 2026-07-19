@@ -43,6 +43,7 @@ import {ManageCommentModes} from '../../lob-tools/models/manage-comment-modes';
 import {DataHistoryComponent} from '../data-history/data-history.component';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-list',
 	templateUrl: './list.component.html',
 	styleUrls: ['./list.component.css'],

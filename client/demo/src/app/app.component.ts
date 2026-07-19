@@ -9,6 +9,7 @@ import { DscribeCommandDisplayPredicate } from '../../../src/lib/models/dscribe-
 import { environment } from '../environments/environment';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-host-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.css']

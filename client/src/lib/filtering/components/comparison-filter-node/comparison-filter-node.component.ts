@@ -3,6 +3,7 @@ import {ComparisonFilterNode} from '../../models/filter-nodes/comparison-filter-
 import {FilterTreeManipulator} from '../../models/filter-tree-manipulator';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-comparison-filter-node',
 	templateUrl: './comparison-filter-node.component.html',
 	styleUrls: ['../filter-node/filter-node.component.scss']

@@ -10,6 +10,7 @@ import {HistoryType} from '../../administration/models/history/history-type';
 import {HistoryService} from '../../lob-tools/history-service';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-data-history',
 	templateUrl: './data-history.component.html',
 	styleUrls: ['./data-history.component.css'],
@@ -114,3 +115,4 @@ export class DataHistoryComponent implements OnInit {
 		}
 	}
 }
+

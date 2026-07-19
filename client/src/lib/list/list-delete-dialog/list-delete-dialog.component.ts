@@ -4,6 +4,7 @@ import { DataHandlerService } from '../../common/services/data-handler.service';
 import {SnackBarService} from '../../common/notifications/snackbar.service';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-list-delete-dialog',
 	templateUrl: './list-delete-dialog.component.html',
 	styleUrls: ['./list-delete-dialog.component.css']

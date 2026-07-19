@@ -7,6 +7,7 @@ import {environment} from '../../environments/environment';
 import {AppInstanceInformation} from '../../../../src/lib/common/models/app-instance-information';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-host-sample-list',
 	templateUrl: './sample-list.component.html',
 	styleUrls: ['./sample-list.component.css']

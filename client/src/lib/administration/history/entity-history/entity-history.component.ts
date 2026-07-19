@@ -9,6 +9,7 @@ import {SnackBarService} from '../../../common/notifications/snackbar.service';
 import {HistoryService} from '../../../lob-tools/history-service';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-entity-history',
 	templateUrl: './entity-history.component.html',
 	styleUrls: ['./entity-history.component.css'],
@@ -102,3 +103,4 @@ export class EntityHistoryComponent implements OnInit {
 	}
 
 }
+

@@ -24,6 +24,7 @@ import { HistoryType } from '../models/history/history-type';
 import {AddNEditEntityTypeComponent} from '../add-n-edit-entity/add-n-edit-entity-type.component';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-metadata-management',
 	templateUrl: './metadata-management.component.html',
 	styleUrls: ['./metadata-management.component.css']
@@ -339,3 +340,4 @@ export class MetadataManagementComponent implements OnInit {
 			});
 	}
 }
+

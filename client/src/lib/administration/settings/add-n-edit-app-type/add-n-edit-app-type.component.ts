@@ -17,6 +17,7 @@ export class AddNEditAppTypeComponentData {
 }
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-host-add-n-edit-app-type',
 	templateUrl: './add-n-edit-app-type.component.html',
 	styleUrls: ['./add-n-edit-app-type.component.css']
@@ -60,3 +61,4 @@ export class AddNEditAppTypeComponent implements OnInit {
 	}
 
 }
+
