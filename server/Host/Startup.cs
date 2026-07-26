@@ -1,9 +1,11 @@
 using Brainvest.Dscribe.Implementations.EfCore.All;
 using Brainvest.Dscribe.Runtime;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MySql.EntityFrameworkCore.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
@@ -42,10 +44,11 @@ namespace Brainvest.Dscribe.Host
 			});
 
 			services.AddAuthentication("Bearer")
-					.AddIdentityServerAuthentication(options =>
+					.AddJwtBearer(options =>
 					{
 						options.Authority = Configuration.GetSection("AuthAuthority").Get<string>();
 						options.RequireHttpsMetadata = false;
+						options.TokenValidationParameters.ValidateAudience = false;
 					});
 		}
 
@@ -56,7 +59,7 @@ namespace Brainvest.Dscribe.Host
 			{
 				case "MySql":
 					var connectionString = Configuration.GetConnectionString(connectionStringName);
-					options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+					options.UseMySQL(connectionString);
 					return;
 				case "SqlServer":
 					options.UseSqlServer(

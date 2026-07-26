@@ -3,6 +3,7 @@ using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.Metadata;
 using Brainvest.Dscribe.MetadataDbAccess;
+using MySql.EntityFrameworkCore.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -89,7 +90,7 @@ namespace Brainvest.Dscribe.Runtime
 				case DatabaseProviderEnum.MySql:
 					var mySqlDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext_MySql>();
 					implementationsContainer._lobToolsDbContextOptions = mySqlDbContextOptionsBuilder
-					.UseMySql(instanceInfo.LobConnectionString, ServerVersion.AutoDetect(instanceInfo.LobConnectionString)).Options;
+					.UseMySQL(instanceInfo.LobConnectionString).Options;
 					break;
 				case DatabaseProviderEnum.SqlServer:
 					var lobToolsDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext>();
@@ -115,7 +116,7 @@ namespace Brainvest.Dscribe.Runtime
 				{
 					case DatabaseProviderEnum.MySql:
 						implementationsContainer._dbContextOptions = dbContextOptionsBuilder
-						.UseMySql(instanceInfo.DataConnectionString, ServerVersion.AutoDetect(instanceInfo.DataConnectionString)).Options;
+						.UseMySQL(instanceInfo.DataConnectionString).Options;
 						break;
 					case DatabaseProviderEnum.SqlServer:
 						implementationsContainer._dbContextOptions = dbContextOptionsBuilder.UseSqlServer(instanceInfo.DataConnectionString).Options;

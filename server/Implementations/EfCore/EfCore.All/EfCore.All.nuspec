@@ -16,12 +16,12 @@
 		<!--<tags>Tag1 Tag2</tags>-->
 		<repository type="git" url="https://github.com/brainvest/dscribe" />
 		<dependencies>
-			<dependency id="Humanizer.Core" Version="2.11.10" />
-			<dependency id="Microsoft.CodeAnalysis.CSharp.Workspaces" version="3.10.0" />
-			<dependency id="Microsoft.EntityFrameworkCore" Version="5.0.7" />
-			<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-			<dependency id="System.CodeDom" version="5.0.0" />
-			<dependency id="System.Composition.AttributedModel" version="5.0.1" />
+			<dependency id="Humanizer.Core" Version="3.0.10" />
+			<dependency id="Microsoft.CodeAnalysis.CSharp.Workspaces" version="5.6.0" />
+			<dependency id="Microsoft.EntityFrameworkCore" Version="10.0.10" />
+			<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.10" />
+			<dependency id="System.CodeDom" version="10.0.10" />
+			<dependency id="System.Composition.AttributedModel" version="10.0.10" />
 		</dependencies>
 	</metadata>
 	<files>

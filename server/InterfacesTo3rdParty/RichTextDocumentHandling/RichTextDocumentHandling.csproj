@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling</AssemblyName>
     <RootNamespace>Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling</RootNamespace>
     <LangVersion>latest</LangVersion>
@@ -20,7 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NPOI" Version="2.5.3" />
+    <PackageReference Include="NPOI" Version="2.8.0" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" />
   </ItemGroup>
 
   <ItemGroup>

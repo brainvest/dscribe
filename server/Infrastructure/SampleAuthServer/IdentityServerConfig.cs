@@ -1,11 +1,11 @@
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
-using IdentityModel;
-using IdentityServer4;
-using IdentityServer4.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 {
@@ -25,7 +25,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			{
 					new IdentityResources.OpenId(),
 					new IdentityResources.Profile(),
-					new IdentityResource("roles", "Roles", new List<string>(){ JwtClaimTypes.Role })
+					new IdentityResource("roles", "Roles", new List<string>(){ ClaimTypes.Role })
 			};
 		}
 

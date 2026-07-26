@@ -1,6 +1,9 @@
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Services;
 using Brainvest.Dscribe.Security.Entities;
+using Duende.IdentityServer;
+using Duende.IdentityServer.AspNetIdentity;
+using MySql.EntityFrameworkCore.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -62,7 +65,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			{
 				case "MySql":
 					services.AddDbContext<SecurityDbContext, SecurityDbContext_MySql>(
-						options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+						options => options.UseMySQL(connectionString,
 						x => x.MigrationsAssembly(typeof(SecurityDbContext_MySql).Assembly.GetName().Name)
 							.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
 					break;
@@ -174,7 +177,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			{
 				ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 			};
-			forwardedHeaderOptions.KnownNetworks.Clear();
+			forwardedHeaderOptions.KnownIPNetworks.Clear();
 			forwardedHeaderOptions.KnownProxies.Clear();
 
 			app.UseForwardedHeaders(forwardedHeaderOptions);

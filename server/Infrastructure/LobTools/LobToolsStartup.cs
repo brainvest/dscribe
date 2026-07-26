@@ -2,6 +2,7 @@ using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling;
 using Brainvest.Dscribe.LobTools.Entities;
 using Brainvest.Dscribe.LobTools.RequestLog;
+using MySql.EntityFrameworkCore.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ namespace Brainvest.Dscribe.LobTools
 			{
 				case "MySql":
 					services.AddDbContext<LobToolsDbContext, LobToolsDbContext_MySql>(
-						options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+						options => options.UseMySQL(connectionString,
 						x => x.MigrationsAssembly(typeof(LobToolsDbContext_MySql).Assembly.GetName().Name)
 							.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
 					break;

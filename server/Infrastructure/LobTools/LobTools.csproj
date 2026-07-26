@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<AssemblyName>Brainvest.Dscribe.LobTools</AssemblyName>
 		<LangVersion>latest</LangVersion>
 		<RootNamespace>Brainvest.Dscribe.LobTools</RootNamespace>
@@ -20,11 +20,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.7" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.7" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7" />
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+		<PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.7" />
+		<PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" />
 	</ItemGroup>
 
 	<ItemGroup>
