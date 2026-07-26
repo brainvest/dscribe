@@ -20,6 +20,7 @@ export class AddNEditAppInstanceComponentData {
 }
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-host-add-n-edit-app-instance',
 	templateUrl: './add-n-edit-app-instance.component.html',
 	styleUrls: ['./add-n-edit-app-instance.component.css']
@@ -89,3 +90,4 @@ export class AddNEditAppInstanceComponent implements OnInit {
 		this.dialogRef.close();
 	}
 }
+

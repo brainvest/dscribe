@@ -3,6 +3,7 @@ import {ArithmeticFilterNode} from '../../models/filter-nodes/arithmetic-filter-
 import {FilterTreeManipulator} from '../../models/filter-tree-manipulator';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-arithmetic-filter-node',
 	templateUrl: './arithmetic-filter-node.component.html',
 	styleUrls: ['../filter-node/filter-node.component.scss']

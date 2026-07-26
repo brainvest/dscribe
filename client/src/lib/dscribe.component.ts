@@ -2,6 +2,7 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {DscribeService} from './dscribe.service';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-root',
 	template: `
 		<router-outlet></router-outlet>

@@ -5,6 +5,7 @@ import { HasIdName } from '../common/models/has-id-name';
 import { DataHandlerService } from '../common/services/data-handler.service';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-entity-list-editor',
 	templateUrl: './entity-list-editor.component.html'
 })

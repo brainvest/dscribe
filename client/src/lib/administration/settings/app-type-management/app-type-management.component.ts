@@ -9,6 +9,7 @@ import {SnackBarService} from '../../../common/notifications/snackbar.service';
 import {ConfirmationDialogComponent} from '../../../common/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-host-app-type-management',
 	templateUrl: './app-type-management.component.html',
 	styleUrls: ['./app-type-management.component.css']
@@ -100,3 +101,4 @@ export class AppTypeManagementComponent implements OnInit {
 		this.selectedAppType = appType;
 	}
 }
+

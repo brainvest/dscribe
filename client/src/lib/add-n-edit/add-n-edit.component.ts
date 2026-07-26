@@ -12,6 +12,7 @@ import {AddNEditStructureLogic} from './add-n-edit-structure-logic';
 import {Result} from '../common/models/Result';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-add-n-edit',
 	templateUrl: './add-n-edit.component.html',
 	styleUrls: ['./add-n-edit.component.css']
@@ -149,3 +150,4 @@ export class AddNEditComponent implements OnInit {
 	}
 
 }
+

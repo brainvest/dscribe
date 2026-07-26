@@ -7,6 +7,7 @@ import {Observable, of} from 'rxjs';
 import { DscribeService } from '../../dscribe.service';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-list-container',
 	templateUrl: './list-container.component.html',
 	styleUrls: ['./list-container.component.scss']
@@ -69,3 +70,4 @@ export class ListContainerComponent implements OnInit {
 	}
 
 }
+

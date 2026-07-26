@@ -5,6 +5,7 @@ import {map} from 'rxjs/operators';
 import {ConfirmationDialogData} from './confirmation-dialog-data';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-confirmation-dialog',
 	templateUrl: './confirmation-dialog.component.html',
 	styleUrls: ['./confirmation-dialog.component.css']

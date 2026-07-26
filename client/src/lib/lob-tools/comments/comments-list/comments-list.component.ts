@@ -6,6 +6,7 @@ import {LobInfoService} from '../../lob-info.service';
 import {SnackBarService} from '../../../common/notifications/snackbar.service';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-comments-list',
 	templateUrl: './comments-list.component.html',
 	styleUrls: ['./comments-list.component.css']
@@ -111,3 +112,4 @@ export class CommentsListComponent implements OnInit {
 		}
 	}
 }
+

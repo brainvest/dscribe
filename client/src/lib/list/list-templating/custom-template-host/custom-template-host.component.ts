@@ -3,6 +3,7 @@ import {DscribeTemplateComponent} from '../dscribe-template-component';
 import {EntityTypeTemplateMapper} from '../entity-type-template-mapper';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-custom-template-host',
 	templateUrl: './custom-template-host.component.html',
 	styleUrls: ['./custom-template-host.component.css']

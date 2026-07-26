@@ -22,10 +22,7 @@ import { SampleListComponent } from './sample-list/sample-list.component';
 		AppComponent,
 		AuthCallbackComponent,
 		DataTypeCardComponent,
-		SampleListComponent,
-	],
-	entryComponents: [
-		DataTypeCardComponent
+		SampleListComponent
 	],
 	bootstrap: [AppComponent]
 })

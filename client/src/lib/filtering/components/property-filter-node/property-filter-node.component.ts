@@ -4,6 +4,7 @@ import {FilterNodeType} from '../../models/filter-node-type';
 import {FilterTreeManipulator} from '../../models/filter-tree-manipulator';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-property-filter-node',
 	templateUrl: './property-filter-node.component.html',
 	styleUrls: ['../filter-node/filter-node.component.scss'],
@@ -20,3 +21,4 @@ export class PropertyFilterNodeComponent implements OnInit {
 	ngOnInit() {
 	}
 }
+

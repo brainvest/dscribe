@@ -3,6 +3,7 @@ import {MatCheckboxDefaultOptions, MAT_CHECKBOX_DEFAULT_OPTIONS} from '@angular/
 import {PropertyMetadata} from '../metadata/property-metadata';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-bool-editor',
 	templateUrl: './bool-editor.component.html',
 	providers: [

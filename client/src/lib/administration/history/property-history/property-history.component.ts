@@ -9,6 +9,7 @@ import {SnackBarService} from '../../../common/notifications/snackbar.service';
 import {HistoryService} from '../../../lob-tools/history-service';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-property-history',
 	templateUrl: './property-history.component.html',
 	styleUrls: ['./property-history.component.css']
@@ -131,3 +132,4 @@ export class PropertyHistoryComponent implements OnInit {
 	}
 
 }
+

@@ -21,6 +21,7 @@ export * from './lib/common/models/app-instance-model';
 export * from './lib/common/models/app-instance-information';
 export * from './lib/common/confirmation-dialog/confirmation-dialog.component';
 export * from './lib/common/confirmation-dialog/confirmation-dialog-data';
+export * from './lib/common/display-value-pipe';
 export * from './lib/common/dscribe-interceptor';
 export * from './lib/dscribe.component';
 export * from './lib/dscribe.module';

@@ -64,10 +64,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "dscribe-host:build:production"
+              "buildTarget": "dscribe-host:build:production"
             },
             "development": {
-              "browserTarget": "dscribe-host:build:development"
+              "buildTarget": "dscribe-host:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +75,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dscribe-host:build"
+            "buildTarget": "dscribe-host:build"
           }
         },
         "test": {
@@ -96,14 +96,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-devkit/build-angular:eslint",
           "options": {
-            "tsConfig": [
-              "demo/src/tsconfig.app.json",
-              "demo/src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "demo/src/**/*.ts",
+              "src/**/*.ts"
             ]
           }
         }
@@ -129,11 +126,10 @@
           "defaultConfiguration": "development"
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-devkit/build-angular:eslint",
           "options": {
-            "tsConfig": "demo/e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "demo/e2e/**/*.ts"
             ]
           }
         }
@@ -169,14 +165,10 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-devkit/build-angular:eslint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.lib.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts"
             ]
           }
         }

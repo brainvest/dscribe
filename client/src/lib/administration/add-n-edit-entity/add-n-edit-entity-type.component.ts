@@ -9,6 +9,7 @@ import { FacetDefinitionModel } from '../../metadata/facets/facet-definition-mod
 import { AddNEditEntityTypeComponentData } from './add-n-edit-entity-type-component-data';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-add-n-edit-entity-type',
 	templateUrl: './add-n-edit-entity-type.component.html',
 	styleUrls: ['./add-n-edit-entity-type.component.css']
@@ -142,3 +143,4 @@ export class AddNEditEntityTypeComponent implements OnInit {
 	}
 
 }
+

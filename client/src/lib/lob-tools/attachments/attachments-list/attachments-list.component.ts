@@ -8,6 +8,7 @@ import {saveAs} from 'file-saver';
 import {MiscHelper} from '../../../helpers/misc-helper';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-attachments-list',
 	templateUrl: './attachments-list.component.html',
 	styleUrls: ['./attachments-list.component.css']
@@ -39,3 +40,4 @@ export class AttachmentsListComponent implements OnInit {
 	}
 
 }
+

@@ -4,6 +4,7 @@ import {FilterNodeType} from '../../models/filter-node-type';
 import {FilterTreeManipulator} from '../../models/filter-tree-manipulator';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-filter-node',
 	templateUrl: './filter-node.component.html',
 	styleUrls: ['./filter-node.component.scss'],

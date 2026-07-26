@@ -2,6 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {DscribeCommand} from '../../models/dscribe-command';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-command-button',
 	templateUrl: './command-button.component.html',
 	styleUrls: ['./command-button.component.css']

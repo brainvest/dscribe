@@ -9,6 +9,7 @@ import {SnackBarService} from '../../../common/notifications/snackbar.service';
 import {ConfirmationDialogComponent} from '../../../common/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
+	standalone: false,
 	selector: 'dscribe-host-app-instance-management',
 	templateUrl: './app-instance-management.component.html',
 	styleUrls: ['./app-instance-management.component.css']
@@ -99,3 +100,4 @@ export class AppInstanceManagementComponent implements OnInit {
 		this.selectedAppInstance = appInstance;
 	}
 }
+
