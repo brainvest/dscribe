@@ -9,11 +9,8 @@ using Brainvest.Dscribe.Runtime.AccessControl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Migrations_Runtime_MySql;
-using Migrations_Runtime_PostgreSql;
 
 public class RuntimeStartup
 {
@@ -21,36 +18,7 @@ public class RuntimeStartup
 		, Action<DbContextOptionsBuilder, string> efProviderSetup, ImplementationResolverOptions implementationResolverOptions = null)
 	{
 
-		var provider = configuration.GetSection("EfProvider").Get<string>();
-		if (string.IsNullOrWhiteSpace(provider))
-		{
-			Console.WriteLine("Error: database provider is not set, the expected name is: EfProvider");
-		}
-		var connectionString = configuration.GetConnectionString("Metadata");
-		if (string.IsNullOrWhiteSpace(connectionString))
-		{
-			Console.WriteLine("Error: Metadata Connection string is not set, the expected name is: Metadata");
-		}
-
-		switch (provider)
-		{
-			case "MySql":
-				services.AddDbContext<MetadataDbContext, MetadataDbContext_MySql>(
-					options => options.UseMySQL(connectionString,
-					x => x.MigrationsAssembly(typeof(MetadataDbContext_MySql).Assembly.GetName().Name)
-						.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
-				break;
-			case "SqlServer":
-				services.AddDbContext<MetadataDbContext>(options => options.UseSqlServer(connectionString));
-				break;
-			case "PostgreSql":
-			case "PostgreSQL":
-				services.AddDbContext<MetadataDbContext, MetadataDbContext_PostgreSql>(options => options.UseNpgsql(connectionString,
-					x => x.MigrationsAssembly(typeof(MetadataDbContext_PostgreSql).Assembly.GetName().Name)));
-				break;
-			default:
-				throw new NotImplementedException($"The provider {provider} is not implemented yet.");
-		}
+		services.RegisterDbContext<MetadataDbContext>(configuration, "Metadata");
 
 		services.AddMultitenancy<IImplementationsContainer, ImplementationResolver>();
 		services.AddSingleton(implementationResolverOptions ?? new ImplementationResolverOptions { });

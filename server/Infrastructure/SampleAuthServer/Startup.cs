@@ -2,6 +2,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer;
 
 using System;
 using System.Collections.Generic;
+using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Services;
 using Brainvest.Dscribe.Security.Entities;
@@ -12,15 +13,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Migrations_Auth_MySql;
-using Migrations_Auth_PostgreSql;
 using Newtonsoft.Json;
 
 public class Startup(IConfiguration configuration)
@@ -34,35 +31,7 @@ public class Startup(IConfiguration configuration)
 				.AllowAnyOrigin()
 				.AllowAnyHeader()));
 
-		var provider = configuration.GetSection("EfProvider").Get<string>();
-		if (string.IsNullOrWhiteSpace(provider))
-		{
-			Console.WriteLine("Error: database provider is not set, the expected name is: EfProvider");
-		}
-		var connectionString = configuration.GetConnectionString("Auth");
-		if (string.IsNullOrWhiteSpace(connectionString))
-		{
-			Console.WriteLine("Error: Connection string is not set, the expected name is: Auth");
-		}
-
-		switch (provider)
-		{
-			case "MySql":
-				services.AddDbContext<SecurityDbContext, SecurityDbContext_MySql>(
-					options => options.UseMySQL(connectionString,
-					x => x.MigrationsAssembly(typeof(SecurityDbContext_MySql).Assembly.GetName().Name)
-						.MigrationsHistoryTable(HistoryRepository.DefaultTableName.ToLowerInvariant())));
-				break;
-			case "SqlServer":
-				services.AddDbContext<SecurityDbContext>(options => options.UseSqlServer(connectionString));
-				break;
-			case "PostgreSql":
-			case "PostgreSQL":
-				services.AddDbContext<SecurityDbContext, SecurityDbContext_PostgreSql>(options => options.UseNpgsql(connectionString));
-				break;
-			default:
-				throw new NotImplementedException($"The provider {provider} is not implemented yet.");
-		}
+		services.RegisterDbContext<SecurityDbContext>(configuration, "Auth");
 
 		services.Configure<ConfigModel>(configuration.GetSection("Config"));
 		var config = configuration.GetSection("Config").Get<ConfigModel>();
