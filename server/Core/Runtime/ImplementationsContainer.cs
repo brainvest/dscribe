@@ -133,7 +133,7 @@ namespace Brainvest.Dscribe.Runtime
 
 		private static string GetConnectionString(string template, string databaseName)
 		{
-			return template.Replace("{database}", databaseName, ignoreCase:true, CultureInfo.InvariantCulture);
+			return template.Replace("{database}", databaseName, ignoreCase: true, CultureInfo.InvariantCulture);
 		}
 
 		public IMetadataCache Metadata { get; private set; }
@@ -161,7 +161,8 @@ namespace Brainvest.Dscribe.Runtime
 					return new LobToolsDbContext_PostgreSql(_lobToolsDbContextOptions as DbContextOptions<LobToolsDbContext_PostgreSql>);
 				default:
 					throw new NotImplementedException($"The provider {InstanceInfo.Provider} is not implemented");
-			};
+			}
+			;
 		}
 
 		public bool MigrationsExecuted { get; set; }

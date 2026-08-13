@@ -22,7 +22,7 @@ namespace Brainvest.Dscribe.Runtime.Validations
 		{
 			if (await dbContext.EntityTypes.AnyAsync(x => x.Name == model.Name && x.AppTypeId == implementationsContainer.InstanceInfo.AppTypeId))
 			{
-				return $"Another entity with name: \"{ model.Name }\" is already defiend.";
+				return $"Another entity with name: \"{model.Name}\" is already defiend.";
 			}
 			return await Task.FromResult(string.Empty);
 		}

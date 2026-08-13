@@ -32,7 +32,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<IEnumerable>> GetByFilter([FromBody]EntityListRequest request)
+		public async Task<ActionResult<IEnumerable>> GetByFilter([FromBody] EntityListRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
 			{
@@ -42,7 +42,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<int?>> CountByFilter([FromBody]EntityListRequest request)
+		public async Task<ActionResult<int?>> CountByFilter([FromBody] EntityListRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
 			{
@@ -52,7 +52,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<int?>> GetGroupCount([FromBody]GrouppedListRequest request)
+		public async Task<ActionResult<int?>> GetGroupCount([FromBody] GrouppedListRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
 			{
@@ -62,7 +62,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<IEnumerable>> GetGroupped([FromBody]GrouppedListRequest request)
+		public async Task<ActionResult<IEnumerable>> GetGroupped([FromBody] GrouppedListRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
 			{
@@ -72,7 +72,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<IEnumerable<ExpressionValueResponse>>> GetExpressionValue([FromBody]IEnumerable<ExpressionValueRequest> request)
+		public async Task<ActionResult<IEnumerable<ExpressionValueResponse>>> GetExpressionValue([FromBody] IEnumerable<ExpressionValueRequest> request)
 		{
 			var tasks = request
 				.Where(x => _permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, x.EntityTypeName, ActionTypeEnum.Select)))
@@ -86,7 +86,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<IEnumerable<IdAndNameResponse>>> GetIdAndName([FromBody]IEnumerable<IdAndNameRequest> request)
+		public async Task<ActionResult<IEnumerable<IdAndNameResponse>>> GetIdAndName([FromBody] IEnumerable<IdAndNameRequest> request)
 		{
 			var tasks = request
 				.Where(x => _permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, x.EntityTypeName, ActionTypeEnum.Select)))
@@ -104,7 +104,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<IdAndNameResponse>> GetAutocompleteItems([FromBody]AutocompleteItemsRequest request)
+		public async Task<ActionResult<IdAndNameResponse>> GetAutocompleteItems([FromBody] AutocompleteItemsRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
 			{
@@ -124,7 +124,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<IEnumerable<NameResponseItem>>> GetAllIdAndName([FromBody]AllIdAndNameRequest request)
+		public async Task<ActionResult<IEnumerable<NameResponseItem>>> GetAllIdAndName([FromBody] AllIdAndNameRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
 			{
@@ -134,7 +134,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<object>> Add([FromBody]ManageEntityRequest request)
+		public async Task<ActionResult<object>> Add([FromBody] ManageEntityRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Insert)))
 			{
@@ -144,7 +144,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<object>> Edit([FromBody]ManageEntityRequest request)
+		public async Task<ActionResult<object>> Edit([FromBody] ManageEntityRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Update)))
 			{
@@ -154,7 +154,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<object>> Delete([FromBody]ManageEntityRequest request)
+		public async Task<ActionResult<object>> Delete([FromBody] ManageEntityRequest request)
 		{
 			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Delete)))
 			{

@@ -17,7 +17,7 @@ namespace Brainvest.Dscribe.Metadata
 
 		public MetadataModel(MetadataBundle bundle)
 		{
-			AdditionalBehaviors = bundle.AdditionalBehaviors.ToDictionary(x => x.Name, 
+			AdditionalBehaviors = bundle.AdditionalBehaviors.ToDictionary(x => x.Name,
 				x => new AdditionalBehaviorMetadata
 				{
 					Definition = x.Definition,
@@ -132,8 +132,8 @@ namespace Brainvest.Dscribe.Metadata
 			public string Title { get; set; }
 			public bool IsNullable { get; set; }
 			public bool IsExpression { get; set; }
-            public IEnumerable<PropertyBehaviorMetadata> Behaviors { get; set; }
-        }
+			public IEnumerable<PropertyBehaviorMetadata> Behaviors { get; set; }
+		}
 
 		public class PropertyBehaviorMetadata
 		{

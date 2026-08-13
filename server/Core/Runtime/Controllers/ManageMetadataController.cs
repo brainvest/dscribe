@@ -376,9 +376,9 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			return Ok();
 		}
 
-        private async Task SyncBehaviors(Property property, AddNEditPropertyModel model)
-        {
-            var existingBehaviors = await _dbContext.PropertyBehaviors.Where(x => x.PropertyId == property.Id).ToListAsync();
+		private async Task SyncBehaviors(Property property, AddNEditPropertyModel model)
+		{
+			var existingBehaviors = await _dbContext.PropertyBehaviors.Where(x => x.PropertyId == property.Id).ToListAsync();
 			if (model.PropertyBehaviors != null)
 			{
 				foreach (var behavior in model.PropertyBehaviors)
@@ -406,9 +406,9 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 					_dbContext.PropertyBehaviors.Remove(existing);
 				}
 			}
-        }
+		}
 
-        private async Task ProcessPropertyLocalFacets(PropertyModel model, bool isEdit, Property property)
+		private async Task ProcessPropertyLocalFacets(PropertyModel model, bool isEdit, Property property)
 		{
 			List<PropertyFacetValue> existing;
 			var definitions = await _dbContext.PropertyFacetDefinitions.ToListAsync();

@@ -174,7 +174,7 @@ namespace Brainvest.Dscribe.Helpers
 			return visitor.Visit(expression) as LambdaExpression;
 		}
 
-		public class IdsContainer<TKey> 
+		public class IdsContainer<TKey>
 		{
 			public TKey[] Ids;
 		}

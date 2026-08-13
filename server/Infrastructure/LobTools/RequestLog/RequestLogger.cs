@@ -24,9 +24,9 @@ namespace Brainvest.Dscribe.LobTools.RequestLog
 		private readonly IGlobalConfiguration _globalConfiguration;
 
 		public RequestLogger(
-			IImplementationsContainer implementationsContainer, 
-			IHttpContextAccessor httpContextAccessor, 
-			ILogger<RequestLogger> logger, 
+			IImplementationsContainer implementationsContainer,
+			IHttpContextAccessor httpContextAccessor,
+			ILogger<RequestLogger> logger,
 			IGlobalConfiguration globalConfiguration)
 		{
 			_implementationsContainer = implementationsContainer;

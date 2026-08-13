@@ -54,7 +54,7 @@ namespace Brainvest.Dscribe.Runtime
 			}
 
 			services.AddMultitenancy<IImplementationsContainer, ImplementationResolver>();
-			services.AddSingleton(implementationResolverOptions ?? new ImplementationResolverOptions{});
+			services.AddSingleton(implementationResolverOptions ?? new ImplementationResolverOptions { });
 			services.AddScoped<EntityHelper, EntityHelper>();
 			services.AddSingleton<IPermissionService, PermissionCache>();
 			services.AddSingleton<IUsersService, UsersCache>();

@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
-    public class ResetPasswordConfirmationModel : PageModel
-    {
-        public void OnGet()
-        {
+	[AllowAnonymous]
+	public class ResetPasswordConfirmationModel : PageModel
+	{
+		public void OnGet()
+		{
 
-        }
-    }
+		}
+	}
 }

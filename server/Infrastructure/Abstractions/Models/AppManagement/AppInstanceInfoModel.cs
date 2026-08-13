@@ -31,10 +31,10 @@ namespace Brainvest.Dscribe.Abstractions.Models.AppManagement
 		public string MainDatabaseName { get; set; }
 		public string LobDatabaseName { get; set; }
 		public int? MetadataReleaseId { get; set; }
-        public bool MigrateDatabase { get; set; }
-        public int? SortOrder { get; set; }
+		public bool MigrateDatabase { get; set; }
+		public int? SortOrder { get; set; }
 		public string LoadBusinessFromAssemblyName { get; set; }
-    }
+	}
 
 	public class DataConnectionStringModel
 	{

@@ -37,7 +37,7 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 
 		}
 
-		public async Task<List<DataHistoryResponseModel>> GetDataHistory(string entityName,string data)
+		public async Task<List<DataHistoryResponseModel>> GetDataHistory(string entityName, string data)
 		{
 			var entityType = await _metadataDbContext.EntityTypes
 				.Where(x => x.Name == entityName)
@@ -74,7 +74,7 @@ namespace Brainvest.Dscribe.LobTools.DataLog
 
 			var dataChanges = (businessRepository as DbContext).ChangeTracker
 				.Entries()
-				.Where(x => x.State == EntityState.Modified 
+				.Where(x => x.State == EntityState.Modified
 							|| x.State == EntityState.Added
 							|| x.State == EntityState.Deleted)
 				.Select(x => new

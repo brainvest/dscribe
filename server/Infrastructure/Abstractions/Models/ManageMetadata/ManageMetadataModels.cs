@@ -46,8 +46,8 @@ namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 		public int OwnerEntityTypeId { get; set; }
 
 		public IEnumerable<LocalFacetModel> LocalFacets { get; set; }
-        public IEnumerable<PropertyBehaviorModel> PropertyBehaviors { get; set; }
-    }
+		public IEnumerable<PropertyBehaviorModel> PropertyBehaviors { get; set; }
+	}
 
 	public class PropertyBehaviorModel
 	{

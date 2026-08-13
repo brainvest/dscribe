@@ -6,7 +6,7 @@ namespace Brainvest.Dscribe.Abstractions
 {
 	public interface IDataLogImplementation
 	{
-		Task SaveDataChanges(object businessRepository,string entityTypeName);
+		Task SaveDataChanges(object businessRepository, string entityTypeName);
 		Task<List<DataHistoryResponseModel>> GetDataHistory(string entityName, string data);
 	}
 }

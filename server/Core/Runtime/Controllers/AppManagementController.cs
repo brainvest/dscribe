@@ -75,8 +75,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				LobConnectionStringTemplateName = x.LobConnectionStringTemplateName,
 				MainDatabaseName = x.MainDatabaseName,
 				LobDatabaseName = x.LobDatabaseName,
-                MigrateDatabase = x.MigrateDatabase,
-                MetadataReleaseId = x.MetadataReleaseId,
+				MigrateDatabase = x.MigrateDatabase,
+				MetadataReleaseId = x.MetadataReleaseId,
 				SortOrder = x.SortOrder,
 			}).ToListAsync();
 		}
@@ -104,8 +104,8 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 				MainDatabaseName = model.MainDatabaseName,
 				LobDatabaseName = model.LobDatabaseName,
 				MetadataReleaseId = model.MetadataReleaseId,
-                MigrateDatabase = model.MigrateDatabase,
-                UseUnreleasedMetadata = model.UseUnreleasedMetadata,
+				MigrateDatabase = model.MigrateDatabase,
+				UseUnreleasedMetadata = model.UseUnreleasedMetadata,
 				SortOrder = model.SortOrder,
 			};
 			_dbContext.AppInstances.Add(appInstance);
@@ -138,7 +138,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 			appInstance.MainDatabaseName = model.MainDatabaseName;
 			appInstance.LobDatabaseName = model.LobDatabaseName;
 			appInstance.MetadataReleaseId = model.MetadataReleaseId;
-            appInstance.UseUnreleasedMetadata = model.UseUnreleasedMetadata;
+			appInstance.UseUnreleasedMetadata = model.UseUnreleasedMetadata;
 			appInstance.SortOrder = model.SortOrder;
 			await _dbContext.SaveChangesAsync();
 			((RequestLogModel)HttpContext.Items["RequestLog"]).AppInstanceId = appInstance.Id;

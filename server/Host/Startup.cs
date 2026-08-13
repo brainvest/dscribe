@@ -35,7 +35,8 @@ namespace Brainvest.Dscribe.Host
 			services.RegisterEfCore();
 
 			services.AddControllers()
-			.AddNewtonsoftJson(options => {
+			.AddNewtonsoftJson(options =>
+			{
 				options.UseMemberCasing();
 			})
 			.AddJsonOptions(jsonOptions =>

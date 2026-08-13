@@ -146,7 +146,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 
 				var duplicateProperties = properties.GroupBy(x => x.Name).Where(g => g.Count() > 1).ToList();
 				if (duplicateProperties.Count() > 0)
-					errors.Errors.AddRange(duplicateProperties.Select(g => $"Properties { g.Key } of entity {entityType.Name} has repeated more than once"));
+					errors.Errors.AddRange(duplicateProperties.Select(g => $"Properties {g.Key} of entity {entityType.Name} has repeated more than once"));
 
 
 				var noPrimaryKey = !properties.Any(x => x.GeneralUsageCategoryId == 2);
@@ -158,7 +158,7 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 													.GroupBy(g => g.GeneralUsageCategoryId)
 													.Where(x => x.Count() > 1).ToList();
 					if (primaryKeyDuplicate.Count() > 0)
-						errors.Errors.Add($"Primary key has repeated more than once in entity { entityType.Name }");
+						errors.Errors.Add($"Primary key has repeated more than once in entity {entityType.Name}");
 					else
 					{
 						var primaryKeyNullable = properties.Where(x => x.GeneralUsageCategoryId == 2 && x.IsNullable).ToList();

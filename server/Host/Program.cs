@@ -14,8 +14,8 @@ namespace Brainvest.Dscribe.Host
 		public static IHostBuilder CreateHostBuilder(string[] args) =>
 				Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
 				.ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+				{
+					webBuilder.UseStartup<Startup>();
+				});
 	}
 }

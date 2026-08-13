@@ -32,13 +32,13 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 				var commentCountTask = dbContext1.Comments
 					.Where(x => x.EntityTypeId == entityTypeId && request.Identifiers.Contains(x.Identifier))
 					.GroupBy(x => x.Identifier)
-					.Select(x => new {x.Key, Count = x.Count()})
+					.Select(x => new { x.Key, Count = x.Count() })
 					.ToDictionaryAsync(g => g.Key, g => g.Count);
 
 				var attachmentCountTask = dbContext2.Attachments
 					.Where(x => x.EntityTypeId == entityTypeId && request.Identifiers.Contains(x.Identifier))
 					.GroupBy(x => x.Identifier)
-					.Select(x => new {x.Key, Count = x.Count()})
+					.Select(x => new { x.Key, Count = x.Count() })
 					.ToDictionaryAsync(g => g.Key, g => g.Count);
 
 				var commentCounts = await commentCountTask;

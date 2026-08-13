@@ -145,7 +145,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-        		app.UseMigrationsEndPoint();			
+				app.UseMigrationsEndPoint();
 			}
 			else
 			{
@@ -177,7 +177,7 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 
 			app.UseIdentityServer();
 
-            app.UseAuthentication();
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>

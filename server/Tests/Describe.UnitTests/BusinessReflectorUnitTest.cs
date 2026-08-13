@@ -16,7 +16,7 @@ namespace Describe.UnitTests
 		[InlineData("int", "Int32")]
 		[InlineData("int?", "Nullable`1")]
 		[InlineData("long", "Int64")]
-		public void GetType_ShouldReturnExpectedValue(string givenValue,string expectedValue)
+		public void GetType_ShouldReturnExpectedValue(string givenValue, string expectedValue)
 		{
 			// arrange
 			var fakeBusinessReflector = new BusinessReflector(_fakeMetadataCache.Object);

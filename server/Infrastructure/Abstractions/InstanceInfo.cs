@@ -10,7 +10,7 @@ namespace Brainvest.Dscribe.Abstractions
 		public string LobConnectionString { get; set; }
 		public bool MigrateDatabase { get; set; }
 		public string GeneratedCodeNamespace { get; set; }
-        public string DbContextName { get; set; }
+		public string DbContextName { get; set; }
 		public InstanceSettings InstanceSettings { get; set; }
 		public string LoadBusinessFromAssemblyName { get; set; }
 		public int? SortOrder { get; set; }
@@ -32,5 +32,5 @@ namespace Brainvest.Dscribe.Abstractions
 			}
 			return GeneratedCodeNamespace;
 		}
-    }
+	}
 }
