@@ -9,8 +9,10 @@ public static class DatabaseHelper
 {
     public static void RegisterDbContext<TContext>(this IServiceCollection services, IConfiguration configuration, string connectionStringName)
     where TContext : DbContext
-    {
-        var provider = configuration.GetSection("EfProvider").Get<string>();
+	{
+		Console.WriteLine("Temp message: ensuring this is called");
+
+		var provider = configuration.GetSection("EfProvider").Get<string>();
 		if (string.IsNullOrWhiteSpace(provider))
 		{
 			Console.WriteLine("Error: database provider is not set, the expected name is: EfProvider");
@@ -21,12 +23,18 @@ public static class DatabaseHelper
 			Console.WriteLine($"Error: Connection string is not set, the expected name is: ConnectionStrings:{connectionStringName}");
 		}
 
-        services.AddDbContext<TContext>((Action<DbContextOptionsBuilder>)(provider switch
+		services.AddDbContext<TContext>(GetOptions(provider, connectionString));
+	}
+
+	private static Action<DbContextOptionsBuilder> GetOptions(string provider, string connectionString)
+	{
+		return provider switch
 		{
-			"MySql" => options => options.UseMySQL(connectionString),
-			"SqlServer" => options => options.UseSqlServer(connectionString),
-			"PostgreSql" or "PostgreSQL" => options => options.UseNpgsql(connectionString),
+			"MySql" => options => options.UseMySQL(connectionString, b => b.MigrationsAssembly("Migrations_Auth_MySql")),
+			"SqlServer" => options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Migrations_Auth_SqlServer")),
+			"PostgreSql" or "PostgreSQL" => options => options.UseNpgsql(connectionString, b => b.MigrationsAssembly("Migrations_Auth_PostgreSql")),
 			_ => throw new NotImplementedException($"The provider {provider} is not implemented yet."),
-		}));
-    }
+		};
+	}
+
 }

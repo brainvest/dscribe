@@ -4,7 +4,7 @@ using Brainvest.Dscribe.Security.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-public class SecurityDbContext_MySql(DbContextOptions<SecurityDbContext_MySql> options) : SecurityDbContext(options)
+public class SecurityDbContext_MySql(DbContextOptions<SecurityDbContext> options) : SecurityDbContext(options)
 {
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
