@@ -1,27 +1,26 @@
+namespace Brainvest.Dscribe.Abstractions.Metadata;
+
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Brainvest.Dscribe.Abstractions.Metadata
+public interface IPropertyMetadata
 {
-	public interface IPropertyMetadata
-	{
-		string Name { get; }
-		bool IsExpression { get; }
-		string EntityTypeName { get; }
-		DataTypes DataType { get; }
-		bool IsNullable { get; }
-		string Title { get; }
+	string Name { get; }
+	bool IsExpression { get; }
+	string EntityTypeName { get; }
+	DataTypes DataType { get; }
+	bool IsNullable { get; }
+	string Title { get; }
 
-		IPropertyMetadata InverseProperty { get; }
-		IPropertyMetadata ForeignKey { get; }
-		IEnumerable<IPropertyBehaviorMetadata> Behaviors { get; }
+	IPropertyMetadata InverseProperty { get; }
+	IPropertyMetadata ForeignKey { get; }
+	IEnumerable<IPropertyBehaviorMetadata> Behaviors { get; }
 
-		LambdaExpression GetDefiningExpression(IBusinessReflector reflector);
+	LambdaExpression GetDefiningExpression(IBusinessReflector reflector);
 
-		IDataTypeInfo GetDataType();
-		bool IsReadOnlyInEdit();
-		bool IsRequired();
-		bool HideInInsert();
-		bool HideInEdit();
-	}
+	IDataTypeInfo GetDataType();
+	bool IsReadOnlyInEdit();
+	bool IsRequired();
+	bool HideInInsert();
+	bool HideInEdit();
 }

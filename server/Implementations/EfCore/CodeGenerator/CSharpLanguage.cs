@@ -1,3 +1,5 @@
+namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,54 +8,51 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Host;
 
-namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
+public class CSharpLanguage : ILanguageService
 {
-	public class CSharpLanguage : ILanguageService
+	private static readonly LanguageVersion MaxLanguageVersion = Enum
+			.GetValues(typeof(LanguageVersion))
+			.Cast<LanguageVersion>()
+			.Max();
+
+	public SyntaxTree ParseText(string sourceCode, SourceCodeKind kind)
 	{
-		private static readonly LanguageVersion MaxLanguageVersion = Enum
-				.GetValues(typeof(LanguageVersion))
-				.Cast<LanguageVersion>()
-				.Max();
+		var options = new CSharpParseOptions(kind: kind, languageVersion: MaxLanguageVersion);
 
-		public SyntaxTree ParseText(string sourceCode, SourceCodeKind kind)
+		// Return a syntax tree of our source code
+		return CSharpSyntaxTree.ParseText(sourceCode, options);
+	}
+
+	public Compilation CreateLibraryCompilation(string assemblyName, bool enableOptimisations, IEnumerable<MetadataReference> references)
+	{
+		var options = new CSharpCompilationOptions(
+			OutputKind.DynamicallyLinkedLibrary,
+			optimizationLevel: enableOptimisations ? OptimizationLevel.Release : OptimizationLevel.Debug,
+			allowUnsafe: false);
+
+		return CSharpCompilation.Create(assemblyName, options: options, references: references);
+	}
+
+	public static bool CompileToAssembly(string code, string assemblyName, string path, IEnumerable<MetadataReference> references
+		, out IEnumerable<Diagnostic> diagnostics)
+	{
+		var sourceLanguage = new CSharpLanguage();
+		SyntaxTree syntaxTree = sourceLanguage.ParseText(code, SourceCodeKind.Regular);
+		Compilation compilation = sourceLanguage
+			.CreateLibraryCompilation(assemblyName: assemblyName, enableOptimisations: false, references)
+			.AddSyntaxTrees(syntaxTree);
+
+		using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
 		{
-			var options = new CSharpParseOptions(kind: kind, languageVersion: MaxLanguageVersion);
-
-			// Return a syntax tree of our source code
-			return CSharpSyntaxTree.ParseText(sourceCode, options);
-		}
-
-		public Compilation CreateLibraryCompilation(string assemblyName, bool enableOptimisations, IEnumerable<MetadataReference> references)
-		{
-			var options = new CSharpCompilationOptions(
-				OutputKind.DynamicallyLinkedLibrary,
-				optimizationLevel: enableOptimisations ? OptimizationLevel.Release : OptimizationLevel.Debug,
-				allowUnsafe: false);
-
-			return CSharpCompilation.Create(assemblyName, options: options, references: references);
-		}
-
-		public static bool CompileToAssembly(string code, string assemblyName, string path, IEnumerable<MetadataReference> references
-			, out IEnumerable<Diagnostic> diagnostics)
-		{
-			var sourceLanguage = new CSharpLanguage();
-			SyntaxTree syntaxTree = sourceLanguage.ParseText(code, SourceCodeKind.Regular);
-			Compilation compilation = sourceLanguage
-				.CreateLibraryCompilation(assemblyName: assemblyName, enableOptimisations: false, references)
-				.AddSyntaxTrees(syntaxTree);
-
-			using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
+			var emitResult = compilation.Emit(stream);
+			if (!emitResult.Success)
 			{
-				var emitResult = compilation.Emit(stream);
-				if (!emitResult.Success)
-				{
-					diagnostics = emitResult.Diagnostics;
-					return false;
-				}
-				stream.Flush();
+				diagnostics = emitResult.Diagnostics;
+				return false;
 			}
-			diagnostics = null;
-			return true;
+			stream.Flush();
 		}
+		diagnostics = null;
+		return true;
 	}
 }

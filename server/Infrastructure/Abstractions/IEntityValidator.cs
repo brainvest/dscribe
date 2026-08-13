@@ -1,9 +1,8 @@
+namespace Brainvest.Dscribe.Abstractions;
+
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Brainvest.Dscribe.Abstractions
+public interface IEntityValidator
 {
-	public interface IEntityValidator
-	{
-		ModelStateDictionary Validate<TEntity>(TEntity entity, ActionTypeEnum actionType, IActionContextInfo actionContext);
-	}
+	ModelStateDictionary Validate<TEntity>(TEntity entity, ActionTypeEnum actionType, IActionContextInfo actionContext);
 }

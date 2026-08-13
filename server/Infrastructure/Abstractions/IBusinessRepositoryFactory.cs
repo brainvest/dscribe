@@ -1,10 +1,9 @@
+namespace Brainvest.Dscribe.Abstractions;
+
 using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace Brainvest.Dscribe.Abstractions
+public interface IBusinessRepositoryFactory
 {
-	public interface IBusinessRepositoryFactory
-	{
-		IDisposable GetDbContext(DbContextOptions options);
-	}
+	IDisposable GetDbContext(DbContextOptions options);
 }

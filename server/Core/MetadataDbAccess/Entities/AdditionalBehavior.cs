@@ -1,9 +1,9 @@
-namespace Brainvest.Dscribe.MetadataDbAccess.Entities
+namespace Brainvest.Dscribe.MetadataDbAccess.Entities;
+
+
+public class AdditionalBehavior
 {
-	public class AdditionalBehavior
-	{
-		public int Id { get; set; }
-		public string Name { get; set; }
-		public string Definition { get; set; }
-	}
+	public int Id { get; set; }
+	public string Name { get; set; }
+	public string Definition { get; set; }
 }

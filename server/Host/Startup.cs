@@ -1,86 +1,81 @@
+namespace Brainvest.Dscribe.Host;
+
 using System;
 using Brainvest.Dscribe.Implementations.EfCore.All;
 using Brainvest.Dscribe.Runtime;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MySql.EntityFrameworkCore.Extensions;
-using Newtonsoft.Json.Serialization;
 
-namespace Brainvest.Dscribe.Host
+public class Startup(IConfiguration configuration)
 {
-	public class Startup(IConfiguration configuration)
+	public IConfiguration Configuration { get; } = configuration;
+
+	public void ConfigureServices(IServiceCollection services)
 	{
-		public IConfiguration Configuration { get; } = configuration;
+		services.AddCors(options => options.AddPolicy("AllowAll",
+			builder =>
+			builder
+				.AllowAnyMethod()
+				.AllowAnyOrigin()
+				.AllowAnyHeader()));
 
-		public void ConfigureServices(IServiceCollection services)
+		RuntimeStartup.ConfigureServices(services, Configuration, SetupProvider);
+		services.RegisterEfCore();
+
+		services.AddControllers()
+		.AddNewtonsoftJson(options =>
 		{
-			services.AddCors(options => options.AddPolicy("AllowAll",
-				builder =>
-				builder
-					.AllowAnyMethod()
-					.AllowAnyOrigin()
-					.AllowAnyHeader()));
-
-			RuntimeStartup.ConfigureServices(services, Configuration, SetupProvider);
-			services.RegisterEfCore();
-
-			services.AddControllers()
-			.AddNewtonsoftJson(options =>
-			{
-				options.UseMemberCasing();
-			})
-			.AddJsonOptions(jsonOptions =>
-			{
-				jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
-			});
-
-			services.AddAuthentication("Bearer")
-					.AddJwtBearer(options =>
-					{
-						options.Authority = Configuration.GetSection("AuthAuthority").Get<string>();
-						options.RequireHttpsMetadata = false;
-						options.TokenValidationParameters.ValidateAudience = false;
-					});
-		}
-
-		private void SetupProvider(DbContextOptionsBuilder options, string connectionStringName)
+			options.UseMemberCasing();
+		})
+		.AddJsonOptions(jsonOptions =>
 		{
-			var provider = Configuration.GetSection("EfProvider").Get<string>();
-			switch (provider)  // TODO: use a case-insensitive comparison
-			{
-				case "MySql":
-					var connectionString = Configuration.GetConnectionString(connectionStringName);
-					options.UseMySQL(connectionString);
-					return;
-				case "SqlServer":
-					options.UseSqlServer(
-							Configuration.GetConnectionString(connectionStringName));
-					return;
-				case "PostgreSql":
-				case "PostgreSQL":
-					options.UseNpgsql(
-							Configuration.GetConnectionString(connectionStringName));
-					return;
-				default:
-					throw new NotImplementedException($"The provider {provider} is not implemented yet.");
-			}
-		}
+			jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+		});
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		services.AddAuthentication("Bearer")
+				.AddJwtBearer(options =>
+				{
+					options.Authority = Configuration.GetSection("AuthAuthority").Get<string>();
+					options.RequireHttpsMetadata = false;
+					options.TokenValidationParameters.ValidateAudience = false;
+				});
+	}
+
+	private void SetupProvider(DbContextOptionsBuilder options, string connectionStringName)
+	{
+		var provider = Configuration.GetSection("EfProvider").Get<string>();
+		switch (provider)  // TODO: use a case-insensitive comparison
 		{
-			app.UseCors("AllowAll");
-			RuntimeStartup.Configure(app, env);
-			app.UseRouting();
-			app.UseAuthentication();
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllers();
-			});
+			case "MySql":
+				var connectionString = Configuration.GetConnectionString(connectionStringName);
+				options.UseMySQL(connectionString);
+				return;
+			case "SqlServer":
+				options.UseSqlServer(
+						Configuration.GetConnectionString(connectionStringName));
+				return;
+			case "PostgreSql":
+			case "PostgreSQL":
+				options.UseNpgsql(
+						Configuration.GetConnectionString(connectionStringName));
+				return;
+			default:
+				throw new NotImplementedException($"The provider {provider} is not implemented yet.");
 		}
+	}
+
+	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+	{
+		app.UseCors("AllowAll");
+		RuntimeStartup.Configure(app, env);
+		app.UseRouting();
+		app.UseAuthentication();
+		app.UseEndpoints(endpoints =>
+		{
+			endpoints.MapControllers();
+		});
 	}
 }

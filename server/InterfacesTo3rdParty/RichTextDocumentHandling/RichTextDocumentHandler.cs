@@ -1,3 +1,5 @@
+namespace Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,67 +9,64 @@ using System.Threading.Tasks;
 using Brainvest.Dscribe.Abstractions;
 using NPOI.XWPF.UserModel;
 
-namespace Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling
+public class RichTextDocumentHandler : IRichTextDocumentHandler
 {
-	public class RichTextDocumentHandler : IRichTextDocumentHandler
+	Regex regex = new Regex(@"\{\$\.(?<pattern>[a-z,A-Z,.,_,0-9]+)\}", RegexOptions.Compiled);
+
+	public async Task<byte[]> Process(byte[] input, Func<IEnumerable<string>, Task<Dictionary<string, string>>> valueExtractor)
 	{
-		Regex regex = new Regex(@"\{\$\.(?<pattern>[a-z,A-Z,.,_,0-9]+)\}", RegexOptions.Compiled);
+		var expressions = new HashSet<string>();
+		var document = new XWPFDocument(new MemoryStream(input));
 
-		public async Task<byte[]> Process(byte[] input, Func<IEnumerable<string>, Task<Dictionary<string, string>>> valueExtractor)
+		foreach (var run in GetRuns(document))
 		{
-			var expressions = new HashSet<string>();
-			var document = new XWPFDocument(new MemoryStream(input));
-
-			foreach (var run in GetRuns(document))
+			if (run.Text.Contains("{"))
 			{
-				if (run.Text.Contains("{"))
-				{
 
-				}
-				regex.Replace(run.Text, match =>
-				{
-					var pattern = match.Groups["pattern"].Value;
-					if (!expressions.Contains(pattern))
-					{
-						expressions.Add(pattern);
-					}
-					return pattern;
-				});
 			}
-
-			var values = await valueExtractor(expressions);
-
-			foreach (var run in GetRuns(document))
+			regex.Replace(run.Text, match =>
 			{
-				var oldText = run.Text;
-				var newText = regex.Replace(oldText, match =>
+				var pattern = match.Groups["pattern"].Value;
+				if (!expressions.Contains(pattern))
 				{
-					var pattern = match.Groups["pattern"].Value;
-					return values[pattern];
-				});
-				if (newText != oldText)
-				{
-					run.SetText(newText);
+					expressions.Add(pattern);
 				}
-			}
+				return pattern;
+			});
+		}
 
-			using (var output = new MemoryStream())
+		var values = await valueExtractor(expressions);
+
+		foreach (var run in GetRuns(document))
+		{
+			var oldText = run.Text;
+			var newText = regex.Replace(oldText, match =>
 			{
-				document.Write(output);
-				var bytes = new byte[output.Position];
-				output.Seek(0, SeekOrigin.Begin);
-				output.Read(bytes, 0, bytes.Length);
-				return bytes;
+				var pattern = match.Groups["pattern"].Value;
+				return values[pattern];
+			});
+			if (newText != oldText)
+			{
+				run.SetText(newText);
 			}
 		}
 
-		private IEnumerable<XWPFRun> GetRuns(XWPFDocument document)
+		using (var output = new MemoryStream())
 		{
-			return document.Paragraphs.Where(x => x.Runs != null).SelectMany(x => x.Runs)
-				.Union(document.Tables.Where(t => t.Rows != null).SelectMany(x => x.Rows)
-					.Where(r => r.GetTableCells() != null).SelectMany(r => r.GetTableCells())
-					.Where(c => c.Paragraphs != null).SelectMany(c => c.Paragraphs)
-					.Where(p => p.Runs != null).SelectMany(p => p.Runs));
+			document.Write(output);
+			var bytes = new byte[output.Position];
+			output.Seek(0, SeekOrigin.Begin);
+			output.Read(bytes, 0, bytes.Length);
+			return bytes;
 		}
+	}
+
+	private IEnumerable<XWPFRun> GetRuns(XWPFDocument document)
+	{
+		return document.Paragraphs.Where(x => x.Runs != null).SelectMany(x => x.Runs)
+			.Union(document.Tables.Where(t => t.Rows != null).SelectMany(x => x.Rows)
+				.Where(r => r.GetTableCells() != null).SelectMany(r => r.GetTableCells())
+				.Where(c => c.Paragraphs != null).SelectMany(c => c.Paragraphs)
+				.Where(p => p.Runs != null).SelectMany(p => p.Runs));
 	}
 }

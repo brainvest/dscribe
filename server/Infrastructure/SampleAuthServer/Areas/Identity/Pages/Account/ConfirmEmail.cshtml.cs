@@ -1,6 +1,6 @@
+namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Brainvest.Dscribe.Security.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -8,33 +8,30 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account
+[AllowAnonymous]
+public class ConfirmEmailModel(UserManager<User> userManager) : PageModel
 {
-	[AllowAnonymous]
-	public class ConfirmEmailModel(UserManager<User> userManager) : PageModel
+	private readonly UserManager<User> _userManager = userManager;
+
+	public async Task<IActionResult> OnGetAsync(string userId, string code)
 	{
-		private readonly UserManager<User> _userManager = userManager;
-
-		public async Task<IActionResult> OnGetAsync(string userId, string code)
+		if (userId == null || code == null)
 		{
-			if (userId == null || code == null)
-			{
-				return RedirectToPage("/Index");
-			}
-
-			var user = await _userManager.FindByIdAsync(userId);
-			if (user == null)
-			{
-				return NotFound($"Unable to load user with ID '{userId}'.");
-			}
-
-			var result = await _userManager.ConfirmEmailAsync(user, code);
-			if (!result.Succeeded)
-			{
-				throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
-			}
-
-			return Page();
+			return RedirectToPage("/Index");
 		}
+
+		var user = await _userManager.FindByIdAsync(userId);
+		if (user == null)
+		{
+			return NotFound($"Unable to load user with ID '{userId}'.");
+		}
+
+		var result = await _userManager.ConfirmEmailAsync(user, code);
+		if (!result.Succeeded)
+		{
+			throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+		}
+
+		return Page();
 	}
 }

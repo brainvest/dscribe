@@ -1,7 +1,7 @@
-namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
+namespace Brainvest.Dscribe.Abstractions.Models.ReadModels;
+
+
+public interface IDataDownloadRequest
 {
-	public interface IDataDownloadRequest
-	{
-		DataDownloadFileFormat Format { get; set; }
-	}
+	DataDownloadFileFormat Format { get; set; }
 }

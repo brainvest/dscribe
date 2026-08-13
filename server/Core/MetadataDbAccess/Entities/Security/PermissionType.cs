@@ -1,8 +1,8 @@
-namespace Brainvest.Dscribe.MetadataDbAccess.Entities.Security
+namespace Brainvest.Dscribe.MetadataDbAccess.Entities.Security;
+
+
+public enum PermissionType
 {
-	public enum PermissionType
-	{
-		Allow = 1,
-		Deny = 2
-	}
+	Allow = 1,
+	Deny = 2
 }

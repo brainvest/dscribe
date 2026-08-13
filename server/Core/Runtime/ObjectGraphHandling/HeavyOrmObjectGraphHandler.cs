@@ -1,3 +1,5 @@
+namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,205 +12,202 @@ using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.Runtime.ActionContext;
 using Newtonsoft.Json.Linq;
 
-namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
+public class HeavyOrmObjectGraphHandler(IImplementationsContainer implementations, IEntityHandler entityHandler) : IObjectGraphHandler
 {
-	public class HeavyOrmObjectGraphHandler(IImplementationsContainer implementations, IEntityHandler entityHandler) : IObjectGraphHandler
+	private readonly IImplementationsContainer _implementations = implementations;
+	private readonly IEntityHandler _entityHandler = entityHandler;
+
+	public async Task<Result<object>> Add(ManageEntityRequest request)
 	{
-		private readonly IImplementationsContainer _implementations = implementations;
-		private readonly IEntityHandler _entityHandler = entityHandler;
-
-		public async Task<Result<object>> Add(ManageEntityRequest request)
+		using (var repository = _implementations.GetBusinessRepository())
 		{
-			using (var repository = _implementations.GetBusinessRepository())
+			var map = new Dictionary<string, object>();
+			var actionContext = new ActionContextInfo
 			{
-				var map = new Dictionary<string, object>();
-				var actionContext = new ActionContextInfo
-				{
-					CurrentEntity = request.Entity,
-					EntityType = _implementations.Metadata[request.EntityTypeName],
-					Type = ActionContextType.Add
-				};
-				var result = await AddRecursive(request, repository, map, "", actionContext);
-				if (!result.Succeeded)
-				{
-					return result;
-				}
-				await _entityHandler.SaveChanges(repository, request.EntityTypeName);
-				return map[""];
+				CurrentEntity = request.Entity,
+				EntityType = _implementations.Metadata[request.EntityTypeName],
+				Type = ActionContextType.Add
+			};
+			var result = await AddRecursive(request, repository, map, "", actionContext);
+			if (!result.Succeeded)
+			{
+				return result;
 			}
+			await _entityHandler.SaveChanges(repository, request.EntityTypeName);
+			return map[""];
 		}
+	}
 
-		private async Task<Result<object>> AddRecursive(ManageEntityRequest request, IDisposable repository, Dictionary<string, object> map
-			, string currentObjectPath, ActionContextInfo actionContext)
+	private async Task<Result<object>> AddRecursive(ManageEntityRequest request, IDisposable repository, Dictionary<string, object> map
+		, string currentObjectPath, ActionContextInfo actionContext)
+	{
+		var entityType = _implementations.Metadata[request.EntityTypeName];
+		object entity;
+		if (!entityType.NotMapped())
 		{
-			var entityType = _implementations.Metadata[request.EntityTypeName];
-			object entity;
-			if (!entityType.NotMapped())
+			foreach (var prop in entityType.GetAllProperties().Where(x => x.DataType == DataTypes.NavigationEntity))
 			{
-				foreach (var prop in entityType.GetAllProperties().Where(x => x.DataType == DataTypes.NavigationEntity))
-				{
-					if (prop.HideInInsert() || prop.ForeignKey == null)
-					{
-						continue;
-					}
-					if (actionContext.ExcludedProperties == null)
-					{
-						actionContext.ExcludedProperties = new List<string> { };
-					}
-					(actionContext.ExcludedProperties as List<string>).Add(prop.ForeignKey.Name);
-				}
-				var result = await _entityHandler.Add(request, repository, actionContext);
-				if (!result.Succeeded)
-				{
-					// TODO: Here, the error messages should be prepended by the path to the current entity
-					return result;
-				}
-				entity = result.Data;
-			}
-			else
-			{
-				entity = Activator.CreateInstance(_implementations.Reflector.GetType(request.EntityTypeName));
-			}
-			if (map.TryGetValue(currentObjectPath, out var existingValue))
-			{
-				existingValue.GetType().GetMethod("Add").Invoke(existingValue, new object[] { entity });
-			}
-			if (map.TryGetValue(currentObjectPath, out var list))
-			{
-				(list as IList).Add(entity);
-			}
-			else
-			{
-				map.Add(currentObjectPath, entity);
-			}
-			foreach (var pair in map)
-			{
-				if (!currentObjectPath.StartsWith(pair.Key))
+				if (prop.HideInInsert() || prop.ForeignKey == null)
 				{
 					continue;
 				}
-				var itemType = pair.Value.GetType();
-				if (itemType.IsGenericType)
+				if (actionContext.ExcludedProperties == null)
 				{
-					itemType = itemType.GetGenericArguments().Single();
+					actionContext.ExcludedProperties = new List<string> { };
 				}
-				var typeMetadata = _implementations.Metadata[itemType.Name];
-				foreach (var property in typeMetadata.GetAllProperties())
+				(actionContext.ExcludedProperties as List<string>).Add(prop.ForeignKey.Name);
+			}
+			var result = await _entityHandler.Add(request, repository, actionContext);
+			if (!result.Succeeded)
+			{
+				// TODO: Here, the error messages should be prepended by the path to the current entity
+				return result;
+			}
+			entity = result.Data;
+		}
+		else
+		{
+			entity = Activator.CreateInstance(_implementations.Reflector.GetType(request.EntityTypeName));
+		}
+		if (map.TryGetValue(currentObjectPath, out var existingValue))
+		{
+			existingValue.GetType().GetMethod("Add").Invoke(existingValue, new object[] { entity });
+		}
+		if (map.TryGetValue(currentObjectPath, out var list))
+		{
+			(list as IList).Add(entity);
+		}
+		else
+		{
+			map.Add(currentObjectPath, entity);
+		}
+		foreach (var pair in map)
+		{
+			if (!currentObjectPath.StartsWith(pair.Key))
+			{
+				continue;
+			}
+			var itemType = pair.Value.GetType();
+			if (itemType.IsGenericType)
+			{
+				itemType = itemType.GetGenericArguments().Single();
+			}
+			var typeMetadata = _implementations.Metadata[itemType.Name];
+			foreach (var property in typeMetadata.GetAllProperties())
+			{
+				var path = JoinPath(pair.Key, property.Name);
+				if (path == currentObjectPath)
 				{
-					var path = JoinPath(pair.Key, property.Name);
-					if (path == currentObjectPath)
-					{
-						SetPropertyValue(pair.Value, property, entity);
-					}
+					SetPropertyValue(pair.Value, property, entity);
 				}
 			}
-			foreach (var propertyMetadata in entityType.GetAllProperties())
+		}
+		foreach (var propertyMetadata in entityType.GetAllProperties())
+		{
+			var propertyPath = JoinPath(currentObjectPath, propertyMetadata.Name);
+			if (map.TryGetValue(propertyPath, out var val))
 			{
-				var propertyPath = JoinPath(currentObjectPath, propertyMetadata.Name);
-				if (map.TryGetValue(propertyPath, out var val))
-				{
-					SetPropertyValue(entity, propertyMetadata, val);
-				}
-				if (propertyMetadata.HideInInsert())
+				SetPropertyValue(entity, propertyMetadata, val);
+			}
+			if (propertyMetadata.HideInInsert())
+			{
+				continue;
+			}
+			var value = (request.Entity as JObject)[propertyMetadata.Name];
+			//if (propertyMetadata.DataType == DataTypes.NavigationEntity)
+			//{
+			//	var relatedEntity = await AddRecursive(new ManageEntityRequest
+			//	{
+			//		EntityTypeName = propertyMetadata.EntityTypeName,
+			//		Entity = value
+			//	}, repository, map, propertyPath);
+			//}
+			if (propertyMetadata.DataType == DataTypes.NavigationList)
+			{
+				map.Add(propertyPath, Activator.CreateInstance(typeof(List<>).MakeGenericType(_implementations.Reflector.GetType(propertyMetadata.EntityTypeName))));
+				if (!(value is IEnumerable collection))
 				{
 					continue;
 				}
-				var value = (request.Entity as JObject)[propertyMetadata.Name];
-				//if (propertyMetadata.DataType == DataTypes.NavigationEntity)
-				//{
-				//	var relatedEntity = await AddRecursive(new ManageEntityRequest
-				//	{
-				//		EntityTypeName = propertyMetadata.EntityTypeName,
-				//		Entity = value
-				//	}, repository, map, propertyPath);
-				//}
-				if (propertyMetadata.DataType == DataTypes.NavigationList)
+				foreach (var item in collection)
 				{
-					map.Add(propertyPath, Activator.CreateInstance(typeof(List<>).MakeGenericType(_implementations.Reflector.GetType(propertyMetadata.EntityTypeName))));
-					if (!(value is IEnumerable collection))
+					var childActionContext = new ActionContextInfo
 					{
-						continue;
-					}
-					foreach (var item in collection)
+						CurrentEntity = item,
+						CurrentList = collection,
+						EntityType = _implementations.Metadata[propertyMetadata.EntityTypeName],
+						Masters = actionContext.Masters.Concat(new MasterReference(entity, propertyMetadata)),
+						Parent = actionContext,
+						Property = propertyMetadata,
+						Type = ActionContextType.Add
+					};
+					await AddRecursive(new ManageEntityRequest
 					{
-						var childActionContext = new ActionContextInfo
-						{
-							CurrentEntity = item,
-							CurrentList = collection,
-							EntityType = _implementations.Metadata[propertyMetadata.EntityTypeName],
-							Masters = actionContext.Masters.Concat(new MasterReference(entity, propertyMetadata)),
-							Parent = actionContext,
-							Property = propertyMetadata,
-							Type = ActionContextType.Add
-						};
-						await AddRecursive(new ManageEntityRequest
-						{
-							EntityTypeName = propertyMetadata.EntityTypeName,
-							Entity = item
-						}, repository, map, propertyPath, childActionContext);
-					}
+						EntityTypeName = propertyMetadata.EntityTypeName,
+						Entity = item
+					}, repository, map, propertyPath, childActionContext);
 				}
 			}
-			return map[currentObjectPath];
 		}
+		return map[currentObjectPath];
+	}
 
-		private static void SetPropertyValue(object entity, IPropertyMetadata propertyMetadata, object newValue)
+	private static void SetPropertyValue(object entity, IPropertyMetadata propertyMetadata, object newValue)
+	{
+		var property = entity.GetType().GetProperty(propertyMetadata.Name);
+		if (propertyMetadata.DataType == Abstractions.Metadata.DataTypes.NavigationEntity)
 		{
-			var property = entity.GetType().GetProperty(propertyMetadata.Name);
-			if (propertyMetadata.DataType == Abstractions.Metadata.DataTypes.NavigationEntity)
+			property.SetValue(entity, newValue);
+		}
+		else if (propertyMetadata.DataType == Abstractions.Metadata.DataTypes.NavigationList)
+		{
+			var collection = property.GetValue(entity);
+			if (collection == null)
 			{
-				property.SetValue(entity, newValue);
+				var itemType = property.PropertyType.GetGenericArguments().Single(); // extract T from ICollection<T> property {get; set;}
+				collection = Activator.CreateInstance(typeof(HashSet<>).MakeGenericType(itemType));
+				property.SetValue(entity, collection);
 			}
-			else if (propertyMetadata.DataType == Abstractions.Metadata.DataTypes.NavigationList)
+			collection.GetType().GetMethod("Add").Invoke(collection, new object[] { newValue });
+			if (propertyMetadata.InverseProperty != null)
 			{
-				var collection = property.GetValue(entity);
-				if (collection == null)
-				{
-					var itemType = property.PropertyType.GetGenericArguments().Single(); // extract T from ICollection<T> property {get; set;}
-					collection = Activator.CreateInstance(typeof(HashSet<>).MakeGenericType(itemType));
-					property.SetValue(entity, collection);
-				}
-				collection.GetType().GetMethod("Add").Invoke(collection, new object[] { newValue });
-				if (propertyMetadata.InverseProperty != null)
-				{
-					var inserse = newValue.GetType().GetProperty(propertyMetadata.InverseProperty.Name);
-					inserse.SetValue(newValue, entity);
-				}
-			}
-			else
-			{
-				throw new NotImplementedException();
+				var inserse = newValue.GetType().GetProperty(propertyMetadata.InverseProperty.Name);
+				inserse.SetValue(newValue, entity);
 			}
 		}
-
-		private static string JoinPath(string part1, string part2)
+		else
 		{
-			if (string.IsNullOrWhiteSpace(part1) || string.IsNullOrWhiteSpace(part2)
-					|| part1.EndsWith(".") || part2.StartsWith("."))
-			{
-				return part1 + part2;
-			}
-			return part1 + "." + part2;
+			throw new NotImplementedException();
 		}
+	}
 
-		public async Task<Result<object>> Edit(ManageEntityRequest request)
+	private static string JoinPath(string part1, string part2)
+	{
+		if (string.IsNullOrWhiteSpace(part1) || string.IsNullOrWhiteSpace(part2)
+				|| part1.EndsWith(".") || part2.StartsWith("."))
 		{
-			using (var repository = _implementations.GetBusinessRepository())
-			{
-				var result = await _entityHandler.Edit(request, repository);
-				await _entityHandler.SaveChanges(repository, request.EntityTypeName);
-				return result;
-			}
+			return part1 + part2;
 		}
+		return part1 + "." + part2;
+	}
 
-		public async Task<Result<object>> Delete(ManageEntityRequest request)
+	public async Task<Result<object>> Edit(ManageEntityRequest request)
+	{
+		using (var repository = _implementations.GetBusinessRepository())
 		{
-			using (var repository = _implementations.GetBusinessRepository())
-			{
-				var result = await _entityHandler.Delete(request, repository);
-				await _entityHandler.SaveChanges(repository, request.EntityTypeName);
-				return result;
-			}
+			var result = await _entityHandler.Edit(request, repository);
+			await _entityHandler.SaveChanges(repository, request.EntityTypeName);
+			return result;
+		}
+	}
+
+	public async Task<Result<object>> Delete(ManageEntityRequest request)
+	{
+		using (var repository = _implementations.GetBusinessRepository())
+		{
+			var result = await _entityHandler.Delete(request, repository);
+			await _entityHandler.SaveChanges(repository, request.EntityTypeName);
+			return result;
 		}
 	}
 }

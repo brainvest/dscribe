@@ -1,9 +1,8 @@
+namespace Brainvest.Dscribe.Security.Entities;
+
 using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace Brainvest.Dscribe.Security.Entities
+public class User : IdentityUser<Guid>
 {
-	public class User : IdentityUser<Guid>
-	{
-	}
 }

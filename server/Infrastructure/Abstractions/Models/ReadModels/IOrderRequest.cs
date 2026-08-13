@@ -1,9 +1,8 @@
+namespace Brainvest.Dscribe.Abstractions.Models.ReadModels;
+
 using System.Collections.Generic;
 
-namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
+public interface IOrderRequest
 {
-	public interface IOrderRequest
-	{
-		IEnumerable<SortItem> Order { get; set; }
-	}
+	IEnumerable<SortItem> Order { get; set; }
 }

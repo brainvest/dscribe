@@ -1,21 +1,20 @@
+namespace Brainvest.Dscribe.Helpers;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Brainvest.Dscribe.Helpers
+public class ParameterReplacer(IEnumerable<ParameterExpression> replacementParameters) : ExpressionVisitor
 {
-	public class ParameterReplacer(IEnumerable<ParameterExpression> replacementParameters) : ExpressionVisitor
-	{
-		IEnumerable<ParameterExpression> _replacementParameters = replacementParameters;
+	IEnumerable<ParameterExpression> _replacementParameters = replacementParameters;
 
-		protected override Expression VisitParameter(ParameterExpression node)
+	protected override Expression VisitParameter(ParameterExpression node)
+	{
+		var replacement = _replacementParameters.FirstOrDefault(x => x.Type == node.Type);
+		if (replacement != null)
 		{
-			var replacement = _replacementParameters.FirstOrDefault(x => x.Type == node.Type);
-			if (replacement != null)
-			{
-				return replacement;
-			}
-			return base.Visit(node);
+			return replacement;
 		}
+		return base.Visit(node);
 	}
 }

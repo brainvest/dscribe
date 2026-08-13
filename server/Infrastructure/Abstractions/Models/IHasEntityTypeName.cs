@@ -1,7 +1,7 @@
-namespace Brainvest.Dscribe.Abstractions.Models
+namespace Brainvest.Dscribe.Abstractions.Models;
+
+
+public interface IHasEntityTypeName
 {
-	public interface IHasEntityTypeName
-	{
-		string EntityTypeName { get; set; }
-	}
+	string EntityTypeName { get; set; }
 }

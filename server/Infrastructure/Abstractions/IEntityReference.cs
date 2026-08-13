@@ -1,8 +1,8 @@
-namespace Brainvest.Dscribe.Abstractions
+namespace Brainvest.Dscribe.Abstractions;
+
+
+public interface IEntityReference
 {
-	public interface IEntityReference
-	{
-		int EntityTypeId { get; set; }
-		int Identifier { get; set; }
-	}
+	int EntityTypeId { get; set; }
+	int Identifier { get; set; }
 }

@@ -1,3 +1,5 @@
+namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account.Manage;
+
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -7,71 +9,68 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account.Manage
+public class DeletePersonalDataModel(
+	UserManager<User> userManager,
+	SignInManager<User> signInManager,
+	ILogger<DeletePersonalDataModel> logger) : PageModel
 {
-	public class DeletePersonalDataModel(
-		UserManager<User> userManager,
-		SignInManager<User> signInManager,
-		ILogger<DeletePersonalDataModel> logger) : PageModel
+	private readonly UserManager<User> _userManager = userManager;
+	private readonly SignInManager<User> _signInManager = signInManager;
+	private readonly ILogger<DeletePersonalDataModel> _logger = logger;
+
+	[BindProperty]
+	public InputModel Input { get; set; }
+
+	public class InputModel
 	{
-		private readonly UserManager<User> _userManager = userManager;
-		private readonly SignInManager<User> _signInManager = signInManager;
-		private readonly ILogger<DeletePersonalDataModel> _logger = logger;
+		[Required]
+		[DataType(DataType.Password)]
+		public string Password { get; set; }
+	}
 
-		[BindProperty]
-		public InputModel Input { get; set; }
+	public bool RequirePassword { get; set; }
 
-		public class InputModel
+	public async Task<IActionResult> OnGet()
+	{
+		var user = await _userManager.GetUserAsync(User);
+		if (user == null)
 		{
-			[Required]
-			[DataType(DataType.Password)]
-			public string Password { get; set; }
+			return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 		}
 
-		public bool RequirePassword { get; set; }
+		RequirePassword = await _userManager.HasPasswordAsync(user);
+		return Page();
+	}
 
-		public async Task<IActionResult> OnGet()
+	public async Task<IActionResult> OnPostAsync()
+	{
+		var user = await _userManager.GetUserAsync(User);
+		if (user == null)
 		{
-			var user = await _userManager.GetUserAsync(User);
-			if (user == null)
-			{
-				return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-			}
-
-			RequirePassword = await _userManager.HasPasswordAsync(user);
-			return Page();
+			return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 		}
 
-		public async Task<IActionResult> OnPostAsync()
+		RequirePassword = await _userManager.HasPasswordAsync(user);
+		if (RequirePassword)
 		{
-			var user = await _userManager.GetUserAsync(User);
-			if (user == null)
+			if (!await _userManager.CheckPasswordAsync(user, Input.Password))
 			{
-				return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+				ModelState.AddModelError(string.Empty, "Password not correct.");
+				return Page();
 			}
-
-			RequirePassword = await _userManager.HasPasswordAsync(user);
-			if (RequirePassword)
-			{
-				if (!await _userManager.CheckPasswordAsync(user, Input.Password))
-				{
-					ModelState.AddModelError(string.Empty, "Password not correct.");
-					return Page();
-				}
-			}
-
-			var result = await _userManager.DeleteAsync(user);
-			var userId = await _userManager.GetUserIdAsync(user);
-			if (!result.Succeeded)
-			{
-				throw new InvalidOperationException($"Unexpected error occurred deleteing user with ID '{userId}'.");
-			}
-
-			await _signInManager.SignOutAsync();
-
-			_logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
-
-			return Redirect("~/");
 		}
+
+		var result = await _userManager.DeleteAsync(user);
+		var userId = await _userManager.GetUserIdAsync(user);
+		if (!result.Succeeded)
+		{
+			throw new InvalidOperationException($"Unexpected error occurred deleteing user with ID '{userId}'.");
+		}
+
+		await _signInManager.SignOutAsync();
+
+		_logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
+
+		return Redirect("~/");
 	}
 }

@@ -1,9 +1,9 @@
-namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
+namespace Brainvest.Dscribe.Abstractions.Models.ReadModels;
+
+
+public class AggregationInfo
 {
-	public class AggregationInfo
-	{
-		public string SourcePropertyName { get; set; }
-		public SimpleAggregate Aggregate { get; set; }
-		public string ResultName { get; set; }
-	}
+	public string SourcePropertyName { get; set; }
+	public SimpleAggregate Aggregate { get; set; }
+	public string ResultName { get; set; }
 }

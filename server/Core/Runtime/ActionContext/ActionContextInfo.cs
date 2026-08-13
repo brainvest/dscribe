@@ -1,25 +1,24 @@
+namespace Brainvest.Dscribe.Runtime.ActionContext;
+
 using System.Collections;
 using System.Collections.Generic;
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Metadata;
 
-namespace Brainvest.Dscribe.Runtime.ActionContext
+public class ActionContextInfo : IActionContextInfo
 {
-	public class ActionContextInfo : IActionContextInfo
-	{
-		public IActionContextInfo Parent { get; set; }
-		public ActionContextType Type { get; set; }
-		public IEnumerable CurrentList { get; set; }
-		public object CurrentEntity { get; set; }
-		public IEntityTypeMetadata EntityType { get; set; }
-		public IPropertyMetadata Property { get; set; }
-		public IEnumerable<IMasterReference> Masters { get; set; }
-		public IEnumerable<string> ExcludedProperties { get; set; }
-	}
+	public IActionContextInfo Parent { get; set; }
+	public ActionContextType Type { get; set; }
+	public IEnumerable CurrentList { get; set; }
+	public object CurrentEntity { get; set; }
+	public IEntityTypeMetadata EntityType { get; set; }
+	public IPropertyMetadata Property { get; set; }
+	public IEnumerable<IMasterReference> Masters { get; set; }
+	public IEnumerable<string> ExcludedProperties { get; set; }
+}
 
-	public class MasterReference(object master, IPropertyMetadata masterProperty) : IMasterReference
-	{
-		public object Master { get; set; } = master;
-		public IPropertyMetadata MasterProperty { get; set; } = masterProperty;
-	}
+public class MasterReference(object master, IPropertyMetadata masterProperty) : IMasterReference
+{
+	public object Master { get; set; } = master;
+	public IPropertyMetadata MasterProperty { get; set; } = masterProperty;
 }

@@ -1,12 +1,12 @@
-namespace Brainvest.Dscribe.Abstractions
+namespace Brainvest.Dscribe.Abstractions;
+
+
+public enum AdditionalBehaviorEnum
 {
-	public enum AdditionalBehaviorEnum
-	{
-		DisplayAsDate = 1,
-		DisplayAsDateTime,
-		SetTimeOnInsert,
-		SetTimeOnUpdate,
-		ShowDatePicker,
-		ShowDateTimePicker
-	}
+	DisplayAsDate = 1,
+	DisplayAsDateTime,
+	SetTimeOnInsert,
+	SetTimeOnUpdate,
+	ShowDatePicker,
+	ShowDateTimePicker
 }

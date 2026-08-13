@@ -1,3 +1,5 @@
+namespace Brainvest.Dscribe.Runtime.Controllers;
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,153 +9,150 @@ using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Brainvest.Dscribe.Runtime.Controllers
+[Produces("application/json")]
+[Route("api/[controller]/[action]")]
+[ApiController]
+public class EntityController(
+	IEntityHandler entityHandler,
+	IImplementationsContainer implementationsContainer,
+	IPermissionService permissionService,
+	IObjectGraphHandler objectGraphHandler) : ControllerBase
 {
-	[Produces("application/json")]
-	[Route("api/[controller]/[action]")]
-	[ApiController]
-	public class EntityController(
-		IEntityHandler entityHandler,
-		IImplementationsContainer implementationsContainer,
-		IPermissionService permissionService,
-		IObjectGraphHandler objectGraphHandler) : ControllerBase
+	private readonly IEntityHandler _entityHandler = entityHandler;
+	private readonly IImplementationsContainer _implementationsContainer = implementationsContainer;
+	private readonly IPermissionService _permissionService = permissionService;
+	private readonly IObjectGraphHandler _objectGraphHandler = objectGraphHandler;
+
+	[HttpPost]
+	public async Task<ActionResult<IEnumerable>> GetByFilter([FromBody] EntityListRequest request)
 	{
-		private readonly IEntityHandler _entityHandler = entityHandler;
-		private readonly IImplementationsContainer _implementationsContainer = implementationsContainer;
-		private readonly IPermissionService _permissionService = permissionService;
-		private readonly IObjectGraphHandler _objectGraphHandler = objectGraphHandler;
-
-		[HttpPost]
-		public async Task<ActionResult<IEnumerable>> GetByFilter([FromBody] EntityListRequest request)
+		if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
 		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
-			{
-				return Unauthorized();
-			}
-			return new ActionResult<IEnumerable>(await _entityHandler.GetByFilter(request));
+			return Unauthorized();
 		}
-
-		[HttpPost]
-		public async Task<ActionResult<int?>> CountByFilter([FromBody] EntityListRequest request)
-		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
-			{
-				return Unauthorized();
-			}
-			return await _entityHandler.CountByFilter(request);
-		}
-
-		[HttpPost]
-		public async Task<ActionResult<int?>> GetGroupCount([FromBody] GrouppedListRequest request)
-		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
-			{
-				return Unauthorized();
-			}
-			return await _entityHandler.GetGroupCount(request);
-		}
-
-		[HttpPost]
-		public async Task<ActionResult<IEnumerable>> GetGroupped([FromBody] GrouppedListRequest request)
-		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
-			{
-				return Unauthorized();
-			}
-			return new ActionResult<IEnumerable>(await _entityHandler.GetGroupped(request));
-		}
-
-		[HttpPost]
-		public async Task<ActionResult<IEnumerable<ExpressionValueResponse>>> GetExpressionValue([FromBody] IEnumerable<ExpressionValueRequest> request)
-		{
-			var tasks = request
-				.Where(x => _permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, x.EntityTypeName, ActionTypeEnum.Select)))
-				.Select(x => new { x.EntityTypeName, Task = _entityHandler.GetExpressionValue(x) }).ToList();
-			var results = new List<ExpressionValueResponse>();
-			foreach (var task in tasks)
-			{
-				results.Add(await task.Task);
-			}
-			return results;
-		}
-
-		[HttpPost]
-		public async Task<ActionResult<IEnumerable<IdAndNameResponse>>> GetIdAndName([FromBody] IEnumerable<IdAndNameRequest> request)
-		{
-			var tasks = request
-				.Where(x => _permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, x.EntityTypeName, ActionTypeEnum.Select)))
-				.Select(x => new { x.EntityTypeName, Task = _entityHandler.GetIdAndName(x) }).ToList();
-			var results = new List<IdAndNameResponse>();
-			foreach (var task in tasks)
-			{
-				results.Add(new IdAndNameResponse
-				{
-					EntityTypeName = task.EntityTypeName,
-					Names = await task.Task
-				});
-			}
-			return results;
-		}
-
-		[HttpPost]
-		public async Task<ActionResult<IdAndNameResponse>> GetAutocompleteItems([FromBody] AutocompleteItemsRequest request)
-		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
-			{
-				return Unauthorized();
-			}
-			var result = await _entityHandler.GetAutocomplteItems(request);
-			return new IdAndNameResponse
-			{
-				EntityTypeName = request.EntityTypeName,
-				Names = result
-			};
-		}
-
-		public class AllIdAndNameRequest
-		{
-			public string EntityTypeName { get; set; }
-		}
-
-		[HttpPost]
-		public async Task<ActionResult<IEnumerable<NameResponseItem>>> GetAllIdAndName([FromBody] AllIdAndNameRequest request)
-		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
-			{
-				return Unauthorized();
-			}
-			return new ActionResult<IEnumerable<NameResponseItem>>(await _entityHandler.GetIdAndName(new IdAndNameRequest { EntityTypeName = request.EntityTypeName, Ids = null }));
-		}
-
-		[HttpPost]
-		public async Task<ActionResult<object>> Add([FromBody] ManageEntityRequest request)
-		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Insert)))
-			{
-				return Unauthorized();
-			}
-			return await _objectGraphHandler.Add(request);
-		}
-
-		[HttpPost]
-		public async Task<ActionResult<object>> Edit([FromBody] ManageEntityRequest request)
-		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Update)))
-			{
-				return Unauthorized();
-			}
-			return await _objectGraphHandler.Edit(request);
-		}
-
-		[HttpPost]
-		public async Task<ActionResult<object>> Delete([FromBody] ManageEntityRequest request)
-		{
-			if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Delete)))
-			{
-				return Unauthorized();
-			}
-			return await _objectGraphHandler.Delete(request);
-		}
-
+		return new ActionResult<IEnumerable>(await _entityHandler.GetByFilter(request));
 	}
+
+	[HttpPost]
+	public async Task<ActionResult<int?>> CountByFilter([FromBody] EntityListRequest request)
+	{
+		if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
+		{
+			return Unauthorized();
+		}
+		return await _entityHandler.CountByFilter(request);
+	}
+
+	[HttpPost]
+	public async Task<ActionResult<int?>> GetGroupCount([FromBody] GrouppedListRequest request)
+	{
+		if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
+		{
+			return Unauthorized();
+		}
+		return await _entityHandler.GetGroupCount(request);
+	}
+
+	[HttpPost]
+	public async Task<ActionResult<IEnumerable>> GetGroupped([FromBody] GrouppedListRequest request)
+	{
+		if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
+		{
+			return Unauthorized();
+		}
+		return new ActionResult<IEnumerable>(await _entityHandler.GetGroupped(request));
+	}
+
+	[HttpPost]
+	public async Task<ActionResult<IEnumerable<ExpressionValueResponse>>> GetExpressionValue([FromBody] IEnumerable<ExpressionValueRequest> request)
+	{
+		var tasks = request
+			.Where(x => _permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, x.EntityTypeName, ActionTypeEnum.Select)))
+			.Select(x => new { x.EntityTypeName, Task = _entityHandler.GetExpressionValue(x) }).ToList();
+		var results = new List<ExpressionValueResponse>();
+		foreach (var task in tasks)
+		{
+			results.Add(await task.Task);
+		}
+		return results;
+	}
+
+	[HttpPost]
+	public async Task<ActionResult<IEnumerable<IdAndNameResponse>>> GetIdAndName([FromBody] IEnumerable<IdAndNameRequest> request)
+	{
+		var tasks = request
+			.Where(x => _permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, x.EntityTypeName, ActionTypeEnum.Select)))
+			.Select(x => new { x.EntityTypeName, Task = _entityHandler.GetIdAndName(x) }).ToList();
+		var results = new List<IdAndNameResponse>();
+		foreach (var task in tasks)
+		{
+			results.Add(new IdAndNameResponse
+			{
+				EntityTypeName = task.EntityTypeName,
+				Names = await task.Task
+			});
+		}
+		return results;
+	}
+
+	[HttpPost]
+	public async Task<ActionResult<IdAndNameResponse>> GetAutocompleteItems([FromBody] AutocompleteItemsRequest request)
+	{
+		if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
+		{
+			return Unauthorized();
+		}
+		var result = await _entityHandler.GetAutocomplteItems(request);
+		return new IdAndNameResponse
+		{
+			EntityTypeName = request.EntityTypeName,
+			Names = result
+		};
+	}
+
+	public class AllIdAndNameRequest
+	{
+		public string EntityTypeName { get; set; }
+	}
+
+	[HttpPost]
+	public async Task<ActionResult<IEnumerable<NameResponseItem>>> GetAllIdAndName([FromBody] AllIdAndNameRequest request)
+	{
+		if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Select)))
+		{
+			return Unauthorized();
+		}
+		return new ActionResult<IEnumerable<NameResponseItem>>(await _entityHandler.GetIdAndName(new IdAndNameRequest { EntityTypeName = request.EntityTypeName, Ids = null }));
+	}
+
+	[HttpPost]
+	public async Task<ActionResult<object>> Add([FromBody] ManageEntityRequest request)
+	{
+		if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Insert)))
+		{
+			return Unauthorized();
+		}
+		return await _objectGraphHandler.Add(request);
+	}
+
+	[HttpPost]
+	public async Task<ActionResult<object>> Edit([FromBody] ManageEntityRequest request)
+	{
+		if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Update)))
+		{
+			return Unauthorized();
+		}
+		return await _objectGraphHandler.Edit(request);
+	}
+
+	[HttpPost]
+	public async Task<ActionResult<object>> Delete([FromBody] ManageEntityRequest request)
+	{
+		if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationsContainer, request.EntityTypeName, ActionTypeEnum.Delete)))
+		{
+			return Unauthorized();
+		}
+		return await _objectGraphHandler.Delete(request);
+	}
+
 }

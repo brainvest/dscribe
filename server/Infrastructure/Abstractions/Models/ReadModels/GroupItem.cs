@@ -1,7 +1,7 @@
-namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
+namespace Brainvest.Dscribe.Abstractions.Models.ReadModels;
+
+
+public class GroupItem
 {
-	public class GroupItem
-	{
-		public string PropertyName { get; set; }
-	}
+	public string PropertyName { get; set; }
 }

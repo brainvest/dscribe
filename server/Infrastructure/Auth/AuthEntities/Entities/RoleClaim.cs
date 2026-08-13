@@ -1,9 +1,8 @@
+namespace Brainvest.Dscribe.Security.Entities;
+
 using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace Brainvest.Dscribe.Security.Entities
+public class RoleClaim : IdentityRoleClaim<Guid>
 {
-	public class RoleClaim : IdentityRoleClaim<Guid>
-	{
-	}
 }

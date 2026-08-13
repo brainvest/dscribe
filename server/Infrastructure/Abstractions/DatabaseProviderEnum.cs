@@ -1,9 +1,9 @@
-namespace Brainvest.Dscribe.Abstractions
+namespace Brainvest.Dscribe.Abstractions;
+
+
+public enum DatabaseProviderEnum
 {
-	public enum DatabaseProviderEnum
-	{
-		MySql = 1,
-		SqlServer,
-		PostgreSql
-	}
+	MySql = 1,
+	SqlServer,
+	PostgreSql
 }

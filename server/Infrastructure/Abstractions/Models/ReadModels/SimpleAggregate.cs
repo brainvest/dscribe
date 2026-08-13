@@ -1,12 +1,12 @@
-namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
+namespace Brainvest.Dscribe.Abstractions.Models.ReadModels;
+
+
+public enum SimpleAggregate
 {
-	public enum SimpleAggregate
-	{
-		Sum,
-		Count,
-		Average,
-		Min,
-		Max,
-		StandardDeviation
-	}
+	Sum,
+	Count,
+	Average,
+	Min,
+	Max,
+	StandardDeviation
 }
