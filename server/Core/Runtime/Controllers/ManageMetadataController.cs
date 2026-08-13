@@ -16,21 +16,14 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	[ApiController]
 	[Produces("application/json")]
 	[Route("api/[controller]/[action]")]
-	public class ManageMetadataController : ControllerBase
+	public class ManageMetadataController(
+		MetadataDbContext dbContext,
+		IImplementationsContainer implementations,
+		IPermissionService permissionService) : ControllerBase
 	{
-		MetadataDbContext _dbContext;
-		IImplementationsContainer _implementations;
-		IPermissionService _permissionService;
-
-		public ManageMetadataController(
-			MetadataDbContext dbContext,
-			IImplementationsContainer implementations,
-			IPermissionService permissionService)
-		{
-			_dbContext = dbContext;
-			_implementations = implementations;
-			_permissionService = permissionService;
-		}
+		MetadataDbContext _dbContext = dbContext;
+		IImplementationsContainer _implementations = implementations;
+		IPermissionService _permissionService = permissionService;
 
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable<EntityTypeModel>>> GetEntityTypes()

@@ -4,13 +4,9 @@ using System.Linq.Expressions;
 
 namespace Brainvest.Dscribe.Helpers
 {
-	public class ParameterReplacer : ExpressionVisitor
+	public class ParameterReplacer(IEnumerable<ParameterExpression> replacementParameters) : ExpressionVisitor
 	{
-		IEnumerable<ParameterExpression> _replacementParameters;
-		public ParameterReplacer(IEnumerable<ParameterExpression> replacementParameters)
-		{
-			_replacementParameters = replacementParameters;
-		}
+		IEnumerable<ParameterExpression> _replacementParameters = replacementParameters;
 
 		protected override Expression VisitParameter(ParameterExpression node)
 		{

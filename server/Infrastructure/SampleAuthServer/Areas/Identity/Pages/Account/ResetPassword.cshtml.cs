@@ -12,14 +12,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account
 {
 	[AllowAnonymous]
-	public class ResetPasswordModel : PageModel
+	public class ResetPasswordModel(UserManager<User> userManager) : PageModel
 	{
-		private readonly UserManager<User> _userManager;
-
-		public ResetPasswordModel(UserManager<User> userManager)
-		{
-			_userManager = userManager;
-		}
+		private readonly UserManager<User> _userManager = userManager;
 
 		[BindProperty]
 		public InputModel Input { get; set; }

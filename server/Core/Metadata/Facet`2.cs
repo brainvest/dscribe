@@ -3,18 +3,11 @@ using System.Collections.Generic;
 
 namespace Brainvest.Dscribe.Metadata
 {
-	public class Facet<TOwner, TData> : Facet<TData>
+	public class Facet<TOwner, TData>(Type ownerType, string facetName, TData defaultValue) : Facet<TData>(ownerType, facetName)
 		where TOwner : class, IFacetOwner
 	{
-		private Dictionary<WeakReference<IFacetOwner>, TData> _values;
-		public TData DefaultValue { get; protected set; }
-
-		public Facet(Type ownerType, string facetName, TData defaultValue)
-			: base(ownerType, facetName)
-		{
-			_values = new Dictionary<WeakReference<IFacetOwner>, TData>();
-			DefaultValue = defaultValue;
-		}
+		private Dictionary<WeakReference<IFacetOwner>, TData> _values = new Dictionary<WeakReference<IFacetOwner>, TData>();
+		public TData DefaultValue { get; protected set; } = defaultValue;
 
 		public override TData GetValue(IFacetOwner owner)
 		{

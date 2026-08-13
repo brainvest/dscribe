@@ -14,27 +14,18 @@ using Microsoft.Extensions.Options;
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account
 {
 	[AllowAnonymous]
-	public class RegisterModel : PageModel
+	public class RegisterModel(
+			UserManager<User> userManager,
+			SignInManager<User> signInManager,
+			ILogger<RegisterModel> logger,
+			IEmailSender emailSender,
+			IOptions<ConfigModel> options) : PageModel
 	{
-		private readonly SignInManager<User> _signInManager;
-		private readonly UserManager<User> _userManager;
-		private readonly ILogger<RegisterModel> _logger;
-		private readonly IEmailSender _emailSender;
-		private readonly IOptions<ConfigModel> _options;
-
-		public RegisterModel(
-				UserManager<User> userManager,
-				SignInManager<User> signInManager,
-				ILogger<RegisterModel> logger,
-				IEmailSender emailSender,
-				IOptions<ConfigModel> options)
-		{
-			_userManager = userManager;
-			_signInManager = signInManager;
-			_logger = logger;
-			_emailSender = emailSender;
-			_options = options;
-		}
+		private readonly SignInManager<User> _signInManager = signInManager;
+		private readonly UserManager<User> _userManager = userManager;
+		private readonly ILogger<RegisterModel> _logger = logger;
+		private readonly IEmailSender _emailSender = emailSender;
+		private readonly IOptions<ConfigModel> _options = options;
 
 		[BindProperty]
 		public InputModel Input { get; set; }

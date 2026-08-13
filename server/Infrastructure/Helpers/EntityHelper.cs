@@ -9,13 +9,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Brainvest.Dscribe.Helpers
 {
-	public class EntityHelper
+	public class EntityHelper(IImplementationsContainer implementationsContainer)
 	{
-		IImplementationsContainer _implementationsContainer;
-		public EntityHelper(IImplementationsContainer implementationsContainer)
-		{
-			_implementationsContainer = implementationsContainer;
-		}
+		IImplementationsContainer _implementationsContainer = implementationsContainer;
 
 		public void CopyPropertyValues<TEntity>(TEntity source, TEntity dest)
 		{

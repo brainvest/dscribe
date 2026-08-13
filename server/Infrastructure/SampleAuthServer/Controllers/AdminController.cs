@@ -13,13 +13,9 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Controllers
 	[Produces("application/json")]
 	[Route("api/[controller]/[action]")]
 	[Authorize(Roles = "Admin, Manager")]
-	public class AdminController : ControllerBase
+	public class AdminController(SecurityDbContext securityDbContext) : ControllerBase
 	{
-		SecurityDbContext _securityDbContext;
-		public AdminController(SecurityDbContext securityDbContext)
-		{
-			_securityDbContext = securityDbContext;
-		}
+		SecurityDbContext _securityDbContext = securityDbContext;
 
 		public async Task<IEnumerable<UserModel>> GetUsers()
 		{

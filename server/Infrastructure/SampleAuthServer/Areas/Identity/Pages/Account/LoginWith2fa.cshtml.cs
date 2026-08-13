@@ -13,16 +13,10 @@ using Microsoft.Extensions.Logging;
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account
 {
 	[AllowAnonymous]
-	public class LoginWith2faModel : PageModel
+	public class LoginWith2faModel(SignInManager<User> signInManager, ILogger<LoginWith2faModel> logger) : PageModel
 	{
-		private readonly SignInManager<User> _signInManager;
-		private readonly ILogger<LoginWith2faModel> _logger;
-
-		public LoginWith2faModel(SignInManager<User> signInManager, ILogger<LoginWith2faModel> logger)
-		{
-			_signInManager = signInManager;
-			_logger = logger;
-		}
+		private readonly SignInManager<User> _signInManager = signInManager;
+		private readonly ILogger<LoginWith2faModel> _logger = logger;
 
 		[BindProperty]
 		public InputModel Input { get; set; }

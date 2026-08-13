@@ -8,13 +8,9 @@ namespace Brainvest.Dscribe.Abstractions.Models
 		public object Entity { get; set; }
 	}
 
-	public class ManageEntityRequest<TEntity>
+	public class ManageEntityRequest<TEntity>(TEntity entity)
 	{
-		public ManageEntityRequest(TEntity entity)
-		{
-			Entity = entity;
-		}
-		public TEntity Entity { get; set; }
+		public TEntity Entity { get; set; } = entity;
 	}
 
 	public class ManageEntityResponse
@@ -25,18 +21,12 @@ namespace Brainvest.Dscribe.Abstractions.Models
 		public ValidationResult ValidationResult { get; set; }
 	}
 
-	public class ValidationResult
+	public class ValidationResult(IEnumerable<string> entityValidationErrors, IDictionary<string, IEnumerable<string>> propertyValidationErrors)
 	{
-		public ValidationResult(IEnumerable<string> entityValidationErrors, IDictionary<string, IEnumerable<string>> propertyValidationErrors)
-		{
-			EntityValidationErrors = entityValidationErrors;
-			PropertyValidationErrors = propertyValidationErrors;
-		}
-
 		public bool Succeeded { get { return EntityValidationErrors == null && PropertyValidationErrors == null; } }
 
 		public static ValidationResult Success { get; } = new ValidationResult(null, null);
-		public IEnumerable<string> EntityValidationErrors { get; private set; }
-		public IDictionary<string, IEnumerable<string>> PropertyValidationErrors { get; private set; }
+		public IEnumerable<string> EntityValidationErrors { get; private set; } = entityValidationErrors;
+		public IDictionary<string, IEnumerable<string>> PropertyValidationErrors { get; private set; } = propertyValidationErrors;
 	}
 }

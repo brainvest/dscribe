@@ -3,19 +3,13 @@ using System.Collections.Generic;
 
 namespace Brainvest.Dscribe.Metadata
 {
-	public abstract class MetadataFacet<TOwner, TData, TDefaultValueDisciminator> : Facet<TOwner, TData>
+	public abstract class MetadataFacet<TOwner, TData, TDefaultValueDisciminator>(string name, TData defaultValue) : Facet<TOwner, TData>(typeof(TOwner), name, defaultValue)
 		, IMetadataFacet<TDefaultValueDisciminator>
 		where TOwner : FacetOwner
 		where TDefaultValueDisciminator : struct
 		where TData : IConvertible
 	{
 		protected Dictionary<TDefaultValueDisciminator, TData> _defaultValues;
-
-		public MetadataFacet(string name, TData defaultValue)
-			: base(typeof(TOwner), name, defaultValue)
-		{
-
-		}
 
 		public void ClearDefaultValues()
 		{

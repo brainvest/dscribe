@@ -12,21 +12,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 {
-	public class EfCoreEntityHandlerInternal
+	public class EfCoreEntityHandlerInternal(
+		IImplementationsContainer implementationsContainer,
+		IEntityValidator validator,
+		EntityHelper entityHelper)
 	{
-		private IImplementationsContainer _implementationsContainer;
-		private IEntityValidator _validator;
-		private EntityHelper _entityHelper;
-
-		public EfCoreEntityHandlerInternal(
-			IImplementationsContainer implementationsContainer,
-			IEntityValidator validator,
-			EntityHelper entityHelper)
-		{
-			_implementationsContainer = implementationsContainer;
-			_validator = validator;
-			_entityHelper = entityHelper;
-		}
+		private IImplementationsContainer _implementationsContainer = implementationsContainer;
+		private IEntityValidator _validator = validator;
+		private EntityHelper _entityHelper = entityHelper;
 
 		private void CheckMigrations()
 		{

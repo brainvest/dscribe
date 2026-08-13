@@ -12,16 +12,10 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]/[action]")]
-	public class LobToolsController : ControllerBase
+	public class LobToolsController(IImplementationsContainer implementationsContainer, IUsersService usersService) : ControllerBase
 	{
-		private readonly IImplementationsContainer _implementationsContainer;
-		private readonly IUsersService _usersService;
-
-		public LobToolsController(IImplementationsContainer implementationsContainer, IUsersService usersService)
-		{
-			_implementationsContainer = implementationsContainer;
-			_usersService = usersService;
-		}
+		private readonly IImplementationsContainer _implementationsContainer = implementationsContainer;
+		private readonly IUsersService _usersService = usersService;
 
 		public async Task<ActionResult<LobSummaryResponse>> GetSummary(LobSummaryRequest request)
 		{

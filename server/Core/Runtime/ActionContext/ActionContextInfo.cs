@@ -17,15 +17,9 @@ namespace Brainvest.Dscribe.Runtime.ActionContext
 		public IEnumerable<string> ExcludedProperties { get; set; }
 	}
 
-	public class MasterReference : IMasterReference
+	public class MasterReference(object master, IPropertyMetadata masterProperty) : IMasterReference
 	{
-		public MasterReference(object master, IPropertyMetadata masterProperty)
-		{
-			Master = master;
-			MasterProperty = masterProperty;
-		}
-
-		public object Master { get; set; }
-		public IPropertyMetadata MasterProperty { get; set; }
+		public object Master { get; set; } = master;
+		public IPropertyMetadata MasterProperty { get; set; } = masterProperty;
 	}
 }

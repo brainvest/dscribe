@@ -13,16 +13,10 @@ using Microsoft.Extensions.Logging;
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account
 {
 	[AllowAnonymous]
-	public class LoginWithRecoveryCodeModel : PageModel
+	public class LoginWithRecoveryCodeModel(SignInManager<User> signInManager, ILogger<LoginWithRecoveryCodeModel> logger) : PageModel
 	{
-		private readonly SignInManager<User> _signInManager;
-		private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
-
-		public LoginWithRecoveryCodeModel(SignInManager<User> signInManager, ILogger<LoginWithRecoveryCodeModel> logger)
-		{
-			_signInManager = signInManager;
-			_logger = logger;
-		}
+		private readonly SignInManager<User> _signInManager = signInManager;
+		private readonly ILogger<LoginWithRecoveryCodeModel> _logger = logger;
 
 		[BindProperty]
 		public InputModel Input { get; set; }

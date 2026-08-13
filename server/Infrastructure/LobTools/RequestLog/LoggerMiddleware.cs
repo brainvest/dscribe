@@ -8,15 +8,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace MiddleWare.Log
 {
-	public class LoggerMiddleware
+	public class LoggerMiddleware(RequestDelegate next)
 	{
-		private readonly RequestDelegate _next;
+		private readonly RequestDelegate _next = next;
 		public static List<string> statusErrors;
-
-		public LoggerMiddleware(RequestDelegate next)
-		{
-			_next = next;
-		}
 
 		public async Task Invoke(HttpContext httpContext, RequestLogger requestLogger)
 		{

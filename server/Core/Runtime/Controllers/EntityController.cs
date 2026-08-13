@@ -12,24 +12,16 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	[Produces("application/json")]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class EntityController : ControllerBase
+	public class EntityController(
+		IEntityHandler entityHandler,
+		IImplementationsContainer implementationsContainer,
+		IPermissionService permissionService,
+		IObjectGraphHandler objectGraphHandler) : ControllerBase
 	{
-		private readonly IEntityHandler _entityHandler;
-		private readonly IImplementationsContainer _implementationsContainer;
-		private readonly IPermissionService _permissionService;
-		private readonly IObjectGraphHandler _objectGraphHandler;
-
-		public EntityController(
-			IEntityHandler entityHandler,
-			IImplementationsContainer implementationsContainer,
-			IPermissionService permissionService,
-			IObjectGraphHandler objectGraphHandler)
-		{
-			_entityHandler = entityHandler;
-			_implementationsContainer = implementationsContainer;
-			_permissionService = permissionService;
-			_objectGraphHandler = objectGraphHandler;
-		}
+		private readonly IEntityHandler _entityHandler = entityHandler;
+		private readonly IImplementationsContainer _implementationsContainer = implementationsContainer;
+		private readonly IPermissionService _permissionService = permissionService;
+		private readonly IObjectGraphHandler _objectGraphHandler = objectGraphHandler;
 
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable>> GetByFilter([FromBody] EntityListRequest request)

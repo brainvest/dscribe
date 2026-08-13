@@ -4,13 +4,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Migrations_Runtime_MySql
 {
-	public class LobToolsDbContext_MySql : LobToolsDbContext
+	public class LobToolsDbContext_MySql(DbContextOptions<LobToolsDbContext_MySql> options) : LobToolsDbContext(options)
 	{
-		public LobToolsDbContext_MySql(DbContextOptions<LobToolsDbContext_MySql> options)
-			: base(options)
-		{
-		}
-
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);

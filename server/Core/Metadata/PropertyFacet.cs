@@ -2,16 +2,11 @@ using System;
 
 namespace Brainvest.Dscribe.Metadata
 {
-	public class PropertyFacet<TData> : MetadataFacet<PropertyMetadata, TData, PropertyGeneralUsageCategoryStruct>
+	public class PropertyFacet<TData>(string facetName, TData defaultValue, PropertyFacet<TData>.DefaultValueGenerator defaultValueGenrator) : MetadataFacet<PropertyMetadata, TData, PropertyGeneralUsageCategoryStruct>(facetName, defaultValue)
 		where TData : IConvertible
 	{
 		public delegate TData DefaultValueGenerator(PropertyMetadata propertyMetadata);
-		private DefaultValueGenerator _defaultValueGenerator;
-		public PropertyFacet(string facetName, TData defaultValue, DefaultValueGenerator defaultValueGenrator)
-		: base(facetName, defaultValue)
-		{
-			_defaultValueGenerator = defaultValueGenrator;
-		}
+		private DefaultValueGenerator _defaultValueGenerator = defaultValueGenrator;
 
 		protected override TData GetDefaultValue(PropertyMetadata owner)
 		{

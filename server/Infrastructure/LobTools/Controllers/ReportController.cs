@@ -16,27 +16,18 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]/[action]")]
-	public class ReportController : ControllerBase
+	public class ReportController(
+		IImplementationsContainer implementationsContainer,
+		IUsersService usersService,
+		IRichTextDocumentHandler richTextDocumentHandler,
+		IEntityHandler entityHandler,
+		MetadataDbContext metadataDbContext) : ControllerBase
 	{
-		private readonly IImplementationsContainer _implementationsContainer;
-		private readonly IUsersService _usersService;
-		private readonly IRichTextDocumentHandler _richTextDocumentHandler;
-		private readonly IEntityHandler _entityHandler;
-		private readonly MetadataDbContext _metadataDbContext;
-
-		public ReportController(
-			IImplementationsContainer implementationsContainer,
-			IUsersService usersService,
-			IRichTextDocumentHandler richTextDocumentHandler,
-			IEntityHandler entityHandler,
-			MetadataDbContext metadataDbContext)
-		{
-			_implementationsContainer = implementationsContainer;
-			_usersService = usersService;
-			_richTextDocumentHandler = richTextDocumentHandler;
-			_entityHandler = entityHandler;
-			_metadataDbContext = metadataDbContext;
-		}
+		private readonly IImplementationsContainer _implementationsContainer = implementationsContainer;
+		private readonly IUsersService _usersService = usersService;
+		private readonly IRichTextDocumentHandler _richTextDocumentHandler = richTextDocumentHandler;
+		private readonly IEntityHandler _entityHandler = entityHandler;
+		private readonly MetadataDbContext _metadataDbContext = metadataDbContext;
 
 		[HttpPost]
 		public async Task<ActionResult<IEnumerable<ReportsListResponse>>> GetReports()

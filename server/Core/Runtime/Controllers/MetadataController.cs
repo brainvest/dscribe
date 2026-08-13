@@ -9,16 +9,10 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	[Produces("application/json")]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class MetadataController : ControllerBase
+	public class MetadataController(IImplementationsContainer implementationsContainer, IPermissionService permissionService) : ControllerBase
 	{
-		IImplementationsContainer _implementationsContainer;
-		IPermissionService _permissionService;
-
-		public MetadataController(IImplementationsContainer implementationsContainer, IPermissionService permissionService)
-		{
-			_implementationsContainer = implementationsContainer;
-			_permissionService = permissionService;
-		}
+		IImplementationsContainer _implementationsContainer = implementationsContainer;
+		IPermissionService _permissionService = permissionService;
 
 		[HttpGet]
 		public ActionResult<IEntityTypeMetadataModel> GetEntityByName(string entityTypeName)

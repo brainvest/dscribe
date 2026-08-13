@@ -15,21 +15,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 {
-	public class EfCoreEntityHandler : IEntityHandler
+	public class EfCoreEntityHandler(
+		IImplementationsContainer implementationsContainer,
+		IDataLogImplementation dataLogImplementation,
+		EfCoreEntityHandlerInternal handlerInternal) : IEntityHandler
 	{
-		protected IDataLogImplementation _dataLogImplementation;
-		private IImplementationsContainer _implementationsContainer;
-		EfCoreEntityHandlerInternal _handlerInternal;
-
-		public EfCoreEntityHandler(
-			IImplementationsContainer implementationsContainer,
-			IDataLogImplementation dataLogImplementation,
-			EfCoreEntityHandlerInternal handlerInternal)
-		{
-			_dataLogImplementation = dataLogImplementation;
-			_implementationsContainer = implementationsContainer;
-			_handlerInternal = handlerInternal;
-		}
+		protected IDataLogImplementation _dataLogImplementation = dataLogImplementation;
+		private IImplementationsContainer _implementationsContainer = implementationsContainer;
+		EfCoreEntityHandlerInternal _handlerInternal = handlerInternal;
 
 		public async Task<int> CountByFilter(EntityListRequest request)
 		{

@@ -12,18 +12,12 @@ using Newtonsoft.Json;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account.Manage
 {
-	public class DownloadPersonalDataModel : PageModel
+	public class DownloadPersonalDataModel(
+		UserManager<User> userManager,
+		ILogger<DownloadPersonalDataModel> logger) : PageModel
 	{
-		private readonly UserManager<User> _userManager;
-		private readonly ILogger<DownloadPersonalDataModel> _logger;
-
-		public DownloadPersonalDataModel(
-			UserManager<User> userManager,
-			ILogger<DownloadPersonalDataModel> logger)
-		{
-			_userManager = userManager;
-			_logger = logger;
-		}
+		private readonly UserManager<User> _userManager = userManager;
+		private readonly ILogger<DownloadPersonalDataModel> _logger = logger;
 
 		public async Task<IActionResult> OnPostAsync()
 		{

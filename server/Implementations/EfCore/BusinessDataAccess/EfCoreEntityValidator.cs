@@ -6,14 +6,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 {
-	public class EfCoreEntityValidator : IEntityValidator
+	public class EfCoreEntityValidator(IImplementationsContainer implementationsContainer) : IEntityValidator
 	{
-		private IImplementationsContainer _implementationsContainer;
-
-		public EfCoreEntityValidator(IImplementationsContainer implementationsContainer)
-		{
-			_implementationsContainer = implementationsContainer;
-		}
+		private IImplementationsContainer _implementationsContainer = implementationsContainer;
 
 		//TODO: This should get a Model or a dynamic type instead of the Entity. In the current state, validation ignores required non nullable value types.
 		public ModelStateDictionary Validate<TEntity>(TEntity entity, ActionTypeEnum actionType, IActionContextInfo actionContext)

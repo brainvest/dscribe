@@ -10,16 +10,10 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]/[action]")]
-	public class CommentController : ControllerBase
+	public class CommentController(IImplementationsContainer implementationsContainer, IUsersService usersService) : ControllerBase
 	{
-		private readonly IImplementationsContainer _implementationsContainer;
-		private readonly IUsersService _usersService;
-
-		public CommentController(IImplementationsContainer implementationsContainer, IUsersService usersService)
-		{
-			_implementationsContainer = implementationsContainer;
-			_usersService = usersService;
-		}
+		private readonly IImplementationsContainer _implementationsContainer = implementationsContainer;
+		private readonly IUsersService _usersService = usersService;
 
 		public async Task<ActionResult<CommentsListResponse>> GetCommentsList(CommentsListRequest request)
 		{

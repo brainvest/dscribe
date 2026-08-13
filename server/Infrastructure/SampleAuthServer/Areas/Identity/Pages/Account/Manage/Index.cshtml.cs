@@ -12,21 +12,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account.Manage
 {
-	public partial class IndexModel : PageModel
+	public partial class IndexModel(
+		UserManager<User> userManager,
+		SignInManager<User> signInManager,
+		IEmailSender emailSender) : PageModel
 	{
-		private readonly UserManager<User> _userManager;
-		private readonly SignInManager<User> _signInManager;
-		private readonly IEmailSender _emailSender;
-
-		public IndexModel(
-			UserManager<User> userManager,
-			SignInManager<User> signInManager,
-			IEmailSender emailSender)
-		{
-			_userManager = userManager;
-			_signInManager = signInManager;
-			_emailSender = emailSender;
-		}
+		private readonly UserManager<User> _userManager = userManager;
+		private readonly SignInManager<User> _signInManager = signInManager;
+		private readonly IEmailSender _emailSender = emailSender;
 
 		public string Username { get; set; }
 

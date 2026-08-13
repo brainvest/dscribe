@@ -10,18 +10,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account.Manage
 {
-	public class SetPasswordModel : PageModel
+	public class SetPasswordModel(
+		UserManager<User> userManager,
+		SignInManager<User> signInManager) : PageModel
 	{
-		private readonly UserManager<User> _userManager;
-		private readonly SignInManager<User> _signInManager;
-
-		public SetPasswordModel(
-			UserManager<User> userManager,
-			SignInManager<User> signInManager)
-		{
-			_userManager = userManager;
-			_signInManager = signInManager;
-		}
+		private readonly UserManager<User> _userManager = userManager;
+		private readonly SignInManager<User> _signInManager = signInManager;
 
 		[BindProperty]
 		public InputModel Input { get; set; }

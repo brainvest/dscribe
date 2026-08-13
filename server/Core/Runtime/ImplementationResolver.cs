@@ -73,13 +73,9 @@ namespace Brainvest.Dscribe.Runtime
 
 	public delegate int? AppInstanceExtractor(HttpContext httpContext);
 
-	public class ImplementationResolver : ITenantResolver<IImplementationsContainer>
+	public class ImplementationResolver(ImplementationResolverOptions options) : ITenantResolver<IImplementationsContainer>
 	{
-		private readonly ImplementationResolverOptions _options;
-		public ImplementationResolver(ImplementationResolverOptions options)
-		{
-			_options = options;
-		}
+		private readonly ImplementationResolverOptions _options = options;
 
 		public async Task<TenantContext<IImplementationsContainer>> ResolveAsync(HttpContext context)
 		{
@@ -92,13 +88,9 @@ namespace Brainvest.Dscribe.Runtime
 		}
 	}
 
-	public class MetadataModelResolver : ITenantResolver<IMetadataModel>
+	public class MetadataModelResolver(ImplementationResolverOptions options) : ITenantResolver<IMetadataModel>
 	{
-		private readonly ImplementationResolverOptions _options;
-		public MetadataModelResolver(ImplementationResolverOptions options)
-		{
-			_options = options;
-		}
+		private readonly ImplementationResolverOptions _options = options;
 
 		public async Task<TenantContext<IMetadataModel>> ResolveAsync(HttpContext context)
 		{
@@ -111,13 +103,9 @@ namespace Brainvest.Dscribe.Runtime
 		}
 	}
 
-	public class BusinessReflectorResolver : ITenantResolver<IBusinessReflector>
+	public class BusinessReflectorResolver(ImplementationResolverOptions options) : ITenantResolver<IBusinessReflector>
 	{
-		private readonly ImplementationResolverOptions _options;
-		public BusinessReflectorResolver(ImplementationResolverOptions options)
-		{
-			_options = options;
-		}
+		private readonly ImplementationResolverOptions _options = options;
 
 		public async Task<TenantContext<IBusinessReflector>> ResolveAsync(HttpContext context)
 		{
@@ -130,13 +118,9 @@ namespace Brainvest.Dscribe.Runtime
 		}
 	}
 
-	public class InstanceResolver : ITenantResolver<IInstanceInfo>
+	public class InstanceResolver(ImplementationResolverOptions options) : ITenantResolver<IInstanceInfo>
 	{
-		private readonly ImplementationResolverOptions _options;
-		public InstanceResolver(ImplementationResolverOptions options)
-		{
-			_options = options;
-		}
+		private readonly ImplementationResolverOptions _options = options;
 
 		public async Task<TenantContext<IInstanceInfo>> ResolveAsync(HttpContext context)
 		{

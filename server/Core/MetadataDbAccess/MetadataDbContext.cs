@@ -9,14 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Brainvest.Dscribe.MetadataDbAccess
 {
-	public class MetadataDbContext : DbContext
+	public class MetadataDbContext(DbContextOptions options) : DbContext(options)
 	{
-		public MetadataDbContext(DbContextOptions options)
-			: base(options)
-		{
-
-		}
-
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);

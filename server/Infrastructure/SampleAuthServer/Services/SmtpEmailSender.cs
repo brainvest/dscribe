@@ -8,14 +8,9 @@ using Microsoft.Extensions.Options;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Services
 {
-	public class SmtpEmailSender : IEmailSender
+	public class SmtpEmailSender(IOptions<ConfigModel> config) : IEmailSender
 	{
-		private readonly ConfigModel _config;
-
-		public SmtpEmailSender(IOptions<ConfigModel> config)
-		{
-			_config = config.Value;
-		}
+		private readonly ConfigModel _config = config.Value;
 
 		public async Task SendEmailAsync(string email, string subject, string htmlMessage)
 		{

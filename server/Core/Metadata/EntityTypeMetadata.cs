@@ -6,20 +6,20 @@ using Brainvest.Dscribe.MetadataDbAccess.Entities;
 
 namespace Brainvest.Dscribe.Metadata
 {
-	public class EntityTypeMetadata : FacetOwner, IEntityTypeMetadata
+	public class EntityTypeMetadata(EntityType dbMetadata, EntityTypeMetadata baseEntityType) : FacetOwner, IEntityTypeMetadata
 	{
 		public EntityGeneralUsageCategoryStruct GeneralBehavior { get; private set; }
 		private Dictionary<string, PropertyMetadata> _properties = new Dictionary<string, PropertyMetadata>();
-		public int EntityTypeId { get; private set; }
-		public string Name { get; private set; }
-		public string SchemaName { get; private set; }
-		public string SingularTitle { get; private set; }
+		public int EntityTypeId { get; private set; } = dbMetadata.Id;
+		public string Name { get; private set; } = dbMetadata.Name;
+		public string SchemaName { get; private set; } = dbMetadata.SchemaName;
+		public string SingularTitle { get; private set; } = (dbMetadata.SingularTitle) ?? (dbMetadata.Name.SmartSeparate());
 		public string PluralTitle { get; private set; }
-		public string TableName { get; private set; }
-		public EntityTypeMetadata BaseEntityType { get; set; }
+		public string TableName { get; private set; } = dbMetadata.TableName;
+		public EntityTypeMetadata BaseEntityType { get; set; } = baseEntityType;
 
-		public string DisplayNameProperty { get; set; }
-		public string CodeProperty { get; set; }
+		public string DisplayNameProperty { get; set; } = dbMetadata.DisplayNamePath;
+		public string CodeProperty { get; set; } = dbMetadata.CodePath;
 
 		#region Facets
 		public static EntityFacet<bool> NotMappedFacet { get; private set; }
@@ -37,18 +37,6 @@ namespace Brainvest.Dscribe.Metadata
 		}
 
 		#endregion
-
-		public EntityTypeMetadata(EntityType dbMetadata, EntityTypeMetadata baseEntityType)
-		{
-			EntityTypeId = dbMetadata.Id;
-			Name = dbMetadata.Name;
-			SchemaName = dbMetadata.SchemaName;
-			SingularTitle = (dbMetadata.SingularTitle) ?? (dbMetadata.Name.SmartSeparate());
-			TableName = dbMetadata.TableName;
-			DisplayNameProperty = dbMetadata.DisplayNamePath;
-			CodeProperty = dbMetadata.CodePath;
-			BaseEntityType = baseEntityType;
-		}
 
 		public IPropertyMetadata GetProperty(string propertyName)
 		{

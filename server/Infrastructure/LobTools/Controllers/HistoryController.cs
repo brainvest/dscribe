@@ -20,21 +20,15 @@ namespace Brainvest.Dscribe.LobTools.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]/[action]")]
-	public class HistoryController : ControllerBase
+	public class HistoryController(
+		LobToolsDbContext dbContext,
+		IDataLogImplementation dataLogImplementation,
+		IEntityHandler entityHandler) : ControllerBase
 	{
-		public LobToolsDbContext _dbContext;
-		public IDataLogImplementation _dataLogImplementation;
-		private readonly IEntityHandler _entityHandler;
+		public LobToolsDbContext _dbContext = dbContext;
+		public IDataLogImplementation _dataLogImplementation = dataLogImplementation;
+		private readonly IEntityHandler _entityHandler = entityHandler;
 
-		public HistoryController(
-			LobToolsDbContext dbContext,
-			IDataLogImplementation dataLogImplementation,
-			IEntityHandler entityHandler)
-		{
-			_dbContext = dbContext;
-			_dataLogImplementation = dataLogImplementation;
-			_entityHandler = entityHandler;
-		}
 		public async Task<IEnumerable<EntityTypeHistoryModel>> GetEntityTypeHistory(EntityTypeHistoryModel model)
 		{
 			var logs = await _dbContext.RequestLogs.Where(x => x.EntityTypeId == model.EntityType.Id && x.Failed == false).OrderByDescending(x => x.Id).ToListAsync();

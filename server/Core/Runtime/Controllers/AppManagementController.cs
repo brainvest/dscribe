@@ -15,16 +15,11 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	[ApiController]
 	[Produces("application/json")]
 	[Route("api/[controller]/[action]")]
-	public class AppManagementController : ControllerBase
+	public class AppManagementController(
+		MetadataDbContext dbContext
+			) : ControllerBase
 	{
-		MetadataDbContext _dbContext;
-
-		public AppManagementController(
-			MetadataDbContext dbContext
-			)
-		{
-			_dbContext = dbContext;
-		}
+		MetadataDbContext _dbContext = dbContext;
 
 		public async Task<ActionResult<IEnumerable<AppInstanceInfoModel>>> GetAppInstancesInfoForHome()
 		{

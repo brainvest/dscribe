@@ -11,14 +11,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account
 {
 	[AllowAnonymous]
-	public class ConfirmEmailModel : PageModel
+	public class ConfirmEmailModel(UserManager<User> userManager) : PageModel
 	{
-		private readonly UserManager<User> _userManager;
-
-		public ConfirmEmailModel(UserManager<User> userManager)
-		{
-			_userManager = userManager;
-		}
+		private readonly UserManager<User> _userManager = userManager;
 
 		public async Task<IActionResult> OnGetAsync(string userId, string code)
 		{

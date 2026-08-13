@@ -13,16 +13,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account
 {
 	[AllowAnonymous]
-	public class ForgotPasswordModel : PageModel
+	public class ForgotPasswordModel(UserManager<User> userManager, IEmailSender emailSender) : PageModel
 	{
-		private readonly UserManager<User> _userManager;
-		private readonly IEmailSender _emailSender;
-
-		public ForgotPasswordModel(UserManager<User> userManager, IEmailSender emailSender)
-		{
-			_userManager = userManager;
-			_emailSender = emailSender;
-		}
+		private readonly UserManager<User> _userManager = userManager;
+		private readonly IEmailSender _emailSender = emailSender;
 
 		[BindProperty]
 		public InputModel Input { get; set; }

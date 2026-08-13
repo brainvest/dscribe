@@ -10,18 +10,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account.Manage
 {
-	public class ExternalLoginsModel : PageModel
+	public class ExternalLoginsModel(
+		UserManager<User> userManager,
+		SignInManager<User> signInManager) : PageModel
 	{
-		private readonly UserManager<User> _userManager;
-		private readonly SignInManager<User> _signInManager;
-
-		public ExternalLoginsModel(
-			UserManager<User> userManager,
-			SignInManager<User> signInManager)
-		{
-			_userManager = userManager;
-			_signInManager = signInManager;
-		}
+		private readonly UserManager<User> _userManager = userManager;
+		private readonly SignInManager<User> _signInManager = signInManager;
 
 		public IList<UserLoginInfo> CurrentLogins { get; set; }
 

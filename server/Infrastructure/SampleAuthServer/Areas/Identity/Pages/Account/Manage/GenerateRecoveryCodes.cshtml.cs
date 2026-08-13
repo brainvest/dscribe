@@ -10,18 +10,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account.Manage
 {
-	public class GenerateRecoveryCodesModel : PageModel
+	public class GenerateRecoveryCodesModel(
+		UserManager<User> userManager,
+		ILogger<GenerateRecoveryCodesModel> logger) : PageModel
 	{
-		private readonly UserManager<User> _userManager;
-		private readonly ILogger<GenerateRecoveryCodesModel> _logger;
-
-		public GenerateRecoveryCodesModel(
-			UserManager<User> userManager,
-			ILogger<GenerateRecoveryCodesModel> logger)
-		{
-			_userManager = userManager;
-			_logger = logger;
-		}
+		private readonly UserManager<User> _userManager = userManager;
+		private readonly ILogger<GenerateRecoveryCodesModel> _logger = logger;
 
 		[TempData]
 		public string[] RecoveryCodes { get; set; }

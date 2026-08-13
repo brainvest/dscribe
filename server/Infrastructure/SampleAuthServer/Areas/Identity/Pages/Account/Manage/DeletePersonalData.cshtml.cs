@@ -9,21 +9,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account.Manage
 {
-	public class DeletePersonalDataModel : PageModel
+	public class DeletePersonalDataModel(
+		UserManager<User> userManager,
+		SignInManager<User> signInManager,
+		ILogger<DeletePersonalDataModel> logger) : PageModel
 	{
-		private readonly UserManager<User> _userManager;
-		private readonly SignInManager<User> _signInManager;
-		private readonly ILogger<DeletePersonalDataModel> _logger;
-
-		public DeletePersonalDataModel(
-			UserManager<User> userManager,
-			SignInManager<User> signInManager,
-			ILogger<DeletePersonalDataModel> logger)
-		{
-			_userManager = userManager;
-			_signInManager = signInManager;
-			_logger = logger;
-		}
+		private readonly UserManager<User> _userManager = userManager;
+		private readonly SignInManager<User> _signInManager = signInManager;
+		private readonly ILogger<DeletePersonalDataModel> _logger = logger;
 
 		[BindProperty]
 		public InputModel Input { get; set; }

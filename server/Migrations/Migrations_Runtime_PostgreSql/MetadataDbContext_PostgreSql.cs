@@ -3,11 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Migrations_Runtime_PostgreSql
 {
-	public class MetadataDbContext_PostgreSql : MetadataDbContext
+	public class MetadataDbContext_PostgreSql(DbContextOptions<MetadataDbContext_PostgreSql> options) : MetadataDbContext(options)
 	{
-		public MetadataDbContext_PostgreSql(DbContextOptions<MetadataDbContext_PostgreSql> options)
-			: base(options)
-		{
-		}
 	}
 }

@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Brainvest.Dscribe.Security.Entities
 {
-	public class SecurityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+	public class SecurityDbContext(DbContextOptions options) : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>(options)
 	{
-		public SecurityDbContext(DbContextOptions options)
-			: base(options)
-		{
-		}
 	}
 }

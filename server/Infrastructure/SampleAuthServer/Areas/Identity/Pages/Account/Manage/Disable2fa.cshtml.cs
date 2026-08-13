@@ -10,18 +10,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account.Manage
 {
-	public class Disable2faModel : PageModel
+	public class Disable2faModel(
+		UserManager<User> userManager,
+		ILogger<Disable2faModel> logger) : PageModel
 	{
-		private readonly UserManager<User> _userManager;
-		private readonly ILogger<Disable2faModel> _logger;
-
-		public Disable2faModel(
-			UserManager<User> userManager,
-			ILogger<Disable2faModel> logger)
-		{
-			_userManager = userManager;
-			_logger = logger;
-		}
+		private readonly UserManager<User> _userManager = userManager;
+		private readonly ILogger<Disable2faModel> _logger = logger;
 
 		[TempData]
 		public string StatusMessage { get; set; }

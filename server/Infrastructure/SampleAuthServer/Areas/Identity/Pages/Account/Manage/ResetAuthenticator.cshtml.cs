@@ -10,21 +10,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Areas.Identity.Pages.Account.Manage
 {
-	public class ResetAuthenticatorModel : PageModel
+	public class ResetAuthenticatorModel(
+		UserManager<User> userManager,
+		SignInManager<User> signInManager,
+		ILogger<ResetAuthenticatorModel> logger) : PageModel
 	{
-		UserManager<User> _userManager;
-		private readonly SignInManager<User> _signInManager;
-		ILogger<ResetAuthenticatorModel> _logger;
-
-		public ResetAuthenticatorModel(
-			UserManager<User> userManager,
-			SignInManager<User> signInManager,
-			ILogger<ResetAuthenticatorModel> logger)
-		{
-			_userManager = userManager;
-			_signInManager = signInManager;
-			_logger = logger;
-		}
+		UserManager<User> _userManager = userManager;
+		private readonly SignInManager<User> _signInManager = signInManager;
+		ILogger<ResetAuthenticatorModel> _logger = logger;
 
 		[TempData]
 		public string StatusMessage { get; set; }

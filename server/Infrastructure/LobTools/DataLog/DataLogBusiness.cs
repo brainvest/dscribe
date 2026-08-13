@@ -19,23 +19,14 @@ using Newtonsoft.Json.Linq;
 
 namespace Brainvest.Dscribe.LobTools.DataLog
 {
-	public class DataLogBusiness : IDataLogImplementation
+	public class DataLogBusiness(
+		LobToolsDbContext lobToolsDbContext,
+		IHttpContextAccessor httpContextAccessor,
+		MetadataDbContext metadataDbContext) : IDataLogImplementation
 	{
-		private readonly LobToolsDbContext _lobToolsDbContext;
-		private readonly IHttpContextAccessor _httpContextAccessor;
-		private readonly MetadataDbContext _metadataDbContext;
-
-		public DataLogBusiness(
-			LobToolsDbContext lobToolsDbContext,
-			IHttpContextAccessor httpContextAccessor,
-			MetadataDbContext metadataDbContext)
-		{
-			_lobToolsDbContext = lobToolsDbContext;
-			_httpContextAccessor = httpContextAccessor;
-			_metadataDbContext = metadataDbContext;
-			// Todo. Should use ImplementationContainer here.
-
-		}
+		private readonly LobToolsDbContext _lobToolsDbContext = lobToolsDbContext;
+		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+		private readonly MetadataDbContext _metadataDbContext = metadataDbContext;
 
 		public async Task<List<DataHistoryResponseModel>> GetDataHistory(string entityName, string data)
 		{

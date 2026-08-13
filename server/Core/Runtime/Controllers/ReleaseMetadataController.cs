@@ -21,32 +21,22 @@ namespace Brainvest.Dscribe.Runtime.Controllers
 	[Produces("application/json")]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class ReleaseMetadataController : ControllerBase
+	public class ReleaseMetadataController(
+		IWebHostEnvironment hostingEnvironment,
+		MetadataDbContext dbContext,
+		IBusinessAssemblyGenerator assemblyGenerator,
+		IImplementationsContainer implementationContainer,
+		IOptions<GlobalConfiguration> globalConfiguration,
+		IPermissionService permissionService
+			) : ControllerBase
 	{
 
-		private readonly IWebHostEnvironment _hostingEnvironment;
-		private readonly MetadataDbContext _dbContext;
-		private readonly IBusinessAssemblyGenerator _assemblyGenerator;
-		private readonly IImplementationsContainer _implementationContainer;
-		private readonly IGlobalConfiguration _globalConfiguration;
-		private readonly IPermissionService _permissionService;
-
-		public ReleaseMetadataController(
-			IWebHostEnvironment hostingEnvironment,
-			MetadataDbContext dbContext,
-			IBusinessAssemblyGenerator assemblyGenerator,
-			IImplementationsContainer implementationContainer,
-			IOptions<GlobalConfiguration> globalConfiguration,
-			IPermissionService permissionService
-			)
-		{
-			_hostingEnvironment = hostingEnvironment;
-			_dbContext = dbContext;
-			_assemblyGenerator = assemblyGenerator;
-			_implementationContainer = implementationContainer;
-			_globalConfiguration = globalConfiguration.Value;
-			_permissionService = permissionService;
-		}
+		private readonly IWebHostEnvironment _hostingEnvironment = hostingEnvironment;
+		private readonly MetadataDbContext _dbContext = dbContext;
+		private readonly IBusinessAssemblyGenerator _assemblyGenerator = assemblyGenerator;
+		private readonly IImplementationsContainer _implementationContainer = implementationContainer;
+		private readonly IGlobalConfiguration _globalConfiguration = globalConfiguration.Value;
+		private readonly IPermissionService _permissionService = permissionService;
 
 		[HttpPost]
 		public async Task<ActionResult> ReleaseMetadata(ReleaseMetadataRequest request)

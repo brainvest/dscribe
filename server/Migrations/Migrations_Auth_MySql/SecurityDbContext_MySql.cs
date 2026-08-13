@@ -4,13 +4,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Migrations_Auth_MySql
 {
-	public class SecurityDbContext_MySql : SecurityDbContext
+	public class SecurityDbContext_MySql(DbContextOptions<SecurityDbContext_MySql> options) : SecurityDbContext(options)
 	{
-		public SecurityDbContext_MySql(DbContextOptions<SecurityDbContext_MySql> options) :
-			base(options)
-		{
-		}
-
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);

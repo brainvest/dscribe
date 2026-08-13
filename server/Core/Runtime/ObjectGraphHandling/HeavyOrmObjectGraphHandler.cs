@@ -12,16 +12,10 @@ using Newtonsoft.Json.Linq;
 
 namespace Brainvest.Dscribe.Runtime.ObjectGraphHandling
 {
-	public class HeavyOrmObjectGraphHandler : IObjectGraphHandler
+	public class HeavyOrmObjectGraphHandler(IImplementationsContainer implementations, IEntityHandler entityHandler) : IObjectGraphHandler
 	{
-		private readonly IImplementationsContainer _implementations;
-		private readonly IEntityHandler _entityHandler;
-
-		public HeavyOrmObjectGraphHandler(IImplementationsContainer implementations, IEntityHandler entityHandler)
-		{
-			_implementations = implementations;
-			_entityHandler = entityHandler;
-		}
+		private readonly IImplementationsContainer _implementations = implementations;
+		private readonly IEntityHandler _entityHandler = entityHandler;
 
 		public async Task<Result<object>> Add(ManageEntityRequest request)
 		{
