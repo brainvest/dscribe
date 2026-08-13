@@ -1,8 +1,8 @@
-using Brainvest.Dscribe.Abstractions.Models;
-using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Brainvest.Dscribe.Abstractions.Models;
+using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 
 namespace Brainvest.Dscribe.Abstractions
 {

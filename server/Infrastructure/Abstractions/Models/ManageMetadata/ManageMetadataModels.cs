@@ -1,6 +1,6 @@
-using Brainvest.Dscribe.Abstractions.Attributes;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Brainvest.Dscribe.Abstractions.Attributes;
 
 namespace Brainvest.Dscribe.Abstractions.Models.ManageMetadata
 {

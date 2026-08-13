@@ -1,6 +1,6 @@
-using Brainvest.Dscribe.Abstractions;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Brainvest.Dscribe.Abstractions;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities.Security
 {

@@ -1,8 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Brainvest.Dscribe.Metadata
 {

@@ -1,7 +1,7 @@
-using Brainvest.Dscribe.Abstractions.Models.Filtering;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Brainvest.Dscribe.Abstractions.Models.Filtering;
 
 namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
 {

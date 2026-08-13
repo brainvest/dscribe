@@ -1,3 +1,9 @@
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Helpers;
 using Brainvest.Dscribe.Abstractions.Models;
@@ -6,12 +12,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MiddleWare.Log;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.LobTools.RequestLog
 {

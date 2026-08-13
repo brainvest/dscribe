@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 {

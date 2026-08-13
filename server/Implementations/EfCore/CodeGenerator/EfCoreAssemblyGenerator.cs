@@ -1,10 +1,10 @@
-using Brainvest.Dscribe.Abstractions;
-using Brainvest.Dscribe.Abstractions.CodeGeneration;
-using Brainvest.Dscribe.Abstractions.Metadata;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Abstractions.CodeGeneration;
+using Brainvest.Dscribe.Abstractions.Metadata;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {

@@ -1,7 +1,7 @@
-using Brainvest.Dscribe.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Brainvest.Dscribe.Abstractions;
 
 namespace Brainvest.Dscribe.LobTools.Models
 {

@@ -1,3 +1,4 @@
+using System;
 using Brainvest.Dscribe.Implementations.EfCore.All;
 using Brainvest.Dscribe.Runtime;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -5,11 +6,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MySql.EntityFrameworkCore.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MySql.EntityFrameworkCore.Extensions;
 using Newtonsoft.Json.Serialization;
-using System;
 
 namespace Brainvest.Dscribe.Host
 {

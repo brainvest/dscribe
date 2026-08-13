@@ -1,9 +1,9 @@
-using Brainvest.Dscribe.Helpers;
-using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using Brainvest.Dscribe.Helpers;
+using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 

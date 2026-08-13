@@ -1,14 +1,14 @@
-using Brainvest.Dscribe.Abstractions;
-using Brainvest.Dscribe.Abstractions.Models;
-using Brainvest.Dscribe.Abstractions.Models.ReadModels;
-using Brainvest.Dscribe.Helpers;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Abstractions.Models;
+using Brainvest.Dscribe.Abstractions.Models.ReadModels;
+using Brainvest.Dscribe.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess
 {

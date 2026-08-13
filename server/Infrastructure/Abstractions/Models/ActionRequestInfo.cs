@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace Brainvest.Dscribe.Abstractions.Models
 {

@@ -1,9 +1,9 @@
+using System;
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.LobTools;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.Runtime.AccessControl;
-using MySql.EntityFrameworkCore.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Migrations_Runtime_MySql;
 using Migrations_Runtime_PostgreSql;
-using System;
+using MySql.EntityFrameworkCore.Extensions;
 
 namespace Brainvest.Dscribe.Runtime
 {

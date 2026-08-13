@@ -1,9 +1,9 @@
-using Brainvest.Dscribe.Abstractions.Metadata;
-using Brainvest.Dscribe.Runtime;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Brainvest.Dscribe.Abstractions.Metadata;
+using Brainvest.Dscribe.Runtime;
+using Moq;
 using Xunit;
 
 namespace Describe.UnitTests

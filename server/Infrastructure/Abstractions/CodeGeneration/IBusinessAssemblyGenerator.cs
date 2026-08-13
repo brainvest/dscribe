@@ -1,6 +1,6 @@
-using Brainvest.Dscribe.Abstractions.Metadata;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Brainvest.Dscribe.Abstractions.Metadata;
 
 namespace Brainvest.Dscribe.Abstractions.CodeGeneration
 {

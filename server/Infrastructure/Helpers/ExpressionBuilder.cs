@@ -1,8 +1,8 @@
-using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Brainvest.Dscribe.Abstractions.Models.ReadModels;
 
 namespace Brainvest.Dscribe.Helpers
 {

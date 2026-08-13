@@ -1,10 +1,10 @@
-using Brainvest.Dscribe.Abstractions.Models;
-using Brainvest.Dscribe.LobTools.RequestLog;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Brainvest.Dscribe.Abstractions.Models;
+using Brainvest.Dscribe.LobTools.RequestLog;
+using Microsoft.AspNetCore.Http;
 
 namespace MiddleWare.Log
 {

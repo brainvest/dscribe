@@ -1,7 +1,7 @@
-using Brainvest.Dscribe.Helpers;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Brainvest.Dscribe.Helpers;
 
 namespace Brainvest.Dscribe.MetadataDbAccess.Entities
 {

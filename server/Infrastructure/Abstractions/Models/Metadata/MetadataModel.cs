@@ -1,5 +1,5 @@
-using Brainvest.Dscribe.Abstractions.Metadata;
 using System.Collections.Generic;
+using Brainvest.Dscribe.Abstractions.Metadata;
 
 namespace Brainvest.Dscribe.Abstractions.Models.Metadata
 {

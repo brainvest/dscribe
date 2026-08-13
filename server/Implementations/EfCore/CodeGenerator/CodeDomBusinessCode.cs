@@ -1,5 +1,5 @@
-using Brainvest.Dscribe.Abstractions.CodeGeneration;
 using System.CodeDom;
+using Brainvest.Dscribe.Abstractions.CodeGeneration;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {

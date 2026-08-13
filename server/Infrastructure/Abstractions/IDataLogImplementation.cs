@@ -1,6 +1,6 @@
-using Brainvest.Dscribe.Abstractions.Models.History;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Brainvest.Dscribe.Abstractions.Models.History;
 
 namespace Brainvest.Dscribe.Abstractions
 {

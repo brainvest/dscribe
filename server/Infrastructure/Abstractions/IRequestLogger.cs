@@ -1,7 +1,7 @@
-using Brainvest.Dscribe.Abstractions.Models;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
+using Brainvest.Dscribe.Abstractions.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace MiddleWare.Log
 {

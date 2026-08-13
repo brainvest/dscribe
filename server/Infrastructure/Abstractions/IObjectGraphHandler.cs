@@ -1,5 +1,5 @@
-using Brainvest.Dscribe.Abstractions.Models;
 using System.Threading.Tasks;
+using Brainvest.Dscribe.Abstractions.Models;
 
 namespace Brainvest.Dscribe.Abstractions
 {

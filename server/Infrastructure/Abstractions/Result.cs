@@ -1,7 +1,7 @@
-using Brainvest.Dscribe.Abstractions.Helpers;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
+using Brainvest.Dscribe.Abstractions.Helpers;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Brainvest.Dscribe.Abstractions
 {

@@ -1,11 +1,11 @@
-using Brainvest.Dscribe.Abstractions;
-using NPOI.XWPF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Brainvest.Dscribe.Abstractions;
+using NPOI.XWPF.UserModel;
 
 namespace Brainvest.Dscribe.InterfacesTo3rdParty.RichTextDocumentHandling
 {

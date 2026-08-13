@@ -1,8 +1,3 @@
-using Brainvest.Dscribe.Abstractions;
-using Brainvest.Dscribe.Abstractions.CodeGeneration;
-using Microsoft.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +5,11 @@ using System.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Abstractions.CodeGeneration;
+using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {

@@ -1,7 +1,7 @@
+using System.Threading.Tasks;
 using Brainvest.Dscribe.Abstractions.Models.AppManagement;
 using Brainvest.Dscribe.MetadataDbAccess;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace Brainvest.Dscribe.Runtime.Validations
 {

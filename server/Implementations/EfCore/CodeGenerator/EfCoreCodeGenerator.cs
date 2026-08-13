@@ -1,9 +1,3 @@
-using Brainvest.Dscribe.Abstractions;
-using Brainvest.Dscribe.Abstractions.Metadata;
-using Humanizer;
-using Microsoft.CSharp;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
@@ -12,6 +6,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Composition;
 using System.IO;
 using System.Linq;
+using Brainvest.Dscribe.Abstractions;
+using Brainvest.Dscribe.Abstractions.Metadata;
+using Humanizer;
+using Microsoft.CSharp;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Brainvest.Dscribe.Implementations.EfCore.CodeGenerator
 {

@@ -1,9 +1,8 @@
+using System;
+using System.Collections.Generic;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Services;
 using Brainvest.Dscribe.Security.Entities;
-using Duende.IdentityServer;
-using Duende.IdentityServer.AspNetIdentity;
-using MySql.EntityFrameworkCore.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
@@ -22,8 +20,6 @@ using Microsoft.Extensions.Options;
 using Migrations_Auth_MySql;
 using Migrations_Auth_PostgreSql;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 
 namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 {
@@ -44,11 +40,6 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer
 					.AllowAnyMethod()
 					.AllowAnyOrigin()
 					.AllowAnyHeader()));
-
-			foreach (var pair in Configuration.AsEnumerable())
-			{
-				Console.WriteLine($"{pair.Key}:{pair.Value}");
-			}
 
 			var provider = Configuration.GetSection("EfProvider").Get<string>();
 			if (string.IsNullOrWhiteSpace(provider))

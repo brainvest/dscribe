@@ -1,10 +1,10 @@
-using Brainvest.Dscribe.Abstractions;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Brainvest.Dscribe.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace Brainvest.Dscribe.Runtime
 {

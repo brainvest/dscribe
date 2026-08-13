@@ -1,5 +1,5 @@
-using Brainvest.Dscribe.Abstractions;
 using System.ComponentModel.DataAnnotations.Schema;
+using Brainvest.Dscribe.Abstractions;
 
 namespace Brainvest.Dscribe.LobTools.Entities
 {

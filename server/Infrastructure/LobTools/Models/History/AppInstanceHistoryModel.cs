@@ -1,6 +1,6 @@
+using System;
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models.AppManagement;
-using System;
 
 namespace Brainvest.Dscribe.LobTools.Models.History
 {

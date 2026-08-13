@@ -1,8 +1,8 @@
+using System.Linq;
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Abstractions.Models;
 using Brainvest.Dscribe.Abstractions.Models.Metadata;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace Brainvest.Dscribe.Runtime.Controllers
 {

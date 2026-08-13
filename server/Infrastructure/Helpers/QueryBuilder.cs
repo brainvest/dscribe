@@ -1,13 +1,13 @@
-using Brainvest.Dscribe.Abstractions.Metadata;
-using Brainvest.Dscribe.Abstractions.Models;
-using Brainvest.Dscribe.Abstractions.Models.ReadModels;
-using Brainvest.Dscribe.Helpers.SpecializedTuples;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Brainvest.Dscribe.Abstractions.Metadata;
+using Brainvest.Dscribe.Abstractions.Models;
+using Brainvest.Dscribe.Abstractions.Models.ReadModels;
+using Brainvest.Dscribe.Helpers.SpecializedTuples;
+using Microsoft.EntityFrameworkCore;
 
 namespace Brainvest.Dscribe.Helpers
 {
