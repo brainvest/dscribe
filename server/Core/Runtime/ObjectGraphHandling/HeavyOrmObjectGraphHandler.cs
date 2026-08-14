@@ -19,23 +19,21 @@ public class HeavyOrmObjectGraphHandler(IImplementationsContainer implementation
 
 	public async Task<Result<object>> Add(ManageEntityRequest request)
 	{
-		using (var repository = _implementations.GetBusinessRepository())
+		using var repository = _implementations.GetBusinessRepository();
+		var map = new Dictionary<string, object>();
+		var actionContext = new ActionContextInfo
 		{
-			var map = new Dictionary<string, object>();
-			var actionContext = new ActionContextInfo
-			{
-				CurrentEntity = request.Entity,
-				EntityType = _implementations.Metadata[request.EntityTypeName],
-				Type = ActionContextType.Add
-			};
-			var result = await AddRecursive(request, repository, map, "", actionContext);
-			if (!result.Succeeded)
-			{
-				return result;
-			}
-			await _entityHandler.SaveChanges(repository, request.EntityTypeName);
-			return map[""];
+			CurrentEntity = request.Entity,
+			EntityType = _implementations.Metadata[request.EntityTypeName],
+			Type = ActionContextType.Add
+		};
+		var result = await AddRecursive(request, repository, map, "", actionContext);
+		if (!result.Succeeded)
+		{
+			return result;
 		}
+		await _entityHandler.SaveChanges(repository, request.EntityTypeName);
+		return map[""];
 	}
 
 	private async Task<Result<object>> AddRecursive(ManageEntityRequest request, IDisposable repository, Dictionary<string, object> map
@@ -51,10 +49,7 @@ public class HeavyOrmObjectGraphHandler(IImplementationsContainer implementation
 				{
 					continue;
 				}
-				if (actionContext.ExcludedProperties == null)
-				{
-					actionContext.ExcludedProperties = [];
-				}
+				actionContext.ExcludedProperties ??= [];
 				(actionContext.ExcludedProperties as List<string>).Add(prop.ForeignKey.Name);
 			}
 			var result = await _entityHandler.Add(request, repository, actionContext);
@@ -71,7 +66,7 @@ public class HeavyOrmObjectGraphHandler(IImplementationsContainer implementation
 		}
 		if (map.TryGetValue(currentObjectPath, out var existingValue))
 		{
-			existingValue.GetType().GetMethod("Add").Invoke(existingValue, new object[] { entity });
+			existingValue.GetType().GetMethod("Add").Invoke(existingValue, [entity]);
 		}
 		if (map.TryGetValue(currentObjectPath, out var list))
 		{
@@ -125,7 +120,7 @@ public class HeavyOrmObjectGraphHandler(IImplementationsContainer implementation
 			if (propertyMetadata.DataType == DataTypes.NavigationList)
 			{
 				map.Add(propertyPath, Activator.CreateInstance(typeof(List<>).MakeGenericType(_implementations.Reflector.GetType(propertyMetadata.EntityTypeName))));
-				if (!(value is IEnumerable collection))
+				if (value is not IEnumerable collection)
 				{
 					continue;
 				}
@@ -155,11 +150,11 @@ public class HeavyOrmObjectGraphHandler(IImplementationsContainer implementation
 	private static void SetPropertyValue(object entity, IPropertyMetadata propertyMetadata, object newValue)
 	{
 		var property = entity.GetType().GetProperty(propertyMetadata.Name);
-		if (propertyMetadata.DataType == Abstractions.Metadata.DataTypes.NavigationEntity)
+		if (propertyMetadata.DataType == DataTypes.NavigationEntity)
 		{
 			property.SetValue(entity, newValue);
 		}
-		else if (propertyMetadata.DataType == Abstractions.Metadata.DataTypes.NavigationList)
+		else if (propertyMetadata.DataType == DataTypes.NavigationList)
 		{
 			var collection = property.GetValue(entity);
 			if (collection == null)
@@ -168,7 +163,7 @@ public class HeavyOrmObjectGraphHandler(IImplementationsContainer implementation
 				collection = Activator.CreateInstance(typeof(HashSet<>).MakeGenericType(itemType));
 				property.SetValue(entity, collection);
 			}
-			collection.GetType().GetMethod("Add").Invoke(collection, new object[] { newValue });
+			collection.GetType().GetMethod("Add").Invoke(collection, [newValue]);
 			if (propertyMetadata.InverseProperty != null)
 			{
 				var inserse = newValue.GetType().GetProperty(propertyMetadata.InverseProperty.Name);
@@ -186,28 +181,24 @@ public class HeavyOrmObjectGraphHandler(IImplementationsContainer implementation
 		if (string.IsNullOrWhiteSpace(part1) || string.IsNullOrWhiteSpace(part2)
 				|| part1.EndsWith(".") || part2.StartsWith("."))
 		{
-			return part1 + part2;
+			return $"{part1}{part2}";
 		}
-		return part1 + "." + part2;
+		return $"{part1}.{part2}";
 	}
 
 	public async Task<Result<object>> Edit(ManageEntityRequest request)
 	{
-		using (var repository = _implementations.GetBusinessRepository())
-		{
-			var result = await _entityHandler.Edit(request, repository);
-			await _entityHandler.SaveChanges(repository, request.EntityTypeName);
-			return result;
-		}
+		using var repository = _implementations.GetBusinessRepository();
+		var result = await _entityHandler.Edit(request, repository);
+		await _entityHandler.SaveChanges(repository, request.EntityTypeName);
+		return result;
 	}
 
 	public async Task<Result<object>> Delete(ManageEntityRequest request)
 	{
-		using (var repository = _implementations.GetBusinessRepository())
-		{
-			var result = await _entityHandler.Delete(request, repository);
-			await _entityHandler.SaveChanges(repository, request.EntityTypeName);
-			return result;
-		}
+		using var repository = _implementations.GetBusinessRepository();
+		var result = await _entityHandler.Delete(request, repository);
+		await _entityHandler.SaveChanges(repository, request.EntityTypeName);
+		return result;
 	}
 }

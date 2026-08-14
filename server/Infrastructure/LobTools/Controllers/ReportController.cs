@@ -104,7 +104,7 @@ public class ReportController(
 		var request = new ExpressionValueRequest
 		{
 			EntityTypeName = entityTypeName,
-			Ids = new int[] { entityIdentifier },
+			Ids = [entityIdentifier],
 			Properties = expressions.Select(e => new PropertyInfoModel
 			{
 				Name = e

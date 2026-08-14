@@ -34,15 +34,13 @@ public class UsersCache : IUsersService
 
 	private CachedInfo FillCache()
 	{
-		using (var scope = _serviceScopeFactory.CreateScope())
-		using (var dbContext = scope.ServiceProvider.GetRequiredService<MetadataDbContext>())
+		using var scope = _serviceScopeFactory.CreateScope();
+		using var dbContext = scope.ServiceProvider.GetRequiredService<MetadataDbContext>();
+		var userIds = dbContext.Users.ToDictionary(x => x.UnifiedExternalUserId, x => x.Id);
+		return new CachedInfo
 		{
-			var userIds = dbContext.Users.ToDictionary(x => x.UnifiedExternalUserId, x => x.Id);
-			return new CachedInfo
-			{
-				UserIds = userIds
-			};
-		}
+			UserIds = userIds
+		};
 	}
 
 	string UnifyUserName(string externalUserName)
@@ -57,29 +55,27 @@ public class UsersCache : IUsersService
 	private Guid GetOrCreateUser(string externalUserId)
 	{
 		var unified = UnifyUserName(externalUserId);
-		using (var scope = _serviceScopeFactory.CreateScope())
-		using (var dbContext = scope.ServiceProvider.GetRequiredService<MetadataDbContext>())
-		using (var transaction = new TransactionScope(TransactionScopeOption.RequiresNew,
-			new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
+		using var scope = _serviceScopeFactory.CreateScope();
+		using var dbContext = scope.ServiceProvider.GetRequiredService<MetadataDbContext>();
+		using var transaction = new TransactionScope(TransactionScopeOption.RequiresNew,
+			new TransactionOptions { IsolationLevel = IsolationLevel.Serializable });
+		var user = dbContext.Users.SingleOrDefault(x => x.UnifiedExternalUserId == unified);
+		if (user != null)
 		{
-			var user = dbContext.Users.SingleOrDefault(x => x.UnifiedExternalUserId == unified);
-			if (user != null)
-			{
-				_cache.Value.UserIds[unified] = user.Id;
-				return user.Id;
-			}
-			user = new User
-			{
-				Id = Guid.NewGuid(),
-				ExternalUserId = externalUserId,
-				UnifiedExternalUserId = unified
-			};
-			dbContext.Users.Add(user);
-			dbContext.SaveChanges();
-			transaction.Complete();
 			_cache.Value.UserIds[unified] = user.Id;
 			return user.Id;
 		}
+		user = new User
+		{
+			Id = Guid.NewGuid(),
+			ExternalUserId = externalUserId,
+			UnifiedExternalUserId = unified
+		};
+		dbContext.Users.Add(user);
+		dbContext.SaveChanges();
+		transaction.Complete();
+		_cache.Value.UserIds[unified] = user.Id;
+		return user.Id;
 	}
 
 	public Guid? GetUserId(string externalUserId)

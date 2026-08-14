@@ -164,7 +164,7 @@ public partial class AddSeveralMissingMigrations : Migration
 
 		migrationBuilder.InsertData(
 			table: "additionalbehaviors",
-			columns: new[] { "Id", "Definition", "Name" },
+			columns: ["Id", "Definition", "Name"],
 			values: new object[,]
 			{
 				{ 1, null, "DisplayAsDate" },
@@ -177,8 +177,8 @@ public partial class AddSeveralMissingMigrations : Migration
 
 		migrationBuilder.InsertData(
 			table: "databaseproviders",
-			columns: new[] { "Id", "Name" },
-			values: new object[] { 3, "PostgreSql" });
+			columns: ["Id", "Name"],
+			values: [3, "PostgreSql"]);
 
 		migrationBuilder.CreateIndex(
 			name: "IX_additionalbehaviors_Name",

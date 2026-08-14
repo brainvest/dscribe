@@ -55,11 +55,9 @@ public class ImplementationFactory
 
 	private static async Task<ImplementationContainer> CreateImplementation(int appInstanceId, IServiceScopeFactory scopeFactory)
 	{
-		using (var scope = scopeFactory.CreateScope())
-		using (var dbContext = scope.ServiceProvider.GetService<MetadataDbContext>())
-		{
-			return await ImplementationContainer.Create(scope, dbContext, appInstanceId);
-		}
+		using var scope = scopeFactory.CreateScope();
+		using var dbContext = scope.ServiceProvider.GetService<MetadataDbContext>();
+		return await ImplementationContainer.Create(scope, dbContext, appInstanceId);
 	}
 }
 

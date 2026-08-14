@@ -36,20 +36,18 @@ public class PermissionCache : IPermissionService
 
 	private CachedInfo FillCache()
 	{
-		using (var scope = _serviceScopeFactory.CreateScope())
-		using (var dbContext = scope.ServiceProvider.GetRequiredService<MetadataDbContext>())
+		using var scope = _serviceScopeFactory.CreateScope();
+		using var dbContext = scope.ServiceProvider.GetRequiredService<MetadataDbContext>();
+		var permissions = dbContext.Permissions.ToList();
+		var roles = dbContext.Roles.ToDictionary(x => x.Name, x => x.Id);
+		var entityTypes = dbContext.EntityTypes
+			.ToDictionary(x => (x.Name, x.AppTypeId), x => x.Id);
+		return new CachedInfo
 		{
-			var permissions = dbContext.Permissions.ToList();
-			var roles = dbContext.Roles.ToDictionary(x => x.Name, x => x.Id);
-			var entityTypes = dbContext.EntityTypes
-				.ToDictionary(x => (x.Name, x.AppTypeId), x => x.Id);
-			return new CachedInfo
-			{
-				EntityTypes = entityTypes,
-				Permissions = permissions,
-				Roles = roles
-			};
-		}
+			EntityTypes = entityTypes,
+			Permissions = permissions,
+			Roles = roles
+		};
 	}
 
 	public bool IsAllowed(ActionRequestInfo action)

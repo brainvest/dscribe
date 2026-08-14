@@ -23,32 +23,28 @@ public static class TextHelper
 	{
 		var bytes = Encoding.UTF8.GetBytes(str);
 
-		using (var msi = new MemoryStream(bytes))
-		using (var mso = new MemoryStream())
+		using var msi = new MemoryStream(bytes);
+		using var mso = new MemoryStream();
+		using (var gs = new GZipStream(mso, CompressionMode.Compress))
 		{
-			using (var gs = new GZipStream(mso, CompressionMode.Compress))
-			{
-				//msi.CopyTo(gs);
-				CopyTo(msi, gs);
-			}
-
-			return mso.ToArray();
+			//msi.CopyTo(gs);
+			CopyTo(msi, gs);
 		}
+
+		return mso.ToArray();
 	}
 
 	public static string Unzip(byte[] bytes)
 	{
-		using (var msi = new MemoryStream(bytes))
-		using (var mso = new MemoryStream())
+		using var msi = new MemoryStream(bytes);
+		using var mso = new MemoryStream();
+		using (var gs = new GZipStream(msi, CompressionMode.Decompress))
 		{
-			using (var gs = new GZipStream(msi, CompressionMode.Decompress))
-			{
-				//gs.CopyTo(mso);
-				CopyTo(gs, mso);
-			}
-
-			return Encoding.UTF8.GetString(mso.ToArray());
+			//gs.CopyTo(mso);
+			CopyTo(gs, mso);
 		}
+
+		return Encoding.UTF8.GetString(mso.ToArray());
 	}
 
 	public static string SmartSeparate(this string text)

@@ -691,7 +691,7 @@ public partial class initialize_metadata : Migration
 
 		migrationBuilder.InsertData(
 			table: "databaseproviders",
-			columns: new[] { "Id", "Name" },
+			columns: ["Id", "Name"],
 			values: new object[,]
 			{
 				{ 2, "SqlServer" },
@@ -700,7 +700,7 @@ public partial class initialize_metadata : Migration
 
 		migrationBuilder.InsertData(
 			table: "datatypes",
-			columns: new[] { "Id", "ClrType", "Identifier", "IsValueType", "Name" },
+			columns: ["Id", "ClrType", "Identifier", "IsValueType", "Name"],
 			values: new object[,]
 			{
 				{ 1, "System.Int32", "int", true, "Integer" },
@@ -723,7 +723,7 @@ public partial class initialize_metadata : Migration
 
 		migrationBuilder.InsertData(
 			table: "entityactiontypes",
-			columns: new[] { "Id", "Name" },
+			columns: ["Id", "Name"],
 			values: new object[,]
 			{
 				{ 6, "ManageMetadata" },
@@ -737,7 +737,7 @@ public partial class initialize_metadata : Migration
 
 		migrationBuilder.InsertData(
 			table: "entitytypegeneralusagecategories",
-			columns: new[] { "Id", "Name" },
+			columns: ["Id", "Name"],
 			values: new object[,]
 			{
 				{ 1, "WorkingData" },
@@ -747,7 +747,7 @@ public partial class initialize_metadata : Migration
 
 		migrationBuilder.InsertData(
 			table: "expressionformats",
-			columns: new[] { "Id", "Identifier", "Title" },
+			columns: ["Id", "Identifier", "Title"],
 			values: new object[,]
 			{
 				{ 3, "C#", "C#" },
@@ -757,7 +757,7 @@ public partial class initialize_metadata : Migration
 
 		migrationBuilder.InsertData(
 			table: "facettypes",
-			columns: new[] { "Id", "Identifier", "Name" },
+			columns: ["Id", "Identifier", "Name"],
 			values: new object[,]
 			{
 				{ 3, "string", "String" },
@@ -767,7 +767,7 @@ public partial class initialize_metadata : Migration
 
 		migrationBuilder.InsertData(
 			table: "propertygeneralusagecategories",
-			columns: new[] { "Id", "Name" },
+			columns: ["Id", "Name"],
 			values: new object[,]
 			{
 				{ 4, "NavigationProperty" },
@@ -779,7 +779,7 @@ public partial class initialize_metadata : Migration
 
 		migrationBuilder.InsertData(
 			table: "roles",
-			columns: new[] { "Id", "Name" },
+			columns: ["Id", "Name"],
 			values: new object[,]
 			{
 				{ new Guid("2e17424d-9a7c-44ee-962e-0a0e12176cff"), "Anonymous" },
@@ -788,17 +788,17 @@ public partial class initialize_metadata : Migration
 
 		migrationBuilder.InsertData(
 			table: "entitytypefacetdefinitions",
-			columns: new[] { "Id", "EnumTypeId", "FacetTypeId", "Name" },
-			values: new object[] { 1, null, 1, "NotMapped" });
+			columns: ["Id", "EnumTypeId", "FacetTypeId", "Name"],
+			values: [1, null, 1, "NotMapped"]);
 
 		migrationBuilder.InsertData(
 			table: "permissions",
-			columns: new[] { "Id", "ActionName", "ActionTypeId", "AppInstanceId", "EntityTypeId", "PermissionType", "RoleId", "UserId" },
-			values: new object[] { 1, null, null, null, null, 1, new Guid("7555dd25-ee7f-4a21-9156-3867dcbced77"), null });
+			columns: ["Id", "ActionName", "ActionTypeId", "AppInstanceId", "EntityTypeId", "PermissionType", "RoleId", "UserId"],
+			values: [1, null, null, null, null, 1, new Guid("7555dd25-ee7f-4a21-9156-3867dcbced77"), null]);
 
 		migrationBuilder.InsertData(
 			table: "propertyfacetdefinitions",
-			columns: new[] { "Id", "EnumTypeId", "FacetTypeId", "Name" },
+			columns: ["Id", "EnumTypeId", "FacetTypeId", "Name"],
 			values: new object[,]
 			{
 				{ 1, null, 1, "HideInInsert" },
@@ -810,7 +810,7 @@ public partial class initialize_metadata : Migration
 
 		migrationBuilder.InsertData(
 			table: "propertyfacetdefaultvalues",
-			columns: new[] { "Id", "AppInstanceId", "AppTypeId", "DefaultValue", "FacetDefinitionId", "GeneralUsageCategoryId" },
+			columns: ["Id", "AppInstanceId", "AppTypeId", "DefaultValue", "FacetDefinitionId", "GeneralUsageCategoryId"],
 			values: new object[,]
 			{
 				{ 1, null, null, "false", 1, 1 },
@@ -922,7 +922,7 @@ public partial class initialize_metadata : Migration
 		migrationBuilder.CreateIndex(
 			name: "IX_entitytypes_AppTypeId_Name",
 			table: "entitytypes",
-			columns: new[] { "AppTypeId", "Name" },
+			columns: ["AppTypeId", "Name"],
 			unique: true);
 
 		migrationBuilder.CreateIndex(
@@ -953,7 +953,7 @@ public partial class initialize_metadata : Migration
 		migrationBuilder.CreateIndex(
 			name: "IX_expressiondefinitions_AppTypeId_Identifier",
 			table: "expressiondefinitions",
-			columns: new[] { "AppTypeId", "Identifier" },
+			columns: ["AppTypeId", "Identifier"],
 			unique: true);
 
 		migrationBuilder.CreateIndex(
@@ -1014,7 +1014,7 @@ public partial class initialize_metadata : Migration
 		migrationBuilder.CreateIndex(
 			name: "IX_properties_OwnerEntityTypeId_Name",
 			table: "properties",
-			columns: new[] { "OwnerEntityTypeId", "Name" },
+			columns: ["OwnerEntityTypeId", "Name"],
 			unique: true);
 
 		migrationBuilder.CreateIndex(

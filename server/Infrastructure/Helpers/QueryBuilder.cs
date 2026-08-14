@@ -69,18 +69,18 @@ public static class QueryBuilder
 		var keyType = groupByExpression.GetType().GetTypeInfo().GetGenericArguments().Single().GetTypeInfo().GetGenericArguments().Last();
 		var groupByMethod = typeof(Queryable).GetTypeInfo().GetMethods().Single(x => x.Name == nameof(Queryable.GroupBy) && x.GetParameters().Length == 2)
 			.MakeGenericMethod(typeof(TEntity), keyType);
-		var groupped = groupByMethod.Invoke(null, new object[] { query, groupByExpression });
+		var groupped = groupByMethod.Invoke(null, [query, groupByExpression]);
 		var itemType = groupped.GetType().GetTypeInfo().GetGenericArguments().Single();
 		var grouppedParam = Expression.Parameter(itemType);
 		var selectExpression = typeof(QueryBuilder).GetTypeInfo().GetMethod(nameof(CreateDynamicSelect), BindingFlags.Static | BindingFlags.NonPublic).MakeGenericMethod(itemType)
-			.Invoke(null, new object[]{ groupped, grouppedParam,
+			.Invoke(null, [ groupped, grouppedParam,
 			request.GroupBy.Select((x, i) => ExpressionBuilder.Path($"Key.Item{i+1}" , grouppedParam))
-			.Union((request.Aggregations?? Enumerable.Empty<AggregationInfo>()).Select(x => ExpressionBuilder.GetSimpleAggregate(x, grouppedParam))) });
+			.Union((request.Aggregations?? Enumerable.Empty<AggregationInfo>()).Select(x => ExpressionBuilder.GetSimpleAggregate(x, grouppedParam))) ]);
 		var resultType = selectExpression.GetType().GetTypeInfo().GetGenericArguments().Single().GetTypeInfo().GetGenericArguments().Last();
 		var selectedMethod = typeof(Queryable).GetTypeInfo().GetMethods().Single(x => x.Name == nameof(Queryable.Select) &&
 				x.GetParameters()[1].ParameterType.GetTypeInfo().GetGenericArguments().Single().GetTypeInfo().GetGenericArguments().Length == 2)
 			.MakeGenericMethod(itemType, resultType);
-		var result = selectedMethod.Invoke(null, new object[] { groupped, selectExpression }) as IQueryable<object>;
+		var result = selectedMethod.Invoke(null, [groupped, selectExpression]) as IQueryable<object>;
 		grouppedItemType = resultType;
 		return result;
 	}
@@ -124,7 +124,7 @@ public static class QueryBuilder
 				type = typeof(Nullable<>).MakeGenericType(type);
 				path = Expression.Convert(path, type);
 			}
-			path = Expression.Call(path, type.GetMethod(nameof(Object.ToString), Type.EmptyTypes));
+			path = Expression.Call(path, type.GetMethod(nameof(ToString), Type.EmptyTypes));
 		}
 		var nameAssignment = Expression.Bind(typeof(NameResponseItem).GetProperty(nameof(NameResponseItem.DisplayName)), path);
 		var selection = Expression.MemberInit(Expression.New(modelType), idAssignment, nameAssignment);
@@ -218,7 +218,7 @@ public static class QueryBuilder
 		var param = Expression.Parameter(typeof(T), "x");
 		var lambda = ExpressionBuilder.Path(propertyName, param);
 		method = method.MakeGenericMethod(typeof(T), lambda.ReturnType);
-		var sorted = method.Invoke(null, new object[] { query, lambda });
+		var sorted = method.Invoke(null, [query, lambda]);
 		return sorted as IQueryable<T>;
 	}
 

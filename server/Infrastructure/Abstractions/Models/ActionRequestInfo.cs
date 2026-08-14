@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 public class ActionRequestInfo
 {
 
-	private static readonly string[] _anonymousRoles = { "Anonymous" };
+	private static readonly string[] _anonymousRoles = ["Anonymous"];
 	public ActionRequestInfo(
 		HttpContext httpContext,
 		IImplementationsContainer implementationsContainer,

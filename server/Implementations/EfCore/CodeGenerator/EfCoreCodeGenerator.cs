@@ -160,15 +160,13 @@ public class EfCoreCodeGenerator
 	public void GenerateSourceCode(CodeDomBusinessCode code, string fileName)
 	{
 		var provider = new CSharpCodeProvider();
-		using (var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-		using (var streamWriter = new StreamWriter(fileStream))
+		using var fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+		using var streamWriter = new StreamWriter(fileStream);
+		var codeWriter = new IndentedTextWriter(streamWriter, "	");
+		provider.GenerateCodeFromCompileUnit(code.Code, codeWriter, new CodeGeneratorOptions
 		{
-			var codeWriter = new IndentedTextWriter(streamWriter, "	");
-			provider.GenerateCodeFromCompileUnit(code.Code, codeWriter, new CodeGeneratorOptions
-			{
-				IndentString = "	"
-			});
-			codeWriter.Close();
-		}
+			IndentString = "	"
+		});
+		codeWriter.Close();
 	}
 }

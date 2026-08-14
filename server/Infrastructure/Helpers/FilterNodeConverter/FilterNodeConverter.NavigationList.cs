@@ -35,8 +35,8 @@ static partial class FilterNodeConverter
 		method = method.MakeGenericMethod(elementType);
 		var expression = Expression.Call(method,
 			parameterCount == 1
-			? new Expression[] { parent }
-			: new Expression[] { parent, filter });
+			? [parent]
+			: [parent, filter]);
 		if (negate)
 		{
 			return Expression.Not(expression);

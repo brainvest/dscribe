@@ -26,8 +26,8 @@ public class EfCoreEntityHandler(
 		var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 		var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.CountByFilterInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 		var r = this.GetType().GetMethod(nameof(CreateGenericListRequest), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType)
-				.Invoke(this, new object[] { request });
-		var awaitable = method.Invoke(_handlerInternal, new object[] { r }) as Task<int>;
+				.Invoke(this, [request]);
+		var awaitable = method.Invoke(_handlerInternal, [r]) as Task<int>;
 		return await awaitable;
 	}
 
@@ -36,8 +36,8 @@ public class EfCoreEntityHandler(
 		var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 		var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetByFilterInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 		var r = this.GetType().GetMethod(nameof(CreateGenericListRequest), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType)
-				.Invoke(this, new object[] { request });
-		var awaitable = method.Invoke(_handlerInternal, new object[] { r }) as Task<IEnumerable>;
+				.Invoke(this, [request]);
+		var awaitable = method.Invoke(_handlerInternal, [r]) as Task<IEnumerable>;
 		return await awaitable;
 	}
 
@@ -46,8 +46,8 @@ public class EfCoreEntityHandler(
 		var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 		var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.CountGroupsInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 		var r = this.GetType().GetMethod(nameof(CreateGenericGroupRequest), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType)
-				.Invoke(this, new object[] { request });
-		var awaitable = method.Invoke(_handlerInternal, new object[] { r }) as Task<int>;
+				.Invoke(this, [request]);
+		var awaitable = method.Invoke(_handlerInternal, [r]) as Task<int>;
 		return await awaitable;
 	}
 
@@ -56,7 +56,7 @@ public class EfCoreEntityHandler(
 		var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 		var keyType = _implementationsContainer.Metadata[request.EntityTypeName].GetPrimaryKey().GetDataType().GetClrType();
 		var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetExpressionValueInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType, keyType);
-		var awaitable = method.Invoke(_handlerInternal, new object[] { request.Ids, request.Properties }) as Task;
+		var awaitable = method.Invoke(_handlerInternal, [request.Ids, request.Properties]) as Task;
 		await awaitable;
 		return awaitable.GetType().GetProperty("Result").GetValue(awaitable) as ExpressionValueResponse;
 	}
@@ -66,8 +66,8 @@ public class EfCoreEntityHandler(
 		var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 		var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetGrouppedInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 		var r = this.GetType().GetMethod(nameof(CreateGenericGroupRequest), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType)
-				.Invoke(this, new object[] { request });
-		var awaitable = method.Invoke(_handlerInternal, new object[] { r }) as Task<IEnumerable>;
+				.Invoke(this, [request]);
+		var awaitable = method.Invoke(_handlerInternal, [r]) as Task<IEnumerable>;
 		return await awaitable;
 	}
 
@@ -76,7 +76,7 @@ public class EfCoreEntityHandler(
 		var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 		var keyType = _implementationsContainer.Metadata[request.EntityTypeName].GetPrimaryKey().GetDataType().GetClrType();
 		var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetIdAndNameInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType, keyType);
-		var awaitable = method.Invoke(_handlerInternal, new object[] { request.Ids }) as Task<IEnumerable<NameResponseItem>>;
+		var awaitable = method.Invoke(_handlerInternal, [request.Ids]) as Task<IEnumerable<NameResponseItem>>;
 		return await awaitable;
 	}
 
@@ -85,7 +85,7 @@ public class EfCoreEntityHandler(
 		var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 		var keyType = _implementationsContainer.Metadata[request.EntityTypeName].GetPrimaryKey().GetDataType().GetClrType();
 		var method = _handlerInternal.GetType().GetMethod(nameof(EfCoreEntityHandlerInternal.GetAutocompleteItemsInternal), BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType, keyType);
-		var awaitable = method.Invoke(_handlerInternal, new object[] { request.QueryText }) as Task<IEnumerable<NameResponseItem>>;
+		var awaitable = method.Invoke(_handlerInternal, [request.QueryText]) as Task<IEnumerable<NameResponseItem>>;
 		return await awaitable;
 	}
 
@@ -110,7 +110,7 @@ public class EfCoreEntityHandler(
 		var entityType = _implementationsContainer.Reflector.GetType(request.EntityTypeName);
 		var method = _handlerInternal.GetType().GetMethod(internalMethodName, BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod(entityType);
 		object r = EntityHelper.CreateGenericObject(request, entityType);
-		var awaitable = method.Invoke(_handlerInternal, new object[] { r, businessRepository, actionContext }) as Task<Result<object>>;
+		var awaitable = method.Invoke(_handlerInternal, [r, businessRepository, actionContext]) as Task<Result<object>>;
 		return await awaitable;
 	}
 

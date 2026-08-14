@@ -44,7 +44,7 @@ public class EntityHelper(IImplementationsContainer implementationsContainer)
 	public static object CreateGenericObject(ManageEntityRequest request, Type entityType)
 	{
 		var entity = ConvertDeserializedObjectToStaticType(request.Entity, entityType);
-		var r = typeof(ManageEntityRequest<>).MakeGenericType(entityType).GetConstructors().First().Invoke(new object[] { entity });
+		var r = typeof(ManageEntityRequest<>).MakeGenericType(entityType).GetConstructors().First().Invoke([entity]);
 		return r;
 	}
 

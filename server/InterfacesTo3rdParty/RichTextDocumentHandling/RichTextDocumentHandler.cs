@@ -51,14 +51,12 @@ public class RichTextDocumentHandler : IRichTextDocumentHandler
 			}
 		}
 
-		using (var output = new MemoryStream())
-		{
-			document.Write(output);
-			var bytes = new byte[output.Position];
-			output.Seek(0, SeekOrigin.Begin);
-			output.Read(bytes, 0, bytes.Length);
-			return bytes;
-		}
+		using var output = new MemoryStream();
+		document.Write(output);
+		var bytes = new byte[output.Position];
+		output.Seek(0, SeekOrigin.Begin);
+		output.Read(bytes, 0, bytes.Length);
+		return bytes;
 	}
 
 	private IEnumerable<XWPFRun> GetRuns(XWPFDocument document)

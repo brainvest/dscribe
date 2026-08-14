@@ -200,7 +200,7 @@ partial class FilterNodeConverter
 		var add = list.GetType().GetMethod(nameof(IList.Add));
 		foreach (var val in node.Values)
 		{
-			add.Invoke(list, new object[] { ConvertValue(val, type) });
+			add.Invoke(list, [ConvertValue(val, type)]);
 		}
 		return Constant(list, list.GetType());
 	}

@@ -43,7 +43,7 @@ public static class ExpressionBuilder
 		else
 		{
 			var itemParam = Expression.Parameter(elementType, "item");
-			selectExpression = ExpressionBuilder.Path(x.SourcePropertyName, itemParam);
+			selectExpression = Path(x.SourcePropertyName, itemParam);
 			var returnType = selectExpression.ReturnType;
 			if (returnType == typeof(Int16) || returnType == typeof(byte) || returnType == typeof(SByte) || returnType == typeof(UInt16))
 			{
@@ -54,7 +54,7 @@ public static class ExpressionBuilder
 					m.GetParameters()[1].ParameterType.GetTypeInfo().GetGenericArguments().Last() == returnType);
 			method = method.MakeGenericMethod(elementType);
 		}
-		var parameters = selectExpression == null ? new Expression[] { grouppedParam } : new Expression[] { grouppedParam, selectExpression };
+		var parameters = selectExpression == null ? new Expression[] { grouppedParam } : [grouppedParam, selectExpression];
 		var invoke = Expression.Call(method, parameters);
 		return Expression.Lambda(invoke, grouppedParam);
 	}

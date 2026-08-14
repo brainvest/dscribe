@@ -18,36 +18,32 @@ public class AttachmentController(IImplementationsContainer implementationsConta
 	public async Task<ActionResult<AttachmentsListResponse>> GetAttachmentsList(AttachmentsListRequest request)
 	{
 		var entityTypeId = _implementationsContainer.Metadata[request.EntityTypeName].EntityTypeId;
-		using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
-		{
-			var attachmets = await dbContext.Attachments.Where(x => x.EntityTypeId == entityTypeId && x.Identifier == request.Identifier)
-				.Select(x => new AttachmentsListResponse.Item
-				{
-					Description = x.Description,
-					EntityTypeId = x.EntityTypeId,
-					Id = x.Id,
-					Identifier = x.Identifier,
-					IsDeleted = x.IsDeleted,
-					Title = x.Title,
-					Url = x.Url,
-					FileName = x.FileName,
-					Size = x.Size
-				})
-				.ToListAsync();
-			return new AttachmentsListResponse
+		using var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext;
+		var attachmets = await dbContext.Attachments.Where(x => x.EntityTypeId == entityTypeId && x.Identifier == request.Identifier)
+			.Select(x => new AttachmentsListResponse.Item
 			{
-				Items = attachmets
-			};
-		}
+				Description = x.Description,
+				EntityTypeId = x.EntityTypeId,
+				Id = x.Id,
+				Identifier = x.Identifier,
+				IsDeleted = x.IsDeleted,
+				Title = x.Title,
+				Url = x.Url,
+				FileName = x.FileName,
+				Size = x.Size
+			})
+			.ToListAsync();
+		return new AttachmentsListResponse
+		{
+			Items = attachmets
+		};
 	}
 
 	public async Task<ActionResult> Download(DownloadAttachmentRequest request)
 	{
-		using (var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext)
-		{
-			var attachment = await dbContext.Attachments.FindAsync(request.Id);
-			HttpContext.Response.Headers["Access-Control-Expose-Headers"] = "Content-Disposition";
-			return File(attachment.Data, "application/octet-stream", attachment.FileName);
-		}
+		using var dbContext = _implementationsContainer.GetLobToolsRepository() as LobToolsDbContext;
+		var attachment = await dbContext.Attachments.FindAsync(request.Id);
+		HttpContext.Response.Headers["Access-Control-Expose-Headers"] = "Content-Disposition";
+		return File(attachment.Data, "application/octet-stream", attachment.FileName);
 	}
 }

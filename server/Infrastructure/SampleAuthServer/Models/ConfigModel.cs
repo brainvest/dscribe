@@ -9,7 +9,6 @@ public class ConfigModel
 	public bool AllowRegistration { get; set; }
 	public string PathBase { get; set; }
 	public PasswordConfigModel Password { get; set; }
-	public int MyProperty { get; set; }
 	public SignInConfigModel SignIn { get; set; }
 	public EmailConfigModel Email { get; set; }
 }

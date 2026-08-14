@@ -21,11 +21,9 @@ public static class EfCoreHelper
 
 	public static void PerformMigrations(Func<DbContext> dbContextFactory)
 	{
-		using (var context = dbContextFactory())
-		{
-			typeof(EfCoreHelper).GetMethods()
-				.Single(x => x.Name == nameof(PerformMigrations) && x.IsGenericMethodDefinition)
-				.MakeGenericMethod(context.GetType()).Invoke(null, new object[] { context });
-		}
+		using var context = dbContextFactory();
+		typeof(EfCoreHelper).GetMethods()
+			.Single(x => x.Name == nameof(PerformMigrations) && x.IsGenericMethodDefinition)
+			.MakeGenericMethod(context.GetType()).Invoke(null, [context]);
 	}
 }
