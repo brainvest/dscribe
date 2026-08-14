@@ -23,8 +23,8 @@ public static partial class FilterNodeConverter
 		return (result[0], result[1]);
 	}
 
-	private static List<Type> _types = new List<Type> { typeof(byte), typeof(sbyte), typeof(ushort), typeof(short)
-		, typeof(uint), typeof(int), typeof(ulong), typeof(long), typeof(decimal), typeof(double)};
+	private static List<Type> _types = [ typeof(byte), typeof(sbyte), typeof(ushort), typeof(short)
+		, typeof(uint), typeof(int), typeof(ulong), typeof(long), typeof(decimal), typeof(double)];
 
 	public static IEnumerable<Expression> UnifyDataTypes(IEnumerable<Expression> expressions, IEnumerable<Type> allowedTypes = null)
 	{

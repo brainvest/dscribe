@@ -17,7 +17,7 @@ public abstract class Facet
 		{
 			FacetName = facetName;
 		}
-		var ownerFacets = FacetOwner.FacetRegistry.GetOrAdd(ownerType, (t) => new HashSet<Facet>());
+		var ownerFacets = FacetOwner.FacetRegistry.GetOrAdd(ownerType, (t) => []);
 		ownerFacets.Add(this);
 	}
 

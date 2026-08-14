@@ -41,9 +41,9 @@ public class EfCoreEntityValidator(IImplementationsContainer implementationsCont
 				{
 					if (propertyValidationErrors == null)
 					{
-						propertyValidationErrors = new Dictionary<string, IEnumerable<string>>();
+						propertyValidationErrors = [];
 					}
-					propertyValidationErrors.Add(property.Name, new List<string> { $"The value for {property.Title ?? property.Name} is empty." });
+					propertyValidationErrors.Add(property.Name, [$"The value for {property.Title ?? property.Name} is empty."]);
 				}
 			}
 			//Todo: Add more validation logic, like passwords, email addresses, ...

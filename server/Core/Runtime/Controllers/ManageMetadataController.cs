@@ -137,7 +137,7 @@ public class ManageMetadataController(
 		}
 		else
 		{
-			existing = new List<EntityTypeFacetValue>();
+			existing = [];
 		}
 		if (model.LocalFacets != null)
 		{
@@ -411,7 +411,7 @@ public class ManageMetadataController(
 		}
 		else
 		{
-			existing = new List<PropertyFacetValue>();
+			existing = [];
 		}
 		if (model.LocalFacets != null)
 		{

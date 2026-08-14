@@ -26,7 +26,7 @@ public abstract class MetadataFacet<TOwner, TData, TDefaultValueDisciminator>(st
 		{
 			if (_defaultValues == null)
 			{
-				_defaultValues = new Dictionary<TDefaultValueDisciminator, TData>();
+				_defaultValues = [];
 			}
 			_defaultValues.Add(generalBehavior.Value, (TData)Convert.ChangeType(value, typeof(TData)));
 		}

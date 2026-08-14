@@ -15,10 +15,10 @@ public class MetadataCache : IEnumerable<IEntityTypeMetadata>, IMetadataCache
 {
 	private static bool _facetsDefined = false;
 
-	private readonly Dictionary<string, EntityTypeMetadata> _entityTypesByName = new Dictionary<string, EntityTypeMetadata>();
-	private readonly Dictionary<int, EntityTypeMetadata> _entityTypesById = new Dictionary<int, EntityTypeMetadata>();
-	private readonly Dictionary<string, Facet> _propertyFacets = new Dictionary<string, Facet>();
-	private readonly Dictionary<string, Facet> _entityFacets = new Dictionary<string, Facet>();
+	private readonly Dictionary<string, EntityTypeMetadata> _entityTypesByName = [];
+	private readonly Dictionary<int, EntityTypeMetadata> _entityTypesById = [];
+	private readonly Dictionary<string, Facet> _propertyFacets = [];
+	private readonly Dictionary<string, Facet> _entityFacets = [];
 	private readonly Dictionary<string, DataType> _dataTypesByIndetifier;
 	private readonly Dictionary<string, ExpressionInfo> _expressions;
 	private Dictionary<int, PropertyGeneralUsageCategoryStruct> _propertyGeneralUsageCategories;
@@ -107,7 +107,7 @@ public class MetadataCache : IEnumerable<IEntityTypeMetadata>, IMetadataCache
 			_entityTypesByName[entityType.Name].BaseEntityType = _entityTypesByName[entityType.BaseEntityType.Name];
 		}
 
-		_expressions = new Dictionary<string, ExpressionInfo>();
+		_expressions = [];
 		foreach (var expressionDefiniction in bundle.ExpressionDefinitions)
 		{
 			_expressions.Add(expressionDefiniction.Identifier, new ExpressionInfo

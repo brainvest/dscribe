@@ -9,7 +9,7 @@ using Brainvest.Dscribe.MetadataDbAccess.Entities;
 public class EntityTypeMetadata(EntityType dbMetadata, EntityTypeMetadata baseEntityType) : FacetOwner, IEntityTypeMetadata
 {
 	public EntityGeneralUsageCategoryStruct GeneralBehavior { get; private set; }
-	private Dictionary<string, PropertyMetadata> _properties = new Dictionary<string, PropertyMetadata>();
+	private Dictionary<string, PropertyMetadata> _properties = [];
 	public int EntityTypeId { get; private set; } = dbMetadata.Id;
 	public string Name { get; private set; } = dbMetadata.Name;
 	public string SchemaName { get; private set; } = dbMetadata.SchemaName;
@@ -23,7 +23,7 @@ public class EntityTypeMetadata(EntityType dbMetadata, EntityTypeMetadata baseEn
 
 	#region Facets
 	public static EntityFacet<bool> NotMappedFacet { get; private set; }
-	public static Dictionary<int, Facet> _facets { get; private set; } = new Dictionary<int, Facet>();
+	public static Dictionary<int, Facet> _facets { get; private set; } = [];
 
 	public static void DefineFacets(IEnumerable<EntityTypeFacetDefinition> entityFacetDefinitions)
 	{

@@ -51,7 +51,7 @@ public class HistoryController(
 
 		if (!logs.Any())
 		{
-			return new List<EntityTypeHistoryModel>();
+			return [];
 		}
 
 		return logs.Select(x => new EntityTypeHistoryModel
@@ -88,7 +88,7 @@ public class HistoryController(
 
 		if (!logs.Any())
 		{
-			return new List<PropertyHistoryModel>();
+			return [];
 		}
 
 		return logs.Select(x => new PropertyHistoryModel
@@ -125,7 +125,7 @@ public class HistoryController(
 
 		if (!logs.Any())
 		{
-			return new List<AppInstanceHistoryModel>();
+			return [];
 		}
 
 		return logs.Select(x => new AppInstanceHistoryModel
@@ -162,7 +162,7 @@ public class HistoryController(
 
 		if (!logs.Any())
 		{
-			return new List<AppTypeHistoryModel>();
+			return [];
 		}
 
 		var result = logs.Select(x => new AppTypeHistoryModel

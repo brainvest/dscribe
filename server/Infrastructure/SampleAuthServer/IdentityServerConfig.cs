@@ -13,20 +13,20 @@ public class IdentityServerConfig
 {
 	public static IEnumerable<ApiResource> GetApiResources()
 	{
-		return new List<ApiResource>
-		{
+		return
+		[
 			new ApiResource("testapi", "Test Api")
-		};
+		];
 	}
 
 	public static IEnumerable<IdentityResource> GetIdentityResources()
 	{
-		return new List<IdentityResource>
-		{
+		return
+		[
 				new IdentityResources.OpenId(),
 				new IdentityResources.Profile(),
-				new IdentityResource("roles", "Roles", new List<string>(){ ClaimTypes.Role })
-		};
+				new IdentityResource("roles", "Roles", [ClaimTypes.Role])
+		];
 	}
 
 	public static IEnumerable<Client> GetClients(IEnumerable<ClientInfo> clients)
@@ -39,12 +39,12 @@ public class IdentityServerConfig
 			RequireConsent = false,
 			RedirectUris = x.RedirectUris.SafeUnionAll(x.SilentRefreshUris).ToList(),
 			PostLogoutRedirectUris = x.PostLogoutRedirectUris.ToList(),
-			AllowedScopes = new List<string>
-				{
+			AllowedScopes =
+				[
 						IdentityServerConstants.StandardScopes.OpenId,
 						IdentityServerConstants.StandardScopes.Profile,
 						"roles"
-				},
+				],
 			AllowedCorsOrigins = x.PostLogoutRedirectUris.Select(s => new Uri(s).GetLeftPart(UriPartial.Authority)).ToList(),
 			AllowOfflineAccess = true,
 			AllowAccessTokensViaBrowser = true,

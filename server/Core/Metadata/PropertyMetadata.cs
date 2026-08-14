@@ -30,7 +30,7 @@ public class PropertyMetadata : FacetOwner, IPropertyMetadata
 	public static PropertyFacet<string> FriendlyNameFacet { get; private set; }
 	public static PropertyFacet<bool> IsRequiredFacet { get; private set; }
 	public static PropertyFacet<bool> ReadOnlyInEditFacet { get; private set; }
-	public static Dictionary<int, Facet> _facets { get; private set; } = new Dictionary<int, Facet>();
+	public static Dictionary<int, Facet> _facets { get; private set; } = [];
 
 	private readonly string _expressionDefinitionIdentifier;
 	private LambdaExpression _definitionExpression;

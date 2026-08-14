@@ -53,7 +53,7 @@ public class HeavyOrmObjectGraphHandler(IImplementationsContainer implementation
 				}
 				if (actionContext.ExcludedProperties == null)
 				{
-					actionContext.ExcludedProperties = new List<string> { };
+					actionContext.ExcludedProperties = [];
 				}
 				(actionContext.ExcludedProperties as List<string>).Add(prop.ForeignKey.Name);
 			}

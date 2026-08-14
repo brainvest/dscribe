@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class Facet<TOwner, TData>(Type ownerType, string facetName, TData defaultValue) : Facet<TData>(ownerType, facetName)
 	where TOwner : class, IFacetOwner
 {
-	private Dictionary<WeakReference<IFacetOwner>, TData> _values = new Dictionary<WeakReference<IFacetOwner>, TData>();
+	private Dictionary<WeakReference<IFacetOwner>, TData> _values = [];
 	public TData DefaultValue { get; protected set; } = defaultValue;
 
 	public override TData GetValue(IFacetOwner owner)
