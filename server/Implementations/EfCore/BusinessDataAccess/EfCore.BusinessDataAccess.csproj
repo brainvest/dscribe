@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess</AssemblyName>
-    <RootNamespace>Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess</RootNamespace>
   </PropertyGroup>
 
 	<Import Project="..\..\..\SolutionInfo.xml" />

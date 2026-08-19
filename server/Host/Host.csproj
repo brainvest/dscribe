@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.Host</AssemblyName>
-    <RootNamespace>Brainvest.Dscribe.Host</RootNamespace>
     <UserSecretsId>2a8a1ba1-bde9-4c00-846d-723874ad9d1c</UserSecretsId>
   </PropertyGroup>
 
@@ -40,9 +39,7 @@
     <ProjectReference Include="..\Core\Runtime\Runtime.csproj" />
     <ProjectReference Include="..\Implementations\EfCore\EfCore.All\EfCore.All.csproj" />
     <ProjectReference Include="..\Infrastructure\LobTools\LobTools.csproj" />
-    <ProjectReference Include="..\Migrations\Migrations_Auth_MySql\Migrations_Auth_MySql.csproj" />
     <ProjectReference Include="..\Migrations\Migrations_Auth_PostgreSql\Migrations_Auth_PostgreSql.csproj" />
-    <ProjectReference Include="..\Migrations\Migrations_Runtime_MySql\Migrations_Runtime_MySql.csproj" />
     <ProjectReference Include="..\Migrations\Migrations_Runtime_PostgreSql\Migrations_Runtime_PostgreSql.csproj" />
   </ItemGroup>
 

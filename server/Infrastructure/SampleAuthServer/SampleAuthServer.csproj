@@ -5,7 +5,6 @@
 		<UserSecretsId>aspnet-IdentityServerHost-C2CA2F30-CEF5-4399-8037-AB2C48FD5EE6</UserSecretsId>
 		<LangVersion>latest</LangVersion>
 		<AssemblyName>Brainvest.Dscribe.Infrastructure.SampleAuthServer</AssemblyName>
-		<RootNamespace>Brainvest.Dscribe.Infrastructure.SampleAuthServer</RootNamespace>
 	</PropertyGroup>
 
 	<Import Project="..\..\SolutionInfo.xml" />
@@ -48,7 +47,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Migrations\Migrations_Auth_MySql\Migrations_Auth_MySql.csproj" />
 		<ProjectReference Include="..\..\Migrations\Migrations_Auth_PostgreSql\Migrations_Auth_PostgreSql.csproj" />
 		<ProjectReference Include="..\Auth\AuthEntities\AuthEntities.csproj" />
 		<ProjectReference Include="..\Helpers\Helpers.csproj" />

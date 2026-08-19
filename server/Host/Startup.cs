@@ -1,28 +1,17 @@
 namespace Brainvest.Dscribe.Host;
 
-using System;
 using Brainvest.Dscribe.Implementations.EfCore.All;
 using Brainvest.Dscribe.Runtime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 public class Startup(IConfiguration configuration)
 {
-	public IConfiguration Configuration { get; } = configuration;
-
 	public void ConfigureServices(IServiceCollection services)
 	{
-		services.AddCors(options => options.AddPolicy("AllowAll",
-			builder =>
-			builder
-				.AllowAnyMethod()
-				.AllowAnyOrigin()
-				.AllowAnyHeader()));
-
-		RuntimeStartup.ConfigureServices(services, Configuration, SetupProvider);
+		RuntimeStartup.ConfigureServices(services, configuration);
 		services.RegisterEfCore();
 
 		services.AddControllers()
@@ -38,38 +27,14 @@ public class Startup(IConfiguration configuration)
 		services.AddAuthentication("Bearer")
 				.AddJwtBearer(options =>
 				{
-					options.Authority = Configuration.GetSection("AuthAuthority").Get<string>();
+					options.Authority = configuration.GetSection("AuthAuthority").Get<string>();
 					options.RequireHttpsMetadata = false;
 					options.TokenValidationParameters.ValidateAudience = false;
 				});
 	}
 
-	private void SetupProvider(DbContextOptionsBuilder options, string connectionStringName)
-	{
-		var provider = Configuration.GetSection("EfProvider").Get<string>();
-		switch (provider)  // TODO: use a case-insensitive comparison
-		{
-			case "MySql":
-				var connectionString = Configuration.GetConnectionString(connectionStringName);
-				options.UseMySQL(connectionString);
-				return;
-			case "SqlServer":
-				options.UseSqlServer(
-						Configuration.GetConnectionString(connectionStringName));
-				return;
-			case "PostgreSql":
-			case "PostgreSQL":
-				options.UseNpgsql(
-						Configuration.GetConnectionString(connectionStringName));
-				return;
-			default:
-				throw new NotImplementedException($"The provider {provider} is not implemented yet.");
-		}
-	}
-
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 	{
-		app.UseCors("AllowAll");
 		RuntimeStartup.Configure(app, env);
 		app.UseRouting();
 		app.UseAuthentication();

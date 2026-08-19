@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.Migrations.Runtime.PostgreSql</AssemblyName>
-    <RootNamespace>Brainvest.Dscribe.Migrations.Runtime.PostgreSql</RootNamespace>
   </PropertyGroup>
 
 	<Import Project="..\..\SolutionInfo.xml" />

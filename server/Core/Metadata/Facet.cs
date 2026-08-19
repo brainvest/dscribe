@@ -1,7 +1,6 @@
 namespace Brainvest.Dscribe.Metadata;
 
 using System;
-using System.Collections.Generic;
 
 public abstract class Facet
 {

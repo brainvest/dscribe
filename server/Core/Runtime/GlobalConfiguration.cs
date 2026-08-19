@@ -8,7 +8,6 @@ public class GlobalConfiguration : IGlobalConfiguration
 	public string ImplementationsDirectory { get; set; }
 	public string TempDirectory { get; set; }
 	public Dictionary<string, InstanceSettings> InstanceSettings { get; set; }
-	public string LoadBusinessFromAssemblyName { get; set; }
 	public InstanceSettings DefaultInstanceSettings { get; set; }
 	public string[] ExcludeFromRequestLog { get; set; }
 

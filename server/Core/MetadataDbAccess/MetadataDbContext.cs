@@ -9,7 +9,7 @@ using Brainvest.Dscribe.MetadataDbAccess.Entities.Reporting;
 using Brainvest.Dscribe.MetadataDbAccess.Entities.Security;
 using Microsoft.EntityFrameworkCore;
 
-public class MetadataDbContext(DbContextOptions options) : DbContext(options)
+public class MetadataDbContext(DbContextOptions<MetadataDbContext> options) : DbContext(options)
 {
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

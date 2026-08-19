@@ -14,8 +14,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Migrations_Runtime_MySql;
-using Migrations_Runtime_PostgreSql;
 
 public class ImplementationContainer : IImplementationsContainer
 {
@@ -87,7 +85,7 @@ public class ImplementationContainer : IImplementationsContainer
 		switch (instanceInfo.Provider)
 		{
 			case DatabaseProviderEnum.MySql:
-				var mySqlDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext_MySql>();
+				var mySqlDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext>();
 				implementationsContainer._lobToolsDbContextOptions = mySqlDbContextOptionsBuilder
 				.UseMySQL(instanceInfo.LobConnectionString).Options;
 				break;
@@ -96,7 +94,7 @@ public class ImplementationContainer : IImplementationsContainer
 				implementationsContainer._lobToolsDbContextOptions = lobToolsDbContextOptionsBuilder.UseSqlServer(instanceInfo.LobConnectionString).Options;
 				break;
 			case DatabaseProviderEnum.PostgreSql:
-				var postgreSqlDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext_PostgreSql>();
+				var postgreSqlDbContextOptionsBuilder = new DbContextOptionsBuilder<LobToolsDbContext>();
 				implementationsContainer._lobToolsDbContextOptions = postgreSqlDbContextOptionsBuilder.UseNpgsql(instanceInfo.LobConnectionString).Options;
 				break;
 			default:
@@ -141,7 +139,7 @@ public class ImplementationContainer : IImplementationsContainer
 	public IBusinessReflector Reflector { get; private set; }
 	public IInstanceInfo InstanceInfo { get; private set; }
 
-	private DbContextOptions _lobToolsDbContextOptions;
+	private DbContextOptions<LobToolsDbContext> _lobToolsDbContextOptions;
 
 	public IDisposable GetBusinessRepository()
 	{
@@ -153,11 +151,11 @@ public class ImplementationContainer : IImplementationsContainer
 		switch (InstanceInfo.Provider)
 		{
 			case DatabaseProviderEnum.MySql:
-				return new LobToolsDbContext_MySql(_lobToolsDbContextOptions as DbContextOptions<LobToolsDbContext_MySql>);
+				return new LobToolsDbContext(_lobToolsDbContextOptions);
 			case DatabaseProviderEnum.SqlServer:
 				return new LobToolsDbContext(_lobToolsDbContextOptions);
 			case DatabaseProviderEnum.PostgreSql:
-				return new LobToolsDbContext_PostgreSql(_lobToolsDbContextOptions as DbContextOptions<LobToolsDbContext_PostgreSql>);
+				return new LobToolsDbContext(_lobToolsDbContextOptions);
 			default:
 				throw new NotImplementedException($"The provider {InstanceInfo.Provider} is not implemented");
 		}

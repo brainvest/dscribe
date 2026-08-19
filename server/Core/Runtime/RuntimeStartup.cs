@@ -1,6 +1,5 @@
 namespace Brainvest.Dscribe.Runtime;
 
-using System;
 using Brainvest.Dscribe.Abstractions;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.LobTools;
@@ -8,17 +7,16 @@ using Brainvest.Dscribe.MetadataDbAccess;
 using Brainvest.Dscribe.Runtime.AccessControl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 public class RuntimeStartup
 {
 	public static void ConfigureServices(IServiceCollection services, IConfiguration configuration
-		, Action<DbContextOptionsBuilder, string> efProviderSetup, ImplementationResolverOptions implementationResolverOptions = null)
+		, ImplementationResolverOptions implementationResolverOptions = null)
 	{
 
-		services.RegisterDbContext<MetadataDbContext>(configuration, "Metadata");
+		services.RegisterDbContext<MetadataDbContext>(configuration, "Metadata", "Runtime");
 
 		services.AddMultitenancy<IImplementationsContainer, ImplementationResolver>();
 		services.AddSingleton(implementationResolverOptions ?? new ImplementationResolverOptions { });
@@ -26,9 +24,9 @@ public class RuntimeStartup
 		services.AddSingleton<IPermissionService, PermissionCache>();
 		services.AddSingleton<IUsersService, UsersCache>();
 		services.Configure<GlobalConfiguration>(configuration.GetSection(nameof(GlobalConfiguration)));
-		var globaConfig = configuration.GetSection(nameof(GlobalConfiguration)).Get<GlobalConfiguration>();
+		var globaConfig = configuration.GetSection(nameof(GlobalConfiguration)).Get<GlobalConfiguration>() ?? new GlobalConfiguration();
 		services.AddSingleton<IGlobalConfiguration>(globaConfig);
-		LobToolsStartup.ConfigureServices(services, configuration, efProviderSetup, implementationResolverOptions?.DefaultAppInstanceId);
+		LobToolsStartup.ConfigureServices(services, configuration, implementationResolverOptions?.DefaultAppInstanceId);
 	}
 
 	public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -24,14 +24,7 @@ public class Startup(IConfiguration configuration)
 {
 	public void ConfigureServices(IServiceCollection services)
 	{
-		services.AddCors(options => options.AddPolicy("AllowAll",
-			builder =>
-			builder
-				.AllowAnyMethod()
-				.AllowAnyOrigin()
-				.AllowAnyHeader()));
-
-		services.RegisterDbContext<SecurityDbContext>(configuration, "Auth");
+		services.RegisterDbContext<SecurityDbContext>(configuration, "Auth", "Auth");
 
 		services.Configure<ConfigModel>(configuration.GetSection("Config"));
 		var config = configuration.GetSection("Config").Get<ConfigModel>();
@@ -114,7 +107,6 @@ public class Startup(IConfiguration configuration)
 			app.UseExceptionHandler("/Home/Error");
 		}
 
-		app.UseCors("AllowAll");
 		if (!string.IsNullOrWhiteSpace(options.Value.PathBase))
 		{
 			app.UsePathBase(options.Value.PathBase);

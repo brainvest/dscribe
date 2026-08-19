@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <nullable>enable</nullable>
+		<AssemblyName>Brainvest.Dscribe.Migrations.Auth.PostgreSql</AssemblyName>
   </PropertyGroup>
 
 	<Import Project="..\..\SolutionInfo.xml" />

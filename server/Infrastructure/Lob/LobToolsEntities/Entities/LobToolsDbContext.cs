@@ -2,7 +2,7 @@ namespace Brainvest.Dscribe.LobTools.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
-public class LobToolsDbContext(DbContextOptions options) : DbContext(options)
+public class LobToolsDbContext(DbContextOptions<LobToolsDbContext> options) : DbContext(options)
 {
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
