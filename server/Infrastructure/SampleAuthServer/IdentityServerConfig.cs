@@ -37,15 +37,15 @@ public class IdentityServerConfig
 			ClientName = x.ClientName,
 			AllowedGrantTypes = GrantTypes.Implicit,
 			RequireConsent = false,
-			RedirectUris = x.RedirectUris.SafeUnionAll(x.SilentRefreshUris).ToList(),
-			PostLogoutRedirectUris = x.PostLogoutRedirectUris.ToList(),
+			RedirectUris = [.. x.RedirectUris.SafeUnionAll(x.SilentRefreshUris)],
+			PostLogoutRedirectUris = [.. x.PostLogoutRedirectUris ?? []],
 			AllowedScopes =
 				[
 						IdentityServerConstants.StandardScopes.OpenId,
 						IdentityServerConstants.StandardScopes.Profile,
 						"roles"
 				],
-			AllowedCorsOrigins = x.PostLogoutRedirectUris.Select(s => new Uri(s).GetLeftPart(UriPartial.Authority)).ToList(),
+			AllowedCorsOrigins = [.. (x.PostLogoutRedirectUris ?? []).Select(s => new Uri(s).GetLeftPart(UriPartial.Authority))],
 			AllowOfflineAccess = true,
 			AllowAccessTokensViaBrowser = true,
 			AlwaysIncludeUserClaimsInIdToken = true,
