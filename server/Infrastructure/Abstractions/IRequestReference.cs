@@ -1,7 +1,7 @@
-namespace Brainvest.Dscribe.Abstractions
+namespace Brainvest.Dscribe.Abstractions;
+
+
+public interface IRequestReference
 {
-	public interface IRequestReference
-	{
-		long? RequestLogId { get; set; }
-	}
+	long? RequestLogId { get; set; }
 }

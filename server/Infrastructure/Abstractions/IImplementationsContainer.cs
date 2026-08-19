@@ -1,18 +1,16 @@
+namespace Brainvest.Dscribe.Abstractions;
+
+using System;
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
 
-namespace Brainvest.Dscribe.Abstractions
+public interface IImplementationsContainer
 {
-	public interface IImplementationsContainer
-	{
-		IInstanceInfo InstanceInfo { get; }
-		IMetadataModel MetadataModel { get; }
-		IBusinessReflector Reflector { get; }
-		IMetadataCache Metadata { get; }
-		IDisposable GetBusinessRepository();
-		DbContext GetLobToolsRepository();
-		bool MigrationsExecuted { get; set; }
-	}
+	IInstanceInfo InstanceInfo { get; }
+	IMetadataModel MetadataModel { get; }
+	IBusinessReflector Reflector { get; }
+	IMetadataCache Metadata { get; }
+	IDisposable GetBusinessRepository();
+	DbContext GetLobToolsRepository();
+	bool MigrationsExecuted { get; set; }
 }

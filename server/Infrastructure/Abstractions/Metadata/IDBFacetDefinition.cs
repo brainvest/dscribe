@@ -1,9 +1,9 @@
-namespace Brainvest.Dscribe.Abstractions.Metadata
+namespace Brainvest.Dscribe.Abstractions.Metadata;
+
+
+public interface IDBFacetDefinition
 {
-	public interface IDBFacetDefinition
-	{
-		int Id { get; set; }
-		string Name { get; set; }
-		FacetDataType FacetTypeId { get; }
-	}
+	int Id { get; set; }
+	string Name { get; set; }
+	FacetDataType FacetTypeId { get; }
 }

@@ -2,20 +2,40 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Migrations_Runtime_PostgreSql.Migrations
+#nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.Metadata
 {
-    public partial class initialize_metadata : Migration
+    /// <inheritdoc />
+    public partial class InitialCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AdditionalBehaviors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Definition = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdditionalBehaviors", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AppTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(maxLength: 200, nullable: false),
-                    Title = table.Column<string>(maxLength: 200, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,8 +46,8 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "DatabaseProviders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -38,11 +58,11 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "DataTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 200, nullable: true),
-                    Identifier = table.Column<string>(maxLength: 200, nullable: true),
-                    ClrType = table.Column<string>(nullable: true),
-                    IsValueType = table.Column<bool>(nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    Identifier = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    ClrType = table.Column<string>(type: "text", nullable: true),
+                    IsValueType = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,8 +73,8 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "EntityActionTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,9 +85,9 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "EntityTypeGeneralUsageCategories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,10 +98,10 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "EnumTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Identifier = table.Column<string>(maxLength: 200, nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Identifier = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -92,9 +112,9 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "ExpressionFormats",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
-                    Identifier = table.Column<string>(nullable: true),
-                    Title = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Identifier = table.Column<string>(type: "text", nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,9 +125,9 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "FacetTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Identifier = table.Column<string>(maxLength: 200, nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Identifier = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -118,9 +138,9 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "PropertyGeneralUsageCategories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -131,9 +151,9 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "ReportFormats",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Title = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -144,8 +164,8 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -153,17 +173,33 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExternalUserId = table.Column<string>(type: "text", nullable: true),
+                    UnifiedExternalUserId = table.Column<string>(type: "text", nullable: true),
+                    Username = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MetadataReleases",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Version = table.Column<string>(maxLength: 200, nullable: true),
-                    VersionCode = table.Column<int>(nullable: true),
-                    AppTypeId = table.Column<int>(nullable: false),
-                    ReleaseTime = table.Column<DateTime>(nullable: false),
-                    CreatedByUserId = table.Column<int>(nullable: false),
-                    MetadataSnapshot = table.Column<byte[]>(nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Version = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    VersionCode = table.Column<int>(type: "integer", nullable: true),
+                    AppTypeId = table.Column<int>(type: "integer", nullable: false),
+                    ReleaseTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedByUserId = table.Column<int>(type: "integer", nullable: false),
+                    MetadataSnapshot = table.Column<byte[]>(type: "bytea", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -180,18 +216,18 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "EntityTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    AppTypeId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 200, nullable: true),
-                    TableName = table.Column<string>(nullable: true),
-                    SchemaName = table.Column<string>(nullable: true),
-                    SingularTitle = table.Column<string>(nullable: true),
-                    PluralTitle = table.Column<string>(nullable: true),
-                    GeneralUsageCategoryId = table.Column<int>(nullable: false),
-                    BaseEntityTypeId = table.Column<int>(nullable: true),
-                    DisplayNamePath = table.Column<string>(nullable: true),
-                    CodePath = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AppTypeId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    TableName = table.Column<string>(type: "text", nullable: true),
+                    SchemaName = table.Column<string>(type: "text", nullable: true),
+                    SingularTitle = table.Column<string>(type: "text", nullable: true),
+                    PluralTitle = table.Column<string>(type: "text", nullable: true),
+                    GeneralUsageCategoryId = table.Column<int>(type: "integer", nullable: false),
+                    BaseEntityTypeId = table.Column<int>(type: "integer", nullable: true),
+                    DisplayNamePath = table.Column<string>(type: "text", nullable: true),
+                    CodePath = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -203,15 +239,15 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EntityTypes_EntityTypes_BaseEntityTypeId",
-                        column: x => x.BaseEntityTypeId,
-                        principalTable: "EntityTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_EntityTypes_EntityTypeGeneralUsageCategories_GeneralUsageCa~",
                         column: x => x.GeneralUsageCategoryId,
                         principalTable: "EntityTypeGeneralUsageCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_EntityTypes_EntityTypes_BaseEntityTypeId",
+                        column: x => x.BaseEntityTypeId,
+                        principalTable: "EntityTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -220,11 +256,11 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "EnumValues",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    EnumTypeId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Identifier = table.Column<string>(maxLength: 200, nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EnumTypeId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Identifier = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -241,11 +277,11 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "EntityTypeFacetDefinitions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: true),
-                    FacetTypeId = table.Column<int>(nullable: false),
-                    EnumTypeId = table.Column<int>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    FacetTypeId = table.Column<int>(type: "integer", nullable: false),
+                    EnumTypeId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -268,11 +304,11 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "PropertyFacetDefinitions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: true),
-                    FacetTypeId = table.Column<int>(nullable: false),
-                    EnumTypeId = table.Column<int>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    FacetTypeId = table.Column<int>(type: "integer", nullable: false),
+                    EnumTypeId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -295,20 +331,24 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "AppInstances",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    AppTypeId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 200, nullable: false),
-                    Title = table.Column<string>(maxLength: 200, nullable: false),
-                    IsProduction = table.Column<bool>(nullable: false),
-                    DatabaseProviderId = table.Column<int>(nullable: false),
-                    DataConnectionString = table.Column<string>(nullable: false),
-                    LobConnectionString = table.Column<string>(nullable: true),
-                    IsEnabled = table.Column<bool>(nullable: false),
-                    UseUnreleasedMetadata = table.Column<bool>(nullable: false),
-                    MigrateDatabase = table.Column<bool>(nullable: false),
-                    GeneratedCodeNamespace = table.Column<string>(nullable: true),
-                    MetadataReleaseId = table.Column<int>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AppTypeId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    IsProduction = table.Column<bool>(type: "boolean", nullable: false),
+                    DatabaseProviderId = table.Column<int>(type: "integer", nullable: false),
+                    DataConnectionStringTemplateName = table.Column<string>(type: "text", nullable: true),
+                    LobConnectionStringTemplateName = table.Column<string>(type: "text", nullable: true),
+                    MainDatabaseName = table.Column<string>(type: "text", nullable: true),
+                    LobDatabaseName = table.Column<string>(type: "text", nullable: true),
+                    IsEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    UseUnreleasedMetadata = table.Column<bool>(type: "boolean", nullable: false),
+                    MigrateDatabase = table.Column<bool>(type: "boolean", nullable: false),
+                    GeneratedCodeNamespace = table.Column<string>(type: "text", nullable: true),
+                    DbContextName = table.Column<string>(type: "text", nullable: true),
+                    MetadataReleaseId = table.Column<int>(type: "integer", nullable: true),
+                    SortOrder = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -337,13 +377,13 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "ReportDefinitions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    EntityTypeId = table.Column<int>(nullable: false),
-                    ReportFormatId = table.Column<int>(nullable: false),
-                    Title = table.Column<string>(nullable: true),
-                    Definition = table.Column<byte[]>(nullable: true),
-                    DefinitionUrl = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EntityTypeId = table.Column<int>(type: "integer", nullable: false),
+                    ReportFormatId = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    Definition = table.Column<byte[]>(type: "bytea", nullable: true),
+                    DefinitionUrl = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -366,12 +406,12 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "SavedFilters",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    InputEntityTypeId = table.Column<int>(nullable: false),
-                    Title = table.Column<string>(nullable: false),
-                    Body = table.Column<string>(nullable: false),
-                    UserId = table.Column<int>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    InputEntityTypeId = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Body = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -388,25 +428,25 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "EntityTypeFacetValues",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    EntityTypeId = table.Column<int>(nullable: false),
-                    FacetDefinitionId = table.Column<int>(nullable: false),
-                    Value = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EntityTypeId = table.Column<int>(type: "integer", nullable: false),
+                    FacetDefinitionId = table.Column<int>(type: "integer", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EntityTypeFacetValues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EntityTypeFacetValues_EntityTypes_EntityTypeId",
-                        column: x => x.EntityTypeId,
-                        principalTable: "EntityTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_EntityTypeFacetValues_EntityTypeFacetDefinitions_FacetDefin~",
                         column: x => x.FacetDefinitionId,
                         principalTable: "EntityTypeFacetDefinitions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_EntityTypeFacetValues_EntityTypes_EntityTypeId",
+                        column: x => x.EntityTypeId,
+                        principalTable: "EntityTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -415,13 +455,13 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "EntityTypeFacetDefaultValues",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    FacetDefinitionId = table.Column<int>(nullable: false),
-                    GeneralUsageCategoryId = table.Column<int>(nullable: false),
-                    AppTypeId = table.Column<int>(nullable: true),
-                    AppInstanceId = table.Column<int>(nullable: true),
-                    DefaultValue = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FacetDefinitionId = table.Column<int>(type: "integer", nullable: false),
+                    GeneralUsageCategoryId = table.Column<int>(type: "integer", nullable: false),
+                    AppTypeId = table.Column<int>(type: "integer", nullable: true),
+                    AppInstanceId = table.Column<int>(type: "integer", nullable: true),
+                    DefaultValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -456,29 +496,29 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "Permissions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    EntityTypeId = table.Column<int>(nullable: true),
-                    RoleId = table.Column<Guid>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: true),
-                    ActionTypeId = table.Column<int>(nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EntityTypeId = table.Column<int>(type: "integer", nullable: true),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ActionTypeId = table.Column<int>(type: "integer", nullable: true),
                     ActionName = table.Column<string>(type: "varchar(200)", nullable: true),
-                    AppInstanceId = table.Column<int>(nullable: true),
-                    PermissionType = table.Column<int>(nullable: false)
+                    AppInstanceId = table.Column<int>(type: "integer", nullable: true),
+                    PermissionType = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Permissions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Permissions_EntityActionTypes_ActionTypeId",
-                        column: x => x.ActionTypeId,
-                        principalTable: "EntityActionTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Permissions_AppInstances_AppInstanceId",
                         column: x => x.AppInstanceId,
                         principalTable: "AppInstances",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Permissions_EntityActionTypes_ActionTypeId",
+                        column: x => x.ActionTypeId,
+                        principalTable: "EntityActionTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -499,13 +539,13 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "PropertyFacetDefaultValues",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    FacetDefinitionId = table.Column<int>(nullable: false),
-                    GeneralUsageCategoryId = table.Column<int>(nullable: false),
-                    AppTypeId = table.Column<int>(nullable: true),
-                    AppInstanceId = table.Column<int>(nullable: true),
-                    DefaultValue = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FacetDefinitionId = table.Column<int>(type: "integer", nullable: false),
+                    GeneralUsageCategoryId = table.Column<int>(type: "integer", nullable: false),
+                    AppTypeId = table.Column<int>(type: "integer", nullable: true),
+                    AppInstanceId = table.Column<int>(type: "integer", nullable: true),
+                    DefaultValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -537,17 +577,42 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ExpressionBodies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DefinitionId = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    InvalidationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Comments = table.Column<string>(type: "text", nullable: true),
+                    FormatId = table.Column<int>(type: "integer", nullable: false),
+                    Body = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExpressionBodies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExpressionBodies_ExpressionFormats_FormatId",
+                        column: x => x.FormatId,
+                        principalTable: "ExpressionFormats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ExpressionDefinitions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    AppTypeId = table.Column<int>(nullable: false),
-                    Identifier = table.Column<string>(maxLength: 200, nullable: false),
-                    ShortDescription = table.Column<string>(nullable: false),
-                    LongDescription = table.Column<string>(nullable: true),
-                    MainInputEntityTypeId = table.Column<int>(nullable: false),
-                    ActiveBodyId = table.Column<int>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AppTypeId = table.Column<int>(type: "integer", nullable: false),
+                    Identifier = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    ShortDescription = table.Column<string>(type: "text", nullable: false),
+                    LongDescription = table.Column<string>(type: "text", nullable: true),
+                    MainInputEntityTypeId = table.Column<int>(type: "integer", nullable: false),
+                    ActiveBodyId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -564,35 +629,10 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                         principalTable: "EntityTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ExpressionBodies",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    DefinitionId = table.Column<int>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false),
-                    CreationTime = table.Column<DateTime>(nullable: false),
-                    InvalidationTime = table.Column<DateTime>(nullable: true),
-                    Comments = table.Column<string>(nullable: true),
-                    FormatId = table.Column<int>(nullable: false),
-                    Body = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ExpressionBodies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExpressionBodies_ExpressionDefinitions_DefinitionId",
-                        column: x => x.DefinitionId,
-                        principalTable: "ExpressionDefinitions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ExpressionBodies_ExpressionFormats_FormatId",
-                        column: x => x.FormatId,
-                        principalTable: "ExpressionFormats",
+                        name: "FK_ExpressionDefinitions_ExpressionBodies_ActiveBodyId",
+                        column: x => x.ActiveBodyId,
+                        principalTable: "ExpressionBodies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -601,23 +641,29 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "Properties",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    OwnerEntityTypeId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 200, nullable: true),
-                    Title = table.Column<string>(nullable: true),
-                    GeneralUsageCategoryId = table.Column<int>(nullable: false),
-                    DataTypeId = table.Column<int>(nullable: true),
-                    IsExpression = table.Column<bool>(nullable: false),
-                    ExpressionDefinitionId = table.Column<int>(nullable: true),
-                    DataEntityTypeId = table.Column<int>(nullable: true),
-                    IsNullable = table.Column<bool>(nullable: false),
-                    ForeignKeyPropertyId = table.Column<int>(nullable: true),
-                    InversePropertyId = table.Column<int>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OwnerEntityTypeId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    GeneralUsageCategoryId = table.Column<int>(type: "integer", nullable: false),
+                    DataTypeId = table.Column<int>(type: "integer", nullable: true),
+                    IsExpression = table.Column<bool>(type: "boolean", nullable: false),
+                    ExpressionDefinitionId = table.Column<int>(type: "integer", nullable: true),
+                    DataEntityTypeId = table.Column<int>(type: "integer", nullable: true),
+                    IsNullable = table.Column<bool>(type: "boolean", nullable: false),
+                    ForeignKeyPropertyId = table.Column<int>(type: "integer", nullable: true),
+                    InversePropertyId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Properties", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Properties_DataTypes_DataTypeId",
+                        column: x => x.DataTypeId,
+                        principalTable: "DataTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Properties_EntityTypes_DataEntityTypeId",
                         column: x => x.DataEntityTypeId,
@@ -625,9 +671,9 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Properties_DataTypes_DataTypeId",
-                        column: x => x.DataTypeId,
-                        principalTable: "DataTypes",
+                        name: "FK_Properties_EntityTypes_OwnerEntityTypeId",
+                        column: x => x.OwnerEntityTypeId,
+                        principalTable: "EntityTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -643,21 +689,42 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Properties_PropertyGeneralUsageCategories_GeneralUsageCateg~",
-                        column: x => x.GeneralUsageCategoryId,
-                        principalTable: "PropertyGeneralUsageCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Properties_Properties_InversePropertyId",
                         column: x => x.InversePropertyId,
                         principalTable: "Properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Properties_EntityTypes_OwnerEntityTypeId",
-                        column: x => x.OwnerEntityTypeId,
-                        principalTable: "EntityTypes",
+                        name: "FK_Properties_PropertyGeneralUsageCategories_GeneralUsageCateg~",
+                        column: x => x.GeneralUsageCategoryId,
+                        principalTable: "PropertyGeneralUsageCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PropertyBehaviors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PropertyId = table.Column<int>(type: "integer", nullable: false),
+                    AdditionalBehaviorId = table.Column<int>(type: "integer", nullable: false),
+                    Parameters = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PropertyBehaviors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PropertyBehaviors_AdditionalBehaviors_AdditionalBehaviorId",
+                        column: x => x.AdditionalBehaviorId,
+                        principalTable: "AdditionalBehaviors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PropertyBehaviors_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -666,27 +733,40 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "PropertyFacetValues",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    PropertyId = table.Column<int>(nullable: false),
-                    FacetDefinitionId = table.Column<int>(nullable: false),
-                    Value = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PropertyId = table.Column<int>(type: "integer", nullable: false),
+                    FacetDefinitionId = table.Column<int>(type: "integer", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PropertyFacetValues", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PropertyFacetValues_PropertyFacetDefinitions_FacetDefinitio~",
-                        column: x => x.FacetDefinitionId,
-                        principalTable: "PropertyFacetDefinitions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PropertyFacetValues_Properties_PropertyId",
                         column: x => x.PropertyId,
                         principalTable: "Properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PropertyFacetValues_PropertyFacetDefinitions_FacetDefinitio~",
+                        column: x => x.FacetDefinitionId,
+                        principalTable: "PropertyFacetDefinitions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AdditionalBehaviors",
+                columns: new[] { "Id", "Definition", "Name" },
+                values: new object[,]
+                {
+                    { 1, null, "DisplayAsDate" },
+                    { 2, null, "DisplayAsDateTime" },
+                    { 3, null, "SetTimeOnInsert" },
+                    { 4, null, "SetTimeOnUpdate" },
+                    { 5, null, "ShowDatePicker" },
+                    { 6, null, "ShowDateTimePicker" }
                 });
 
             migrationBuilder.InsertData(
@@ -695,21 +775,21 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 values: new object[,]
                 {
                     { 1, "System.Int32", "int", true, "Integer" },
-                    { 16, "System.Double", "double", true, "Double" },
-                    { 15, "System.Byte", "byte", true, "Tiny Integer" },
-                    { 14, "System.Int16", "short", true, "Short Integer" },
-                    { 13, "System.Int64", "long", true, "Long Integer" },
-                    { 12, "System.Decimal", "decimal", true, "Decimal" },
-                    { 10, null, "NavigationList", false, "Navigation List" },
-                    { 9, null, "Enum", true, "Enum" },
-                    { 11, "System.Guid", "Guid", true, "Guid" },
-                    { 7, null, "ForeignKey", true, "Foreign Key" },
-                    { 6, "System.DateTime", "DateTime", true, "Date and Time" },
-                    { 5, "System.TimeSpan", "Time", true, "Time Of Day" },
-                    { 4, "System.DateTime", "Date", true, "Date" },
-                    { 3, "System.Boolean", "bool", true, "Boolean" },
                     { 2, "System.String", "string", false, "String" },
-                    { 8, null, "NavigationEntity", false, "Navigation Property" }
+                    { 3, "System.Boolean", "bool", true, "Boolean" },
+                    { 4, "System.DateTime", "Date", true, "Date" },
+                    { 5, "System.TimeSpan", "Time", true, "Time Of Day" },
+                    { 6, "System.DateTime", "DateTime", true, "Date and Time" },
+                    { 7, null, "ForeignKey", true, "Foreign Key" },
+                    { 8, null, "NavigationEntity", false, "Navigation Property" },
+                    { 9, null, "Enum", true, "Enum" },
+                    { 10, null, "NavigationList", false, "Navigation List" },
+                    { 11, "System.Guid", "Guid", true, "Guid" },
+                    { 12, "System.Decimal", "decimal", true, "Decimal" },
+                    { 13, "System.Int64", "long", true, "Long Integer" },
+                    { 14, "System.Int16", "short", true, "Short Integer" },
+                    { 15, "System.Byte", "byte", true, "Tiny Integer" },
+                    { 16, "System.Double", "double", true, "Double" }
                 });
 
             migrationBuilder.InsertData(
@@ -718,7 +798,8 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 values: new object[,]
                 {
                     { 1, "MySql" },
-                    { 2, "SqlServer" }
+                    { 2, "SqlServer" },
+                    { 3, "PostgreSql" }
                 });
 
             migrationBuilder.InsertData(
@@ -726,13 +807,13 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 6, "ManageMetadata" },
-                    { 7, "CustomNamedAction" },
-                    { 5, "Update" },
-                    { 3, "Insert" },
-                    { 2, "Select" },
                     { 1, "GetMetadata" },
-                    { 4, "Delete" }
+                    { 2, "Select" },
+                    { 3, "Insert" },
+                    { 4, "Delete" },
+                    { 5, "Update" },
+                    { 6, "ManageMetadata" },
+                    { 7, "CustomNamedAction" }
                 });
 
             migrationBuilder.InsertData(
@@ -750,9 +831,9 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 columns: new[] { "Id", "Identifier", "Title" },
                 values: new object[,]
                 {
-                    { 3, "C#", "C#" },
                     { 1, "SimplePath", "Simple Path" },
-                    { 2, "Json", "Json" }
+                    { 2, "Json", "Json" },
+                    { 3, "C#", "C#" }
                 });
 
             migrationBuilder.InsertData(
@@ -760,9 +841,9 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 columns: new[] { "Id", "Identifier", "Name" },
                 values: new object[,]
                 {
-                    { 3, "string", "String" },
                     { 1, "bool", "Boolean" },
-                    { 2, "int", "Integer" }
+                    { 2, "int", "Integer" },
+                    { 3, "string", "String" }
                 });
 
             migrationBuilder.InsertData(
@@ -770,10 +851,10 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 4, "NavigationProperty" },
                     { 1, "NormalData" },
                     { 2, "PrimaryKey" },
                     { 3, "ForeignKey" },
+                    { 4, "NavigationProperty" },
                     { 5, "NavigationList" }
                 });
 
@@ -815,20 +896,26 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 {
                     { 1, null, null, "false", 1, 1 },
                     { 2, null, null, "true", 1, 2 },
-                    { 12, null, null, "true", 1, 5 },
-                    { 14, null, null, "true", 1, 4 },
                     { 3, null, null, "false", 2, 1 },
                     { 4, null, null, "true", 2, 2 },
-                    { 13, null, null, "true", 2, 5 },
-                    { 15, null, null, "true", 2, 4 },
                     { 5, null, null, "false", 3, 2 },
-                    { 10, null, null, "false", 3, 4 },
-                    { 11, null, null, "false", 3, 5 },
                     { 6, null, null, "true", 4, 2 },
+                    { 7, null, null, "true", 5, 2 },
                     { 8, null, null, "true", 4, 5 },
                     { 9, null, null, "true", 4, 4 },
-                    { 7, null, null, "true", 5, 2 }
+                    { 10, null, null, "false", 3, 4 },
+                    { 11, null, null, "false", 3, 5 },
+                    { 12, null, null, "true", 1, 5 },
+                    { 13, null, null, "true", 2, 5 },
+                    { 14, null, null, "true", 1, 4 },
+                    { 15, null, null, "true", 2, 4 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdditionalBehaviors_Name",
+                table: "AdditionalBehaviors",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppInstances_AppTypeId",
@@ -910,6 +997,12 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 column: "FacetDefinitionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EntityTypes_AppTypeId_Name",
+                table: "EntityTypes",
+                columns: new[] { "AppTypeId", "Name" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EntityTypes_BaseEntityTypeId",
                 table: "EntityTypes",
                 column: "BaseEntityTypeId");
@@ -918,12 +1011,6 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "IX_EntityTypes_GeneralUsageCategoryId",
                 table: "EntityTypes",
                 column: "GeneralUsageCategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EntityTypes_AppTypeId_Name",
-                table: "EntityTypes",
-                columns: new[] { "AppTypeId", "Name" },
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_EnumValues_EnumTypeId",
@@ -946,15 +1033,15 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 column: "ActiveBodyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExpressionDefinitions_MainInputEntityTypeId",
-                table: "ExpressionDefinitions",
-                column: "MainInputEntityTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ExpressionDefinitions_AppTypeId_Identifier",
                 table: "ExpressionDefinitions",
                 columns: new[] { "AppTypeId", "Identifier" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExpressionDefinitions_MainInputEntityTypeId",
+                table: "ExpressionDefinitions",
+                column: "MainInputEntityTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MetadataReleases_AppTypeId",
@@ -1018,6 +1105,16 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_PropertyBehaviors_AdditionalBehaviorId",
+                table: "PropertyBehaviors",
+                column: "AdditionalBehaviorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PropertyBehaviors_PropertyId",
+                table: "PropertyBehaviors",
+                column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PropertyFacetDefaultValues_AppInstanceId",
                 table: "PropertyFacetDefaultValues",
                 column: "AppInstanceId");
@@ -1072,15 +1169,22 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 table: "SavedFilters",
                 column: "InputEntityTypeId");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_UnifiedExternalUserId",
+                table: "Users",
+                column: "UnifiedExternalUserId",
+                unique: true);
+
             migrationBuilder.AddForeignKey(
-                name: "FK_ExpressionDefinitions_ExpressionBodies_ActiveBodyId",
-                table: "ExpressionDefinitions",
-                column: "ActiveBodyId",
-                principalTable: "ExpressionBodies",
+                name: "FK_ExpressionBodies_ExpressionDefinitions_DefinitionId",
+                table: "ExpressionBodies",
+                column: "DefinitionId",
+                principalTable: "ExpressionDefinitions",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
@@ -1116,6 +1220,9 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "Permissions");
 
             migrationBuilder.DropTable(
+                name: "PropertyBehaviors");
+
+            migrationBuilder.DropTable(
                 name: "PropertyFacetDefaultValues");
 
             migrationBuilder.DropTable(
@@ -1128,6 +1235,9 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "SavedFilters");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "EntityTypeFacetDefinitions");
 
             migrationBuilder.DropTable(
@@ -1137,13 +1247,16 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
+                name: "AdditionalBehaviors");
+
+            migrationBuilder.DropTable(
                 name: "AppInstances");
 
             migrationBuilder.DropTable(
-                name: "PropertyFacetDefinitions");
+                name: "Properties");
 
             migrationBuilder.DropTable(
-                name: "Properties");
+                name: "PropertyFacetDefinitions");
 
             migrationBuilder.DropTable(
                 name: "ReportFormats");
@@ -1155,16 +1268,16 @@ namespace Migrations_Runtime_PostgreSql.Migrations
                 name: "MetadataReleases");
 
             migrationBuilder.DropTable(
-                name: "EnumTypes");
-
-            migrationBuilder.DropTable(
-                name: "FacetTypes");
-
-            migrationBuilder.DropTable(
                 name: "DataTypes");
 
             migrationBuilder.DropTable(
                 name: "PropertyGeneralUsageCategories");
+
+            migrationBuilder.DropTable(
+                name: "EnumTypes");
+
+            migrationBuilder.DropTable(
+                name: "FacetTypes");
 
             migrationBuilder.DropTable(
                 name: "AppTypes");

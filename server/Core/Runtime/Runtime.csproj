@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
 		<AssemblyName>Brainvest.Dscribe.Runtime</AssemblyName>
-		<RootNamespace>Brainvest.Dscribe.Runtime</RootNamespace>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageProjectUrl>https://github.com/brainvest/dscribe</PackageProjectUrl>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
@@ -69,14 +68,6 @@
 		<ProjectReference Include="../MetadataDbAccess/MetadataDbAccess.csproj">
 			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
 			<IncludeAssets>Brainvest.Dscribe.MetadataDbAccess.dll</IncludeAssets>
-		</ProjectReference>
-		<ProjectReference Include="../../Migrations/Migrations_Runtime_PostgreSql/Migrations_Runtime_PostgreSql.csproj">
-			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-			<IncludeAssets>Brainvest.Dscribe.Migrations.Runtime.PostgreSql.dll</IncludeAssets>
-		</ProjectReference>
-		<ProjectReference Include="../../Migrations/Migrations_Runtime_MySql/Migrations_Runtime_MySql.csproj">
-			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-			<IncludeAssets>Brainvest.Dscribe.Migrations.Runtime.MySql.dll</IncludeAssets>
 		</ProjectReference>
 		<ProjectReference Include="../Metadata/Metadata.csproj">
 			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>

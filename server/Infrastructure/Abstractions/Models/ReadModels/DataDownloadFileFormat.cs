@@ -1,8 +1,8 @@
-namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
+namespace Brainvest.Dscribe.Abstractions.Models.ReadModels;
+
+
+public enum DataDownloadFileFormat
 {
-	public enum DataDownloadFileFormat
-	{
-		csv,
-		excel
-	}
+	csv,
+	excel
 }

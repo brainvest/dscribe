@@ -1,7 +1,7 @@
-namespace Brainvest.Dscribe.Abstractions.Metadata
+namespace Brainvest.Dscribe.Abstractions.Metadata;
+
+
+public enum EntityTypeFacetEnum
 {
-	public enum EntityTypeFacetEnum
-	{
-		NotMapped = 1
-	}
+	NotMapped = 1
 }

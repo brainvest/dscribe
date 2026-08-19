@@ -1,6 +1,6 @@
-namespace Brainvest.Dscribe.Abstractions.Metadata
+namespace Brainvest.Dscribe.Abstractions.Metadata;
+
+
+public class IPropertyGeneralUsageCategory
 {
-	public class IPropertyGeneralUsageCategory
-	{
-	}
 }

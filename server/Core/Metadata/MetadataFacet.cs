@@ -1,45 +1,38 @@
+namespace Brainvest.Dscribe.Metadata;
+
 using System;
 using System.Collections.Generic;
 
-namespace Brainvest.Dscribe.Metadata
+public abstract class MetadataFacet<TOwner, TData, TDefaultValueDisciminator>(string name, TData defaultValue) : Facet<TOwner, TData>(typeof(TOwner), name, defaultValue)
+	, IMetadataFacet<TDefaultValueDisciminator>
+	where TOwner : FacetOwner
+	where TDefaultValueDisciminator : struct
+	where TData : IConvertible
 {
-	public abstract class MetadataFacet<TOwner, TData, TDefaultValueDisciminator> : Facet<TOwner, TData>
-		, IMetadataFacet<TDefaultValueDisciminator>
-		where TOwner : FacetOwner
-		where TDefaultValueDisciminator : struct
-		where TData : IConvertible
+	protected Dictionary<TDefaultValueDisciminator, TData> _defaultValues;
+
+	public void ClearDefaultValues()
 	{
-		protected Dictionary<TDefaultValueDisciminator, TData> _defaultValues;
-
-		public MetadataFacet(string name, TData defaultValue)
-			: base(typeof(TOwner), name, defaultValue)
+		if (_defaultValues != null)
 		{
-
+			_defaultValues.Clear();
 		}
+		DefaultValue = default(TData);
+	}
 
-		public void ClearDefaultValues()
+	public void AddDefaultValue(TDefaultValueDisciminator? generalBehavior, string value)
+	{
+		if (generalBehavior.HasValue)
 		{
-			if (_defaultValues != null)
+			if (_defaultValues == null)
 			{
-				_defaultValues.Clear();
+				_defaultValues = [];
 			}
-			DefaultValue = default(TData);
+			_defaultValues.Add(generalBehavior.Value, (TData)Convert.ChangeType(value, typeof(TData)));
 		}
-
-		public void AddDefaultValue(TDefaultValueDisciminator? generalBehavior, string value)
+		else
 		{
-			if (generalBehavior.HasValue)
-			{
-				if (_defaultValues == null)
-				{
-					_defaultValues = new Dictionary<TDefaultValueDisciminator, TData>();
-				}
-				_defaultValues.Add(generalBehavior.Value, (TData)Convert.ChangeType(value, typeof(TData)));
-			}
-			else
-			{
-				DefaultValue = (TData)Convert.ChangeType(value, typeof(TData));
-			}
+			DefaultValue = (TData)Convert.ChangeType(value, typeof(TData));
 		}
 	}
 }

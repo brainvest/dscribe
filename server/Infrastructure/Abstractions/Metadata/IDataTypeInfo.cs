@@ -1,11 +1,10 @@
+namespace Brainvest.Dscribe.Abstractions.Metadata;
+
 using System;
 
-namespace Brainvest.Dscribe.Abstractions.Metadata
+public interface IDataTypeInfo
 {
-	public interface IDataTypeInfo
-	{
-		Type GetClrType();
-		string ClrType { get; }
-		bool IsValueType { get; }
-	}
+	Type GetClrType();
+	string ClrType { get; }
+	bool IsValueType { get; }
 }

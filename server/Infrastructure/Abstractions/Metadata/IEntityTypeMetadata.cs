@@ -1,20 +1,19 @@
+namespace Brainvest.Dscribe.Abstractions.Metadata;
+
 using System.Collections.Generic;
 
-namespace Brainvest.Dscribe.Abstractions.Metadata
+public interface IEntityTypeMetadata
 {
-	public interface IEntityTypeMetadata
-	{
-		string Name { get; }
-		string SchemaName { get; }
-		string TableName { get; }
-		string DisplayNameProperty { get; }
-		int EntityTypeId { get; }
+	string Name { get; }
+	string SchemaName { get; }
+	string TableName { get; }
+	string DisplayNameProperty { get; }
+	int EntityTypeId { get; }
 
-		IPropertyMetadata GetPrimaryKey();
-		IEnumerable<IPropertyMetadata> GetDirectProperties();
-		IEnumerable<IPropertyMetadata> GetAllProperties();
-		IPropertyMetadata GetProperty(string propertyName);
+	IPropertyMetadata GetPrimaryKey();
+	IEnumerable<IPropertyMetadata> GetDirectProperties();
+	IEnumerable<IPropertyMetadata> GetAllProperties();
+	IPropertyMetadata GetProperty(string propertyName);
 
-		bool NotMapped();
-	}
+	bool NotMapped();
 }

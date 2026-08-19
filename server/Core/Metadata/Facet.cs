@@ -1,26 +1,24 @@
+namespace Brainvest.Dscribe.Metadata;
+
 using System;
-using System.Collections.Generic;
 
-namespace Brainvest.Dscribe.Metadata
+public abstract class Facet
 {
-	public abstract class Facet
+	public string FacetName { get; private set; }
+
+	public Facet(Type ownerType, string facetName)
 	{
-		public string FacetName { get; private set; }
-
-		public Facet(Type ownerType, string facetName)
+		if (facetName.EndsWith(nameof(Facet)))
 		{
-			if (facetName.EndsWith(nameof(Facet)))
-			{
-				FacetName = facetName.Substring(0, facetName.Length - nameof(Facet).Length);
-			}
-			else
-			{
-				FacetName = facetName;
-			}
-			var ownerFacets = FacetOwner.FacetRegistry.GetOrAdd(ownerType, (t) => new HashSet<Facet>());
-			ownerFacets.Add(this);
+			FacetName = facetName.Substring(0, facetName.Length - nameof(Facet).Length);
 		}
-
-		public abstract void ClearValue(FacetOwner owner);
+		else
+		{
+			FacetName = facetName;
+		}
+		var ownerFacets = FacetOwner.FacetRegistry.GetOrAdd(ownerType, (t) => []);
+		ownerFacets.Add(this);
 	}
+
+	public abstract void ClearValue(FacetOwner owner);
 }

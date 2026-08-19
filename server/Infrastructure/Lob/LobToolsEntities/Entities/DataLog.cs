@@ -1,18 +1,14 @@
-using Brainvest.Dscribe.Abstractions.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+namespace Brainvest.Dscribe.LobTools.Entities;
 
-namespace Brainvest.Dscribe.LobTools.Entities
+using Brainvest.Dscribe.Abstractions.Models;
+
+public class DataLog
 {
-	public class DataLog
-	{
-		public long Id { get; set; }
-		public string Body { get; set; }
-		public DataRequestAction DataRequestAction { get; set; }
-		public RequestLog RequestLog { get; set; }
-		public long RequestLogId { get; set; }
-		public string DataId { get; set; }
-		public long EntityId { get; set; }
-	}
+	public long Id { get; set; }
+	public string Body { get; set; }
+	public DataRequestAction DataRequestAction { get; set; }
+	public RequestLog RequestLog { get; set; }
+	public long RequestLogId { get; set; }
+	public string DataId { get; set; }
+	public long EntityId { get; set; }
 }

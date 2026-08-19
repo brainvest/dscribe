@@ -1,14 +1,12 @@
-using System;
+namespace Describe.UnitTests;
+
 using Xunit;
 
-namespace Describe.UnitTests
+public class UnitTest1
 {
-	public class UnitTest1
+	[Fact]
+	public void Test1()
 	{
-		[Fact]
-		public void Test1()
-		{
 
-		}
 	}
 }

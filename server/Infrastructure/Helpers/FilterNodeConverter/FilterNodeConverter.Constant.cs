@@ -1,55 +1,54 @@
+namespace Brainvest.Dscribe.Helpers.FilterNodeConverter;
+
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Brainvest.Dscribe.Helpers.FilterNodeConverter
+partial class FilterNodeConverter
 {
-	partial class FilterNodeConverter
+	private static Expression Constant(object value, Type type)
 	{
-		private static Expression Constant(object value, Type type)
+		value = ConvertValue(value, type);
+		return Expression.Constant(value, type);
+	}
+
+	private static object ConvertValue(object value, Type type)
+	{
+		if (type == typeof(bool) && value == null)
 		{
-			value = ConvertValue(value, type);
-			return Expression.Constant(value, type);
+			return false;
+		}
+		if (value is string)
+		{
+			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+			{
+				var nonGenericType = type.GetGenericArguments().Single();
+				if (value.GetType() != nonGenericType)
+				{
+					value = Convert.ChangeType(value, nonGenericType);
+				}
+			}
+			else
+			{
+				value = Convert.ChangeType(value, type);
+			}
+		}
+		if (value != null && value.GetType().IsValueType && value.GetType() != type)
+		{
+			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+			{
+				var nonGenericType = type.GetGenericArguments().Single();
+				if (value.GetType() != nonGenericType)
+				{
+					value = Convert.ChangeType(value, nonGenericType);
+				}
+			}
+			else
+			{
+				value = Convert.ChangeType(value, type);
+			}
 		}
 
-		private static object ConvertValue(object value, Type type)
-		{
-			if (type == typeof(bool) && value == null)
-			{
-				return false;
-			}
-			if (value is string)
-			{
-				if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-				{
-					var nonGenericType = type.GetGenericArguments().Single();
-					if (value.GetType() != nonGenericType)
-					{
-						value = Convert.ChangeType(value, nonGenericType);
-					}
-				}
-				else
-				{
-					value = Convert.ChangeType(value, type);
-				}
-			}
-			if (value != null && value.GetType().IsValueType && value.GetType() != type)
-			{
-				if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-				{
-					var nonGenericType = type.GetGenericArguments().Single();
-					if (value.GetType() != nonGenericType)
-					{
-						value = Convert.ChangeType(value, nonGenericType);
-					}
-				}
-				else
-				{
-					value = Convert.ChangeType(value, type);
-				}
-			}
-
-			return value;
-		}
+		return value;
 	}
 }

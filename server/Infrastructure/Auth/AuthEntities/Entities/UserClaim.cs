@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Identity;
-using System;
+namespace Brainvest.Dscribe.Security.Entities;
 
-namespace Brainvest.Dscribe.Security.Entities
+using System;
+using Microsoft.AspNetCore.Identity;
+
+public class UserClaim : IdentityUserClaim<Guid>
 {
-	public class UserClaim : IdentityUserClaim<Guid>
-	{
-	}
 }

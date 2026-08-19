@@ -1,9 +1,8 @@
+namespace Brainvest.Dscribe.Abstractions.Models.ReadModels;
+
 using System.Collections.Generic;
 
-namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
+public interface IColumnsRequest
 {
-	public interface IColumnsRequest
-	{
-		IEnumerable<string> ColumnNames { get; set; }
-	}
+	IEnumerable<string> ColumnNames { get; set; }
 }

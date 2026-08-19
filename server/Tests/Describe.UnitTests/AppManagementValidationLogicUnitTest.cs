@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
+namespace Describe.UnitTests;
 
-namespace Describe.UnitTests
+
+public class AppManagementValidationLogicUnitTest
 {
-	public class AppManagementValidationLogicUnitTest
-	{
-		//[Theory]
-		//[InlineData(1)]
+	//[Theory]
+	//[InlineData(1)]
 
-	}
 }

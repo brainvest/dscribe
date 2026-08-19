@@ -1,8 +1,9 @@
 <Project>
 	<PropertyGroup>
 		<Version>0.9.3</Version>
-		<Authors>Alireza Haghshenas, Nima Hakimi, Arash Bahreini</Authors>
-		<Company>LastInfinity</Company>
+		<Authors>Alireza Haghshenas</Authors>
+		<Company>Ember.ngo</Company>
 		<Product>Dscribe</Product>
+		<RootNamespace>$(AssemblyName)</RootNamespace>
 	</PropertyGroup>
 </Project>

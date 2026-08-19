@@ -1,13 +1,13 @@
-namespace Brainvest.Dscribe.Abstractions.Models.Filtering
+namespace Brainvest.Dscribe.Abstractions.Models.Filtering;
+
+
+public enum FilterNodeType
 {
-	public enum FilterNodeType
-	{
-		Logical = 1,
-		Comparison,
-		Arithmetic,
-		Constant,
-		NavigationList,
-		Lambda,
-		Property
-	}
+	Logical = 1,
+	Comparison,
+	Arithmetic,
+	Constant,
+	NavigationList,
+	Lambda,
+	Property
 }

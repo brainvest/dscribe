@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Identity;
-using System;
+namespace Brainvest.Dscribe.Security.Entities;
 
-namespace Brainvest.Dscribe.Security.Entities
+using System;
+using Microsoft.AspNetCore.Identity;
+
+public class UserRole : IdentityUserRole<Guid>
 {
-	public class UserRole : IdentityUserRole<Guid>
-	{
-	}
 }

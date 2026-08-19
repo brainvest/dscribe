@@ -1,11 +1,10 @@
+namespace Brainvest.Dscribe.Abstractions.Models.MetadataModels;
+
 using System.Collections.Generic;
 
-namespace Brainvest.Dscribe.Abstractions.Models.MetadataModels
+public class MetadataValidationResponse
 {
-	public class MetadataValidationResponse
-	{
-		public bool Success { get; set; } = true;
-		public List<string> Warnings { get; set; } = new List<string>();
-		public List<string> Errors { get; set; } = new List<string>();
-	}
+	public bool Success { get; set; } = true;
+	public List<string> Warnings { get; set; } = [];
+	public List<string> Errors { get; set; } = [];
 }

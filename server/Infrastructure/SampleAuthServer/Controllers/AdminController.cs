@@ -1,87 +1,82 @@
+namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Controllers;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
 using Brainvest.Dscribe.Security.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer.Controllers
+[ApiController]
+[Produces("application/json")]
+[Route("api/[controller]/[action]")]
+[Authorize(Roles = "Admin, Manager")]
+public class AdminController(SecurityDbContext securityDbContext) : ControllerBase
 {
-	[ApiController]
-	[Produces("application/json")]
-	[Route("api/[controller]/[action]")]
-	[Authorize(Roles = "Admin, Manager")]
-	public class AdminController : ControllerBase
+	SecurityDbContext _securityDbContext = securityDbContext;
+
+	public async Task<IEnumerable<UserModel>> GetUsers()
 	{
-		SecurityDbContext _securityDbContext;
-		public AdminController(SecurityDbContext securityDbContext)
+		var users = await _securityDbContext.Users.Select(x => new UserModel
 		{
-			_securityDbContext = securityDbContext;
-		}
+			Email = x.Email,
+			Id = x.Id,
+			UserName = x.UserName
+		}).ToListAsync();
+		return users;
+	}
 
-		public async Task<IEnumerable<UserModel>> GetUsers()
+	public async Task<IEnumerable<RoleModel>> GetRoles()
+	{
+		var roles = await _securityDbContext.Roles.Select(x => new RoleModel
 		{
-			var users = await _securityDbContext.Users.Select(x => new UserModel
-			{
-				Email = x.Email,
-				Id = x.Id,
-				UserName = x.UserName
-			}).ToListAsync();
-			return users;
-		}
+			Id = x.Id,
+			Name = x.Name
+		}).ToListAsync();
+		return roles;
+	}
 
-		public async Task<IEnumerable<RoleModel>> GetRoles()
+	public async Task<IEnumerable<UserRoleModel>> GetUserRoles()
+	{
+		var userRoles = await _securityDbContext.UserRoles.Select(x => new UserRoleModel
 		{
-			var roles = await _securityDbContext.Roles.Select(x => new RoleModel
-			{
-				Id = x.Id,
-				Name = x.Name
-			}).ToListAsync();
-			return roles;
-		}
+			UserId = x.UserId,
+			RoleId = x.RoleId
+		}).ToListAsync();
+		return userRoles;
+	}
 
-		public async Task<IEnumerable<UserRoleModel>> GetUserRoles()
+	public async Task<bool> UpdateUserRoles(IEnumerable<UserRoleModel> newValues)
+	{
+		var existing = await _securityDbContext.UserRoles.ToListAsync();
+		foreach (var e in existing)
 		{
-			var userRoles = await _securityDbContext.UserRoles.Select(x => new UserRoleModel
+			if (!newValues.Any(x => x.RoleId == e.RoleId && x.UserId == e.UserId))
 			{
-				UserId = x.UserId,
-				RoleId = x.RoleId
-			}).ToListAsync();
-			return userRoles;
+				_securityDbContext.UserRoles.Remove(e);
+			}
 		}
-
-		public async Task<bool> UpdateUserRoles(IEnumerable<UserRoleModel> newValues)
+		foreach (var x in newValues)
 		{
-			var existing = await _securityDbContext.UserRoles.ToListAsync();
-			foreach (var e in existing)
+			if (!existing.Any(e => x.RoleId == e.RoleId && x.UserId == e.UserId))
 			{
-				if (!newValues.Any(x => x.RoleId == e.RoleId && x.UserId == e.UserId))
+				_securityDbContext.UserRoles.Add(new UserRole
 				{
-					_securityDbContext.UserRoles.Remove(e);
-				}
+					RoleId = x.RoleId,
+					UserId = x.UserId
+				});
 			}
-			foreach (var x in newValues)
-			{
-				if (!existing.Any(e => x.RoleId == e.RoleId && x.UserId == e.UserId))
-				{
-					_securityDbContext.UserRoles.Add(new UserRole
-					{
-						RoleId = x.RoleId,
-						UserId = x.UserId
-					});
-				}
-			}
-			try
-			{
-				await _securityDbContext.SaveChangesAsync();
-			}
-			catch
-			{
-				return false;
-			}
-			return true;
 		}
+		try
+		{
+			await _securityDbContext.SaveChangesAsync();
+		}
+		catch
+		{
+			return false;
+		}
+		return true;
 	}
 }

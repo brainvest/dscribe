@@ -1,90 +1,46 @@
+namespace Brainvest.Dscribe.Host;
+
 using Brainvest.Dscribe.Implementations.EfCore.All;
 using Brainvest.Dscribe.Runtime;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MySql.EntityFrameworkCore.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Serialization;
-using System;
 
-namespace Brainvest.Dscribe.Host
+public class Startup(IConfiguration configuration)
 {
-	public class Startup
+	public void ConfigureServices(IServiceCollection services)
 	{
-		public Startup(IConfiguration configuration)
+		RuntimeStartup.ConfigureServices(services, configuration);
+		services.RegisterEfCore();
+
+		services.AddControllers()
+		.AddNewtonsoftJson(options =>
 		{
-			Configuration = configuration;
-		}
-
-		public IConfiguration Configuration { get; }
-
-		public void ConfigureServices(IServiceCollection services)
+			options.UseMemberCasing();
+		})
+		.AddJsonOptions(jsonOptions =>
 		{
-			services.AddCors(options => options.AddPolicy("AllowAll",
-				builder =>
-				builder
-					.AllowAnyMethod()
-					.AllowAnyOrigin()
-					.AllowAnyHeader()));
+			jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+		});
 
-			RuntimeStartup.ConfigureServices(services, Configuration, SetupProvider);
-			services.RegisterEfCore();
+		services.AddAuthentication("Bearer")
+				.AddJwtBearer(options =>
+				{
+					options.Authority = configuration.GetSection("AuthAuthority").Get<string>();
+					options.RequireHttpsMetadata = false;
+					options.TokenValidationParameters.ValidateAudience = false;
+				});
+	}
 
-			services.AddControllers()
-			.AddNewtonsoftJson(options => {
-				options.UseMemberCasing();
-			})
-			.AddJsonOptions(jsonOptions =>
-			{
-				jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
-			});
-
-			services.AddAuthentication("Bearer")
-					.AddJwtBearer(options =>
-					{
-						options.Authority = Configuration.GetSection("AuthAuthority").Get<string>();
-						options.RequireHttpsMetadata = false;
-						options.TokenValidationParameters.ValidateAudience = false;
-					});
-		}
-
-		private void SetupProvider(DbContextOptionsBuilder options, string connectionStringName)
+	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+	{
+		RuntimeStartup.Configure(app, env);
+		app.UseRouting();
+		app.UseAuthentication();
+		app.UseEndpoints(endpoints =>
 		{
-			var provider = Configuration.GetSection("EfProvider").Get<string>();
-			switch (provider)  // TODO: use a case-insensitive comparison
-			{
-				case "MySql":
-					var connectionString = Configuration.GetConnectionString(connectionStringName);
-					options.UseMySQL(connectionString);
-					return;
-				case "SqlServer":
-					options.UseSqlServer(
-							Configuration.GetConnectionString(connectionStringName));
-					return;
-				case "PostgreSql":
-				case "PostgreSQL":
-					options.UseNpgsql(
-							Configuration.GetConnectionString(connectionStringName));
-					return;
-				default:
-					throw new NotImplementedException($"The provider {provider} is not implemented yet.");
-			}
-		}
-
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			app.UseCors("AllowAll");
-			RuntimeStartup.Configure(app, env);
-			app.UseRouting();
-			app.UseAuthentication();
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllers();
-			});
-		}
+			endpoints.MapControllers();
+		});
 	}
 }

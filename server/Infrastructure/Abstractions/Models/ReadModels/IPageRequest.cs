@@ -1,8 +1,8 @@
-namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
+namespace Brainvest.Dscribe.Abstractions.Models.ReadModels;
+
+
+public interface IPageRequest
 {
-	public interface IPageRequest
-	{
-		int? StartIndex { get; set; }
-		int? Count { get; set; }
-	}
+	int? StartIndex { get; set; }
+	int? Count { get; set; }
 }

@@ -1,11 +1,10 @@
-using Brainvest.Dscribe.Abstractions.Models.Metadata;
-using System.Collections.Generic;
+namespace Brainvest.Dscribe.Abstractions.Metadata;
 
-namespace Brainvest.Dscribe.Abstractions.Metadata
+using System.Collections.Generic;
+using Brainvest.Dscribe.Abstractions.Models.Metadata;
+
+public interface IMetadataModel
 {
-	public interface IMetadataModel
-	{
-		Dictionary<string, IPropertyGeneralUsageCategory> PropertyDefaults { get; }
-		IDictionary<string, IEntityTypeMetadataModel> EntityTypes { get; }
-	}
+	Dictionary<string, IPropertyGeneralUsageCategory> PropertyDefaults { get; }
+	IDictionary<string, IEntityTypeMetadataModel> EntityTypes { get; }
 }

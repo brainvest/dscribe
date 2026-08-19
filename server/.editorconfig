@@ -4,6 +4,14 @@ root = true
 end_of_line = crlf
 charset = utf-8
 indent_style = tab
+indent_size = 2
 
 [*.cs]
-insert_final_newline = false
+insert_final_newline = true,
+max_line_length = 120
+
+# IDE0065: Misplaced using directive
+csharp_using_directive_placement = inside_namespace
+
+# IDE0160: Convert to block scoped namespace
+csharp_style_namespace_declarations = file_scoped

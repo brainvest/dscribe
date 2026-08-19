@@ -1,7 +1,7 @@
-namespace Brainvest.Dscribe.LobTools.Models
-{
-	public class ManageReportDefinitionRequest
-	{
+namespace Brainvest.Dscribe.LobTools.Models;
 
-	}
+
+public class ManageReportDefinitionRequest
+{
+
 }

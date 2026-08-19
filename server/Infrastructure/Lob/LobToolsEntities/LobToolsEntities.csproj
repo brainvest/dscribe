@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Brainvest.Dscribe.LobTools.Entities</AssemblyName>
-    <RootNamespace>Brainvest.Dscribe.LobTools.Entities</RootNamespace>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 

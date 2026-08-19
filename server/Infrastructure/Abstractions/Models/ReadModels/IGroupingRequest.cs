@@ -1,10 +1,9 @@
+namespace Brainvest.Dscribe.Abstractions.Models.ReadModels;
+
 using System.Collections.Generic;
 
-namespace Brainvest.Dscribe.Abstractions.Models.ReadModels
+public interface IGroupingRequest
 {
-	public interface IGroupingRequest
-	{
-		ICollection<GroupItem> GroupBy { get; set; }
-		ICollection<AggregationInfo> Aggregations { get; set; }
-	}
+	ICollection<GroupItem> GroupBy { get; set; }
+	ICollection<AggregationInfo> Aggregations { get; set; }
 }

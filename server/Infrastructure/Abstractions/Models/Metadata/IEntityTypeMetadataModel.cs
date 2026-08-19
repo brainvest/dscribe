@@ -1,6 +1,6 @@
-namespace Brainvest.Dscribe.Abstractions.Models.Metadata
+namespace Brainvest.Dscribe.Abstractions.Models.Metadata;
+
+
+public interface IEntityTypeMetadataModel
 {
-	public interface IEntityTypeMetadataModel
-	{
-	}
 }

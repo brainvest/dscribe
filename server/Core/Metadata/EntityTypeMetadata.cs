@@ -1,95 +1,82 @@
+namespace Brainvest.Dscribe.Metadata;
+
+using System.Collections.Generic;
+using System.Linq;
 using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Brainvest.Dscribe.Metadata
+public class EntityTypeMetadata(EntityType dbMetadata, EntityTypeMetadata baseEntityType) : FacetOwner, IEntityTypeMetadata
 {
-	public class EntityTypeMetadata : FacetOwner, IEntityTypeMetadata
+	public EntityGeneralUsageCategoryStruct GeneralBehavior { get; private set; }
+	private Dictionary<string, PropertyMetadata> _properties = [];
+	public int EntityTypeId { get; private set; } = dbMetadata.Id;
+	public string Name { get; private set; } = dbMetadata.Name;
+	public string SchemaName { get; private set; } = dbMetadata.SchemaName;
+	public string SingularTitle { get; private set; } = (dbMetadata.SingularTitle) ?? (dbMetadata.Name.SmartSeparate());
+	public string PluralTitle { get; private set; }
+	public string TableName { get; private set; } = dbMetadata.TableName;
+	public EntityTypeMetadata BaseEntityType { get; set; } = baseEntityType;
+
+	public string DisplayNameProperty { get; set; } = dbMetadata.DisplayNamePath;
+	public string CodeProperty { get; set; } = dbMetadata.CodePath;
+
+	#region Facets
+	public static EntityFacet<bool> NotMappedFacet { get; private set; }
+	public static Dictionary<int, Facet> _facets { get; private set; } = [];
+
+	public static void DefineFacets(IEnumerable<EntityTypeFacetDefinition> entityFacetDefinitions)
 	{
-		public EntityGeneralUsageCategoryStruct GeneralBehavior { get; private set; }
-		private Dictionary<string, PropertyMetadata> _properties = new Dictionary<string, PropertyMetadata>();
-		public int EntityTypeId { get; private set; }
-		public string Name { get; private set; }
-		public string SchemaName { get; private set; }
-		public string SingularTitle { get; private set; }
-		public string PluralTitle { get; private set; }
-		public string TableName { get; private set; }
-		public EntityTypeMetadata BaseEntityType { get; set; }
+		NotMappedFacet = new EntityFacet<bool>(nameof(NotMappedFacet), false, null);
+		ReflectionHelper.FillFacetsDictionary<EntityTypeMetadata>(_facets, entityFacetDefinitions, typeof(EntityFacet<>));
+	}
 
-		public string DisplayNameProperty { get; set; }
-		public string CodeProperty { get; set; }
+	public bool NotMapped()
+	{
+		return GetFacetValue(NotMappedFacet);
+	}
 
-		#region Facets
-		public static EntityFacet<bool> NotMappedFacet { get; private set; }
-		public static Dictionary<int, Facet> _facets { get; private set; } = new Dictionary<int, Facet>();
+	#endregion
 
-		public static void DefineFacets(IEnumerable<EntityTypeFacetDefinition> entityFacetDefinitions)
+	public IPropertyMetadata GetProperty(string propertyName)
+	{
+		if (_properties.TryGetValue(propertyName, out var prop))
 		{
-			NotMappedFacet = new EntityFacet<bool>(nameof(NotMappedFacet), false, null);
-			ReflectionHelper.FillFacetsDictionary<EntityTypeMetadata>(_facets, entityFacetDefinitions, typeof(EntityFacet<>));
+			return prop;
 		}
-
-		public bool NotMapped()
+		if (BaseEntityType == null)
 		{
-			return GetFacetValue(NotMappedFacet);
+			return null;
 		}
+		return BaseEntityType.GetProperty(propertyName);
+	}
 
-		#endregion
+	public IEnumerable<IPropertyMetadata> GetDirectProperties()
+	{
+		return _properties.Values.AsEnumerable();
+	}
 
-		public EntityTypeMetadata(EntityType dbMetadata, EntityTypeMetadata baseEntityType)
+	public IEnumerable<IPropertyMetadata> GetAllProperties()
+	{
+		if (BaseEntityType == null)
 		{
-			EntityTypeId = dbMetadata.Id;
-			Name = dbMetadata.Name;
-			SchemaName = dbMetadata.SchemaName;
-			SingularTitle = (dbMetadata.SingularTitle) ?? (dbMetadata.Name.SmartSeparate());
-			TableName = dbMetadata.TableName;
-			DisplayNameProperty = dbMetadata.DisplayNamePath;
-			CodeProperty = dbMetadata.CodePath;
-			BaseEntityType = baseEntityType;
+			return GetDirectProperties();
 		}
+		return BaseEntityType.GetAllProperties().Union(GetDirectProperties());
+	}
 
-		public IPropertyMetadata GetProperty(string propertyName)
-		{
-			if (_properties.TryGetValue(propertyName, out var prop))
-			{
-				return prop;
-			}
-			if (BaseEntityType == null)
-			{
-				return null;
-			}
-			return BaseEntityType.GetProperty(propertyName);
-		}
+	internal void AddProperty(PropertyMetadata propertyMetadata)
+	{
+		_properties.Add(propertyMetadata.Name, propertyMetadata);
+	}
 
-		public IEnumerable<IPropertyMetadata> GetDirectProperties()
+	private IPropertyMetadata _primaryKey;
+	public IPropertyMetadata GetPrimaryKey()
+	{
+		if (_primaryKey == null)
 		{
-			return _properties.Values.AsEnumerable();
+			_primaryKey = GetAllProperties().SingleOrDefault(x => (x as PropertyMetadata).GeneralBahvior.PropertyGeneralUsageCategoryId == 2); //TODO: magic value
 		}
-
-		public IEnumerable<IPropertyMetadata> GetAllProperties()
-		{
-			if (BaseEntityType == null)
-			{
-				return GetDirectProperties();
-			}
-			return BaseEntityType.GetAllProperties().Union(GetDirectProperties());
-		}
-
-		internal void AddProperty(PropertyMetadata propertyMetadata)
-		{
-			_properties.Add(propertyMetadata.Name, propertyMetadata);
-		}
-
-		private IPropertyMetadata _primaryKey;
-		public IPropertyMetadata GetPrimaryKey()
-		{
-			if (_primaryKey == null)
-			{
-				_primaryKey = GetAllProperties().SingleOrDefault(x => (x as PropertyMetadata).GeneralBahvior.PropertyGeneralUsageCategoryId == 2); //TODO: magic value
-			}
-			return _primaryKey;
-		}
+		return _primaryKey;
 	}
 }
