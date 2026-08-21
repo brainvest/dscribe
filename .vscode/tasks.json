@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Host/Host.csproj",
+                "${workspaceFolder}/server/Host/Host.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -23,7 +23,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/Host/Host.csproj",
+                "${workspaceFolder}/server/Host/Host.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -36,7 +36,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/Host/Host.csproj",
+                "${workspaceFolder}/server/Host/Host.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -48,7 +48,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Infrastructure/SampleAuthServer/SampleAuthServer.csproj",
+                "${workspaceFolder}/server/Infrastructure/SampleAuthServer/SampleAuthServer.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -60,7 +60,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/Infrastructure/SampleAuthServer/SampleAuthServer.csproj",
+                "${workspaceFolder}/server/Infrastructure/SampleAuthServer/SampleAuthServer.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -73,7 +73,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/Infrastructure/SampleAuthServer/SampleAuthServer.csproj",
+                "${workspaceFolder}/server/Infrastructure/SampleAuthServer/SampleAuthServer.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

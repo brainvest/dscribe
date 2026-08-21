@@ -25,7 +25,7 @@
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="bin/$configuration$/net5.0/Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess.dll" target="lib\net5.0"/>
-		<file src="bin/$configuration$/net5.0/Brainvest.Dscribe.Implementations.EfCore.CodeGenerator.dll"  target="lib\net5.0"/>
+		<file src="bin/$configuration$/net10.0/Brainvest.Dscribe.Implementations.EfCore.BusinessDataAccess.dll" target="lib\net10.0"/>
+		<file src="bin/$configuration$/net10.0/Brainvest.Dscribe.Implementations.EfCore.CodeGenerator.dll"  target="lib\net10.0"/>
 	</files>
 </package>
