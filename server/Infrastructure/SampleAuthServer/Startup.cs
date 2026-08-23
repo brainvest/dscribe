@@ -22,6 +22,7 @@ using Newtonsoft.Json;
 
 public class Startup(IConfiguration configuration)
 {
+	// TODO: #Security: This needs a complete review. Some of the configuration should be limited to Development environment only.
 	public void ConfigureServices(IServiceCollection services)
 	{
 		// TODO: #Security: How to limit this to Development environment only? Is there any other concern?

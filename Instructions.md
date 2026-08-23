@@ -1,4 +1,4 @@
-# Config, secrets, migrations, running
+# Config, secrets, migrations, preparation, running
 
 ## Config Files
 
@@ -25,3 +25,8 @@ Update database:
 `dotnet ef database update --project Migrations/Migrations_Runtime_PostgreSql --startup-project Host --context MetadataDbContext`
 
 `dotnet ef database update --project Migrations/Migrations_Runtime_PostgreSql --startup-project Host --context LobToolsDbContext`
+
+## Preparation
+
+Create a user for the auth server:
+From folder `server/Infrastructure/SampleAuthServer`: `dotnet run -- create-user <email>`
