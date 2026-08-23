@@ -6,11 +6,19 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 public class Startup(IConfiguration configuration)
 {
 	public void ConfigureServices(IServiceCollection services)
 	{
+		services.AddCors(options => options.AddPolicy("AllowAll",
+			builder =>
+			builder
+				.AllowAnyMethod()
+				.AllowAnyOrigin()
+				.AllowAnyHeader()));
+
 		RuntimeStartup.ConfigureServices(services, configuration);
 		services.RegisterEfCore();
 
@@ -35,6 +43,10 @@ public class Startup(IConfiguration configuration)
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 	{
+		if (env.IsDevelopment())
+		{
+			app.UseCors("AllowAll");
+		}
 		RuntimeStartup.Configure(app, env);
 		app.UseRouting();
 		app.UseAuthentication();

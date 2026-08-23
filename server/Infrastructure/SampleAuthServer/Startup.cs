@@ -24,6 +24,14 @@ public class Startup(IConfiguration configuration)
 {
 	public void ConfigureServices(IServiceCollection services)
 	{
+		// TODO: #Security: How to limit this to Development environment only? Is there any other concern?
+		services.AddCors(options => options.AddPolicy("AllowAll",
+			builder =>
+			builder
+				.AllowAnyMethod()
+				.AllowAnyOrigin()
+				.AllowAnyHeader()));
+
 		services.RegisterDbContext<SecurityDbContext>(configuration, "Auth", "Auth");
 
 		services.Configure<ConfigModel>(configuration.GetSection("Config"));
@@ -101,6 +109,7 @@ public class Startup(IConfiguration configuration)
 		{
 			app.UseDeveloperExceptionPage();
 			app.UseMigrationsEndPoint();
+			app.UseCors("AllowAll");
 		}
 		else
 		{
