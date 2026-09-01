@@ -70,15 +70,19 @@ public class Startup(IConfiguration configuration)
 			options.Password.RequiredUniqueChars = config?.Password?.RequiredUniqueChars ?? 1;
 		});
 
+		// TODO: #Security: SameSite=Lax so the cookies are accepted over plain HTTP when developing locally.
+		// Browsers reject "SameSite=None" unless the cookie is also marked "Secure", which requires HTTPS.
+		// For production (or any cross-site/embedded usage) this must go back to
+		// SameSite=None together with CookieSecurePolicy.Always and be served over HTTPS.
 		services.ConfigureApplicationCookie(options =>
 			{
-				options.Cookie.SameSite = SameSiteMode.None;
+				options.Cookie.SameSite = SameSiteMode.Lax;
 			});
 
 		services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 				.AddCookie("Cookies", options =>
 		 {
-			 options.Cookie.SameSite = SameSiteMode.None;
+			 options.Cookie.SameSite = SameSiteMode.Lax;
 		 });
 
 		services.AddRazorPages();
@@ -123,9 +127,11 @@ public class Startup(IConfiguration configuration)
 			logger.LogInformation($"Using path {options.Value.PathBase}");
 		}
 		app.UseStaticFiles();
+		// TODO: #Security: Lax instead of None for local HTTP development; see the note in ConfigureServices.
+		// This also covers cookies we do not configure ourselves, e.g. Identity's "Identity.External".
 		app.UseCookiePolicy(new CookiePolicyOptions
 		{
-			MinimumSameSitePolicy = SameSiteMode.None
+			MinimumSameSitePolicy = SameSiteMode.Lax
 		});
 
 		var forwardedHeaderOptions = new ForwardedHeadersOptions
