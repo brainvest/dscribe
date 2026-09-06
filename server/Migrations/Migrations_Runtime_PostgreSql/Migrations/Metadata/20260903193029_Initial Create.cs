@@ -197,7 +197,7 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.Metadata
                     Version = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
                     VersionCode = table.Column<int>(type: "integer", nullable: true),
                     AppTypeId = table.Column<int>(type: "integer", nullable: false),
-                    ReleaseTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ReleaseTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedByUserId = table.Column<int>(type: "integer", nullable: false),
                     MetadataSnapshot = table.Column<byte[]>(type: "bytea", nullable: false)
                 },
@@ -584,8 +584,8 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.Metadata
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DefinitionId = table.Column<int>(type: "integer", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    InvalidationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreationTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    InvalidationTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     Comments = table.Column<string>(type: "text", nullable: true),
                     FormatId = table.Column<int>(type: "integer", nullable: false),
                     Body = table.Column<string>(type: "text", nullable: true)

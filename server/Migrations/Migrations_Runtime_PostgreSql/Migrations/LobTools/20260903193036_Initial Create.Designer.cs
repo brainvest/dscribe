@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.LobTools
 {
     [DbContext(typeof(LobToolsDbContext))]
-    [Migration("20260819164952_Initial Create")]
+    [Migration("20260903193036_Initial Create")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -132,7 +132,7 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.LobTools
                     b.Property<int>("ActionTypeId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("CreationTime")
+                    b.Property<DateTimeOffset>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("EntityTypeId")
@@ -220,7 +220,7 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.LobTools
                     b.Property<int>("ResponseStatusCode")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTimeOffset>("StartTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("UserId")

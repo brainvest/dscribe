@@ -22,7 +22,7 @@ public class DraftController(IImplementationsContainer implementationsContainer,
 		var draft = new Draft
 		{
 			ActionTypeId = request.ActionTypeId,
-			CreationTime = DateTime.Now,
+			CreationTime = DateTimeOffset.Now,
 			EntityTypeId = request.EntityTypeId,
 			Identifier = request.Identifier ?? Guid.NewGuid(),
 			IsLastVersion = true,

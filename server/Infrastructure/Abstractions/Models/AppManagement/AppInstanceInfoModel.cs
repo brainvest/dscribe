@@ -13,7 +13,7 @@ public class AppInstanceInfoModel
 	public string AppTypeTitle { get; set; }
 	public bool IsEnabled { get; set; }
 	public bool IsProduction { get; set; }
-	public DateTime? MetadataReleaseReleaseTime { get; set; }
+	public DateTimeOffset? MetadataReleaseReleaseTime { get; set; }
 	public string MetadataReleaseVersion { get; set; }
 	public int? MetadataReleaseVersionCode { get; set; }
 	[Required]
