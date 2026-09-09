@@ -1,5 +1,3 @@
-import { ConnectionStringModel } from './connection-string.model';
-
 export class AppInstanceModel {
 	Id: number;
 	AppTypeId: number;
@@ -13,9 +11,15 @@ export class AppInstanceModel {
 	Name: string;
 	Title: string;
 	UseUnreleasedMetadata: boolean;
-	DataConnectionString: string;
-	LobConnectionString: string;
+	DataConnectionStringTemplateName: string;
+	MainDatabaseName: string;
+	LobConnectionStringTemplateName: string;
+	LobDatabaseName: string;
+	LoadBusinessFromAssemblyName: string;
 	DatabaseProviderId: number;
 	MigrateDatabase: boolean;
 }
+
+// Shape of ASP.NET Core ModelState validation errors: each field maps to its list of error messages.
+export type AppInstanceModelErrors = { [K in keyof AppInstanceModel]?: string[] };
 

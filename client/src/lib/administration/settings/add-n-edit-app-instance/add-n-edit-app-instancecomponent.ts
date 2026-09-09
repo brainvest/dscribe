@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AppInstanceModel } from '../../../common/models/app-instance-model';
+import { AppInstanceModel, AppInstanceModelErrors } from '../../../common/models/app-instance-model';
 import { AppTypeModel } from '../../../common/models/app-type.model';
 import { DatabaseProviderModel } from '../../../common/models/database-provider.model';
 import { AppManagementService } from '../../../common/services/app-management.service';
@@ -29,7 +29,7 @@ export class AddNEditAppInstanceComponent implements OnInit {
 
 
 	appInstance: AppInstanceModel = new AppInstanceModel();
-	appInstanceError: AppInstanceModel;
+	appInstanceError: AppInstanceModelErrors;
 	appTypes: AppTypeModel[] = [];
 	databaseProviders: DatabaseProviderModel[] = [];
 	submitLoading = false;
@@ -39,7 +39,7 @@ export class AddNEditAppInstanceComponent implements OnInit {
 		@Inject(MAT_DIALOG_DATA) public data: AddNEditAppInstanceComponentData,
 		private appManagementService: AppManagementService,
 		private snackbarService: SnackBarService) {
-		this.appInstanceError = new AppInstanceModel();
+		this.appInstanceError = {};
 	}
 
 	ngOnInit() {
@@ -80,9 +80,9 @@ export class AddNEditAppInstanceComponent implements OnInit {
 			this.submitLoading = false;
 			this.snackbarService.open('Success');
 		}, (error: HttpErrorResponse) => {
-			this.appInstanceError = error.error.errors ? error.error.errors : new AppInstanceModel();
-			this.snackbarService.open(error.statusText);
 			this.submitLoading = false;
+			this.appInstanceError = error.error?.errors ?? {};
+			this.snackbarService.open(error.statusText);
 		});
 	}
 
