@@ -38,7 +38,7 @@ public class DraftsListResponse
 	public class Item
 	{
 		public ActionTypeEnum ActionTypeId { get; set; }
-		public DateTime CreationTime { get; set; }
+		public DateTimeOffset CreationTime { get; set; }
 		public int EntityTypeId { get; set; }
 		public Guid Identifier { get; set; }
 		public int Version { get; set; }
@@ -63,7 +63,7 @@ public class DraftHistoryResponse
 	internal class Item
 	{
 		public ActionTypeEnum ActionTypeId { get; set; }
-		public DateTime CreationTime { get; set; }
+		public DateTimeOffset CreationTime { get; set; }
 		public int EntityTypeId { get; set; }
 		public Guid Identifier { get; set; }
 		public int Version { get; set; }

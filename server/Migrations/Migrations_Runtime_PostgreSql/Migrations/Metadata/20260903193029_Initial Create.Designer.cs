@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.Metadata
 {
     [DbContext(typeof(MetadataDbContext))]
-    [Migration("20260819165138_Initial Create")]
+    [Migration("20260903193029_Initial Create")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -654,7 +654,7 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.Metadata
                     b.Property<string>("Comments")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreationTime")
+                    b.Property<DateTimeOffset>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("DefinitionId")
@@ -663,7 +663,7 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.Metadata
                     b.Property<int>("FormatId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("InvalidationTime")
+                    b.Property<DateTimeOffset?>("InvalidationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
@@ -810,7 +810,7 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.Metadata
                         .IsRequired()
                         .HasColumnType("bytea");
 
-                    b.Property<DateTime>("ReleaseTime")
+                    b.Property<DateTimeOffset>("ReleaseTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Version")

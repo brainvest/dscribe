@@ -14,9 +14,9 @@ import { map } from 'rxjs/operators';
 export class AuthService {
 	private user: User = null;
 	private manager = new UserManager(getClientSettings());
-	
+
 	getAuthorizationHeaderValue = () => {
-		return this.user && `${this.user.token_type} ${this.user.id_token}`;
+		return this.user && `${this.user.token_type} ${this.user.access_token}`;
 	};
 
 	get username() {
@@ -68,7 +68,7 @@ export function getClientSettings(): UserManagerSettings {
 		redirect_uri: environment.auth.redirect_uri,
 		post_logout_redirect_uri: environment.auth.post_logout_redirect_uri,
 		response_type: 'id_token token',
-		scope: 'openid profile roles',
+		scope: 'openid profile roles testapi',
 		filterProtocolClaims: true,
 		loadUserInfo: true,
 		automaticSilentRenew: true,

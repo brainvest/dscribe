@@ -1,4 +1,4 @@
 export class DatabaseProviderModel {
-	public id: number;
-	public name: string;
+	public Id: number;
+	public Name: string;
 }

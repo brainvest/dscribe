@@ -130,7 +130,7 @@ public class ImplementationContainer : IImplementationsContainer
 
 	private static string GetConnectionString(string template, string databaseName)
 	{
-		return template.Replace("{database}", databaseName, ignoreCase: true, CultureInfo.InvariantCulture);
+		return template?.Replace("{database}", databaseName, ignoreCase: true, CultureInfo.InvariantCulture);
 	}
 
 	public IMetadataCache Metadata { get; private set; }

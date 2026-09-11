@@ -12,8 +12,8 @@ public class ExpressionBody
 	public ExpressionDefinition Definition { get; set; }
 
 	public bool IsActive { get; set; }
-	public DateTime CreationTime { get; set; }
-	public DateTime? InvalidationTime { get; set; }
+	public DateTimeOffset CreationTime { get; set; }
+	public DateTimeOffset? InvalidationTime { get; set; }
 	public string Comments { get; set; }
 
 	public ExpressionFormatEnum FormatId { get; set; }

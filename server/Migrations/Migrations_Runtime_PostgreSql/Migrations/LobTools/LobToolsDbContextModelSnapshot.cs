@@ -129,7 +129,7 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.LobTools
                     b.Property<int>("ActionTypeId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("CreationTime")
+                    b.Property<DateTimeOffset>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("EntityTypeId")
@@ -217,7 +217,7 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.LobTools
                     b.Property<int>("ResponseStatusCode")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTimeOffset>("StartTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("UserId")
