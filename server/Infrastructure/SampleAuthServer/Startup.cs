@@ -104,8 +104,10 @@ public class Startup(IConfiguration configuration)
 		 .AddInMemoryPersistedGrants()
 		 .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
 		 .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+		 .AddInMemoryApiScopes(IdentityServerConfig.GetApiScopes())
 		 .AddInMemoryClients(IdentityServerConfig.GetClients(clients))
-		 .AddAspNetIdentity<User>();
+		 .AddAspNetIdentity<User>()
+		 .AddProfileService<RoleClaimsProfileService>();
 	}
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<ConfigModel> options, ILogger<Startup> logger)
