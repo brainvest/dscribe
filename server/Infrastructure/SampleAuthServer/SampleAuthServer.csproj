@@ -20,28 +20,28 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Duende.IdentityServer" Version="8.0.2" />
-		<PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="8.0.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.10" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.10" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.10" />
-		<PackageReference Include="Microsoft.Build" Version="18.8.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.10">
+		<PackageReference Include="Duende.IdentityServer" Version="8.0.7" />
+		<PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="8.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.12" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.12" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.12" />
+		<PackageReference Include="Microsoft.Build" Version="18.9.6" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.12">
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		  <PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<!--<PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />-->
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		  <PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" PrivateAssets="All" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
-		<PackageReference Include="NuGet.Protocol" Version="7.6.0" />
-		<PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.7" />
+		<PackageReference Include="NuGet.Protocol" Version="7.9.0" />
+		<PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.9" />
 		<PackageReference Include="Spectre.Console" Version="0.57.2" />
-		<PackageReference Include="System.CommandLine" Version="2.0.11" />
+		<PackageReference Include="System.CommandLine" Version="2.0.12" />
 	</ItemGroup>
 
 	<ItemGroup>
