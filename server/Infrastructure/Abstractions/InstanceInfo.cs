@@ -10,6 +10,7 @@ public class InstanceInfo : IInstanceInfo
 	public string DataConnectionString { get; set; }
 	public string LobConnectionString { get; set; }
 	public bool MigrateDatabase { get; set; }
+	public bool IsProduction { get; set; }
 	public string GeneratedCodeNamespace { get; set; }
 	public string DbContextName { get; set; }
 	public InstanceSettings InstanceSettings { get; set; }

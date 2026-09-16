@@ -23,6 +23,11 @@ class EfCoreAssemblyGenerator : IBusinessAssemblyGenerator
 		return await new EfCoreCompiler().GenerateAssemblyAsync(sourceCodeFilePath, assemblyPath, assembliesPath);
 	}
 
+	public Task<DatabaseMigrationResult> MigrateDatabase(IImplementationsContainer implementationsContainer)
+	{
+		return new EfCoreDatabaseMigrator().MigrateAsync(implementationsContainer);
+	}
+
 	private void EnsurePath(string pluginsDirectory)
 	{
 		if (Directory.GetDirectoryRoot(pluginsDirectory).Equals(pluginsDirectory, StringComparison.InvariantCultureIgnoreCase))

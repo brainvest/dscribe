@@ -44,6 +44,7 @@ export class MetadataManagementComponent implements OnInit {
 	propertiesDataSource = new MatTableDataSource<PropertyBase>();
 	selectedProperty: PropertyBase;
 	propertiesAreLoading = false;
+	migrateDatabaseLoading = false;
 	displayedEntityTypeColumns = ['name', 'usage', 'singular', 'plural', 'code', 'displayName'];
 	displayedPropertyColumns = ['Name', 'title', 'dataType', 'nullable', 'dataEntityType', 'usage', 'foreignKey', 'inverse'];
 
@@ -336,6 +337,22 @@ export class MetadataManagementComponent implements OnInit {
 				}
 			}, (errors: any) => {
 				this.generateCodeLoading = false;
+				this.snackbarService.open(errors);
+			});
+	}
+
+	migrateDatabase() {
+		this.migrateDatabaseLoading = true;
+		this.apiClient.migrateDatabase()
+			.subscribe((x: any) => {
+				this.migrateDatabaseLoading = false;
+				if (x.Success) {
+					this.snackbarService.open('Database migration was successful.');
+				} else {
+					this.snackbarService.open('errors occured please see the validation errors');
+				}
+			}, (errors: any) => {
+				this.migrateDatabaseLoading = false;
 				this.snackbarService.open(errors);
 			});
 	}

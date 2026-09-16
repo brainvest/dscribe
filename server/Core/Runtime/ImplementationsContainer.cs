@@ -61,6 +61,7 @@ public class ImplementationContainer : IImplementationsContainer
 			DataConnectionString = GetConnectionString(dataConnectionStringTemplate, instance.MainDatabaseName),
 			LobConnectionString = GetConnectionString(lobConnectionStringTemplate, instance.LobDatabaseName),
 			MigrateDatabase = instance.MigrateDatabase,
+			IsProduction = instance.IsProduction,
 			GeneratedCodeNamespace = instance.GeneratedCodeNamespace,
 			DbContextName = instance.DbContextName,
 			InstanceSettings = instanceSettings,
