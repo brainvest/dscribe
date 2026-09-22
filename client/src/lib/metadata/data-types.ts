@@ -5,6 +5,7 @@ export class DataTypes {
 	static Date = 'Date';
 	static Time = 'Time';
 	static DateTime = 'DateTime';
+	static DateTimeOffset = 'DateTimeOffset';
 	static ForeignKey = 'ForeignKey';
 	static NavigationEntity = 'NavigationEntity';
 	static Enum = 'Enum';

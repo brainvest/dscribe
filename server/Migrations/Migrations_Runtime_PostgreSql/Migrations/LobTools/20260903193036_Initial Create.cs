@@ -56,7 +56,7 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.LobTools
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     EntityTypeId = table.Column<int>(type: "integer", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreationTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     OwnerUserId = table.Column<Guid>(type: "uuid", nullable: true),
                     Identifier = table.Column<Guid>(type: "uuid", nullable: false),
                     Version = table.Column<int>(type: "integer", nullable: false),
@@ -75,7 +75,7 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.LobTools
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    StartTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true),
                     Path = table.Column<string>(type: "text", nullable: true),
                     QueryString = table.Column<string>(type: "text", nullable: true),

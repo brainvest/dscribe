@@ -16,7 +16,7 @@ public class MetadataRelease
 	public int AppTypeId { get; set; }
 	public AppType AppType { get; set; }
 
-	public DateTime ReleaseTime { get; set; }
+	public DateTimeOffset ReleaseTime { get; set; }
 	public int CreatedByUserId { get; set; }
 
 	[Required]

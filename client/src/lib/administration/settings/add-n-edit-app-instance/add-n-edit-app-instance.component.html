@@ -33,7 +33,7 @@
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Database Provider</mat-label>
 			<mat-select name="databaseProvider" placeholder="Database provider" [(ngModel)]="appInstance.DatabaseProviderId"
-			 [required]="true">
+				[required]="true">
 				<mat-option *ngFor="let databaseProvider of databaseProviders" [value]="databaseProvider.Id">
 					{{databaseProvider.Name}}
 				</mat-option>
@@ -41,31 +41,60 @@
 			<p class="form-error-message" *ngFor="let e of appInstanceError?.DatabaseProviderId">
 				{{e}}
 			</p>
-        </mat-form-field>
-        
+		</mat-form-field>
+
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>Data Connection String</mat-label>
-			<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="appInstance.DataConnectionString">
-			<p class="form-error-message" *ngFor="let e of appInstanceError?.DataConnectionString">
+			<input matInput type="text" placeholder="Data Connection String Template Name"
+				name="dataConnectionStringTemplateName" [(ngModel)]="appInstance.DataConnectionStringTemplateName">
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.DataConnectionStringTemplateName">
+				{{e}}
+			</p>
+		</mat-form-field>
+
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>Main Database Name</mat-label>
+			<input matInput type="text" placeholder="Main Database Name" name="mainDatabaseName"
+				[(ngModel)]="appInstance.MainDatabaseName">
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.MainDatabaseName">
 				{{e}}
 			</p>
 		</mat-form-field>
 
 		<mat-form-field class="full-width" appearance="outline">
 			<mat-label>LOB Connection String</mat-label>
-			<input matInput type="text" placeholder="Title" name="title" [(ngModel)]="appInstance.LobConnectionString">
-			<p class="form-error-message" *ngFor="let e of appInstanceError?.LobConnectionString">
+			<input matInput type="text" placeholder="Lob Connection String Template Name"
+				name="lobConnectionStringTemplateName" [(ngModel)]="appInstance.LobConnectionStringTemplateName">
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.LobConnectionStringTemplateName">
 				{{e}}
 			</p>
 		</mat-form-field>
 
-        <div>
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>Lob Database Name</mat-label>
+			<input matInput type="text" placeholder="Lob Database Name" name="lobDatabaseName"
+				[(ngModel)]="appInstance.LobDatabaseName">
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.LobDatabaseName">
+				{{e}}
+			</p>
+		</mat-form-field>
+
+		<mat-form-field class="full-width" appearance="outline">
+			<mat-label>Load Business From Assembly Name</mat-label>
+			<input matInput type="text" placeholder="Load Business From Assembly Name" name="loadBusinessFromAssemblyName"
+				[(ngModel)]="appInstance.LoadBusinessFromAssemblyName">
+			<p class="form-error-message" *ngFor="let e of appInstanceError?.LoadBusinessFromAssemblyName">
+				{{e}}
+			</p>
+		</mat-form-field>
+
+		<div>
 			<mat-checkbox name="isEnabled" [(ngModel)]="appInstance.IsEnabled">Is Enable</mat-checkbox>
 		</div>
 		<div>
 			<mat-checkbox name="isProduction" [(ngModel)]="appInstance.IsProduction">Is Production</mat-checkbox>
-        </div>
-        <div>
+		</div>
+		<div>
 			<mat-checkbox name="migrateDatabase" [(ngModel)]="appInstance.MigrateDatabase">Migrate Database</mat-checkbox>
 		</div>
 	</form>

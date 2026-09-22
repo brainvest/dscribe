@@ -52,7 +52,7 @@ public class RequestLogger : IRequestLogger, IDisposable
 			IpAddress = httpContext.Connection.RemoteIpAddress.ToString(),
 			Path = requestAddress,
 			Method = httpContext.Request.Method,
-			StartTime = DateTime.Now,
+			StartTime = DateTimeOffset.UtcNow,
 		};
 
 		if (httpContext.Request?.Body != null && !string.IsNullOrWhiteSpace(httpContext.Request.ContentType) &&

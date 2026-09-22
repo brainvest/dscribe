@@ -1,0 +1,62 @@
+{
+	// Use IntelliSense to find out which attributes exist for C# debugging
+	// Use hover for the description of the existing attributes
+	// For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch_Host",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build-host",
+			// If you have changed target frameworks, make sure to update the program path.
+			"program": "${workspaceFolder}/server/Host/bin/Debug/net10.0/Brainvest.Dscribe.Host.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}/server/Host",
+			"stopAtEntry": false,
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"sourceFileMap": {
+				"/Views": "${workspaceFolder}/server/Views"
+			}
+		},
+		{
+			"name": "Launch_Auth",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build-auth",
+			// If you have changed target frameworks, make sure to update the program path.
+			"program": "${workspaceFolder}/server/Infrastructure/SampleAuthServer/bin/Debug/net10.0/Brainvest.Dscribe.Infrastructure.SampleAuthServer.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}/server/Infrastructure/SampleAuthServer",
+			"stopAtEntry": false,
+			// Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
+			"serverReadyAction": {
+				"action": "openExternally",
+				"pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"
+			},
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"sourceFileMap": {
+				"/Views": "${workspaceFolder}/server/Views"
+			}
+		},
+		{
+			"name": ".NET Core Attach",
+			"type": "coreclr",
+			"request": "attach",
+			"processId": "${command:pickProcess}"
+		}
+	],
+	"compounds": [
+		{
+			"name": "Launch All",
+			"configurations": [
+				"Launch_Host",
+				"Launch_Auth"
+			]
+		}
+	]
+}

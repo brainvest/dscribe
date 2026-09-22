@@ -113,6 +113,20 @@ public class ReleaseMetadataController(
 		return result;
 	}
 
+	/// <summary>
+	/// Reverse engineers the business database, diffs it against the currently loaded business assembly and
+	/// applies the resulting SQL. For production instances nothing is executed; the script is returned instead.
+	/// </summary>
+	[HttpPost]
+	public async Task<ActionResult<DatabaseMigrationResult>> MigrateDatabase()
+	{
+		if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationContainer, null, ActionTypeEnum.ManageMetadata)))
+		{
+			return Unauthorized();
+		}
+		return await _assemblyGenerator.MigrateDatabase(_implementationContainer);
+	}
+
 	public async Task<ActionResult<MetadataValidationResponse>> GenerateCodeValidation()
 	{
 		if (!_permissionService.IsAllowed(new ActionRequestInfo(HttpContext, _implementationContainer, null, ActionTypeEnum.ManageMetadata)))

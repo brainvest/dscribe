@@ -2,6 +2,7 @@ namespace Brainvest.Dscribe.Abstractions.Models;
 
 using System;
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
 public class ActionRequestInfo
@@ -25,13 +26,15 @@ public class ActionRequestInfo
 			Roles = _anonymousRoles;
 			return;
 		}
-		if (!Guid.TryParse(httpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value, out var userId))
+		// ASP.NET's JWT handler maps "sub" -> ClaimTypes.NameIdentifier and "role" -> ClaimTypes.Role by default, so accept either form regardless of the issuing auth server.
+		var subject = httpContext.User.Claims.FirstOrDefault(x => x.Type is "sub" or ClaimTypes.NameIdentifier)?.Value;
+		if (!Guid.TryParse(subject, out var userId))
 		{
 			Roles = _anonymousRoles;
 			return;
 		}
 		UserId = userId;
-		Roles = httpContext.User.Claims.Where(x => x.Type == "role").Select(x => x.Value).ToArray();
+		Roles = httpContext.User.Claims.Where(x => x.Type is "role" or ClaimTypes.Role).Select(x => x.Value).ToArray();
 	}
 
 	public ActionTypeEnum ActionType { get; set; }

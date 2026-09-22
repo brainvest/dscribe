@@ -7,7 +7,7 @@ using Brainvest.Dscribe.Abstractions.Models.AppManagement;
 public class AppTypeHistoryModel : IHistory
 {
 	public AppTypeModel AppType { get; set; }
-	public DateTime StartTime { get; set; }
+	public DateTimeOffset StartTime { get; set; }
 	public Guid? UserId { get; set; }
 	public double ProcessDuration { get; set; }
 	public long LogId { get; set; }

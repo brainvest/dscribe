@@ -9,6 +9,7 @@ public interface IInstanceInfo
 	string DataConnectionString { get; set; }
 	string LobConnectionString { get; set; }
 	bool MigrateDatabase { get; }
+	bool IsProduction { get; }
 	DatabaseProviderEnum Provider { get; }
 	InstanceSettings InstanceSettings { get; }
 	string GetDbContextName();

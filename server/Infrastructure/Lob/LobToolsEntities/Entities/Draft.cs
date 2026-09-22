@@ -8,7 +8,7 @@ public class Draft
 	public Guid Id { get; set; }
 
 	public int EntityTypeId { get; set; }
-	public DateTime CreationTime { get; set; }
+	public DateTimeOffset CreationTime { get; set; }
 	public Guid? OwnerUserId { get; set; }
 
 	public Guid Identifier { get; set; }

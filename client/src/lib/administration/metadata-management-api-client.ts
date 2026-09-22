@@ -32,6 +32,7 @@ export class MetadataManagementApiClient {
 
 	private releaseMetadataAPI = this.releaseAPI + 'releaseMetadata';
 	private generateCodeAPI = this.releaseAPI + 'generateCode';
+	private migrateDatabaseAPI = this.releaseAPI + 'migrateDatabase';
 
 
 	constructor(private http: DscribeHttpClient, private dscribeService: DscribeService) {
@@ -104,5 +105,9 @@ export class MetadataManagementApiClient {
 
 	generateCode(): Observable<MetadataValidationResponse> {
 		return this.http.post<MetadataValidationResponse>(this.generateCodeAPI, null);
+	}
+
+	migrateDatabase(): Observable<MetadataValidationResponse> {
+		return this.http.post<MetadataValidationResponse>(this.migrateDatabaseAPI, null);
 	}
 }

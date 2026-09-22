@@ -6,7 +6,7 @@ public class RequestLogModel
 {
 	public long Id { get; set; }
 
-	public DateTime StartTime { get; set; }
+	public DateTimeOffset StartTime { get; set; }
 	public Guid? UserId { get; set; }
 	public string Path { get; set; }
 	public string QueryString { get; set; }
