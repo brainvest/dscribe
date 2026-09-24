@@ -9,15 +9,14 @@ import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
 import { Auth } from './core/auth/auth';
-import { AuthApi, MockAuthApi } from './core/auth/auth-api';
+import { AuthApi, HttpAuthApi } from './core/auth/auth-api';
 import { authInterceptor } from './core/auth/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([authInterceptor])),
-    // Swap MockAuthApi for the HTTP implementation once the backend exists.
-    { provide: AuthApi, useClass: MockAuthApi },
+    { provide: AuthApi, useClass: HttpAuthApi },
     // Restore an existing session before the first route guard runs.
     provideAppInitializer(() => inject(Auth).restore()),
     // Material Symbols carries the newer icon names used across both areas.
