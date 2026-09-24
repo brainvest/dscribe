@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Observable, defer, delay, of, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable, catchError, throwError } from 'rxjs';
 
 export type Role = 'admin' | 'user';
 
@@ -7,7 +8,8 @@ export type Role = 'admin' | 'user';
 export interface TokenClaims {
   sub: string;
   name: string;
-  role: Role;
+  /** The user's server-side roles: a string for one, an array for several, absent for none. */
+  role?: string | string[];
   iss: string;
   iat: number;
   exp: number;
@@ -25,101 +27,44 @@ export class InvalidCredentialsError extends Error {
 }
 
 /**
- * The backend's auth endpoints. The real implementation would be three HTTP
- * calls; the server answers `login` and `refresh` with a short-lived access
- * token in the body and sets the refresh token as an `HttpOnly; Secure;
- * SameSite=Strict` cookie, which script can never read.
+ * The backend's auth endpoints. The server answers `login` and `refresh` with
+ * a short-lived access token in the body and keeps the session in an
+ * `HttpOnly; SameSite=Strict` cookie scoped to `/auth`, which script can
+ * never read.
  */
 export abstract class AuthApi {
   abstract login(username: string, password: string): Observable<TokenResponse>;
   /** Swaps the refresh cookie for a new access token; errors without a session. */
   abstract refresh(): Observable<TokenResponse>;
-  /** Revokes the refresh token and clears its cookie. */
+  /** Ends the session and clears its cookie. */
   abstract logout(): Observable<void>;
 }
 
-const ACCOUNTS: Record<string, { password: string; name: string; role: Role }> = {
-  user1: { password: 'pass1', name: 'User One', role: 'user' },
-  admin: { password: 'somepass', name: 'A. Haghshenas', role: 'admin' },
-};
+/** Where the dev server proxies `/auth` to SampleAuthServer (see proxy.conf.json). */
+const AUTH_BASE = '/auth';
 
-/** Access tokens live for 15 minutes; the session refreshes them silently. */
-const TOKEN_TTL_SECONDS = 15 * 60;
-
-/**
- * Stand-in for the browser's cookie jar holding the HttpOnly refresh cookie,
- * so a reload keeps you signed in. Only this mock touches it; the app never
- * reads or writes auth state in storage.
- */
-const MOCK_SESSION_KEY = 'ui-template.mock-refresh-cookie';
-
-/** Accepts the two sample accounts and issues unsigned, fake JWTs. */
+/** Talks to SampleAuthServer's `/auth` endpoints (AuthController). */
 @Injectable()
-export class MockAuthApi extends AuthApi {
+export class HttpAuthApi extends AuthApi {
+  private readonly http = inject(HttpClient);
+
   login(username: string, password: string): Observable<TokenResponse> {
-    return defer(() => {
-      const account = ACCOUNTS[username];
-      if (!account || account.password !== password) {
-        return throwError(() => new InvalidCredentialsError());
-      }
-      this.writeSession(username);
-      return of({ accessToken: this.issue(username) });
-    }).pipe(delay(400));
+    return this.http.post<TokenResponse>(`${AUTH_BASE}/login`, { username, password }).pipe(
+      catchError((error: unknown) =>
+        throwError(() =>
+          error instanceof HttpErrorResponse && error.status === 401
+            ? new InvalidCredentialsError()
+            : error,
+        ),
+      ),
+    );
   }
 
   refresh(): Observable<TokenResponse> {
-    return defer(() => {
-      const username = this.readSession();
-      return username && ACCOUNTS[username]
-        ? of({ accessToken: this.issue(username) })
-        : throwError(() => new Error('No session'));
-    }).pipe(delay(150));
+    return this.http.post<TokenResponse>(`${AUTH_BASE}/refresh`, null);
   }
 
   logout(): Observable<void> {
-    return defer(() => {
-      this.writeSession(null);
-      return of(undefined);
-    }).pipe(delay(150));
+    return this.http.post<void>(`${AUTH_BASE}/logout`, null);
   }
-
-  private issue(username: string): string {
-    const { name, role } = ACCOUNTS[username];
-    const now = Math.floor(Date.now() / 1000);
-    const claims: TokenClaims = {
-      sub: username,
-      name,
-      role,
-      iss: 'https://auth.ember.ngo',
-      iat: now,
-      exp: now + TOKEN_TTL_SECONDS,
-    };
-    const header = { alg: 'HS256', typ: 'JWT' };
-    return [base64Url(header), base64Url(claims), base64Url('mock-signature')].join('.');
-  }
-
-  private readSession(): string | null {
-    try {
-      return sessionStorage.getItem(MOCK_SESSION_KEY);
-    } catch {
-      return null;
-    }
-  }
-
-  private writeSession(username: string | null): void {
-    try {
-      if (username) {
-        sessionStorage.setItem(MOCK_SESSION_KEY, username);
-      } else {
-        sessionStorage.removeItem(MOCK_SESSION_KEY);
-      }
-    } catch {
-      // Without storage the session just ends on reload.
-    }
-  }
-}
-
-function base64Url(value: unknown): string {
-  const text = typeof value === 'string' ? value : JSON.stringify(value);
-  return btoa(text).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }

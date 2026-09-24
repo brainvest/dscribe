@@ -31,7 +31,7 @@ export class Auth {
 
   readonly claims = computed(() => decode(this.token()));
   readonly isAuthenticated = computed(() => this.claims() !== null);
-  readonly role = computed(() => this.claims()?.role ?? null);
+  readonly role = computed(() => toAppRole(this.claims()));
   readonly displayName = computed(() => this.claims()?.name ?? '');
 
   constructor() {
@@ -95,6 +95,15 @@ export class Auth {
       }, wait);
     }
   }
+}
+
+/** Holders of the server's `Admin` role get the admin area; everyone else the user area. */
+function toAppRole(claims: TokenClaims | null): Role | null {
+  if (!claims) {
+    return null;
+  }
+  const roles = [claims.role ?? []].flat();
+  return roles.some((r) => r.toLowerCase() === 'admin') ? 'admin' : 'user';
 }
 
 function decode(token: string | null): TokenClaims | null {
