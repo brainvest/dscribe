@@ -1,0 +1,237 @@
+:host {
+  display: block;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.panel {
+  background: var(--app-chrome-bg);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: var(--app-radius);
+}
+
+// ----------------------------------------------------------------- filters
+.filters__toggle {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-label-large);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  width: 100%;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.filters__count {
+  background: var(--app-accent-bar);
+  color: #fff;
+  border-radius: 999px;
+  min-width: 18px;
+  padding: 0 6px;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.filters__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px 4px;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  padding-top: 12px;
+}
+
+.filters__field {
+  width: 200px;
+}
+
+.filters__field--search {
+  width: 300px;
+}
+
+.filters__toggle-field {
+  margin-bottom: 18px;
+}
+
+// ----------------------------------------------------------------- toolbar
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  min-height: 44px;
+}
+
+.toolbar__divider {
+  width: 1px;
+  height: 22px;
+  background: var(--mat-sys-outline-variant);
+  margin: 0 2px;
+}
+
+.toolbar__selection {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: var(--mat-sys-label-medium);
+  color: var(--app-accent-bar);
+  background: color-mix(in srgb, var(--app-accent-bar) 12%, transparent);
+  border-radius: var(--app-radius);
+  padding: 3px 10px;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.toolbar__danger {
+  --mat-button-outlined-label-text-color: var(--mat-sys-error);
+  color: var(--mat-sys-error);
+}
+
+.toolbar__count {
+  font-size: 12px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+// -------------------------------------------------------------- data grid
+.grid__scroll {
+  overflow: auto;
+  max-height: calc(100vh - 340px);
+}
+
+table {
+  width: 100%;
+  background: transparent;
+}
+
+th.mat-mdc-header-cell {
+  background: color-mix(in srgb, var(--mat-sys-on-surface) 4%, var(--app-chrome-bg));
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+td.mat-mdc-cell,
+th.mat-mdc-header-cell {
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+tr.mat-mdc-row {
+  cursor: pointer;
+  height: 36px;
+
+  &:hover {
+    background: color-mix(in srgb, var(--app-accent-bar) 7%, transparent);
+  }
+
+  &.is-selected {
+    background: color-mix(in srgb, var(--app-accent-bar) 15%, transparent);
+  }
+}
+
+.col-select {
+  width: 42px;
+  padding-right: 0;
+}
+
+.col-num {
+  text-align: right;
+}
+
+.col-activity {
+  width: 120px;
+  white-space: nowrap;
+}
+
+.col-actions {
+  width: 48px;
+  text-align: right;
+}
+
+.cell-strong {
+  font-weight: 500;
+}
+
+.cell-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+.status {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 1px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid currentcolor;
+}
+
+.status--active {
+  color: light-dark(#1d6f42, #6bd39a);
+}
+
+.status--draft {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.status--discontinued {
+  color: var(--mat-sys-error);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-right: 10px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--app-accent-bar);
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &.is-empty {
+    color: var(--mat-sys-outline);
+    opacity: 0.55;
+  }
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 40px 0;
+  color: var(--mat-sys-on-surface-variant);
+
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  p {
+    margin: 0;
+  }
+}

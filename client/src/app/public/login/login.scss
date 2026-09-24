@@ -1,0 +1,88 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  min-height: 100%;
+
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: 12px,
+    )
+  );
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 48px;
+}
+
+.back {
+  align-self: flex-start;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 5vh;
+  padding: 28px 24px 24px;
+  box-sizing: border-box;
+  background: var(--app-chrome-bg);
+  border-radius: var(--app-radius);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant) 60%, transparent);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 8%);
+}
+
+.card__head {
+  text-align: center;
+  margin-bottom: 12px;
+
+  h1 {
+    margin: 4px 0;
+    font: var(--mat-sys-headline-small);
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.card__logo {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  color: var(--app-accent-bar);
+}
+
+.callout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+
+  mat-icon {
+    flex: none;
+    color: var(--mat-sys-error);
+  }
+}
+
+.submit {
+  margin-top: 8px;
+  height: 44px;
+  border-radius: 999px;
+
+  mat-spinner {
+    margin-right: 8px;
+  }
+}
