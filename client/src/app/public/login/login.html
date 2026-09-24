@@ -1,0 +1,62 @@
+<main class="page">
+  <a matButton routerLink="/" class="back">
+    <mat-icon>arrow_back</mat-icon>
+    Home
+  </a>
+
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <header class="card__head">
+      <mat-icon class="card__logo">bubble_chart</mat-icon>
+      <h1>Sign in</h1>
+      <p>Use your Company account.</p>
+    </header>
+
+    @if (error()) {
+      <div class="callout" role="alert">
+        <mat-icon>error</mat-icon>
+        <span>{{ error() }}</span>
+      </div>
+    }
+
+    <mat-form-field appearance="outline">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" autocomplete="username" />
+      <mat-icon matPrefix>person</mat-icon>
+      @if (form.controls.username.hasError('required')) {
+        <mat-error>Enter your username</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        [type]="showPassword() ? 'text' : 'password'"
+        formControlName="password"
+        autocomplete="current-password"
+      />
+      <mat-icon matPrefix>lock</mat-icon>
+      <button
+        matIconButton
+        matSuffix
+        type="button"
+        [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+        (click)="showPassword.set(!showPassword())"
+      >
+        <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      @if (form.controls.password.hasError('required')) {
+        <mat-error>Enter your password</mat-error>
+      }
+    </mat-form-field>
+
+    <button matButton="filled" type="submit" class="submit" [disabled]="busy()">
+      @if (busy()) {
+        <mat-spinner diameter="18" />
+      } @else {
+        <mat-icon>login</mat-icon>
+      }
+      Sign in
+    </button>
+  </form>
+</main>
