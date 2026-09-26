@@ -27,6 +27,7 @@ public class MetadataDbContext(DbContextOptions<MetadataDbContext> options) : Db
 		modelBuilder.Entity<AppType>().HasIndex(x => x.Name).IsUnique();
 		modelBuilder.Entity<AppType>().HasIndex(x => x.Title).IsUnique();
 		modelBuilder.Entity<EntityType>().HasIndex(x => new { x.AppTypeId, x.Name }).IsUnique();
+		modelBuilder.Entity<IconInfo>().HasIndex(x => new { x.Name, x.AppTypeId, x.AppInstanceId }).IsUnique().AreNullsDistinct(false);
 		modelBuilder.Entity<ExpressionDefinition>().HasIndex(x => new { x.AppTypeId, x.Identifier }).IsUnique();
 		modelBuilder.Entity<Property>().HasIndex(x => new { x.OwnerEntityTypeId, x.Name }).IsUnique();
 		modelBuilder.Entity<User>().HasIndex(x => x.UnifiedExternalUserId).IsUnique();
@@ -125,6 +126,13 @@ public class MetadataDbContext(DbContextOptions<MetadataDbContext> options) : Db
 			new DatabaseProvider { Id = DatabaseProviderEnum.PostgreSql, Name = "PostgreSql" }
 		);
 
+		modelBuilder.Entity<IconType>().HasData(
+			new IconType { Id = IconTypeEnum.GoogleMaterial, Name = "GoogleMaterial" },
+			new IconType { Id = IconTypeEnum.FontAwesome, Name = "FontAwesome" },
+			new IconType { Id = IconTypeEnum.RelativePath, Name = "RelativePath" },
+			new IconType { Id = IconTypeEnum.AbsolutePath, Name = "AbsolutePath" }
+		);
+
 		modelBuilder.Entity<AdditionalBehavior>().HasData(
 			new AdditionalBehavior { Id = (int)AdditionalBehaviorEnum.DisplayAsDate, Name = "DisplayAsDate" },
 			new AdditionalBehavior { Id = (int)AdditionalBehaviorEnum.DisplayAsDateTime, Name = "DisplayAsDateTime" },
@@ -159,6 +167,9 @@ public class MetadataDbContext(DbContextOptions<MetadataDbContext> options) : Db
 	public DbSet<EntityTypeFacetValue> EntityTypeFacetValues { get; set; }
 	public DbSet<EntityTypeGeneralUsageCategory> EntityTypeGeneralUsageCategories { get; set; }
 	public DbSet<EntityType> EntityTypes { get; set; }
+
+	public DbSet<IconInfo> IconInfos { get; set; }
+	public DbSet<IconType> IconTypes { get; set; }
 
 	public DbSet<ExpressionDefinition> ExpressionDefinitions { get; set; }
 	public DbSet<ExpressionBody> ExpressionBodies { get; set; }

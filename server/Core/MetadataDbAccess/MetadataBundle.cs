@@ -32,6 +32,8 @@ public class MetadataBundle
 		var propertyFacetDefinitions = await dbContext.PropertyFacetDefinitions.AsNoTracking().ToListAsync();
 		var propertyFacetValues = await dbContext.PropertyFacetValues.AsNoTracking().Where(x => x.Property.OwnerEntityType.AppTypeId == appTypeId).ToListAsync();
 		var propertyGeneralUsageCategories = await dbContext.PropertyGeneralUsageCategories.AsNoTracking().ToListAsync();
+		var iconInfos = await dbContext.IconInfos.AsNoTracking()
+					.Where(x => (x.AppTypeId ?? appTypeId) == appTypeId && (x.AppInstanceId ?? appInstanceId) == appInstanceId).ToListAsync();
 
 		return new MetadataBundle
 		{
@@ -52,7 +54,8 @@ public class MetadataBundle
 			PropertyFacetDefaultValues = propertyFacetDefaultValues,
 			PropertyFacetDefinitions = propertyFacetDefinitions,
 			PropertyFacetValues = propertyFacetValues,
-			PropertyGeneralUsageCategories = propertyGeneralUsageCategories
+			PropertyGeneralUsageCategories = propertyGeneralUsageCategories,
+			IconInfos = iconInfos
 		};
 	}
 
@@ -117,6 +120,19 @@ public class MetadataBundle
 		Fixup(EntityTypeFacetDefaultValues, entityTypeGeneralUsageCategories, nameof(EntityTypeFacetDefaultValue.GeneralUsageCategoryId), nameof(EntityTypeFacetDefaultValue.GeneralUsageCategory));
 	}
 
+	/// <summary>
+	/// Returns one icon per name, choosing the most specific scope: app instance, then app type, then global.
+	/// </summary>
+	public Dictionary<string, IconInfo> GetEffectiveIcons()
+	{
+		return (IconInfos ?? [])
+			.GroupBy(x => x.Name)
+			.ToDictionary(g => g.Key, g => g
+				.OrderByDescending(x => x.AppInstanceId.HasValue)
+				.ThenByDescending(x => x.AppTypeId.HasValue)
+				.First());
+	}
+
 	private void Fixup<Entity1, Entity2, Key2>(IEnumerable<Entity1> list, IDictionary<Key2, Entity2> dictionary, string foreignKeyPropertyName, string navigationPropertyName, string listPropertyName = null)
 	{
 		var fk = typeof(Entity1).GetProperty(foreignKeyPropertyName);
@@ -163,4 +179,5 @@ public class MetadataBundle
 	public List<PropertyFacetDefinition> PropertyFacetDefinitions { get; set; }
 	public List<PropertyFacetValue> PropertyFacetValues { get; set; }
 	public List<PropertyGeneralUsageCategory> PropertyGeneralUsageCategories { get; set; }
+	public List<IconInfo> IconInfos { get; set; }
 }
