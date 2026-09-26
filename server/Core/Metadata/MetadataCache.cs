@@ -50,10 +50,12 @@ public class MetadataCache : IEnumerable<IEntityTypeMetadata>, IMetadataCache
 		}
 
 		var map = new Dictionary<int, PropertyMetadata>();
+		var icons = bundle.GetEffectiveIcons();
 
 		foreach (var dbEntityMetadata in bundle.EntityTypes)
 		{
-			var entityTypeMetadata = new EntityTypeMetadata(dbEntityMetadata, null);
+			var icon = dbEntityMetadata.IconName == null ? null : IconInfo.FromDb(icons.GetValueOrDefault(dbEntityMetadata.IconName));
+			var entityTypeMetadata = new EntityTypeMetadata(dbEntityMetadata, null, icon);
 			foreach (var dbPropertyMetadata in dbEntityMetadata.Properties ?? Enumerable.Empty<Property>())
 			{
 				var propertyMetadata = new PropertyMetadata(this, dbPropertyMetadata.Name, entityTypeMetadata, new PropertyGeneralUsageCategoryStruct
