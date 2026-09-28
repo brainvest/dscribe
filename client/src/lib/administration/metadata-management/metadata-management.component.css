@@ -1,0 +1,30 @@
+table {
+	width: 100%;
+}
+
+.table-toolbar {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.table-toolbar > span {
+	margin-left: 20px;
+	font-size: large;
+}
+
+.table-wrapper {
+	border: lightgray 1px solid;
+	margin-bottom: 1px;
+}
+
+tr.highlight {
+	background-color: aqua;
+}
+
+.mat-spinner {
+	margin-top: 26px;
+	margin-left: 5px;
+}

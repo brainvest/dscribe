@@ -1,0 +1,35 @@
+<table mat-table [dataSource]="attachments" class="main-table">
+	<ng-container matColumnDef="Actions">
+		<th mat-header-cell *matHeaderCellDef>Actions</th>
+		<td mat-cell *matCellDef="let attachment">
+			<button mat-icon-button (click)="download(attachment); $event.stopPropagation();">
+				<mat-icon>cloud_download</mat-icon>
+			</button>
+		</td>
+	</ng-container>
+
+	<ng-container matColumnDef="Title">
+		<th mat-header-cell *matHeaderCellDef>Title</th>
+		<td mat-cell *matCellDef="let attachment">{{attachment.Title}}</td>
+	</ng-container>
+
+	<ng-container matColumnDef="Size">
+		<th mat-header-cell *matHeaderCellDef>Size</th>
+		<td mat-cell *matCellDef="let attachment">{{attachment.Size}}</td>
+	</ng-container>
+
+	<ng-container matColumnDef="FileName">
+		<th mat-header-cell *matHeaderCellDef>File Name</th>
+		<td mat-cell *matCellDef="let attachment">{{attachment.FileName}}</td>
+	</ng-container>
+
+	<ng-container matColumnDef="Description">
+		<th mat-header-cell *matHeaderCellDef>Description</th>
+		<td mat-cell *matCellDef="let attachment">{{attachment.Description}}</td>
+	</ng-container>
+
+	<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+	<tr mat-row (click)="selection.toggle(row); $event.stopPropagation();"
+			[ngClass]="{'selected': selection.isSelected(row)}"
+			*matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
