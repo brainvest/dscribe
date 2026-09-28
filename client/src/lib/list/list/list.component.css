@@ -1,0 +1,40 @@
+.list-container {
+	position: relative;
+}
+
+.list-table-container {
+	position: relative;
+	height: 536px;
+	overflow: auto;
+	border: 1px solid #d1d8dd;
+	border-bottom: none;
+	border-top: none;
+}
+
+.filter {
+	border: 1px solid #d1d8dd;
+	border-top: none;
+	display: flex;
+	flex-flow: row;
+}
+
+.filter__content{
+	flex-grow: 1;
+}
+
+.filter__summary button {
+	margin: 0 8px;
+}
+
+.filter__summary {
+	display: flex;
+}
+
+.filter__content {
+	border-top: 1px solid #d1d8dd;;
+}
+
+.list-paginator {
+	border: 1px solid #d1d8dd;
+	border-top: none;
+}

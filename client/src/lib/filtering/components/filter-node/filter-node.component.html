@@ -1,0 +1,29 @@
+<div class="filter-node-container"
+		 [ngStyle]="{'display': node.shouldBeInlined() ? 'inline-block': 'block'}"
+		 [ngClass]="(node?.isValid() ? 'is-ok' : 'has-error')">
+	<ng-container *ngIf="node?.nodeType !== nodeTypes.Lambda">{{node?.title}}
+	</ng-container>
+	<ng-container [ngSwitch]="node?.nodeType">
+		<dscribe-logical-filter-node *ngSwitchCase="nodeTypes.Logical" [node]="node">
+
+		</dscribe-logical-filter-node>
+		<dscribe-lambda-filter-node *ngSwitchCase="nodeTypes.Lambda" [node]="node">
+
+		</dscribe-lambda-filter-node>
+		<dscribe-navigation-list-filter-node *ngSwitchCase="nodeTypes.NavigationList" [node]="node">
+
+		</dscribe-navigation-list-filter-node>
+		<dscribe-comparison-filter-node *ngSwitchCase="nodeTypes.Comparison" [node]="node">
+
+		</dscribe-comparison-filter-node>
+		<dscribe-arithmetic-filter-node *ngSwitchCase="nodeTypes.Arithmetic" [node]="node">
+
+		</dscribe-arithmetic-filter-node>
+		<dscribe-constant-filter-node *ngSwitchCase="nodeTypes.Constant" [node]="node">
+
+		</dscribe-constant-filter-node>
+		<dscribe-property-filter-node *ngSwitchCase="nodeTypes.Property" [node]="node">
+
+		</dscribe-property-filter-node>
+	</ng-container>
+</div>

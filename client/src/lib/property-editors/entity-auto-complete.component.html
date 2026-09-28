@@ -1,0 +1,54 @@
+<mat-form-field class="full-width" *ngIf="listRefresher && !isFilter" appearance="outline">
+	<mat-label>{{property.Title || property.Name}}</mat-label>
+	<input 
+		matInput 
+		[placeholder]="property.Title || property.Name" 
+		[attr.id]="property.Name"
+		[attr.aria-label]="property.Name"
+		[formControl]="inputCtrl" 
+		[matAutocomplete]="auto" 
+		[required]="!property.IsNullable"
+		[matAutocompleteDisabled]="true">
+	<div matSuffix class="dropdown-actions-container">
+		<button mat-icon-button (click)="toggleDropDown()" matTooltip="{{isAutoCompleteOpen ? 'Hide' : 'Show'}} DropDown" tabindex="-1">
+			<mat-icon>arrow_drop_down</mat-icon>
+		</button>
+		<button mat-icon-button (click)="selectFromList()" tabindex="-1"
+						matTooltip="Select a {{property?.EntityType?.SingularTitle || property?.EntityType?.Name}} from list">
+			<mat-icon>menu</mat-icon>
+		</button>
+		<button mat-icon-button (click)="addNew()" tabindex="-1"
+						matTooltip="Add a new {{property?.EntityType?.SingularTitle || property?.EntityType?.Name}}">
+			<mat-icon>add</mat-icon>
+		</button>
+		<button mat-icon-button (click)="clean()" matTooltip="Clear the value" tabindex="-1">
+			<mat-icon>remove</mat-icon>
+		</button>
+	</div>
+	<i *ngIf="loading" class="fa fa-spinner" matSuffix></i>
+	<mat-autocomplete 
+		#auto="matAutocomplete" 
+		[displayWith]="displayFn.bind(this)">
+		<mat-option *ngFor="let item of filteredOptions | async" [value]="item.Id"
+								(onSelectionChange)="selectionChange(item)">
+			{{ item.DisplayName ? item.DisplayName : '' }}
+		</mat-option>
+	</mat-autocomplete>
+</mat-form-field>
+
+<input *ngIf="isFilter" [placeholder]="property.Title || overridePropertyName || property.Name"
+			 [attr.id]="property.Name"
+			 [attr.aria-label]="property.Name" [formControl]="inputCtrl" [matAutocomplete]="auto">
+<i *ngIf="loading" class="fa fa-spinner" matSuffix></i>
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+	<mat-option *ngFor="let item of filteredOptions | async" [value]="item.Id"
+							(onSelectionChange)="selectionChange(item)">
+		{{ item.DisplayName ? item.DisplayName : '' }}
+	</mat-option>
+</mat-autocomplete>
+
+<div *ngIf="property?.ValidationErrors">
+	<p *ngFor="let validationError of property.ValidationErrors" class="error-message">
+		{{validationError.Message}}
+	</p>
+</div>
