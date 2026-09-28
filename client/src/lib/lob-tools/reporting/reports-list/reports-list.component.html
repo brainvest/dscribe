@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Reports for {{data.entityTypeName}}</h2>
+<mat-dialog-content>
+	<mat-tab-group class="tab-group">
+		<mat-tab label="Choose the report">
+			<table mat-table [dataSource]="reports" class="main-table">
+				<ng-container matColumnDef="Title">
+					<th mat-header-cell *matHeaderCellDef>Title</th>
+					<td mat-cell *matCellDef="let report">{{report.Title}}</td>
+				</ng-container>
+
+				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+				<tr mat-row (click)="selection.toggle(row); $event.stopPropagation();"
+						[ngClass]="{'selected': selection.isSelected(row)}"
+						*matRowDef="let row; columns: displayedColumns;"></tr>
+			</table>
+		</mat-tab>
+		<mat-tab label="Settings">
+			<mat-radio-group [(ngModel)]="mode" class="radio-group">
+				<mat-radio-button value="download" class="radio-button">Process and download</mat-radio-button>
+				<mat-radio-button value="attach" class="radio-button">Save as attachment</mat-radio-button>
+			</mat-radio-group>
+			<br>
+			<ng-container *ngIf="mode == 'attach'">
+				<mat-form-field>
+					<mat-label>Title</mat-label>
+					<input matInput type="text" [(ngModel)]="attachmentTitle">
+				</mat-form-field>
+				<br>
+				<label for="attachmentDescription">Description</label>
+				<textarea id="attachmentDescription" name="attachmentDescription" [(ngModel)]="attachmentDescription">
+				</textarea>
+			</ng-container>
+		</mat-tab>
+	</mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-icon-button matTooltip="Ok" (click)="ok()">
+		<mat-icon color="primary">done</mat-icon>
+	</button>
+	<button mat-icon-button mat-dialog-close>
+		<mat-icon color="warn" matTooltip="Cancel">cancel</mat-icon>
+	</button>
+</mat-dialog-actions>

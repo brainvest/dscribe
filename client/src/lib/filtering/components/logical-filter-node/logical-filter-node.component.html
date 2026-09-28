@@ -1,0 +1,19 @@
+<div class="filter-node-container">
+	<div class="node-action-btns">
+		<mat-icon (click)="manipulator.addSibling(node)"
+							title="combine logically with another condition">fast_forward
+		</mat-icon>
+		<mat-icon (click)="node.addChild()" title="add child">add</mat-icon>
+		<mat-icon (click)="manipulator.delete(node)" title="remove">delete</mat-icon>
+	</div>
+	<div *ngFor="let child of node.children; let i = index">
+		<select class="filter-option" [(ngModel)]="node.operator" *ngIf="i == 1 || node.children.length == 1">
+			<option value="" disabled selected>Logical Operator</option>
+			<option *ngFor="let o of node.operators" [ngValue]="o">{{o.title}}</option>
+		</select>
+		<span *ngIf="i != node?.operator?.minNumberOfOperands - 1" class="filter-option">
+		{{i > 1 ? node?.operator?.title : ''}}
+	</span>
+		<dscribe-filter-node [node]="child"></dscribe-filter-node>
+	</div>
+</div>

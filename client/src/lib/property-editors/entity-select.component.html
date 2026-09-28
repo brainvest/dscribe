@@ -1,0 +1,23 @@
+<mat-form-field class="full-width" *ngIf="!isFilter" appearance="outline">
+	<mat-label>{{property.Title || property.Name}}</mat-label>
+	<mat-select 
+		[attr.id]="property.Name" 
+		[(ngModel)]="entity[overridePropertyName || property.Name]"
+		[required]="!property.IsNullable">
+		<mat-option *ngFor="let item of list" [value]="item.Id">
+			{{ item.DisplayName ? item.DisplayName : item.Name }}
+		</mat-option>
+	</mat-select>
+</mat-form-field>
+
+<select *ngIf="isFilter" [attr.id]="property.Name" [(ngModel)]="entity[overridePropertyName || property.Name]">
+	<option *ngFor="let item of list" [ngValue]="item.Id">
+		{{ item.DisplayName ? item.DisplayName : item.Name }}
+	</option>
+</select>
+
+<div *ngIf="property?.ValidationErrors">
+	<p *ngFor="let validationError of property.ValidationErrors" class="error-message">
+		{{validationError.Message}}
+	</p>
+</div>

@@ -1,0 +1,20 @@
+.main-table{
+	width: 100%;
+}
+
+.selected {
+	background: lightskyblue;
+}
+
+.radio-group{
+	display: inline-flex;
+	flex-direction: column;
+}
+
+.radio-button{
+	margin: 5px;
+}
+
+.tab-group{
+	min-height: 150px;
+}

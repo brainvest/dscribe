@@ -1,0 +1,13 @@
+<h1 mat-dialog-title color="warn">
+	Delete {{inputs.title}}
+	<mat-icon (click)="dialogRef.close()">close</mat-icon>
+</h1>
+
+<mat-dialog-content>
+	<h3>Are you sure you want to delete this {{inputs.title}}</h3>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+	<button mat-raised-button color="warn" (click)="deleteEntity()">Delete</button>
+	<button mat-raised-button color="accent" (click)="dialogRef.close()">Cancel</button>
+</mat-dialog-actions>

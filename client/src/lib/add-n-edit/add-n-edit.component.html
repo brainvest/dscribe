@@ -1,0 +1,32 @@
+<form class="form-horizontal">
+	<div *ngIf="entityTypeMetadata">
+		<dscribe-property-editor *ngFor="let property of structure?.directProperties"
+														 [property]="property"
+														 [entity]="entity">
+		</dscribe-property-editor>
+		<mat-card *ngIf="structure?.children">
+			<mat-tab-group>
+				<mat-tab *ngFor="let related of structure.children">
+					<ng-template mat-tab-label>
+						{{related.pathTitle}}
+					</ng-template>
+					<dscribe-property-editor *ngFor="let property of related.directProperties"
+																	 [property]="property"
+																	 [entity]="related.currentEntity">
+					</dscribe-property-editor>
+					<dscribe-list *ngIf="related.componentType === componentTypes.List"
+												[hideFilter]="true" [entityType]="related.entityTypeMetadata"
+												[masters]="related.masterReferences" [addNEditStructure]="related">
+					</dscribe-list>
+				</mat-tab>
+			</mat-tab-group>
+		</mat-card>
+	</div>
+
+	<button class="save-btn" mat-icon-button color="primary" type="submit" (click)="saveEntity()">
+		<mat-icon>save</mat-icon>
+	</button>
+	<button mat-icon-button color="warn" type="button" (click)="cancel()">
+		<mat-icon>cancel</mat-icon>
+	</button>
+</form>
