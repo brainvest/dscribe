@@ -1,182 +1,98 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "npm"
+  },
   "newProjectRoot": "projects",
   "projects": {
-    "dscribe-host": {
-      "root": "demo",
-      "sourceRoot": "demo/src",
+    "ui-template": {
       "projectType": "application",
-      "prefix": "dscribe-host",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:resolver": {
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:application",
           "options": {
-            "aot": true,
-            "outputPath": "demo/dist/dscribe-host",
-            "index": "demo/src/index.html",
-            "main": "demo/src/main.ts",
-            "polyfills": "demo/src/polyfills.ts",
-            "tsConfig": "demo/src/tsconfig.app.json",
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
-              "demo/src/favicon.ico",
-              "demo/src/assets",
-              "demo/src/oidc-silent-refresh/index.html",
-              "demo/src/oidc-silent-refresh/oidc-client.min.js"
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
             ],
-            "styles": [
-              "demo/src/styles.css"
-            ],
-            "scripts": []
+            "styles": ["src/styles.scss"]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "fileReplacements": [
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
                 {
-                  "replace": "demo/src/environments/environment.ts",
-                  "with": "demo/src/environments/environment.prod.ts"
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
                 }
               ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "outputHashing": "all"
             },
-            "development": {}
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
-              "buildTarget": "dscribe-host:build:production"
+              "buildTarget": "ui-template:build:production"
             },
             "development": {
-              "buildTarget": "dscribe-host:build:development"
+              "buildTarget": "ui-template:build:development"
             }
           },
           "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "dscribe-host:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "demo/src/test.ts",
-            "polyfills": "demo/src/polyfills.ts",
-            "tsConfig": "demo/src/tsconfig.spec.json",
-            "karmaConfig": "demo/src/karma.conf.js",
-            "styles": [
-              "demo/src/styles.css"
-            ],
-            "scripts": [],
-            "assets": [
-              "demo/src/favicon.ico",
-              "demo/src/assets"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "demo/src/**/*.ts",
-              "src/**/*.ts"
-            ]
-          }
-        }
-      }
-    },
-    "dscribe-host-e2e": {
-      "root": "demo/e2e/",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "demo/e2e/protractor.conf.js"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "dscribe-host:serve:production"
-            },
-            "development": {
-              "devServerTarget": "dscribe-host:serve:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "demo/e2e/**/*.ts"
-            ]
-          }
-        }
-      }
-    },
-    "dscribe": {
-      "root": "src",
-      "sourceRoot": "src",
-      "projectType": "library",
-      "prefix": "dscribe",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "src/tsconfig.lib.json",
-            "project": "src/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "project": "src/ng-package.prod.json",
-              "tsConfig": "src/tsconfig.lib.prod.json"
-            },
-            "development": {}
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts"
-            ]
-          }
         }
       }
     }
-  },
-  "defaultProject": "dscribe-host",
-  "cli": {
-    "analytics": "d87102e9-b553-4eaa-a4ad-47a43a570d96"
   }
 }

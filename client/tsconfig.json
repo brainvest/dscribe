@@ -1,26 +1,28 @@
-/*
-  This is a "Solution Style" tsconfig.json file, and is used by editors and TypeScript’s language server to improve development experience.
-  It is not intended to be used to perform a compilation.
-
-  To learn more about this file see: https://angular.io/config/solution-tsconfig.
-*/
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
+  "compileOnSave": false,
+  "compilerOptions": {
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true
+  },
   "files": [],
   "references": [
     {
-      "path": "./demo/src/tsconfig.app.json"
-    },
-    {
-      "path": "./demo/src/tsconfig.spec.json"
-    },
-    {
-      "path": "./demo/e2e/tsconfig.e2e.json"
-    },
-    {
-      "path": "./src/tsconfig.lib.json"
-    },
-    {
-      "path": "./src/tsconfig.spec.json"
+      "path": "./tsconfig.app.json"
     }
   ]
 }

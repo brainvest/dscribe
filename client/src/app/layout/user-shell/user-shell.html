@@ -1,0 +1,73 @@
+<mat-sidenav-container class="shell" autosize>
+  <mat-sidenav class="drawer" mode="side" [opened]="opened()" disableClose>
+    <div class="drawer__brand">
+      <mat-icon class="drawer__logo">bubble_chart</mat-icon>
+      <span>Company</span>
+    </div>
+
+    @for (section of sections; track section.label) {
+      <div class="drawer__section">{{ section.label }}</div>
+      <mat-nav-list class="drawer__list">
+        @for (item of section.items; track item.label) {
+          @if (item.link) {
+            <a mat-list-item [routerLink]="item.link" routerLinkActive="is-active">
+              <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+              <span matListItemTitle>{{ item.label }}</span>
+            </a>
+          } @else {
+            <a mat-list-item (click)="onPlaceholder(item)">
+              <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+              <span matListItemTitle>{{ item.label }}</span>
+              @if (item.badge) {
+                <span matListItemMeta class="drawer__badge">{{ item.badge }}</span>
+              }
+            </a>
+          }
+        }
+      </mat-nav-list>
+    }
+
+    <div class="spacer"></div>
+    @if (auth.role() === 'admin') {
+      <a mat-list-item class="drawer__switch" routerLink="/admin">
+        <mat-icon matListItemIcon>shield_person</mat-icon>
+        <span matListItemTitle>Admin console</span>
+      </a>
+    }
+  </mat-sidenav>
+
+  <mat-sidenav-content class="body">
+    <mat-toolbar class="topbar">
+      <button matIconButton aria-label="Toggle navigation" (click)="opened.set(!opened())">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="topbar__title">My collection</span>
+      <span class="spacer"></span>
+      <button matIconButton [matTooltip]="theme.toggleLabel()" (click)="theme.toggleMode()">
+        <mat-icon>{{ theme.modeIcon() }}</mat-icon>
+      </button>
+      <button
+        matIconButton
+        matTooltip="Notifications"
+        (click)="onPlaceholder({ label: 'Notifications', icon: 'notifications' })"
+      >
+        <mat-icon matBadge="3" matBadgeSize="small" matBadgeColor="warn">notifications</mat-icon>
+      </button>
+      <button matIconButton matTooltip="Account" [matMenuTriggerFor]="accountMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #accountMenu="matMenu" xPosition="before">
+        <div class="account" mat-menu-item disabled>
+          <mat-icon>person</mat-icon><span>{{ auth.displayName() }}</span>
+        </div>
+        <button mat-menu-item (click)="auth.logout()">
+          <mat-icon>logout</mat-icon><span>Sign out</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <main class="content">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
