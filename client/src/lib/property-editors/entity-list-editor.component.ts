@@ -1,4 +1,4 @@
-﻿import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { PropertyMetadata } from '../metadata/property-metadata';
 import { MasterReference } from '../list/models/master-reference';
 import { HasIdName } from '../common/models/has-id-name';
