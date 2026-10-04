@@ -1,9 +1,50 @@
 <mat-sidenav-container class="shell" autosize>
   <mat-sidenav class="drawer" mode="side" [opened]="opened()" disableClose>
-    <div class="drawer__brand">
-      <mat-icon class="drawer__logo">bubble_chart</mat-icon>
-      <span>Company</span>
-    </div>
+    @if (apps.hasChoice()) {
+      <button
+        type="button"
+        class="drawer__brand drawer__brand--switch"
+        aria-label="Switch application"
+        [matMenuTriggerFor]="appMenu"
+        [disabled]="apps.switching()"
+      >
+        <mat-icon class="drawer__logo">{{ apps.current().icon }}</mat-icon>
+        <span class="drawer__app">
+          <span class="drawer__app-name">{{ apps.current().name }}</span>
+          <span class="drawer__app-hint">Company</span>
+        </span>
+        @if (apps.switching()) {
+          <mat-spinner diameter="18" />
+        } @else {
+          <mat-icon class="drawer__app-chevron">unfold_more</mat-icon>
+        }
+      </button>
+      <mat-menu #appMenu="matMenu" class="app-switcher-menu">
+        @for (app of apps.all(); track app.id) {
+          <button
+            mat-menu-item
+            [class.is-current]="app.id === apps.current().id"
+            (click)="onSwitch(app)"
+          >
+            <mat-icon>{{ app.icon }}</mat-icon>
+            <span class="app-option">
+              <span>{{ app.name }}</span>
+              @if (app.description) {
+                <small>{{ app.description }}</small>
+              }
+            </span>
+            @if (app.id === apps.current().id) {
+              <mat-icon class="app-option__check">check</mat-icon>
+            }
+          </button>
+        }
+      </mat-menu>
+    } @else {
+      <div class="drawer__brand">
+        <mat-icon class="drawer__logo">bubble_chart</mat-icon>
+        <span>Company</span>
+      </div>
+    }
 
     @for (section of sections; track section.label) {
       <div class="drawer__section">{{ section.label }}</div>

@@ -27,6 +27,59 @@
   color: var(--app-accent-bar);
 }
 
+// With more than one application the brand doubles as the switcher: the
+// same footprint, plus a subtle chevron that says it can be opened.
+.drawer__brand--switch {
+  appearance: none;
+  border: none;
+  background: transparent;
+  margin: 8px 8px 4px;
+  padding: 10px 12px;
+  border-radius: var(--app-radius);
+  text-align: left;
+  cursor: pointer;
+
+  &:hover:not(:disabled),
+  &[aria-expanded='true'] {
+    background: color-mix(in srgb, var(--app-accent-bar) 10%, transparent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--app-accent-bar);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: progress;
+  }
+}
+
+.drawer__app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.drawer__app-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drawer__app-hint {
+  font: var(--mat-sys-label-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.drawer__app-chevron {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
 .drawer__logo {
   font-size: 28px;
   width: 28px;
