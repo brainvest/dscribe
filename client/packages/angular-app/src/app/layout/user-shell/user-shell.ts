@@ -4,11 +4,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Applications, UserApplication } from '../../core/applications';
 import { Auth } from '../../core/auth/auth';
 import { DrawerItem, USER_DRAWER } from '../../core/navigation';
 import { Theme } from '../../core/theme';
@@ -27,6 +29,7 @@ import { Theme } from '../../core/theme';
     MatButtonModule,
     MatBadgeModule,
     MatTooltipModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './user-shell.html',
   styleUrl: './user-shell.scss',
@@ -35,11 +38,21 @@ export class UserShell {
   private readonly snackBar = inject(MatSnackBar);
   protected readonly theme = inject(Theme);
   protected readonly auth = inject(Auth);
+  protected readonly apps = inject(Applications);
   protected readonly sections = USER_DRAWER;
   protected readonly opened = signal(true);
 
   constructor() {
     this.theme.useArea('user');
+  }
+
+  onSwitch(app: UserApplication): void {
+    if (app.id === this.apps.current().id) {
+      return;
+    }
+    this.apps.switchTo(app).subscribe((done) => {
+      this.snackBar.open(`Switched to ${done.name}`, 'OK', { duration: 2500 });
+    });
   }
 
   onPlaceholder(item: DrawerItem): void {

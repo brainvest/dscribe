@@ -97,3 +97,29 @@ body {
 .app-dialog-fullscreen .mat-mdc-dialog-surface {
   border-radius: 0;
 }
+
+// Application switcher menu (see layout/user-shell): name over a muted
+// description, with the active application marked.
+.app-switcher-menu {
+  min-width: 240px;
+
+  .app-option {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+
+    small {
+      font: var(--mat-sys-body-small);
+      color: var(--mat-sys-on-surface-variant);
+    }
+  }
+
+  .is-current {
+    font-weight: 600;
+  }
+
+  .app-option__check {
+    margin: 0 0 0 auto;
+    color: var(--app-accent-bar);
+  }
+}
