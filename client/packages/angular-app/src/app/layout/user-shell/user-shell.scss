@@ -17,6 +17,22 @@
   padding-bottom: 12px;
 }
 
+.drawer__head {
+  display: flex;
+  align-items: center;
+  padding-right: 8px;
+
+  > .drawer__brand {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.drawer__pin {
+  flex: none;
+  color: var(--mat-sys-on-surface-variant);
+}
+
 .drawer__brand {
   display: flex;
   align-items: center;

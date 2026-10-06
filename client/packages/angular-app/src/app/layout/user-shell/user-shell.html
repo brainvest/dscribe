@@ -1,57 +1,80 @@
 <mat-sidenav-container class="shell" autosize>
-  <mat-sidenav class="drawer" mode="side" [opened]="opened()" disableClose>
-    @if (apps.hasChoice()) {
-      <button
-        type="button"
-        class="drawer__brand drawer__brand--switch"
-        aria-label="Switch application"
-        [matMenuTriggerFor]="appMenu"
-        [disabled]="apps.switching()"
-      >
-        <mat-icon class="drawer__logo">{{ apps.current().icon }}</mat-icon>
-        <span class="drawer__app">
-          <span class="drawer__app-name">{{ apps.current().name }}</span>
-          <span class="drawer__app-hint">Company</span>
-        </span>
-        @if (apps.switching()) {
-          <mat-spinner diameter="18" />
-        } @else {
-          <mat-icon class="drawer__app-chevron">unfold_more</mat-icon>
-        }
-      </button>
-      <mat-menu #appMenu="matMenu" class="app-switcher-menu">
-        @for (app of apps.all(); track app.id) {
-          <button
-            mat-menu-item
-            [class.is-current]="app.id === apps.current().id"
-            (click)="onSwitch(app)"
-          >
-            <mat-icon>{{ app.icon }}</mat-icon>
-            <span class="app-option">
-              <span>{{ app.name }}</span>
-              @if (app.description) {
-                <small>{{ app.description }}</small>
+  <mat-sidenav
+    class="drawer"
+    [mode]="pinned() ? 'side' : 'over'"
+    [opened]="opened()"
+    [disableClose]="pinned()"
+    (openedChange)="opened.set($event)"
+  >
+    <div class="drawer__head">
+      @if (apps.hasChoice()) {
+        <button
+          type="button"
+          class="drawer__brand drawer__brand--switch"
+          aria-label="Switch application"
+          [matMenuTriggerFor]="appMenu"
+          [disabled]="apps.switching()"
+        >
+          <mat-icon class="drawer__logo">{{ apps.current().icon }}</mat-icon>
+          <span class="drawer__app">
+            <span class="drawer__app-name">{{ apps.current().name }}</span>
+            <span class="drawer__app-hint">Company</span>
+          </span>
+          @if (apps.switching()) {
+            <mat-spinner diameter="18" />
+          } @else {
+            <mat-icon class="drawer__app-chevron">unfold_more</mat-icon>
+          }
+        </button>
+        <mat-menu #appMenu="matMenu" class="app-switcher-menu">
+          @for (app of apps.all(); track app.id) {
+            <button
+              mat-menu-item
+              [class.is-current]="app.id === apps.current().id"
+              (click)="onSwitch(app)"
+            >
+              <mat-icon>{{ app.icon }}</mat-icon>
+              <span class="app-option">
+                <span>{{ app.name }}</span>
+                @if (app.description) {
+                  <small>{{ app.description }}</small>
+                }
+              </span>
+              @if (app.id === apps.current().id) {
+                <mat-icon class="app-option__check">check</mat-icon>
               }
-            </span>
-            @if (app.id === apps.current().id) {
-              <mat-icon class="app-option__check">check</mat-icon>
-            }
-          </button>
-        }
-      </mat-menu>
-    } @else {
-      <div class="drawer__brand">
-        <mat-icon class="drawer__logo">bubble_chart</mat-icon>
-        <span>Company</span>
-      </div>
-    }
+            </button>
+          }
+        </mat-menu>
+      } @else {
+        <div class="drawer__brand">
+          <mat-icon class="drawer__logo">bubble_chart</mat-icon>
+          <span>Company</span>
+        </div>
+      }
+      <button
+        matIconButton
+        class="drawer__pin"
+        [attr.aria-label]="pinned() ? 'Unpin navigation' : 'Pin navigation'"
+        [attr.aria-pressed]="pinned()"
+        [matTooltip]="pinned() ? 'Unpin navigation' : 'Pin navigation'"
+        (click)="togglePin()"
+      >
+        <mat-icon>{{ pinned() ? 'keep_off' : 'keep' }}</mat-icon>
+      </button>
+    </div>
 
     @for (section of sections; track section.label) {
       <div class="drawer__section">{{ section.label }}</div>
       <mat-nav-list class="drawer__list">
         @for (item of section.items; track item.label) {
           @if (item.link) {
-            <a mat-list-item [routerLink]="item.link" routerLinkActive="is-active">
+            <a
+              mat-list-item
+              [routerLink]="item.link"
+              routerLinkActive="is-active"
+              (click)="onNavigate()"
+            >
               <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
               <span matListItemTitle>{{ item.label }}</span>
             </a>
@@ -70,7 +93,7 @@
 
     <div class="spacer"></div>
     @if (auth.role() === 'admin') {
-      <a mat-list-item class="drawer__switch" routerLink="/admin">
+      <a mat-list-item class="drawer__switch" routerLink="/admin" (click)="onNavigate()">
         <mat-icon matListItemIcon>shield_person</mat-icon>
         <span matListItemTitle>Admin console</span>
       </a>
