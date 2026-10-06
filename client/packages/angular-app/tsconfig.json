@@ -3,6 +3,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "@waltzar/angular-lib": ["./dist/waltzar/angular-lib"]
+    },
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
@@ -23,6 +26,12 @@
   "references": [
     {
       "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./projects/waltzar/angular-lib/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/waltzar/angular-lib/tsconfig.spec.json"
     }
   ]
 }
