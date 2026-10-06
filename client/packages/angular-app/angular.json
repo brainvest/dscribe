@@ -93,6 +93,32 @@
           "defaultConfiguration": "development"
         }
       }
+    },
+    "@waltzar/angular-lib": {
+      "projectType": "library",
+      "root": "projects/waltzar/angular-lib",
+      "sourceRoot": "projects/waltzar/angular-lib/src",
+      "prefix": "wz",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/waltzar/angular-lib/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/waltzar/angular-lib/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/waltzar/angular-lib/tsconfig.spec.json"
+          }
+        }
+      }
     }
   }
 }
