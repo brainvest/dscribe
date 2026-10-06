@@ -15,6 +15,8 @@ import { Auth } from '../../core/auth/auth';
 import { DrawerItem, USER_DRAWER } from '../../core/navigation';
 import { Theme } from '../../core/theme';
 
+const PIN_STORAGE_KEY = 'ui-template.user-nav-pinned';
+
 @Component({
   selector: 'app-user-shell',
   imports: [
@@ -40,10 +42,27 @@ export class UserShell {
   protected readonly auth = inject(Auth);
   protected readonly apps = inject(Applications);
   protected readonly sections = USER_DRAWER;
-  protected readonly opened = signal(true);
+  /** Pinned: the drawer sits beside the content. Unpinned: it overlays it and closes after navigating. */
+  protected readonly pinned = signal(readPinned());
+  protected readonly opened = signal(this.pinned());
 
   constructor() {
     this.theme.useArea('user');
+  }
+
+  togglePin(): void {
+    const pinned = !this.pinned();
+    this.pinned.set(pinned);
+    // Pinning keeps the open drawer where it is; unpinning gets it out of the way.
+    this.opened.set(pinned);
+    writePinned(pinned);
+  }
+
+  /** Called after any navigation item is chosen: an overlay drawer gets out of the way. */
+  onNavigate(): void {
+    if (!this.pinned()) {
+      this.opened.set(false);
+    }
   }
 
   onSwitch(app: UserApplication): void {
@@ -56,6 +75,23 @@ export class UserShell {
   }
 
   onPlaceholder(item: DrawerItem): void {
+    this.onNavigate();
     this.snackBar.open(`“${item.label}” is a sample menu item`, 'OK', { duration: 2500 });
+  }
+}
+
+function readPinned(): boolean {
+  try {
+    return localStorage?.getItem(PIN_STORAGE_KEY) !== 'false';
+  } catch {
+    return true;
+  }
+}
+
+function writePinned(pinned: boolean): void {
+  try {
+    localStorage?.setItem(PIN_STORAGE_KEY, String(pinned));
+  } catch {
+    // A preference we cannot persist is not worth failing a click over.
   }
 }
