@@ -1,0 +1,125 @@
+// Global theming. Two distinct themes live side by side and are selected by a
+// class on <html>: `.area-admin` (serious, dense, desktop/power-user) and
+// `.area-user` (cheerful, roomy). Light/dark is switched by `color-scheme`,
+// which flips every `light-dark()` value Angular Material emits.
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+
+  // Fallback theme so the app is styled before a shell sets its area class.
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+// ---------------------------------------------------------------- admin theme
+// Cool slate/blue, low chroma, negative density: information-dense screens.
+html.area-admin {
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$chartreuse-palette,
+      ),
+      typography: Roboto,
+      density: -2,
+    )
+  );
+
+  --app-shell-bg: light-dark(#f3f4f6, #14161a);
+  --app-chrome-bg: light-dark(#ffffff, #1b1e24);
+  --app-accent-bar: light-dark(#1f5fa9, #4a8fd6);
+  --app-radius: 4px;
+}
+
+// ----------------------------------------------------------------- user theme
+// Warm magenta/orange, full density, softer corners: friendly and roomy.
+html.area-user {
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$magenta-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+
+  --app-shell-bg: light-dark(#fdf7fb, #17131a);
+  --app-chrome-bg: light-dark(#ffffff, #221c26);
+  --app-accent-bar: light-dark(#b42f7d, #ef8fc4);
+  --app-radius: 16px;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background-color: var(--app-shell-bg, var(--mat-sys-surface));
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+}
+
+// Utility used by both shells.
+.spacer {
+  flex: 1 1 auto;
+}
+
+// Material Symbols renders via a variable font; keep the metrics stable so
+// icons do not shift the dense admin rows around while the font loads.
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+// Form dialogs (see shared/form-dialog.ts): blur the list behind on large
+// displays; go edge to edge on small ones.
+.app-blur-backdrop {
+  backdrop-filter: blur(6px);
+  background: color-mix(in srgb, var(--mat-sys-scrim, #000) 28%, transparent);
+}
+
+.app-dialog-fullscreen .mat-mdc-dialog-surface {
+  border-radius: 0;
+}
+
+// Application switcher menu (see layout/user-shell): name over a muted
+// description, with the active application marked.
+.app-switcher-menu {
+  min-width: 240px;
+
+  .app-option {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+
+    small {
+      font: var(--mat-sys-body-small);
+      color: var(--mat-sys-on-surface-variant);
+    }
+  }
+
+  .is-current {
+    font-weight: 600;
+  }
+
+  .app-option__check {
+    margin: 0 0 0 auto;
+    color: var(--app-accent-bar);
+  }
+}

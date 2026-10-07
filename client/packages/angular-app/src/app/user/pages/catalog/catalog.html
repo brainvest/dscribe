@@ -1,0 +1,27 @@
+<header class="hero">
+  <div>
+    <h1>Good afternoon, Ali</h1>
+    <p>Eight things worth a look today. Tap any card to turn it over.</p>
+  </div>
+  <div class="hero__actions">
+    <button matButton="tonal" class="hero__add" (click)="quickAdd()">
+      <mat-icon>post_add</mat-icon>
+      Quick add
+    </button>
+    <a matButton="filled" routerLink="/app/collection/new" class="hero__add">
+      <mat-icon>add</mat-icon>
+      Add to collection
+    </a>
+  </div>
+</header>
+
+<div class="cards">
+  @for (item of items; track item.id) {
+    <app-flip-card
+      [item]="item"
+      [flipped]="openId() === item.id"
+      (flippedChange)="setFlipped(item, $event)"
+      [editLink]="['/app/collection', item.id]"
+    />
+  }
+</div>

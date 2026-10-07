@@ -5,7 +5,7 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Launch_Host",
+			"name": "Host",
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build-host",
@@ -22,7 +22,7 @@
 			}
 		},
 		{
-			"name": "Launch_Auth",
+			"name": "Auth",
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build-auth",
@@ -54,8 +54,8 @@
 		{
 			"name": "Launch All",
 			"configurations": [
-				"Launch_Host",
-				"Launch_Auth"
+				"Host",
+				"Auth"
 			]
 		}
 	]

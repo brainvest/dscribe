@@ -29,6 +29,9 @@ public class EntityType
 	public string DisplayNamePath { get; set; }
 	public string CodePath { get; set; }
 
+	[MaxLength(200)]
+	public string IconName { get; set; }
+
 	[InverseProperty(nameof(Property.OwnerEntityType))]
 	public ICollection<Property> Properties { get; set; }
 	public ICollection<EntityTypeFacetValue> FacetValues { get; set; }

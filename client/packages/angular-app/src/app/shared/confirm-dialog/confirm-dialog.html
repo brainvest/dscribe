@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>{{ data.message }}</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button matButton (click)="ref.close(false)">Cancel</button>
+  <button
+    matButton="filled"
+    [class.destructive]="data.destructive"
+    cdkFocusInitial
+    (click)="ref.close(true)"
+  >
+    {{ data.confirmLabel ?? 'Confirm' }}
+  </button>
+</mat-dialog-actions>

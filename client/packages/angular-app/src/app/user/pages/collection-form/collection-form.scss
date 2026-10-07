@@ -1,0 +1,160 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  max-width: 720px;
+  margin: 0 auto;
+
+  // Rounder fields to match the 16px corners of the user area.
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: 12px,
+    )
+  );
+}
+
+.back {
+  margin: 0 0 12px -8px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 20px;
+
+  h1 {
+    margin: 0 0 4px;
+    font: var(--mat-sys-headline-small);
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+// Live preview of the chosen icon, styled like the card front.
+.hero__icon {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--mat-sys-primary) 16%, transparent);
+  color: var(--mat-sys-primary);
+
+  mat-icon {
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.card {
+  background: var(--app-chrome-bg);
+  border-radius: var(--app-radius);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant) 60%, transparent);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 8%);
+  padding: 24px;
+}
+
+// Object-level errors: soft, rounded callout in the error tone.
+.callout {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+
+  mat-icon {
+    flex: none;
+    color: var(--mat-sys-error);
+  }
+
+  strong {
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 18px;
+    font: var(--mat-sys-body-medium);
+  }
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 20px;
+}
+
+.field--wide {
+  grid-column: 1 / -1;
+}
+
+.icon-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 0 12px;
+}
+
+.toggle__hint {
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.ok {
+  color: var(--mat-sys-tertiary);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 16px;
+  border-top: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant) 60%, transparent);
+
+  button,
+  a {
+    border-radius: 999px;
+  }
+}
+
+// Opened from the collection as a dialog: the dialog surface frames the form.
+:host(.in-dialog) {
+  position: relative;
+  max-width: none;
+  padding: 24px;
+  background: var(--app-shell-bg);
+
+  .hero {
+    padding-right: 40px;
+  }
+}
+
+.dismiss {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+@media (max-width: 600px) {
+  .fields {
+    grid-template-columns: 1fr;
+  }
+}
