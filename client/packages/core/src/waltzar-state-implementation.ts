@@ -1,18 +1,18 @@
-import type {WaltzarConfig} from './waltzar-config';
+import {BehaviorSubject} from 'rxjs';
 import type {AppInstanceInformation} from './abstractions/app-instance-information';
-import {BehaviorSubject, type Observable} from 'rxjs';
-import {lazyRemoteNotLoaded, type LazyRemoteData} from './abstractions/lazy-remote-data';
-import {MetadataModel} from './client-models/metadata-model';
-import {postJson} from './helpers/http';
-import {WaltzarState} from './abstractions/waltzar-state';
 import {AuthenticationState} from './abstractions/authentication-state';
+import {lazyRemoteNotLoaded, type LazyRemoteData} from './abstractions/lazy-remote-data';
+import {WaltzarState} from './abstractions/waltzar-state';
+// import {MetadataModel} from './client-models/metadata-model';
 import {ContractConstants} from './helpers/contract-constants';
+import {postJson} from './helpers/http';
 import {nextState} from './helpers/lazy-remote-data-state-machine';
+import type {WaltzarConfig} from './waltzar-config';
 
 export class WaltzarStateImplementation implements WaltzarState {
 	private _appInstances$ = new BehaviorSubject<LazyRemoteData<AppInstanceInformation[]>>(lazyRemoteNotLoaded);
 	private _appInstance$ = new BehaviorSubject<AppInstanceInformation | null>(null);
-	private _metadataPackage$ = new BehaviorSubject<MetadataModel | null>(null);
+	// private _metadataPackage$ = new BehaviorSubject<MetadataModel | null>(null);
 	private _config: WaltzarConfig;
 	private _authState: AuthenticationState;
 
@@ -40,7 +40,7 @@ export class WaltzarStateImplementation implements WaltzarState {
 
 	get availableAppInstances$() {return this._appInstances$;}
 	get activeAppInstance$() {return this._appInstance$;}
-	get metadataPackage$() {return this._metadataPackage$;}
+	// get metadataPackage$() {return this._metadataPackage$;}
 	get config() {return this._config;}
 	get authState() {return this._authState;}
 }
