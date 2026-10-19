@@ -14,6 +14,9 @@ import { Applications, UserApplication } from '../../core/applications';
 import { Auth } from '../../core/auth/auth';
 import { DrawerItem, USER_DRAWER } from '../../core/navigation';
 import { Theme } from '../../core/theme';
+import {WALTZAR_STATE} from '../../app.config';
+import {WaltzarState} from '@waltzar/core';
+import {AsyncPipe} from '@angular/common';
 
 const PIN_STORAGE_KEY = 'ui-template.user-nav-pinned';
 
@@ -32,6 +35,7 @@ const PIN_STORAGE_KEY = 'ui-template.user-nav-pinned';
     MatBadgeModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
+		AsyncPipe
   ],
   templateUrl: './user-shell.html',
   styleUrl: './user-shell.scss',
@@ -45,6 +49,7 @@ export class UserShell {
   /** Pinned: the drawer sits beside the content. Unpinned: it overlays it and closes after navigating. */
   protected readonly pinned = signal(readPinned());
   protected readonly opened = signal(this.pinned());
+	protected readonly waltzarState: WaltzarState = inject(WALTZAR_STATE);
 
   constructor() {
     this.theme.useArea('user');

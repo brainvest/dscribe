@@ -1,15 +1,16 @@
-import { DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, catchError, firstValueFrom, map, of, tap } from 'rxjs';
-import { AuthApi, Role, TokenClaims } from './auth-api';
+import {DestroyRef, Injectable, computed, inject, signal} from '@angular/core';
+import {Router} from '@angular/router';
+import {BehaviorSubject, Observable, catchError, firstValueFrom, map, of, tap} from 'rxjs';
+import {AuthApi, Role, TokenClaims} from './auth-api';
+import {AuthenticationState} from '@waltzar/core';
 
 /** Refresh this long before the access token expires. */
 const REFRESH_LEAD_MS = 60_000;
 
 /** Landing area for each role after sign-in. */
 export const HOME_FOR_ROLE: Record<Role, string> = {
-  admin: '/admin',
-  user: '/app',
+	admin: '/admin',
+	user: '/app',
 };
 
 /**
@@ -21,100 +22,106 @@ export const HOME_FOR_ROLE: Record<Role, string> = {
  * Claims are decoded for display and routing only; the server must still
  * verify the signature and enforce roles on every request.
  */
-@Injectable({ providedIn: 'root' })
-export class Auth {
-  private readonly api = inject(AuthApi);
-  private readonly router = inject(Router);
+@Injectable({providedIn: 'root'})
+export class Auth implements AuthenticationState {
+	private readonly api = inject(AuthApi);
+	private readonly router = inject(Router);
 
-  private readonly token = signal<string | null>(null);
-  private refreshTimer?: ReturnType<typeof setTimeout>;
+	private readonly token = signal<string | null>(null);
+	private refreshTimer?: ReturnType<typeof setTimeout>;
 
-  readonly claims = computed(() => decode(this.token()));
-  readonly isAuthenticated = computed(() => this.claims() !== null);
-  readonly role = computed(() => toAppRole(this.claims()));
-  readonly displayName = computed(() => this.claims()?.name ?? '');
+	readonly claims = computed(() => decode(this.token()));
+	readonly isAuthenticated = computed(() => this.claims() !== null);
+	readonly role = computed(() => toAppRole(this.claims()));
+	readonly displayName = computed(() => this.claims()?.name ?? '');
 
-  constructor() {
-    inject(DestroyRef).onDestroy(() => clearTimeout(this.refreshTimer));
-  }
+	constructor() {
+		inject(DestroyRef).onDestroy(() => clearTimeout(this.refreshTimer));
+	}
 
-  /** Current access token, for the interceptor. */
-  accessToken(): string | null {
-    return this.token();
-  }
+	tokenProvider() {
+		return [{'headerName': 'Authorization', 'headerValue': `Bearer ${this.accessToken()}`}];
+	}
+	private readonly _authChanged$ = new BehaviorSubject<{isAuthenticated: boolean;}>({isAuthenticated: !!this.accessToken()});
+	readonly authChanged$ = this._authChanged$.asObservable();
 
-  /** Run once at startup: picks up an existing session, if there is one. */
-  restore(): Promise<unknown> {
-    return firstValueFrom(this.refresh());
-  }
+	/** Current access token, for the interceptor. */
+	accessToken(): string | null {
+		return this.token();
+	}
 
-  /** Emits the area to navigate to on success; errors on bad credentials. */
-  login(username: string, password: string): Observable<string> {
-    return this.api.login(username, password).pipe(
-      tap(({ accessToken }) => this.setToken(accessToken)),
-      map(() => this.homeUrl()),
-    );
-  }
+	/** Run once at startup: picks up an existing session, if there is one. */
+	restore(): Promise<unknown> {
+		return firstValueFrom(this.refresh());
+	}
 
-  logout(): void {
-    this.setToken(null);
-    this.api.logout().subscribe();
-    this.router.navigateByUrl('/');
-  }
+	/** Emits the area to navigate to on success; errors on bad credentials. */
+	login(username: string, password: string): Observable<string> {
+		return this.api.login(username, password).pipe(
+			tap(({accessToken}) => this.setToken(accessToken)),
+			map(() => this.homeUrl()),
+		);
+	}
 
-  /** Where the signed-in user belongs; `/` when nobody is. */
-  homeUrl(): string {
-    const role = this.role();
-    return role ? HOME_FOR_ROLE[role] : '/';
-  }
+	logout(): void {
+		this.setToken(null);
+		this.api.logout().subscribe();
+		this.router.navigateByUrl('/');
+	}
 
-  private refresh(): Observable<boolean> {
-    return this.api.refresh().pipe(
-      tap(({ accessToken }) => this.setToken(accessToken)),
-      map(() => true),
-      catchError(() => {
-        this.setToken(null);
-        return of(false);
-      }),
-    );
-  }
+	/** Where the signed-in user belongs; `/` when nobody is. */
+	homeUrl(): string {
+		const role = this.role();
+		return role ? HOME_FOR_ROLE[role] : '/';
+	}
 
-  private setToken(token: string | null): void {
-    clearTimeout(this.refreshTimer);
-    this.token.set(token);
+	private refresh(): Observable<boolean> {
+		return this.api.refresh().pipe(
+			tap(({accessToken}) => this.setToken(accessToken)),
+			map(() => true),
+			catchError(() => {
+				this.setToken(null);
+				return of(false);
+			}),
+		);
+	}
 
-    const exp = this.claims()?.exp;
-    if (exp) {
-      const wait = Math.max(exp * 1000 - Date.now() - REFRESH_LEAD_MS, 0);
-      this.refreshTimer = setTimeout(() => {
-        this.refresh().subscribe((ok) => {
-          if (!ok) {
-            this.router.navigateByUrl('/login');
-          }
-        });
-      }, wait);
-    }
-  }
+	private setToken(token: string | null): void {
+		clearTimeout(this.refreshTimer);
+		this.token.set(token);
+
+		const exp = this.claims()?.exp;
+		if (exp) {
+			const wait = Math.max(exp * 1000 - Date.now() - REFRESH_LEAD_MS, 0);
+			this.refreshTimer = setTimeout(() => {
+				this.refresh().subscribe((ok) => {
+					if (!ok) {
+						this.router.navigateByUrl('/login');
+					}
+				});
+			}, wait);
+		}
+	}
 }
 
 /** Holders of the server's `Admin` role get the admin area; everyone else the user area. */
 function toAppRole(claims: TokenClaims | null): Role | null {
-  if (!claims) {
-    return null;
-  }
-  const roles = [claims.role ?? []].flat();
-  return roles.some((r) => r.toLowerCase() === 'admin') ? 'admin' : 'user';
+	if (!claims) {
+		return null;
+	}
+	const roles = [claims.role ?? []].flat();
+	return roles.some((r) => r.toLowerCase() === 'admin') ? 'admin' : 'user';
 }
 
 function decode(token: string | null): TokenClaims | null {
-  if (!token) {
-    return null;
-  }
-  try {
-    const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-    const claims = JSON.parse(atob(payload)) as TokenClaims;
-    return claims.exp * 1000 > Date.now() ? claims : null;
-  } catch {
-    return null;
-  }
+	if (!token) {
+		return null;
+	}
+	try {
+		const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+		const claims = JSON.parse(atob(payload)) as TokenClaims;
+		return claims.exp * 1000 > Date.now() ? claims : null;
+	} catch {
+		return null;
+	}
 }

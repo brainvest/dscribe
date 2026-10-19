@@ -27,7 +27,7 @@
           }
         </button>
         <mat-menu #appMenu="matMenu" class="app-switcher-menu">
-          @for (app of apps.all(); track app.id) {
+          @for (app of (waltzarState.availableAppInstances$ | async); track app.id) {
             <button
               mat-menu-item
               [class.is-current]="app.id === apps.current().id"
