@@ -86,7 +86,10 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "prebundle": {
+              "exclude": ["@waltzar/core"]
+            }
           },
           "configurations": {
             "production": {

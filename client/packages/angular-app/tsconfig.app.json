@@ -3,7 +3,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": []
+    "types": [],
+    "paths": {
+      "@waltzar/angular-lib": ["./dist/waltzar/angular-lib"],
+      "@waltzar/core": ["../core/src/index.ts"]
+    }
   },
   "include": ["src/**/*.ts"]
 }
