@@ -2,44 +2,46 @@
 	<mat-sidenav class="drawer" [mode]="pinned() ? 'side' : 'over'" [opened]="opened()" [disableClose]="pinned()"
 		(openedChange)="opened.set($event)">
 		<div class="drawer__head">
-			@if (apps.hasChoice()) {
-			<button type="button" class="drawer__brand drawer__brand--switch" aria-label="Switch application"
-				[matMenuTriggerFor]="appMenu" [disabled]="apps.switching()">
-				<mat-icon class="drawer__logo">{{ apps.current().icon }}</mat-icon>
-				<span class="drawer__app">
-					<span class="drawer__app-name">{{ apps.current().name }}</span>
-					<span class="drawer__app-hint">Company</span>
-				</span>
-				@if (apps.switching()) {
-				<mat-spinner diameter="18" />
-				} @else {
-				<mat-icon class="drawer__app-chevron">unfold_more</mat-icon>
-				}
-			</button>
-			<mat-menu #appMenu="matMenu" class="app-switcher-menu">
-				<remote-region>
-					@for (app of (waltzarState.availableAppInstances$ | async); track app.id) {
-					<button mat-menu-item [class.is-current]="app.id === apps.current().id" (click)="onSwitch(app)">
-						<mat-icon>{{ app.icon }}</mat-icon>
-						<span class="app-option">
-							<span>{{ app.name }}</span>
-							@if (app.description) {
-							<small>{{ app.description }}</small>
-							}
+			<remote-region>
+				<ng-template [remoteContent]="availableAppInstances()" let-appInstances>
+					@if (appInstances.length > 1) {
+					<button type="button" class="drawer__brand drawer__brand--switch" aria-label="Switch application"
+						[matMenuTriggerFor]="appMenu"> <!-- [disabled]="apps.switching()" -->
+						<mat-icon class="drawer__logo">{{ activeAppInstance()?.icon }}</mat-icon>
+						<span class="drawer__app">
+							<span class="drawer__app-name">{{ activeAppInstance()?.name }}</span>
+							<span class="drawer__app-hint">Company</span>
 						</span>
-						@if (app.id === apps.current().id) {
-						<mat-icon class="app-option__check">check</mat-icon>
-						}
+						<!-- @if (apps.switching()) {
+						<mat-spinner diameter="18" />
+						} @else { -->
+						<mat-icon class="drawer__app-chevron">unfold_more</mat-icon>
+						<!-- } -->
 					</button>
+					<mat-menu #appMenu="matMenu" class="app-switcher-menu">
+						@for (app of appInstances; track app.id) {
+						<button mat-menu-item [class.is-current]="app.id === activeAppInstance()?.id" (click)="onSwitch(app)">
+							<mat-icon>{{ app.icon }}</mat-icon>
+							<span class="app-option">
+								<span>{{ app.name }}</span>
+								@if (app.description) {
+								<small>{{ app.description }}</small>
+								}
+							</span>
+							@if (app.id === activeAppInstance()?.id) {
+							<mat-icon class="app-option__check">check</mat-icon>
+							}
+						</button>
+						}
+					</mat-menu>
+					} @else {
+					<div class="drawer__brand">
+						<mat-icon class="drawer__logo">bubble_chart</mat-icon>
+						<span>Company</span>
+					</div>
 					}
-				</remote-region>
-			</mat-menu>
-			} @else {
-			<div class="drawer__brand">
-				<mat-icon class="drawer__logo">bubble_chart</mat-icon>
-				<span>Company</span>
-			</div>
-			}
+				</ng-template>
+			</remote-region>
 			<button matIconButton class="drawer__pin" [attr.aria-label]="pinned() ? 'Unpin navigation' : 'Pin navigation'"
 				[attr.aria-pressed]="pinned()" [matTooltip]="pinned() ? 'Unpin navigation' : 'Pin navigation'"
 				(click)="togglePin()">

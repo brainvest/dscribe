@@ -23,15 +23,7 @@ public class Startup(IConfiguration configuration)
 		RuntimeStartup.ConfigureServices(services, configuration);
 		services.RegisterEfCore();
 
-		services.AddControllers()
-		.AddNewtonsoftJson(options =>
-		{
-			options.UseMemberCasing();
-		})
-		.AddJsonOptions(jsonOptions =>
-		{
-			jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
-		});
+		services.AddControllers();
 
 		var authAuthority = configuration["AuthAuthority"];
 		if (string.IsNullOrWhiteSpace(authAuthority))

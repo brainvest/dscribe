@@ -11,4 +11,6 @@ export type AppInstanceInformation = {
 	readonly name: string;
 	readonly title: string;
 	readonly useUnreleasedMetadata: boolean;
+	readonly icon: string;
+	readonly description?: string;
 };
