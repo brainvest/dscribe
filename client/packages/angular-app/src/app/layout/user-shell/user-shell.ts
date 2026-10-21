@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { RemoteRegionComponent } from '@waltzar/angular-lib';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,7 +36,8 @@ const PIN_STORAGE_KEY = 'ui-template.user-nav-pinned';
     MatBadgeModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-		AsyncPipe
+		AsyncPipe,
+		RemoteRegionComponent,
   ],
   templateUrl: './user-shell.html',
   styleUrl: './user-shell.scss',

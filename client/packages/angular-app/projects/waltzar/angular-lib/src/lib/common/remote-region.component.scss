@@ -1,0 +1,29 @@
+:host {
+	display: block;
+}
+
+.region {
+	position: relative;
+	min-height: 2rem;
+}
+
+.reload-button {
+	position: absolute;
+	top: 0.25rem;
+	right: 0.25rem;
+	z-index: 5;
+
+	opacity: 0;
+	transition: opacity 0.15s;
+
+	border: 0;
+	border-radius: 4px;
+	background: rgba(255, 255, 255, 0.85);
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+.region:hover .reload-button,
+.reload-button:focus-visible {
+	opacity: 1;
+}
