@@ -43,4 +43,8 @@ export class WaltzarStateImplementation implements WaltzarState {
 	// get metadataPackage$() {return this._metadataPackage$;}
 	get config() {return this._config;}
 	get authState() {return this._authState;}
+
+	switchActiveAppInstance(app: AppInstanceInformation): void {
+		this._appInstance$.next(app);
+	}
 }

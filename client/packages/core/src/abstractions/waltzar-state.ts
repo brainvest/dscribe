@@ -11,4 +11,5 @@ export interface WaltzarState {
 	// readonly metadataPackage$: Observable<MetadataModel | null>;
 	readonly config: WaltzarConfig;
 	readonly authState: AuthenticationState;
+	switchActiveAppInstance(app: AppInstanceInformation): void;
 }
