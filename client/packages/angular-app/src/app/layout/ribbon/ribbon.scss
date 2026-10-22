@@ -1,0 +1,151 @@
+:host {
+  display: block;
+  background: var(--app-chrome-bg);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.ribbon__tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  padding: 0 8px;
+  height: 32px;
+}
+
+.ribbon__tab {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-label-large);
+  padding: 0 14px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+
+  &:hover {
+    background: color-mix(in srgb, var(--mat-sys-on-surface) 6%, transparent);
+  }
+
+  &.is-active {
+    color: var(--app-accent-bar);
+    border-bottom-color: var(--app-accent-bar);
+    font-weight: 600;
+  }
+}
+
+.ribbon__collapse {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--mat-sys-on-surface-variant);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0 6px;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.ribbon__band {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 6px 8px 2px;
+  overflow-x: auto;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--app-accent-bar) 5%, var(--app-chrome-bg)),
+    var(--app-chrome-bg)
+  );
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  border-right: 1px solid var(--mat-sys-outline-variant);
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.group__commands {
+  display: flex;
+  flex-flow: column wrap;
+  align-content: flex-start;
+  gap: 2px;
+  height: 76px;
+}
+
+.group__label {
+  text-align: center;
+  font-size: 11px;
+  color: var(--mat-sys-on-surface-variant);
+  padding-top: 2px;
+}
+
+.cmd {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--mat-sys-on-surface);
+  border-radius: var(--app-radius);
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  font: var(--mat-sys-label-medium);
+  white-space: nowrap;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--app-accent-bar);
+  }
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--app-accent-bar) 12%, transparent);
+    border-color: color-mix(in srgb, var(--app-accent-bar) 30%, transparent);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  &.is-active {
+    background: color-mix(in srgb, var(--app-accent-bar) 18%, transparent);
+    border-color: color-mix(in srgb, var(--app-accent-bar) 45%, transparent);
+    font-weight: 600;
+  }
+}
+
+// Large commands span the full height of the group: icon above the label.
+.cmd--large {
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  height: 100%;
+  width: 68px;
+  padding: 4px;
+  text-align: center;
+
+  mat-icon {
+    font-size: 26px;
+    width: 26px;
+    height: 26px;
+  }
+
+  .cmd__label {
+    white-space: normal;
+    line-height: 1.1;
+  }
+}

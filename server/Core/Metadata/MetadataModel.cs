@@ -32,6 +32,7 @@ public class MetadataModel : IMetadataModel
 					.Select(y => PropertyFacet.Create(y))
 					.ToDictionary(y => y.Name, y => y)
 			}).ToDictionary(x => x.Name, x => x as IPropertyGeneralUsageCategory);
+		var icons = bundle.GetEffectiveIcons();
 		EntityTypes = bundle.EntityTypes.Select(x =>
 			new EntityMetadata
 			{
@@ -42,6 +43,7 @@ public class MetadataModel : IMetadataModel
 				PluralTitle = x.PluralTitle,
 				DisplayNamePath = x.DisplayNamePath,
 				CodePath = x.CodePath,
+				Icon = x.IconName == null ? null : IconInfo.FromDb(icons.GetValueOrDefault(x.IconName)),
 				PrimaryKeyPath = x.Properties?.FirstOrDefault(p => p.GeneralUsageCategoryId == 2)?.Name, //TODO: Unsafe
 				Properties = x.Properties?.Select(p =>
 			new PropertyMetadata
@@ -164,5 +166,6 @@ public class MetadataModel : IMetadataModel
 		public string SingularTitle { get; set; }
 		public string PluralTitle { get; set; }
 		public int EntityGeneralUsageCategoryId { get; set; }
+		public IconInfo Icon { get; set; }
 	}
 }

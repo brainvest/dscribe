@@ -1,0 +1,16 @@
+<div class="region" [attr.aria-busy]="busy()">
+
+	@if (displayValue(); as content) {
+	<ng-container [ngTemplateOutlet]="template().template" [ngTemplateOutletContext]="{
+            $implicit: content.value
+          }" />
+	}
+
+	<remote-overlay [state]="overlayState()" [allowRetry]="true" (retry)="retry.emit()" />
+
+	@if (overlayState() === 'none' && displayValue()) {
+	<button type="button" class="reload-button" title="Reload" (click)="reload.emit()">
+		↻
+	</button>
+	}
+</div>

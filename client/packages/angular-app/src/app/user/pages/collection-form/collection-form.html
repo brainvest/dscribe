@@ -1,0 +1,142 @@
+@if (inDialog) {
+  <button matIconButton type="button" class="dismiss" aria-label="Close" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+} @else {
+  <a matButton routerLink="/app/collection" class="back">
+    <mat-icon>arrow_back</mat-icon>
+    My collection
+  </a>
+}
+
+<header class="hero">
+  <div class="hero__icon">
+    <mat-icon>{{ form.controls.icon.value }}</mat-icon>
+  </div>
+  <div>
+    <h1>{{ isEdit() ? 'Edit card' : 'Add a card' }}</h1>
+    <p>
+      {{
+        isEdit()
+          ? 'Change anything you like; your collection updates straight away.'
+          : 'A card is a shortcut to something you care about. Keep it short and friendly.'
+      }}
+    </p>
+  </div>
+</header>
+
+<form class="card" [formGroup]="form" (ngSubmit)="save()">
+  <!-- Object-level validation: rounded callout at the top of the card. -->
+  @if (objectErrors.length || (submitted() && invalidFieldCount)) {
+    <div class="callout" role="alert">
+      <mat-icon>sentiment_dissatisfied</mat-icon>
+      <div>
+        <strong>Almost there</strong>
+        <ul>
+          @if (submitted() && invalidFieldCount) {
+            <li>Have a look at the {{ invalidFieldCount }} highlighted field(s).</li>
+          }
+          @for (message of objectErrors; track message) {
+            <li>{{ message }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+  }
+
+  <div class="fields">
+    <mat-form-field appearance="outline" class="field--wide">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" placeholder="e.g. Lunch club" />
+      @if (form.controls.title.valid && form.controls.title.dirty && !form.hasError('titleTaken')) {
+        <mat-icon matSuffix class="ok">check_circle</mat-icon>
+      }
+      <mat-hint align="end">{{ form.controls.title.value.length }} / 40</mat-hint>
+      @if (form.controls.title.hasError('required')) {
+        <mat-error>Give the card a title</mat-error>
+      } @else if (form.controls.title.hasError('maxlength')) {
+        <mat-error>Keep it under 40 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field--wide">
+      <mat-label>Short description</mat-label>
+      <input matInput formControlName="blurb" />
+      @if (form.controls.blurb.valid && form.controls.blurb.dirty) {
+        <mat-icon matSuffix class="ok">check_circle</mat-icon>
+      }
+      <mat-hint>One line, shown on the front of the card</mat-hint>
+      <mat-hint align="end">{{ form.controls.blurb.value.length }} / 80</mat-hint>
+      @if (form.controls.blurb.hasError('required')) {
+        <mat-error>Add a short description</mat-error>
+      } @else if (form.controls.blurb.hasError('maxlength')) {
+        <mat-error>Keep it under 80 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tag</mat-label>
+      <mat-select formControlName="tag">
+        @for (t of tags; track t) {
+          <mat-option [value]="t">{{ t }}</mat-option>
+        }
+      </mat-select>
+      @if (form.controls.tag.valid && form.controls.tag.dirty) {
+        <mat-icon matSuffix class="ok">check_circle</mat-icon>
+      }
+      <mat-hint>Groups similar cards</mat-hint>
+      @if (form.controls.tag.hasError('required')) {
+        <mat-error>Choose a tag</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Icon</mat-label>
+      <mat-select formControlName="icon">
+        <mat-select-trigger>
+          <span class="icon-option">
+            <mat-icon>{{ form.controls.icon.value }}</mat-icon>
+            {{ form.controls.icon.value }}
+          </span>
+        </mat-select-trigger>
+        @for (i of icons; track i) {
+          <mat-option [value]="i">
+            <span class="icon-option"
+              ><mat-icon>{{ i }}</mat-icon
+              >{{ i }}</span
+            >
+          </mat-option>
+        }
+      </mat-select>
+      <mat-hint>Previewed in the header above</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field--wide">
+      <mat-label>Details</mat-label>
+      <textarea matInput formControlName="details" rows="4"></textarea>
+      @if (form.controls.details.valid && form.controls.details.dirty) {
+        <mat-icon matSuffix class="ok">check_circle</mat-icon>
+      }
+      <mat-hint>Shown on the back of the card. At least 40 characters</mat-hint>
+      <mat-hint align="end">{{ form.controls.details.value.length }}</mat-hint>
+      @if (form.controls.details.hasError('required')) {
+        <mat-error>Tell people what this card is about</mat-error>
+      } @else if (form.controls.details.hasError('minlength')) {
+        <mat-error>A little more, please: at least 40 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="toggle field--wide">
+      <mat-slide-toggle formControlName="shared">Share with my team</mat-slide-toggle>
+      <span class="toggle__hint">Shared cards appear in teammates' collections too.</span>
+    </div>
+  </div>
+
+  <footer class="actions">
+    <button matButton type="button" (click)="close()">Cancel</button>
+    <button matButton="filled" type="submit">
+      <mat-icon>{{ isEdit() ? 'check' : 'add' }}</mat-icon>
+      {{ isEdit() ? 'Save changes' : 'Add card' }}
+    </button>
+  </footer>
+</form>

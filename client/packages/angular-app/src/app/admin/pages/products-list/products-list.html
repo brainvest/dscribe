@@ -1,0 +1,223 @@
+<section class="page">
+  <!-- ------------------------------------------------------------ filters -->
+  <div class="panel filters">
+    <button type="button" class="filters__toggle" (click)="filtersOpen.set(!filtersOpen())">
+      <mat-icon>{{ filtersOpen() ? 'expand_less' : 'expand_more' }}</mat-icon>
+      <span>Filters</span>
+      @if (activeFilterCount) {
+        <span class="filters__count">{{ activeFilterCount }}</span>
+      }
+    </button>
+
+    @if (filtersOpen()) {
+      <div class="filters__body">
+        <mat-form-field appearance="outline" class="filters__field filters__field--search">
+          <mat-label>Search</mat-label>
+          <input matInput [formControl]="text" placeholder="Name, SKU or category" />
+          <mat-icon matPrefix>search</mat-icon>
+          @if (text.value) {
+            <button matIconButton matSuffix aria-label="Clear" (click)="text.setValue('')">
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filters__field">
+          <mat-label>Category</mat-label>
+          <mat-select [formControl]="categoryFilter" multiple>
+            @for (c of categories; track c) {
+              <mat-option [value]="c">{{ c }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filters__field">
+          <mat-label>Status</mat-label>
+          <mat-select [formControl]="statusFilter" multiple>
+            @for (s of statuses; track s) {
+              <mat-option [value]="s">{{ s | titlecase }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-slide-toggle [formControl]="inStockOnly" class="filters__toggle-field">
+          In stock only
+        </mat-slide-toggle>
+
+        <span class="spacer"></span>
+
+        <button matButton (click)="clearFilters()" [disabled]="!activeFilterCount">
+          <mat-icon>filter_alt_off</mat-icon>
+          Clear
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- ------------------------------------------------------------ toolbar -->
+  <div class="panel grid">
+    <div class="toolbar">
+      <a matButton="filled" routerLink="/admin/products/new">
+        <mat-icon>add</mat-icon>
+        New product
+      </a>
+      <button matButton="outlined" (click)="quickAdd()">
+        <mat-icon>post_add</mat-icon>
+        Quick add
+      </button>
+
+      <span class="toolbar__divider"></span>
+
+      <!-- Selection-dependent commands appear once rows are ticked. -->
+      @if (hasSelection()) {
+        <span class="toolbar__selection">
+          <mat-icon>check_box</mat-icon>
+          {{ selectedCount() }} selected
+        </span>
+        <button matButton="outlined" (click)="showHistory()">
+          <mat-icon>history</mat-icon>
+          View history
+        </button>
+        <button matButton="outlined" class="toolbar__danger" (click)="deleteSelected()">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+        <button matButton (click)="clearSelection()">Clear selection</button>
+      }
+
+      <span class="spacer"></span>
+
+      <span class="toolbar__count">
+        {{ dataSource.filteredData.length }} of {{ dataSource.data.length }} items
+      </span>
+    </div>
+
+    <!-- --------------------------------------------------------- data grid -->
+    <div class="grid__scroll">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        matSortActive="name"
+        matSortDirection="asc"
+      >
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef class="col-select">
+            <mat-checkbox
+              [checked]="allVisibleSelected()"
+              [indeterminate]="someVisibleSelected()"
+              (change)="toggleAll()"
+              aria-label="Select all rows"
+            />
+          </th>
+          <td mat-cell *matCellDef="let row" class="col-select">
+            <mat-checkbox
+              [checked]="isSelected(row.id)"
+              (click)="$event.stopPropagation()"
+              (change)="toggle(row.id)"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let row" class="cell-strong">{{ row.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="sku">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>SKU</th>
+          <td mat-cell *matCellDef="let row" class="cell-mono">{{ row.sku }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let row">{{ row.category }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="status status--{{ row.status }}">{{ row.status | titlecase }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-num">Price</th>
+          <td mat-cell *matCellDef="let row" class="col-num cell-mono">
+            {{ row.price | currency: 'EUR' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="stock">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="col-num">Stock</th>
+          <td mat-cell *matCellDef="let row" class="col-num cell-mono">{{ row.stock }}</td>
+        </ng-container>
+
+        <!-- Badge column: icon + count for attachments and comments. -->
+        <ng-container matColumnDef="activity">
+          <th mat-header-cell *matHeaderCellDef class="col-activity">Activity</th>
+          <td mat-cell *matCellDef="let row" class="col-activity">
+            <span
+              class="badge"
+              [class.is-empty]="!row.attachments"
+              [matTooltip]="row.attachments + ' attachment(s)'"
+            >
+              <mat-icon>attach_file</mat-icon>
+              <span>{{ row.attachments }}</span>
+            </span>
+            <span
+              class="badge"
+              [class.is-empty]="!row.comments"
+              [matTooltip]="row.comments + ' comment(s)'"
+            >
+              <mat-icon>chat_bubble_outline</mat-icon>
+              <span>{{ row.comments }}</span>
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="updatedAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Updated</th>
+          <td mat-cell *matCellDef="let row">{{ row.updatedAt | date: 'dd MMM yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="col-actions"></th>
+          <td mat-cell *matCellDef="let row" class="col-actions">
+            <button matIconButton [matMenuTriggerFor]="rowMenu" (click)="$event.stopPropagation()">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #rowMenu="matMenu">
+              <a mat-menu-item [routerLink]="['/admin/products', row.id]">
+                <mat-icon>edit</mat-icon><span>Edit</span>
+              </a>
+              <button mat-menu-item (click)="deleteOne(row)">
+                <mat-icon>delete</mat-icon><span>Delete</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: columns"
+          [class.is-selected]="isSelected(row.id)"
+          (click)="toggle(row.id)"
+        ></tr>
+
+        <tr class="empty-row" *matNoDataRow>
+          <td [attr.colspan]="columns.length">
+            <div class="empty">
+              <mat-icon>search_off</mat-icon>
+              <p>No products match the current filters.</p>
+              <button matButton (click)="clearFilters()">Clear filters</button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons />
+  </div>
+</section>

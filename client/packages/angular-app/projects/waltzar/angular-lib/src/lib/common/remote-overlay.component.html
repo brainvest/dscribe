@@ -1,0 +1,25 @@
+@if (state() !== 'none') {
+<div class="overlay" [class.subtle]="state() === 'reloading'" [class.error]="state() === 'error'"
+	[attr.role]="state() === 'error' ? 'alert' : 'status'">
+
+	@if (state() === 'error') {
+	<span class="message">Unable to load data</span>
+
+	@if (allowRetry()) {
+	<button type="button" (click)="retry.emit()">
+		Retry
+	</button>
+	}
+	} @else {
+	<span class="spinner" aria-hidden="true"></span>
+
+	@if (state() === 'loading') {
+	<span>Loading...</span>
+	} @else if (state() === 'saving') {
+	<span>Saving...</span>
+	} @else {
+	<span>Refreshing...</span>
+	}
+	}
+</div>
+}

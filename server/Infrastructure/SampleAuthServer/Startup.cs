@@ -2,7 +2,9 @@ namespace Brainvest.Dscribe.Infrastructure.SampleAuthServer;
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Brainvest.Dscribe.Helpers;
+using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Controllers;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Models;
 using Brainvest.Dscribe.Infrastructure.SampleAuthServer.Services;
 using Brainvest.Dscribe.Security.Entities;
@@ -83,8 +85,28 @@ public class Startup(IConfiguration configuration)
 				.AddCookie("Cookies", options =>
 		 {
 			 options.Cookie.SameSite = SameSiteMode.Lax;
-		 });
+		 })
+				// Session behind AuthController's /auth/refresh; only ever sent back to /auth/*.
+				.AddCookie(AuthController.RefreshScheme, options =>
+				{
+					options.Cookie.Name = "dscribe.refresh";
+					options.Cookie.HttpOnly = true;
+					options.Cookie.SameSite = SameSiteMode.Strict;
+					options.ExpireTimeSpan = TimeSpan.FromHours(8);
+					options.SlidingExpiration = true;
+					options.Events.OnSigningIn = context =>
+					{
+						context.CookieOptions.Path = context.Request.PathBase + "/auth";
+						return Task.CompletedTask;
+					};
+					options.Events.OnSigningOut = context =>
+					{
+						context.CookieOptions.Path = context.Request.PathBase + "/auth";
+						return Task.CompletedTask;
+					};
+				});
 
+		services.AddControllers();
 		services.AddRazorPages();
 
 		var clients = configuration.GetSection("Clients").Get<IEnumerable<ClientInfo>>();

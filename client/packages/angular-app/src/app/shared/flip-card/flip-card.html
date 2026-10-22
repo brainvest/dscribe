@@ -1,0 +1,46 @@
+<div class="flip" [class.is-flipped]="flipped()">
+  <!-- front -->
+  <article class="face face--front">
+    <div class="face__icon">
+      <mat-icon>{{ item().icon }}</mat-icon>
+    </div>
+    <h3 class="face__title">{{ item().title }}</h3>
+    <p class="face__blurb">{{ item().blurb }}</p>
+    <span class="face__tag">{{ item().tag }}</span>
+    <span class="face__hint">
+      <mat-icon>flip</mat-icon>
+      Tap for details
+    </span>
+  </article>
+
+  <!-- back -->
+  <article class="face face--back">
+    <header class="back__head">
+      <mat-icon>{{ item().icon }}</mat-icon>
+      <h3>{{ item().title }}</h3>
+    </header>
+    <p class="back__text">{{ item().details }}</p>
+    <dl class="back__facts">
+      @for (fact of item().facts; track fact.label) {
+        <div class="fact">
+          <dt>{{ fact.label }}</dt>
+          <dd>{{ fact.value }}</dd>
+        </div>
+      }
+    </dl>
+    <footer class="back__foot">
+      <span class="face__tag">{{ item().tag }}</span>
+      <span class="spacer"></span>
+      @if (editLink(); as link) {
+        <a matButton="tonal" [routerLink]="link" (click)="$event.stopPropagation()">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </a>
+      }
+      <button matButton>
+        <mat-icon>undo</mat-icon>
+        Back
+      </button>
+    </footer>
+  </article>
+</div>

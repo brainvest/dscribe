@@ -1,0 +1,77 @@
+<div class="shell">
+  <header class="titlebar">
+    <mat-icon class="titlebar__logo">grid_view</mat-icon>
+    <span class="titlebar__title">Company Console</span>
+    <span class="titlebar__sep">—</span>
+    <span class="titlebar__context">Catalog</span>
+
+    <span class="spacer"></span>
+
+    <button
+      type="button"
+      class="qat"
+      matTooltip="Save"
+      (click)="onCommand({ label: 'Save', icon: 'save' })"
+    >
+      <mat-icon>save</mat-icon>
+    </button>
+    <button
+      type="button"
+      class="qat"
+      matTooltip="Undo"
+      (click)="onCommand({ label: 'Undo', icon: 'undo' })"
+    >
+      <mat-icon>undo</mat-icon>
+    </button>
+    <button
+      type="button"
+      class="qat"
+      matTooltip="Redo"
+      (click)="onCommand({ label: 'Redo', icon: 'redo' })"
+    >
+      <mat-icon>redo</mat-icon>
+    </button>
+
+    <span class="titlebar__divider"></span>
+
+    <button
+      type="button"
+      class="qat"
+      [matTooltip]="theme.toggleLabel()"
+      (click)="theme.toggleMode()"
+    >
+      <mat-icon>{{ theme.modeIcon() }}</mat-icon>
+    </button>
+    <a class="qat" routerLink="/app" matTooltip="Go to the end-user app">
+      <mat-icon>open_in_new</mat-icon>
+    </a>
+    <button type="button" class="qat qat--user" [matMenuTriggerFor]="accountMenu">
+      <mat-icon>account_circle</mat-icon>
+      <span>{{ auth.displayName() }}</span>
+      <mat-icon class="qat__caret">arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #accountMenu="matMenu">
+      <button mat-menu-item (click)="onCommand({ label: 'Profile', icon: 'person' })">
+        <mat-icon>person</mat-icon><span>Profile</span>
+      </button>
+      <button mat-menu-item (click)="auth.logout()">
+        <mat-icon>logout</mat-icon><span>Sign out</span>
+      </button>
+    </mat-menu>
+  </header>
+
+  <app-ribbon [tabs]="tabs" [(collapsed)]="ribbonCollapsed" (command)="onCommand($event)" />
+
+  <main class="content">
+    <router-outlet />
+  </main>
+
+  <footer class="statusbar">
+    <mat-icon>check_circle</mat-icon>
+    <span>Ready</span>
+    <span class="spacer"></span>
+    <span>Environment: local</span>
+    <span class="statusbar__divider"></span>
+    <span>Build 2026.9.1</span>
+  </footer>
+</div>

@@ -1,0 +1,110 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.shell {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  height: 100%;
+  background: var(--app-shell-bg);
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 8px;
+  background: var(--app-accent-bar);
+  color: #fff;
+  font: var(--mat-sys-label-large);
+}
+
+.titlebar__logo {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.titlebar__title {
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.titlebar__sep,
+.titlebar__context {
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.titlebar__divider {
+  width: 1px;
+  height: 18px;
+  margin: 0 4px;
+  background: rgb(255 255 255 / 35%);
+}
+
+.qat {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--app-radius);
+  padding: 4px 6px;
+  text-decoration: none;
+  font: inherit;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background: rgb(255 255 255 / 18%);
+  }
+}
+
+.qat__caret {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  opacity: 0.8;
+}
+
+.content {
+  overflow: auto;
+  padding: 12px;
+  min-height: 0;
+}
+
+.statusbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  font-size: 11px;
+  background: var(--app-chrome-bg);
+  color: var(--mat-sys-on-surface-variant);
+  border-top: 1px solid var(--mat-sys-outline-variant);
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    color: var(--mat-sys-primary);
+  }
+}
+
+.statusbar__divider {
+  width: 1px;
+  height: 12px;
+  margin: 0 8px;
+  background: var(--mat-sys-outline-variant);
+}

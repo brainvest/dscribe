@@ -1,19 +1,23 @@
 {
-    "workbench.colorCustomizations": {
-      "activityBar.background": "#28464b",
-      "activityBar.foreground": "#42d9c8",
-      "activityBar.inactiveForeground": "#2c8c99",
-      "activityBarBadge.background": "#326771",
-      "activityBarBadge.foreground": "#931621",
-      "statusBar.background": "#2c8c99",
-      "statusBarItem.hoverBackground": "#1d5757",
-      "statusBar.foreground": "#e7e7e7"
-    },
-    "prettier.singleQuote": true,
-    "prettier.printWidth": 100,
-    "prettier.bracketSpacing": false,
-    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
-    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
-    "peacock.color": "#b52e31"
-  }
-  
+	"workbench.colorCustomizations": {
+		"activityBar.background": "#28464b",
+		"activityBar.foreground": "#42d9c8",
+		"activityBar.inactiveForeground": "#2c8c99",
+		"activityBarBadge.background": "#326771",
+		"activityBarBadge.foreground": "#931621",
+		"statusBar.background": "#2c8c99",
+		"statusBarItem.hoverBackground": "#1d5757",
+		"statusBar.foreground": "#e7e7e7"
+	},
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"prettier.singleQuote": false,
+	"prettier.printWidth": 100,
+	"prettier.bracketSpacing": false,
+	"js/ts.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+	"js/ts.referencesCodeLens.enabled": true,
+	"js/ts.referencesCodeLens.showOnAllFunctions": true,
+	"js/ts.implementationsCodeLens.enabled": true,
+	"js/ts.implementationsCodeLens.showOnInterfaceMethods": true,
+	"js/ts.implementationsCodeLens.showOnAllClassMethods": true,
+	"peacock.color": "#b52e31"
+}
