@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "ng serve",
+      "name": "vite dev server",
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "npm: start",

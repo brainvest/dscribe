@@ -3,9 +3,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": [],
+    "types": ["vite/client"],
     "paths": {
-      "@waltzar/angular-lib": ["./dist/waltzar/angular-lib"],
+      "@waltzar/angular-lib": ["./projects/waltzar/angular-lib/src/public-api.ts"],
       "@waltzar/core": ["../core/src/index.ts"]
     }
   },

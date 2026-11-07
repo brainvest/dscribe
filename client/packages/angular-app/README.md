@@ -6,8 +6,10 @@ friendlier **end-user app** with a drawer. Each has its own route prefix, its
 own palette, and its own light/dark preference.
 
 ```
-npm start        # dev server on http://localhost:4200
-npm run build    # production build
+pnpm start           # Vite dev server on http://localhost:4200 (proxies /api, /auth)
+pnpm build           # type-check (ngc) + Vite production build -> dist/ui-template
+pnpm preview         # serve the production build
+pnpm build:lib       # build @waltzar/angular-lib with ng-packagr
 ```
 
 ## The two areas
