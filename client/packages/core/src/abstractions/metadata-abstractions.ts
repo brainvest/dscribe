@@ -1,5 +1,6 @@
 import {FacetContainer} from "./facets";
 import {FieldError} from "../contract-models/result";
+import {PropertyBehavior} from "../common-models/property-metadata";
 
 export interface DigestEntityType {
 	name: string;
@@ -18,19 +19,19 @@ export interface HasTypeInfo {
 }
 
 export interface PropertyMetadata extends HasTypeInfo {
-	readonly name?: string,
-	readonly generalUsage?: string,
-	readonly dataType?: string,
-	readonly entityTypeName?: string,
-	readonly foreignKeyName?: string,
-	readonly inversePropertyName?: string,
-	readonly validationErrors?: FieldError[],
-	readonly entityType?: EntityTypeMetadata,
-	readonly inverseProperty?: PropertyMetadata,
-	readonly foreignKeyProperty?: PropertyMetadata,
-	readonly facetValues?: FacetContainer,
-	readonly title?: string,
-	readonly isNullable?: boolean,
-	readonly isExpression?: boolean,
-	readonly behaviors?: PropertyBehavior[],
+	readonly name?: string;
+	readonly generalUsage?: string;
+	readonly dataType?: string;
+	readonly entityTypeName?: string;
+	readonly foreignKeyName?: string;
+	readonly inversePropertyName?: string;
+	readonly validationErrors?: FieldError[];
+	readonly entityType?: EntityTypeMetadata;
+	readonly inverseProperty?: PropertyMetadata;
+	readonly foreignKeyProperty?: PropertyMetadata;
+	readonly facetValues?: FacetContainer;
+	readonly title?: string;
+	readonly isNullable?: boolean;
+	readonly isExpression?: boolean;
+	readonly behaviors?: PropertyBehavior[];
 }
