@@ -1,0 +1,43 @@
+{
+  "name": "@waltzar/angular-app",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "ng": "ng",
+    "start": "vite",
+    "build": "pnpm typecheck && vite build",
+    "watch": "vite build --watch --mode development",
+    "preview": "vite preview",
+    "build:lib": "ng build @waltzar/angular-lib",
+    "test:lib": "ng test @waltzar/angular-lib",
+    "typecheck": "ngc -p tsconfig.app.json --noEmit"
+  },
+  "private": true,
+  "packageManager": "pnpm@12.6.0",
+  "dependencies": {
+    "@angular/cdk": "^22.1.4",
+    "@angular/common": "^22.1.0",
+    "@angular/compiler": "^22.1.0",
+    "@angular/core": "^22.1.0",
+    "@angular/forms": "^22.1.0",
+    "@angular/material": "^22.1.4",
+    "@angular/platform-browser": "^22.1.0",
+    "@angular/router": "^22.1.0",
+    "@waltzar/core": "workspace:*",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@analogjs/vite-plugin-angular": "2.9.6",
+    "@angular/build": "^22.1.6",
+    "@angular/cli": "^22.1.6",
+    "@angular/compiler-cli": "^22.1.0",
+    "jsdom": "^30.0.0",
+    "ng-packagr": "^22.2.0",
+    "prettier": "^3.8.1",
+    "sass": "^1.108.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.0"
+  }
+}

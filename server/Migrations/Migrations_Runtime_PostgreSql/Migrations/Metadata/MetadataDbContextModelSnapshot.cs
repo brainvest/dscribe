@@ -17,7 +17,7 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.Metadata
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.10")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -435,6 +435,10 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.Metadata
                     b.Property<int>("GeneralUsageCategoryId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("IconName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<string>("Name")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
@@ -786,6 +790,84 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.Metadata
                             Id = 3,
                             Identifier = "string",
                             Name = "String"
+                        });
+                });
+
+            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.IconInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AppInstanceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("AppTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IconTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppInstanceId");
+
+                    b.HasIndex("AppTypeId");
+
+                    b.HasIndex("IconTypeId");
+
+                    b.HasIndex("Name", "AppTypeId", "AppInstanceId")
+                        .IsUnique();
+
+                    NpgsqlIndexBuilderExtensions.AreNullsDistinct(b.HasIndex("Name", "AppTypeId", "AppInstanceId"), false);
+
+                    b.ToTable("IconInfos");
+                });
+
+            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.IconType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IconTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0,
+                            Name = "GoogleMaterial"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "FontAwesome"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "RelativePath"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "AbsolutePath"
                         });
                 });
 
@@ -1540,6 +1622,31 @@ namespace Brainvest.Dscribe.Migrations.Runtime.PostgreSql.Migrations.Metadata
                     b.Navigation("AppType");
 
                     b.Navigation("MainInputEntityType");
+                });
+
+            modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.IconInfo", b =>
+                {
+                    b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.AppInstance", "AppInstance")
+                        .WithMany()
+                        .HasForeignKey("AppInstanceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.AppType", "AppType")
+                        .WithMany()
+                        .HasForeignKey("AppTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Brainvest.Dscribe.MetadataDbAccess.Entities.IconType", "IconType")
+                        .WithMany()
+                        .HasForeignKey("IconTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AppInstance");
+
+                    b.Navigation("AppType");
+
+                    b.Navigation("IconType");
                 });
 
             modelBuilder.Entity("Brainvest.Dscribe.MetadataDbAccess.Entities.MetadataRelease", b =>

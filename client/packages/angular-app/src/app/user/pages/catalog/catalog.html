@@ -1,0 +1,106 @@
+<header class="hero">
+  <div>
+    <h1>Good afternoon, Ali</h1>
+    <p>
+      Eight things worth a look today.
+      @if (view() === 'cards') {
+        Tap any card to turn it over.
+      } @else {
+        Click any row to open it.
+      }
+    </p>
+  </div>
+  <div class="hero__actions">
+    <mat-button-toggle-group
+      class="hero__view"
+      hideSingleSelectionIndicator
+      aria-label="Layout"
+      [value]="view()"
+      (change)="setView($event.value)"
+    >
+      <mat-button-toggle value="cards" matTooltip="Card view" aria-label="Card view">
+        <mat-icon>view_module</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value="grid" matTooltip="Grid view" aria-label="Grid view">
+        <mat-icon>table_rows</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <button matButton="tonal" class="hero__add" (click)="quickAdd()">
+      <mat-icon>post_add</mat-icon>
+      Quick add
+    </button>
+    <a matButton="filled" routerLink="/app/collection/new" class="hero__add">
+      <mat-icon>add</mat-icon>
+      Add to collection
+    </a>
+  </div>
+</header>
+
+@if (view() === 'cards') {
+  <div class="cards">
+    @for (item of items; track item.id) {
+      <app-flip-card
+        [item]="item"
+        [flipped]="openId() === item.id"
+        (flippedChange)="setFlipped(item, $event)"
+        [editLink]="['/app/collection', item.id]"
+      />
+    }
+  </div>
+} @else {
+  <div class="grid">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="grid__title">
+            <span class="grid__icon"><mat-icon>{{ row.icon }}</mat-icon></span>
+            {{ row.title }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="tag">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tag</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="grid__tag">{{ row.tag }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="blurb">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let row" class="grid__blurb">{{ row.blurb }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="facts">
+        <th mat-header-cell *matHeaderCellDef>Facts</th>
+        <td mat-cell *matCellDef="let row" class="grid__facts">
+          @for (fact of row.facts; track fact.label) {
+            <span class="grid__fact">
+              <span class="grid__fact-label">{{ fact.label }}</span>
+              {{ fact.value }}
+            </span>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="grid__actions"></th>
+        <td mat-cell *matCellDef="let row" class="grid__actions">
+          <a
+            matIconButton
+            [routerLink]="['/app/collection', row.id]"
+            matTooltip="Edit"
+            aria-label="Edit"
+            (click)="$event.stopPropagation()"
+          >
+            <mat-icon>edit</mat-icon>
+          </a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns" (click)="openItem(row)"></tr>
+    </table>
+  </div>
+}

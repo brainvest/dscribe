@@ -6,7 +6,7 @@ using Brainvest.Dscribe.Abstractions.Metadata;
 using Brainvest.Dscribe.Helpers;
 using Brainvest.Dscribe.MetadataDbAccess.Entities;
 
-public class EntityTypeMetadata(EntityType dbMetadata, EntityTypeMetadata baseEntityType) : FacetOwner, IEntityTypeMetadata
+public class EntityTypeMetadata(EntityType dbMetadata, EntityTypeMetadata baseEntityType, IconInfo icon) : FacetOwner, IEntityTypeMetadata
 {
 	public EntityGeneralUsageCategoryStruct GeneralBehavior { get; private set; }
 	private Dictionary<string, PropertyMetadata> _properties = [];
@@ -20,6 +20,7 @@ public class EntityTypeMetadata(EntityType dbMetadata, EntityTypeMetadata baseEn
 
 	public string DisplayNameProperty { get; set; } = dbMetadata.DisplayNamePath;
 	public string CodeProperty { get; set; } = dbMetadata.CodePath;
+	public IconInfo Icon { get; private set; } = icon;
 
 	#region Facets
 	public static EntityFacet<bool> NotMappedFacet { get; private set; }
