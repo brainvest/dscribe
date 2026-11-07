@@ -35,3 +35,113 @@
   gap: 16px;
   align-items: stretch;
 }
+
+.hero__view {
+  border-radius: 999px;
+  --mat-button-toggle-height: 40px;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+  }
+}
+
+// ---------------------------------------------------------------- grid view
+.grid {
+  background: var(--app-chrome-bg);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant) 60%, transparent);
+  border-radius: var(--app-radius);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 8%);
+  overflow: auto;
+
+  table {
+    width: 100%;
+    background: transparent;
+  }
+
+  th.mat-mdc-header-cell {
+    background: color-mix(in srgb, var(--mat-sys-on-surface) 4%, var(--app-chrome-bg));
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  td.mat-mdc-cell,
+  th.mat-mdc-header-cell {
+    padding: 8px 12px;
+  }
+
+  tr.mat-mdc-row {
+    cursor: pointer;
+
+    &:hover {
+      background: color-mix(in srgb, var(--app-accent-bar) 7%, transparent);
+    }
+  }
+}
+
+.grid__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.grid__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  color: var(--mat-sys-primary);
+  background: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.grid__tag {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 1px 10px;
+  font: var(--mat-sys-label-small);
+  white-space: nowrap;
+  color: var(--mat-sys-on-secondary-container);
+  background: var(--mat-sys-secondary-container);
+}
+
+.grid__blurb {
+  color: var(--mat-sys-on-surface-variant);
+  min-width: 220px;
+}
+
+.grid__facts {
+  min-width: 260px;
+}
+
+.grid__fact {
+  display: inline-block;
+  margin: 2px 12px 2px 0;
+  font-size: 12px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.grid__fact-label {
+  color: var(--mat-sys-on-surface-variant);
+  margin-right: 2px;
+
+  &::after {
+    content: ':';
+  }
+}
+
+.grid__actions {
+  width: 56px;
+  text-align: right;
+}
