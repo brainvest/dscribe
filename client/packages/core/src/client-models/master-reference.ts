@@ -1,12 +1,11 @@
-import {PropertyMetadata} from '../../metadata/property-metadata';
-import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
+import {PropertyMetadata} from "../abstractions/metadata-abstractions";
 
 export class MasterReference {
-	public childList: { onMasterChanged(): void };
-	public count: number;
+	// public childList: {onMasterChanged(): void};
+	// public count: number;
 
 	constructor(public master: any,
-							public masterProperty: PropertyMetadata) {
+		public masterProperty: PropertyMetadata) {
 	}
 
 }

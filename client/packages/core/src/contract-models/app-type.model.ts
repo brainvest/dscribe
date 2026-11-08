@@ -1,5 +1,5 @@
-export class AppTypeModel {
-	public Id: number;
-	public Name: string;
-	public Title: string;
-}
+export type AppTypeModel = {
+	id: number;
+	name: string;
+	title: string;
+};

@@ -6,7 +6,7 @@ import {ComparisonFilterNode} from './comparison-filter-node';
 
 export class LogicalFilterNode extends FilterNode {
 	operators = LogicalOperator.logicalOperators;
-	private _operator: LogicalOperator;
+	private _operator: LogicalOperator | undefined;
 	private _children: FilterNode[] = [];
 
 	constructor(parent: FilterNode) {
@@ -14,7 +14,7 @@ export class LogicalFilterNode extends FilterNode {
 	}
 
 	setStorageNodeProperties(storage: StorageFilterNode) {
-		storage.operator = this.operator.name;
+		storage.operator = this.operator?.name;
 	}
 
 	applyStorageNode(storage: StorageFilterNode) {
@@ -70,11 +70,11 @@ export class LogicalFilterNode extends FilterNode {
 		this._children[index] = newChild;
 	}
 
-	get operator(): LogicalOperator {
+	get operator(): LogicalOperator | undefined {
 		return this._operator;
 	}
 
-	set operator(value: LogicalOperator) {
+	set operator(value: LogicalOperator | undefined) {
 		this._operator = value;
 		if (!this.operator) {
 			return;

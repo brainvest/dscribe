@@ -1,5 +1,5 @@
+import {StorageFilterNode} from './filtering/storage-filter-node';
 import {SortItem} from './sort-item';
-import {StorageFilterNode} from '../../filtering/models/storage-filter-node';
 
 export class EntityListRequest {
 	constructor(public entityTypeName: string, public filters: StorageFilterNode[],

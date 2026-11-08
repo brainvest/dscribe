@@ -1,16 +1,16 @@
-import {HasTypeInfo} from '../../../metadata/property-metadata';
 import {IFilterNodeFactory} from '../i-filter-node-factory';
 import {StorageFilterNode} from '../storage-filter-node';
 import {FilterTreeVisitor} from '../filter-tree-visitor';
 import {ParameterInfo} from '../parameter-info';
 import {FilterNodeType} from '../filter-node-type';
+import {HasTypeInfo} from '../../../abstractions/metadata-abstractions';
 
 // @dynamic
 export abstract class FilterNode {
 	static factory: IFilterNodeFactory;
-	title: string;
-	protected _inputType: HasTypeInfo;
-	protected _outputType: HasTypeInfo;
+	title?: string;
+	protected _inputType?: HasTypeInfo;
+	protected _outputType?: HasTypeInfo;
 
 	protected constructor(public parent: FilterNode) {
 		if (parent != null) {
@@ -18,20 +18,22 @@ export abstract class FilterNode {
 		}
 	}
 
-	getStorageNode(): StorageFilterNode {
+	getStorageNode(): StorageFilterNode | undefined {
 		return FilterTreeVisitor.map(this, node => {
 			if (!node || node.isEmpty()) {
-				return null;
+				return undefined;
 			}
 			const storageNode = new StorageFilterNode();
 			node.setStorageNodeProperties(storageNode);
 			storageNode.nodeType = node.nodeType;
 			return storageNode;
 		}, (child, parent) => {
-			if (!parent.children) {
-				parent.children = [];
+			if (!!child && !!parent) {
+				if (!parent.children) {
+					parent.children = [];
+				}
+				parent.children.push(child);
 			}
-			parent.children.push(child);
 		});
 	}
 
@@ -50,12 +52,13 @@ export abstract class FilterNode {
 			}
 		}
 		for (let i = 0; i < children.length; i++) {
-			if (i > storage.children.length) {
+			if (i >= storage.children.length) {
 				break;
-			}
-			if (storage.children[i]) {
-				if (children[i].nodeType !== storage.children[i].nodeType) {
-					const newChild = FilterNode.factory.create(storage.children[i].nodeType, this);
+			} // TODO: do we need this? How can this happen? JS is not multithreaded
+			const storageNodeType = storage.children[i]?.nodeType;
+			if (storageNodeType) {
+				if (children[i].nodeType !== storageNodeType) {
+					const newChild = FilterNode.factory.create(storageNodeType, this);
 					this.replaceChild(children[i], newChild);
 					children[i] = newChild;
 				}
@@ -78,27 +81,27 @@ export abstract class FilterNode {
 		return parameters;
 	}
 
-	abstract setStorageNodeProperties(storage: StorageFilterNode);
+	abstract setStorageNodeProperties(storage: StorageFilterNode): void;
 
-	abstract applyStorageNode(storage: StorageFilterNode);
+	abstract applyStorageNode(storage: StorageFilterNode): void;
 
-	get inputType(): HasTypeInfo {
+	get inputType(): HasTypeInfo | undefined {
 		return this._inputType;
 	}
 
-	set inputType(value: HasTypeInfo) {
+	set inputType(value: HasTypeInfo | undefined) {
 		this._inputType = value;
 	}
 
-	get childInputType(): HasTypeInfo {
+	get childInputType(): HasTypeInfo | undefined {
 		return this._inputType;
 	}
 
-	get outputType(): HasTypeInfo {
+	get outputType(): HasTypeInfo | undefined {
 		return this._outputType;
 	}
 
-	set outputType(value: HasTypeInfo) {
+	set outputType(value: HasTypeInfo | undefined) {
 		this._outputType = value;
 	}
 

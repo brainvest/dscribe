@@ -1,17 +1,17 @@
 import {FilterNode} from './filter-node';
-import {HasTypeInfo, PropertyMetadata} from '../../../metadata/property-metadata';
 import {AggregationOperator} from '../aggregation-operator';
 import {LambdaFilterNode} from './lambda-filter-node';
-import {DataTypes} from '../../../metadata/data-types';
 import {StorageFilterNode} from '../storage-filter-node';
 import {FilterNodeType} from '../filter-node-type';
+import {HasTypeInfo, PropertyMetadata} from '../../../abstractions/metadata-abstractions';
+import {DataTypes} from '../../../common-models/metadata/data-types';
 
 export class NavigationListFilterNode extends FilterNode {
-	private _property: PropertyMetadata;
-	private _operator: AggregationOperator;
-	operators: AggregationOperator[];
-	filterSubNode: LambdaFilterNode;
-	aggregationSelection: LambdaFilterNode;
+	private _property?: PropertyMetadata;
+	private _operator?: AggregationOperator;
+	operators?: AggregationOperator[];
+	filterSubNode?: LambdaFilterNode;
+	aggregationSelection?: LambdaFilterNode;
 
 	constructor(parent: FilterNode) {
 		super(parent);
@@ -22,73 +22,74 @@ export class NavigationListFilterNode extends FilterNode {
 		return this._property;
 	}
 
-	set property(value: PropertyMetadata) {
+	set property(value: PropertyMetadata | undefined) {
 		this._property = value;
 		this.operators = AggregationOperator.Operators;
-		if (this.operator && this.operators.indexOf(this._operator) === -1) {
+		if (this._operator && this.operators.indexOf(this._operator) === -1) {
 			this.operator = this.operators[0];
 		}
 	}
 
 	get hasFiltering(): boolean {
-		return this._operator && this._operator.hasFiltering;
+		return !!this._operator && this._operator.hasFiltering;
 	}
 
 	get hasAggregationSelection(): boolean {
-		return this._operator && this._operator.hasSelection;
+		return !!this._operator && this._operator.hasSelection;
 	}
 
-	public getSelectionType(): HasTypeInfo {
-		if (!this.operator || this.operator.isBoolean) {
-			return new HasTypeInfo(false, DataTypes.bool);
+	public getSelectionType(): HasTypeInfo | undefined {
+		if (!this._operator || this._operator.isBoolean) {
+			return {isNullable: false, dataType: DataTypes.bool};
 		}
-		if (!this.operator.hasSelection) {
-			return new HasTypeInfo(false, this.operator.dataTypeMap['_']);
+		if (!this._operator.hasSelection) {
+			return {isNullable: false, dataType: this._operator.dataTypeMap?.['_']};
 		}
 		const type = this.aggregationSelection && this.aggregationSelection.outputType;
 		if (type) {
-			return new HasTypeInfo(true, this.operator.dataTypeMap[type.DataType]);
+			return {isNullable: true, dataType: type.dataType && this._operator.dataTypeMap?.[type.dataType]};
 		}
+		return undefined;
 	}
 
-	get operator(): AggregationOperator {
+	get operator(): AggregationOperator | undefined {
 		return this._operator;
 	}
 
-	set operator(value: AggregationOperator) {
+	set operator(value: AggregationOperator | undefined) {
 		this._operator = value;
 		if (this.hasAggregationSelection) {
-			if (!this.aggregationSelection) {
-				this.aggregationSelection = new LambdaFilterNode(this, this.property.EntityType, true);
+			if (!this.aggregationSelection && this.property?.entityType) {
+				this.aggregationSelection = new LambdaFilterNode(this, this.property?.entityType, true);
 			}
 		} else if (this.aggregationSelection) {
-			this.aggregationSelection = null;
+			this.aggregationSelection = undefined;
 		}
 
 		if (this.hasFiltering) {
-			if (!this.filterSubNode) {
-				this.filterSubNode = new LambdaFilterNode(this, this.property.EntityType, false);
+			if (!this.filterSubNode && this.property?.entityType) {
+				this.filterSubNode = new LambdaFilterNode(this, this.property?.entityType, false);
 				this.filterSubNode.title = 'Condition on members';
 			}
 		} else if (this.filterSubNode) {
-			this.filterSubNode = null;
+			this.filterSubNode = undefined;
 		}
 		this.outputType = this.getSelectionType();
 	}
 
 	setStorageNodeProperties(storage: StorageFilterNode) {
-		storage.operator = this.operator.name;
+		storage.operator = this.operator?.name;
 	}
 
 	applyStorageNode(storage: StorageFilterNode) {
-		this.operator = this.operators.find(x => x.name === storage.operator);
+		this.operator = this.operators?.find(x => x.name === storage.operator);
 	}
 
 	get inputType() {
 		return this._inputType;
 	}
 
-	set inputType(value: HasTypeInfo) {
+	set inputType(value: HasTypeInfo | undefined) {
 		this._inputType = value;
 		for (const child of this.children) {
 			if (child) {
@@ -105,7 +106,14 @@ export class NavigationListFilterNode extends FilterNode {
 	}
 
 	get children(): FilterNode[] {
-		return [this.filterSubNode, this.aggregationSelection];
+		const result = [];
+		if (this.filterSubNode) {
+			result.push(this.filterSubNode);
+		}
+		if (this.aggregationSelection) {
+			result.push(this.aggregationSelection);
+		}
+		return result;
 	}
 
 	get nodeType(): FilterNodeType {
@@ -117,7 +125,7 @@ export class NavigationListFilterNode extends FilterNode {
 	}
 
 	isValid(): boolean {
-		return (!this.hasFiltering || this.filterSubNode.isValid())
-			&& (!this.hasAggregationSelection || this.aggregationSelection.isValid());
+		return (!this.hasFiltering || this.filterSubNode?.isValid() == true)
+			&& (!this.hasAggregationSelection || this.aggregationSelection?.isValid() == true);
 	}
 }

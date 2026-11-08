@@ -1,6 +1,5 @@
 import {FacetContainer} from "./facets";
 import {FieldError} from "../contract-models/result";
-import {PropertyBehavior} from "../common-models/property-metadata";
 
 export interface DigestEntityType {
 	name: string;
@@ -10,6 +9,13 @@ export interface DigestEntityType {
 }
 
 export interface EntityTypeMetadata extends DigestEntityType {
+	readonly properties: Readonly<Record<string, PropertyMetadata>>;
+	readonly propertyNames: ReadonlyArray<string>;
+	readonly displayNamePath?: string;
+	readonly singularName?: string;
+	readonly pluralName?: string;
+	getPropertiesForFilter(): PropertyMetadata[];
+	getPrimaryKey(): PropertyMetadata | undefined;
 }
 
 export interface HasTypeInfo {
@@ -17,6 +23,11 @@ export interface HasTypeInfo {
 	dataType?: string;
 	entityType?: EntityTypeMetadata;
 }
+
+export type PropertyBehavior = {
+	behaviorName: string,
+	parameters: string,
+};
 
 export interface PropertyMetadata extends HasTypeInfo {
 	readonly name?: string;

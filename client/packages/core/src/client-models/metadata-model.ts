@@ -1,7 +1,6 @@
+import {EntityTypeMetadata} from "../abstractions/metadata-abstractions";
 import {CompleteMetadataModel} from "../common-models/metadata/complete-metadata-model";
-import {EntityTypeMetadata} from "../common-models/metadata/entity-type-metadata";
-import {PropertyBehavior} from "../common-models/metadata/property-metadata";
-import {PropertyBehaviorResponse} from "../common-models/metadata/response-models";
+import {EntityTypeMetadataImplementation} from "../common-models/metadata/entity-type-metadata-implementation";
 
 export class MetadataModel {
 	private entityTypes: EntityTypeMetadata[];
@@ -12,7 +11,7 @@ export class MetadataModel {
 	}
 
 	getEntityTypeByName(entityTypeName: string): EntityTypeMetadata | undefined {
-		return this.entityTypes.find(x => x.Name === entityTypeName);
+		return this.entityTypes.find(x => x.name === entityTypeName);
 	}
 
 	private static extractEntityTypeMetadata(
@@ -24,31 +23,22 @@ export class MetadataModel {
 				continue;
 			}
 			const t = entityTypes[entityTypeName];
-			const entityTypeMetadata = new EntityTypeMetadata(t.name, t.singularTitle, t.pluralTitle,
+			const entityTypeMetadata = new EntityTypeMetadataImplementation(t.name, t.singularTitle, t.pluralTitle,
 				t.typeGeneralUsageCategoryId, t.code, t.displayName);
 			entityTypeMetadata.setProperties(t, allDefaultFacets, result);
-		}
-		return result;
-	}
-
-	private static convertBehaviors(behaviors: PropertyBehaviorResponse[]): PropertyBehavior[] | undefined {
-		if (!behaviors) {
-			return undefined;
-		}
-		var result: PropertyBehavior[] = [];
-		for (const behavior of behaviors) {
-			result.push(new PropertyBehavior(behavior.behaviorName, behavior.parameters));
+			result.push(entityTypeMetadata);
 		}
 		return result;
 	}
 
 	private fixUpRelationships() {
-		this.entityTypes.forEach(type => {
+		const entityTypes = this.entityTypes as EntityTypeMetadataImplementation[];
+		entityTypes.forEach(type => {
 			for (const propertyName in type.properties) {
 				if (type.properties.hasOwnProperty(propertyName)) {
 					const prop = type.properties[propertyName];
 					if (prop.entityTypeName) {
-						prop.entityType = this.entityTypes.find(x => x.name === prop.entityTypeName);
+						prop.entityType = entityTypes.find(x => x.name === prop.entityTypeName);
 					}
 					if (prop.foreignKeyName) {
 						prop.foreignKeyProperty = type.properties[prop.foreignKeyName];

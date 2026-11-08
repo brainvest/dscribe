@@ -18,7 +18,7 @@ export type FacetDefinitionModel = {
 };
 
 export interface FacetContainer {
-	[facetName: string]: [boolean, number, string];
+	[facetName: string]: boolean | number | string;
 }
 
 export type FacetContainerResponse = {

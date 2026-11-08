@@ -3,9 +3,9 @@ export interface LobSummaryInfo {
 	CommentsCount: number;
 }
 
-export class LobSummaryResponse {
-	EntityTypeName: string;
-	Summaries: { [key: number]: LobSummaryInfo };
+export type LobSummaryResponse = {
+	entityTypeName: string;
+	summaries: { [key: number]: LobSummaryInfo };
 }
 
 export class LobSummaryRequest {

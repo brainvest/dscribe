@@ -15,7 +15,7 @@ export type DigestTypesResponse = {
 
 export type FacetResponse = {
 	name: string;
-	value: [boolean, number, string];
+	value: boolean | number | string;
 };
 
 export type PropertyBehaviorResponse = {

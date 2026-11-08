@@ -1,4 +1,4 @@
-export class DatabaseProviderModel {
-	public Id: number;
-	public Name: string;
-}
+export type DatabaseProviderModel = {
+	id: number;
+	name: string;
+};

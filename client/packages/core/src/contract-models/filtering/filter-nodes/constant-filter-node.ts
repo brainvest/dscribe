@@ -1,13 +1,12 @@
 import {FilterNode} from './filter-node';
-import {HasTypeInfo} from '../../../metadata/property-metadata';
 import {StorageFilterNode} from '../storage-filter-node';
 import {FilterNodeType} from '../filter-node-type';
-import {DataTypes} from '../../../metadata/data-types';
+import {HasTypeInfo} from '../../../abstractions/metadata-abstractions';
 
 export class ConstantFilterNode extends FilterNode {
 	values: { value: any }[] = [{value: null}];
 	private _allowMultipleValues = false;
-	private _dataType: HasTypeInfo;
+	private _dataType?: HasTypeInfo;
 
 	constructor(parent: FilterNode) {
 		super(parent);
@@ -39,20 +38,20 @@ export class ConstantFilterNode extends FilterNode {
 	}
 
 	applyStorageNode(storage: StorageFilterNode) {
-		this.values = storage.values.map(x => {
+		this.values = storage.values?.map(x => {
 			return {
 				value: x
 			};
-		});
+		}) ?? [];
 	}
 
 	get dataType() {
 		return this._dataType;
 	}
 
-	set dataType(value: HasTypeInfo) {
+	set dataType(value: HasTypeInfo | undefined) {
 		this._dataType = value;
-		if (!value.IsNullable && value.DataType == DataTypes.bool && !this.values[0].value) {
+		if (value && !value.isNullable && value.dataType == 'boolean' && !this.values[0].value) {
 			this.values[0].value = false;
 		}
 	}
@@ -62,7 +61,7 @@ export class ConstantFilterNode extends FilterNode {
 	}
 
 	get children(): FilterNode[] {
-		return null;
+		return [];
 	}
 
 	isEmpty(): boolean {

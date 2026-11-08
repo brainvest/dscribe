@@ -1,18 +1,18 @@
 import {FilterNode} from './filter-node';
 import {ComparisonOperator} from '../comparison-operator';
-import {HasTypeInfo} from '../../../metadata/property-metadata';
 import {PropertyFilterNode} from './property-filter-node';
 import {FilterNodeType} from '../filter-node-type';
 import {ConstantFilterNode} from './constant-filter-node';
-import {DataTypes} from '../../../metadata/data-types';
 import {StorageFilterNode} from '../storage-filter-node';
+import {HasTypeInfo} from '../../../abstractions/metadata-abstractions';
+import {DataTypes} from '../../../common-models/metadata/data-types';
 
 export class ComparisonFilterNode extends FilterNode {
 
-	private _operator: ComparisonOperator;
-	operators: ComparisonOperator[];
+	private _operator?: ComparisonOperator;
+	operators?: ComparisonOperator[];
 	private _children: FilterNode[] = [];
-	_operandType: HasTypeInfo;
+	_operandType?: HasTypeInfo;
 
 	constructor(parent: FilterNode) {
 		super(parent);
@@ -24,7 +24,7 @@ export class ComparisonFilterNode extends FilterNode {
 		return this._inputType;
 	}
 
-	set inputType(value: HasTypeInfo) {
+	set inputType(value: HasTypeInfo | undefined) {
 		if (value === this._inputType) {
 			return;
 		}
@@ -45,13 +45,14 @@ export class ComparisonFilterNode extends FilterNode {
 		}
 		this._operandType = child.outputType;
 		const type = child.outputType;
-		if (!type) {
+		const dataType = type?.dataType;
+		if (!type || !dataType) {
 			this.operators = ComparisonOperator.Operators;
 			return;
 		}
 		this.operators = ComparisonOperator.Operators
 			.filter(x => !x || ((!x.condition || x.condition(type)) &&
-				(!x.dataTypes || x.dataTypes.indexOf(type.DataType) !== -1)));
+				(!x.dataTypes || x.dataTypes.indexOf(dataType) !== -1)));
 		if (this.operator && this.operators.indexOf(this.operator) === -1) {
 			this.operator = this.operators[0];
 		}
@@ -64,11 +65,11 @@ export class ComparisonFilterNode extends FilterNode {
 		super.childOutputTypeChanged(child);
 	}
 
-	get operator(): ComparisonOperator {
+	get operator(): ComparisonOperator | undefined {
 		return this._operator;
 	}
 
-	set operator(value: ComparisonOperator) {
+	set operator(value: ComparisonOperator | undefined) {
 		this._operator = value;
 		if (!this.operator) {
 			return;
@@ -92,8 +93,11 @@ export class ComparisonFilterNode extends FilterNode {
 			return;
 		}
 		const outputType = DataTypes.bool;
-		if (!this._outputType || this.outputType.DataType !== outputType) {
-			this.outputType = new HasTypeInfo(this._operandType && this._operandType.IsNullable, outputType, null);
+		if (!this._outputType || this._outputType.dataType !== outputType) {
+			this.outputType = {
+				isNullable: this._operandType?.isNullable,
+				dataType: outputType
+			};
 		}
 	}
 
@@ -123,7 +127,7 @@ export class ComparisonFilterNode extends FilterNode {
 			return true;
 		}
 		if (!this._operator) {
-			return this.children.length === 1 && this.children[0].isValid() && this.children[0].outputType.DataType === DataTypes.bool;
+			return this.children.length === 1 && this.children[0].isValid() && this.children[0].outputType?.dataType === DataTypes.bool;
 		}
 		return !(this._children.find(x => !x.isValid()));
 	}
@@ -142,7 +146,7 @@ export class ComparisonFilterNode extends FilterNode {
 
 	addChild(constant: boolean) {
 		if (this._operator &&
-			(!this.operator.maxOperandCount || this._children.length < this._operator.maxOperandCount)) {
+			(!this._operator.maxOperandCount || this._children.length < this._operator.maxOperandCount)) {
 			if (constant) {
 				const child = new ConstantFilterNode(this);
 				child.dataType = this.inputType;

@@ -1,4 +1,4 @@
-import {PropertyMetadata} from '../../../metadata/property-metadata';
+import {PropertyMetadata} from "../../abstractions/metadata-abstractions";
 
 export class GroupItem {
 	constructor(public property: PropertyMetadata) {

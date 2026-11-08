@@ -1,43 +1,43 @@
 import {FilterNode} from './filter-node';
-import {HasTypeInfo, PropertyMetadata} from '../../../metadata/property-metadata';
-import {DataTypes} from '../../../metadata/data-types';
 import {NavigationListFilterNode} from './navigation-list-filter-node';
 import {StorageFilterNode} from '../storage-filter-node';
 import {FilterNodeType} from '../filter-node-type';
+import {HasTypeInfo, PropertyMetadata} from '../../../abstractions/metadata-abstractions';
+import {DataTypes} from '../../../common-models/metadata/data-types';
 
 export class PropertyFilterNode extends FilterNode {
-	properties: PropertyMetadata[];
-	private _property: PropertyMetadata;
-	child: FilterNode;
+	properties?: PropertyMetadata[];
+	private _property?: PropertyMetadata;
+	child?: FilterNode;
 
 	constructor(parent: FilterNode) {
 		super(parent);
-		this.properties = this.parent.childInputType.EntityType.getPropertiesForFilter();
+		this.properties = parent.childInputType?.entityType?.getPropertiesForFilter();
 	}
 
-	get property(): PropertyMetadata {
+	get property(): PropertyMetadata | undefined {
 		return this._property;
 	}
 
-	set property(value: PropertyMetadata) {
+	set property(value: PropertyMetadata | undefined) {
 		this._property = value;
 		if (!value) {
-			this.child = null;
-			this.outputType = null;
+			this.child = undefined;
+			this.outputType = undefined;
 			this.parent.childOutputTypeChanged(this);
 			return;
 		}
-		this.outputType = value.DataType === DataTypes.NavigationList ?
-			new HasTypeInfo(false, DataTypes.bool, null) :
-			new HasTypeInfo(value.IsNullable, value.DataType, value.EntityType);
-		if (value.DataType === DataTypes.NavigationList) {
+		this.outputType = value.dataType === DataTypes.NavigationList ?
+			{ isNullable: false, dataType: DataTypes.bool } :
+			{ isNullable: value.isNullable, dataType: value.dataType, entityType: value.entityType };
+		if (value.dataType === DataTypes.NavigationList) {
 			const child = new NavigationListFilterNode(this);
 			child.property = value;
 			this.child = child;
-		} else if (value.DataType === DataTypes.NavigationEntity) {
+		} else if (value.dataType === DataTypes.NavigationEntity) {
 			this.child = new PropertyFilterNode(this);
 		} else {
-			this.child = null;
+			this.child = undefined;
 		}
 		this.parent.childOutputTypeChanged(this);
 	}
@@ -47,29 +47,29 @@ export class PropertyFilterNode extends FilterNode {
 			return this.child.outputType;
 		}
 		if (!this._property) {
-			return null;
+			return undefined;
 		}
-		if (this._property.DataType === DataTypes.NavigationEntity) {
-			return this._property.ForeignKeyProperty;
+		if (this._property.dataType === DataTypes.NavigationEntity) {
+			return this._property.foreignKeyProperty;
 		}
 		return this._property;
 	}
 
-	set outputType(value: HasTypeInfo) {
+	set outputType(value: HasTypeInfo | undefined) {
 	}
 
 	setStorageNodeProperties(storage: StorageFilterNode) {
-		if (this._property && this.property.DataType === DataTypes.NavigationEntity && !(this.child as PropertyFilterNode)._property) {
-			storage.propertyName = this._property.ForeignKeyName;
+		if (this._property && this._property.dataType === DataTypes.NavigationEntity && !(this.child as PropertyFilterNode)._property) {
+			storage.propertyName = this._property.foreignKeyName;
 		} else {
-			storage.propertyName = this.property.Name;
+			storage.propertyName = this._property?.name;
 		}
 	}
 
 	applyStorageNode(storage: StorageFilterNode) {
-		const property = this.properties.find(x => x.Name === storage.propertyName || x.ForeignKeyName === storage.propertyName);
-		if (property.DataType === DataTypes.ForeignKey) {
-			this.property = this.properties.find(x => x.ForeignKeyName === storage.propertyName);
+		const property = this.properties?.find(x => x.name === storage.propertyName || x.foreignKeyName === storage.propertyName);
+		if (property?.dataType === DataTypes.ForeignKey) {
+			this.property = this.properties?.find(x => x.foreignKeyName === storage.propertyName);
 		} else {
 			this.property = property;
 		}
@@ -77,7 +77,7 @@ export class PropertyFilterNode extends FilterNode {
 
 	get childInputType() {
 		if (!this._property) {
-			return null;
+			return undefined;
 		}
 		return this._property;
 	}
@@ -87,6 +87,9 @@ export class PropertyFilterNode extends FilterNode {
 	}
 
 	get children() {
+		if (!this.child) {
+			return [];
+		}
 		return [this.child];
 	}
 
@@ -98,8 +101,8 @@ export class PropertyFilterNode extends FilterNode {
 		if (this.isEmpty()) {
 			return true;
 		}
-		if (this.property.DataType === DataTypes.NavigationList) {
-			return this.child.isValid();
+		if (this._property?.dataType === DataTypes.NavigationList) {
+			return !!this.child?.isValid();
 		}
 		return true;
 	}

@@ -1,11 +1,11 @@
-export class DataTypeModel {
-	Id: number;
-	Name: string;
-	Identifier: string;
+export type DataTypeModel = {
+	id: number;
+	name: string;
+	identifier: string;
+};
 
-	static NavigationalDataTypeIds: { [Key: string]: number } = {
-		ForeignKey: 7,
-		NavigationProperty: 8,
-		NavigationList: 10
-	};
-}
+export const NavigationalDataTypeIds: { [Key: string]: number } = {
+	ForeignKey: 7,
+	NavigationProperty: 8,
+	NavigationList: 10
+};

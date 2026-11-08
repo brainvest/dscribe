@@ -1,5 +1,4 @@
-import {EntityTypeMetadata} from "../common-models/entity-type-metadata";
-import {PropertyMetadata} from "../common-models/property-metadata";
+import {EntityTypeMetadata, PropertyMetadata} from "../abstractions/metadata-abstractions";
 import {MasterReference} from "./master-reference";
 
 export interface AddNEditStructure {

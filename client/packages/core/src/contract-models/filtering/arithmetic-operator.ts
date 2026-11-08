@@ -1,5 +1,5 @@
-import {HasTypeInfo} from '../../metadata/property-metadata';
-import {DataTypes} from '../../metadata/data-types';
+import {HasTypeInfo} from "../../abstractions/metadata-abstractions";
+import {DataTypes} from "../../common-models/metadata/data-types";
 
 // @dynamic
 export class ArithmeticOperator {
@@ -10,24 +10,22 @@ export class ArithmeticOperator {
 
 	// noinspection TsLint
 	static Operators = [
-		new ArithmeticOperator('Add', 'Plus', 2, null, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Subtract', 'Minus', 2, 2, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Multiply', 'Times', 2, null, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Divide', 'Over', 2, 2, false, ArithmeticOperator.toDecimal, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Log', 'Log', 1, 1, false, ArithmeticOperator.toDecimal, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Power', 'To Power', 2, 2, false, ArithmeticOperator.toDecimal, null, ArithmeticOperator.numbers),
-		new ArithmeticOperator('Abs', 'Abs', 1, 1, false, ArithmeticOperator.toSame, null, ArithmeticOperator.numbers)
+		new ArithmeticOperator('Add', 'Plus', 2, undefined, false, ArithmeticOperator.toSame, undefined, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Subtract', 'Minus', 2, 2, false, ArithmeticOperator.toSame, undefined, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Multiply', 'Times', 2, undefined, false, ArithmeticOperator.toSame, undefined, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Divide', 'Over', 2, 2, false, ArithmeticOperator.toDecimal, undefined, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Log', 'Log', 1, 1, false, ArithmeticOperator.toDecimal, undefined, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Power', 'To Power', 2, 2, false, ArithmeticOperator.toDecimal, undefined, ArithmeticOperator.numbers),
+		new ArithmeticOperator('Abs', 'Abs', 1, 1, false, ArithmeticOperator.toSame, undefined, ArithmeticOperator.numbers)
 	];
 
 	constructor(public name: string,
-							public title: string,
-							public minOperandCount: number,
-							public maxOperandCount: number,
-							public allowMultipleValues: boolean,
-							public dataTypeMap: (input: string) => string,
-							public condition?: (prop: HasTypeInfo) => boolean,
-							public dataTypes?: string[]) {
+		public title: string,
+		public minOperandCount: number,
+		public maxOperandCount?: number,
+		public allowMultipleValues?: boolean,
+		public dataTypeMap?: (input: string) => string,
+		public condition?: (prop: HasTypeInfo) => boolean,
+		public dataTypes?: string[]) {
 	}
-
-
 }

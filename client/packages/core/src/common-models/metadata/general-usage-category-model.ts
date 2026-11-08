@@ -1,4 +1,4 @@
-export class GeneralUsageCategoryModel {
-	Id: number;
-	Name: string;
-}
+export type GeneralUsageCategoryModel = {
+	id: number;
+	name: string;
+};

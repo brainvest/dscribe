@@ -4,7 +4,7 @@ export class AggregationOperator {
 							public hasFiltering: boolean,
 							public isBoolean: boolean,
 							public hasSelection: boolean,
-							public dataTypeMap: { [key: string]: string } = null) {
+							public dataTypeMap?: { [key: string]: string }) {
 	}
 
 	public static Operators = [

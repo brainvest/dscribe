@@ -8,13 +8,13 @@ import {ComparisonFilterNode} from './filter-nodes/comparison-filter-node';
 import {LogicalFilterNode} from './filter-nodes/logical-filter-node';
 import {NavigationListFilterNode} from './filter-nodes/navigation-list-filter-node';
 import {PropertyFilterNode} from './filter-nodes/property-filter-node';
-import {EntityTypeMetadata} from '../../metadata/entity-type-metadata';
+import {EntityTypeMetadata} from '../../abstractions/metadata-abstractions';
 
 export class FilterNodeFactory implements IFilterNodeFactory {
 	create(type: FilterNodeType, parent: FilterNode, entityType?: EntityTypeMetadata, isValueSelection?: boolean) {
 		switch (type) {
 			case FilterNodeType.Lambda:
-				return new LambdaFilterNode(parent, entityType, isValueSelection);
+				return new LambdaFilterNode(parent, entityType!, isValueSelection!); // TODO: Handle undefined entityType and isValueSelection properly
 			case FilterNodeType.Constant:
 				return new ConstantFilterNode(parent);
 			case FilterNodeType.Arithmetic:

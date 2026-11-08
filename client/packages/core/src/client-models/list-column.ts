@@ -1,4 +1,4 @@
-import {PropertyBehavior} from "../../metadata/property-metadata";
+import {PropertyBehavior} from "../abstractions/metadata-abstractions";
 
 export class ListColumn {
 	constructor(

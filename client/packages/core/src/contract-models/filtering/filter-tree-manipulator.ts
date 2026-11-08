@@ -5,9 +5,7 @@ import {LambdaFilterNode} from './filter-nodes/lambda-filter-node';
 import {FilterNode} from './filter-nodes/filter-node';
 import {PropertyFilterNode} from './filter-nodes/property-filter-node';
 import {ComparisonFilterNode} from './filter-nodes/comparison-filter-node';
-import {Injectable} from '@angular/core';
 
-@Injectable()
 export class FilterTreeManipulator {
 	addSibling(node: FilterNode) {
 		const oldNode = node;
@@ -38,9 +36,9 @@ export class FilterTreeManipulator {
 		let minNumberOfOperands = 1000;
 		const parent = node.parent;
 		if (node.parent.nodeType === FilterNodeType.Logical) {
-			minNumberOfOperands = (node.parent as LogicalFilterNode).operator.minNumberOfOperands;
+			minNumberOfOperands = (node.parent as LogicalFilterNode)?.operator?.minNumberOfOperands ?? minNumberOfOperands;
 		} else if (node.parent.nodeType === FilterNodeType.Arithmetic) {
-			minNumberOfOperands = (node.parent as ArithmeticFilterNode).operator.minOperandCount;
+			minNumberOfOperands = (node.parent as ArithmeticFilterNode)?.operator?.minOperandCount ?? minNumberOfOperands;
 		}
 
 		if (isParentLambda) {

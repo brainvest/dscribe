@@ -1,18 +1,22 @@
-import {EntityTypeMetadata} from '../../abstractions/metadata-abstractions';
-import {PropertyMetadata} from '../property-metadata';
+import {EntityTypeMetadata, PropertyBehavior, PropertyMetadata} from '../../abstractions/metadata-abstractions';
+import {PropertyMetadataImplementation} from './property-metadata-implementation';
 import {SelectionContainer} from '../../contract-models/selection-container';
 import {ManageEntityModes} from '../../client-models/manage-entity-modes';
 import {KnownFacets} from '../../abstractions/facets';
-import {PropertyResponse} from './response-models';
+import {PropertyBehaviorResponse, PropertyResponse} from './response-models';
 
 export class EntityTypeMetadataImplementation implements EntityTypeMetadata {
-	properties: {[Name: string]: PropertyMetadata};
+	properties: {[Name: string]: PropertyMetadataImplementation};
 	propertyNames: string[];
 	// private _parentProperty: PropertyMetadata;
 
-	constructor(public readonly name: string, public readonly singularTitle: string, public readonly pluralTitle: string,
-		public readonly typeGeneralUsageCategoryId: number, public codePath: string
-		, public displayNamePath: string) {
+	constructor(
+		public readonly name: string,
+		public readonly singularTitle: string,
+		public readonly pluralTitle: string,
+		public readonly typeGeneralUsageCategoryId: number,
+		public codePath?: string,
+		public displayNamePath?: string) {
 		this.properties = {};
 		this.propertyNames = [];
 	}
@@ -22,7 +26,7 @@ export class EntityTypeMetadataImplementation implements EntityTypeMetadata {
 			if (t.Properties.hasOwnProperty(propertyName)) {
 				const oldProperty: PropertyResponse = t.Properties[propertyName];
 				const defaultFacets = allDefaultFacets[oldProperty.generalUsage];
-				const newProperty = new PropertyMetadata();
+				const newProperty = new PropertyMetadataImplementation();
 				newProperty.facetValues = {};
 
 				if (defaultFacets) {
@@ -54,14 +58,24 @@ export class EntityTypeMetadataImplementation implements EntityTypeMetadata {
 				newProperty.title = oldProperty.title;
 				newProperty.isNullable = oldProperty.isNullable;
 				newProperty.isExpression = oldProperty.isExpression;
-				newProperty.behaviors = this.convertBehaviors(oldProperty.behaviors);
-				entityTypeMetadata.properties[propertyName] = newProperty;
-				entityTypeMetadata.propertyNames.push(propertyName);
+				newProperty.behaviors = EntityTypeMetadataImplementation.convertBehaviors(oldProperty.behaviors);
+				this.properties[propertyName] = newProperty;
+				this.propertyNames.push(propertyName);
 			}
 		}
-		result.push(entityTypeMetadata);
+		result.push(this);
 	}
 
+	private static convertBehaviors(behaviors: PropertyBehaviorResponse[]): PropertyBehavior[] | undefined {
+		if (!behaviors) {
+			return undefined;
+		}
+		var result: PropertyBehavior[] = [];
+		for (const behavior of behaviors) {
+			result.push({behaviorName: behavior.behaviorName, parameters: behavior.parameters});
+		}
+		return result;
+	}
 
 	getPrimaryKey(): PropertyMetadata | undefined {
 		for (const propertyName of this.propertyNames) {
@@ -78,7 +92,7 @@ export class EntityTypeMetadataImplementation implements EntityTypeMetadata {
 		const props: PropertyMetadata[] = [];
 		for (const propertyName of this.propertyNames) {
 			const property = this.properties[propertyName];
-			if (property.facetValues[hideFacet]) {
+			if (property.facetValues?.[hideFacet] === true) {
 				continue;
 			}
 			props.push(property);
@@ -104,7 +118,7 @@ export class EntityTypeMetadataImplementation implements EntityTypeMetadata {
 				}
 				continue;
 			}
-			if (property.dataType === 'NavigationEntity') {
+			if (property.dataType === 'NavigationEntity' && property.foreignKeyProperty) {
 				const index = fks.indexOf(property.foreignKeyProperty);
 				if (index !== -1) {
 					fks.splice(index, 1);
@@ -120,7 +134,7 @@ export class EntityTypeMetadataImplementation implements EntityTypeMetadata {
 		const props: SelectionContainer<PropertyMetadata>[] = [];
 		for (const propertyName of this.propertyNames) {
 			const property = this.properties[propertyName];
-			if (!property.facetValues.HideInList) {
+			if (property.facetValues?.['HideInList'] !== true) {
 				props.push(new SelectionContainer<PropertyMetadata>(property, false));
 			}
 		}

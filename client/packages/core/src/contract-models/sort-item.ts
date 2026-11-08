@@ -1,18 +1,18 @@
-import {DataTypes} from "../../metadata/data-types";
-import {EntityTypeMetadata} from "../../metadata/entity-type-metadata";
+import {EntityTypeMetadata} from "../abstractions/metadata-abstractions";
+import {DataTypes} from "../common-models/metadata/data-types";
 
 export class SortItem {
 	constructor(public propertyName: string, public isDescending: boolean) {
 	}
 
 	public static Create(propertyName: string, isDescending: boolean, entityType: EntityTypeMetadata) {
-		const property = entityType.Properties[propertyName];
+		const property = entityType.properties[propertyName];
 		if (property == null) {
 			return null;
 		}
-		const navigationProperty = entityType.PropertyNames.find(x => entityType.Properties[x].ForeignKeyProperty == property);
-		var nameProperty = property?.EntityType?.displayNamePath;
-		if (property.DataType != DataTypes.ForeignKey || !navigationProperty || !nameProperty) {
+		const navigationProperty = entityType.propertyNames.find(x => entityType.properties[x].foreignKeyProperty == property);
+		var nameProperty = property?.entityType?.displayNamePath;
+		if (property.dataType != DataTypes.ForeignKey || !navigationProperty || !nameProperty) {
 			return new SortItem(propertyName, isDescending);
 		}
 		if (nameProperty) {

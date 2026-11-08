@@ -12,16 +12,16 @@ export class FilterTreeVisitor {
 		this.visitInternal(node, action, []);
 	}
 
-	static map<T>(node: FilterNode, mapper: NodeMapper<T>, setter: NodeSetter<T>): T {
+	static map<T>(node: FilterNode, mapper: NodeMapper<T>, setter: NodeSetter<T>): T | undefined {
 		const nodesArray: FilterNode[] = [];
 		const resultsArray: T[] = [];
 		return this.mapInternal(node, mapper, setter, nodesArray, resultsArray);
 	}
 
 	private static mapInternal<T>(node: FilterNode, mapper: NodeMapper<T>, setter: NodeSetter<T>
-		, nodesArray: FilterNode[], resultsArray: T[]): T {
+		, nodesArray: FilterNode[], resultsArray: T[]): T | undefined {
 		if (!node || node.isEmpty()) {
-			return null;
+			return undefined;
 		}
 		const index = nodesArray.indexOf(node);
 		if (index > -1) {
@@ -34,7 +34,9 @@ export class FilterTreeVisitor {
 		if (children) {
 			for (const child of children) {
 				const mappedChild = this.mapInternal(child, mapper, setter, nodesArray, resultsArray);
-				setter(mappedChild, result);
+				if (mappedChild !== undefined) {
+					setter(mappedChild, result);
+				}
 			}
 		}
 		return result;

@@ -1,25 +1,24 @@
 import {FilterNode} from './filter-node';
 import {ParameterInfo} from '../parameter-info';
-import {EntityTypeMetadata} from '../../../metadata/entity-type-metadata';
-import {HasTypeInfo} from '../../../metadata/property-metadata';
-import {DataTypes} from '../../../metadata/data-types';
 import {FilterNodeType} from '../filter-node-type';
 import {StorageFilterNode} from '../storage-filter-node';
+import {EntityTypeMetadata, HasTypeInfo} from '../../../abstractions/metadata-abstractions';
+import {DataTypes} from '../../../common-models/metadata/data-types';
 
 export class LambdaFilterNode extends FilterNode {
 	parameter: ParameterInfo;
 	private _body: FilterNode;
 
-	constructor(parent: FilterNode, public entityType: EntityTypeMetadata, private _isValueSelection) {
+	constructor(parent: FilterNode, public entityType: EntityTypeMetadata, private _isValueSelection: boolean) {
 		super(parent);
-		this.inputType = new HasTypeInfo(true, DataTypes.NavigationList, entityType);
+		this.inputType = {isNullable: true, dataType: DataTypes.NavigationList, entityType: entityType};
 		this._body = FilterNode.factory.create(_isValueSelection ? FilterNodeType.Property : FilterNodeType.Comparison, this);
-		this.parameter = new ParameterInfo(this.findParameterName(), entityType.Name);
+		this.parameter = new ParameterInfo(this.findParameterName(), entityType.name);
 	}
 
 	private findParameterName(): string {
 		const existingParameters = this.getTreeParameters();
-		const name = this.entityType.Name[0].toLowerCase();
+		const name = this.entityType.name[0].toLowerCase();
 		if (!existingParameters.find(x => x.name === name)) {
 			return name;
 		}
@@ -37,15 +36,18 @@ export class LambdaFilterNode extends FilterNode {
 	}
 
 	applyStorageNode(storage: StorageFilterNode) {
-		this.parameter.name = storage.parameterName;
-		this.parameter.typeName = storage.dataType;
+		if (!storage.parameterName || !storage.dataType) {
+			this.parameter = new ParameterInfo(this.findParameterName(), this.entityType.name);
+			return;
+		}
+		this.parameter = new ParameterInfo(storage.parameterName, storage.dataType);
 	}
 
 	get inputType() {
 		return this._inputType;
 	}
 
-	set inputType(value: HasTypeInfo) {
+	set inputType(value: HasTypeInfo | undefined) {
 		this._inputType = value;
 		if (this._body) {
 			this._body.inputType = value;

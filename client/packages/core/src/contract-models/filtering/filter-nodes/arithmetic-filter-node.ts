@@ -4,26 +4,25 @@ import {FilterNodeType} from '../filter-node-type';
 import {PropertyFilterNode} from './property-filter-node';
 import {ArithmeticOperator} from '../arithmetic-operator';
 import {ConstantFilterNode} from './constant-filter-node';
-import {HasTypeInfo} from '../../../metadata/property-metadata';
+import {HasTypeInfo} from '../../../abstractions/metadata-abstractions';
 
 export class ArithmeticFilterNode extends FilterNode {
-	private _operator: ArithmeticOperator;
-	operators: ArithmeticOperator[];
+	private _operator?: ArithmeticOperator;
+	operators?: ArithmeticOperator[];
 	_children: FilterNode[] = [];
-	_operandType: HasTypeInfo;
+	_operandType?: HasTypeInfo;
 
 	constructor(parent: FilterNode) {
 		super(parent);
 		this.inputType = parent.childInputType;
 		this._children[0] = new PropertyFilterNode(this);
-		this.operator = null;
 	}
 
 	get inputType() {
 		return this._inputType;
 	}
 
-	set inputType(value: HasTypeInfo) {
+	set inputType(value: HasTypeInfo | undefined) {
 		if (value === this._inputType) {
 			return;
 		}
@@ -44,7 +43,8 @@ export class ArithmeticFilterNode extends FilterNode {
 		}
 		this._operandType = child.outputType;
 		const type = child.outputType;
-		if (!type || !type.DataType) {
+		const dataType = type?.dataType;
+		if (!type || !dataType) {
 			this.operators = ArithmeticOperator.Operators;
 			if (!this.operator || this.operators.indexOf(this.operator) === -1) {
 				this.operator = this.operators[0];
@@ -53,7 +53,7 @@ export class ArithmeticFilterNode extends FilterNode {
 		}
 		this.operators = ArithmeticOperator.Operators
 			.filter(x => !x || ((!x.condition || x.condition(type)) &&
-				(!x.dataTypes || x.dataTypes.indexOf(type.DataType) !== -1)));
+				(!x.dataTypes || x.dataTypes.indexOf(dataType) !== -1)));
 		if (!this.operator || this.operators.indexOf(this.operator) === -1) {
 			this.operator = this.operators[0];
 		}
@@ -66,11 +66,11 @@ export class ArithmeticFilterNode extends FilterNode {
 		super.childOutputTypeChanged(child);
 	}
 
-	get operator(): ArithmeticOperator {
+	get operator(): ArithmeticOperator | undefined {
 		return this._operator;
 	}
 
-	set operator(value: ArithmeticOperator) {
+	set operator(value: ArithmeticOperator | undefined) {
 		this._operator = value;
 		if (!this.operator) {
 			return;
@@ -78,7 +78,7 @@ export class ArithmeticFilterNode extends FilterNode {
 		while (this.operator.minOperandCount > this._children.length) {
 			const child = new ConstantFilterNode(this);
 			child.dataType = this._children[0].outputType;
-			child.allowMultipleValues = this.operator.allowMultipleValues;
+			child.allowMultipleValues = this.operator?.allowMultipleValues ?? false;
 			this._children.push(child);
 		}
 		if (this.operator.maxOperandCount !== null && this.operator.maxOperandCount !== undefined &&
@@ -93,15 +93,17 @@ export class ArithmeticFilterNode extends FilterNode {
 		if (!this._operator) {
 			return;
 		}
-		const outputType = this._operandType && this.operator.dataTypeMap(this._operandType.DataType);
-		if (!this._outputType || this.outputType.DataType !== outputType) {
-			this.outputType = new HasTypeInfo(this._operandType && this._operandType.IsNullable,
-				outputType, null);
+		const outputType = this._operandType?.dataType && this.operator?.dataTypeMap?.(this._operandType.dataType);
+		if (!this._outputType || this._outputType.dataType !== outputType) {
+			this.outputType = {
+				isNullable: this._operandType?.isNullable,
+				dataType: outputType
+			};
 		}
 	}
 
 	setStorageNodeProperties(storage: StorageFilterNode) {
-		storage.operator = this.operator.name;
+		storage.operator = this.operator?.name;
 	}
 
 	applyStorageNode(storage: StorageFilterNode) {
@@ -148,7 +150,7 @@ export class ArithmeticFilterNode extends FilterNode {
 
 	addChild(constant: boolean) {
 		if (this._operator &&
-			(!this.operator.maxOperandCount || this._children.length < this._operator.maxOperandCount)) {
+			(!this._operator?.maxOperandCount || this._children.length < this._operator?.maxOperandCount)) {
 			if (constant) {
 				const child = new ConstantFilterNode(this);
 				child.dataType = this._operandType;
