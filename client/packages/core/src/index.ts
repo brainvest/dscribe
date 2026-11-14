@@ -3,3 +3,7 @@ export * from './abstractions/waltzar-state';
 export * from './abstractions/lazy-remote-data';
 export * from './waltzar-state-implementation';
 export * from './abstractions/authentication-state';
+export * from './abstractions/app-instance-information';
+export * from './abstractions/metadata-abstractions';
+export * from './client-models/manage-entity-modes';
+export * from './client-models/metadata-model';

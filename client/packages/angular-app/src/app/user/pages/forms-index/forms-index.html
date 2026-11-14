@@ -1,0 +1,30 @@
+<header class="hero">
+	<h1>Forms</h1>
+	@if (activeApp.appInstance(); as app) {
+		<p data-testid="forms-subtitle">{{ app.title || app.name }}</p>
+	} @else {
+		<p>Pick an application in the top-left switcher to see its forms.</p>
+	}
+</header>
+
+@switch (activeApp.metadata().state) {
+	@case ('loading') {
+		<p class="status" data-testid="forms-loading">Loading forms…</p>
+	}
+	@case ('error') {
+		<p class="status status--error" role="alert" data-testid="forms-error">
+			The forms could not be loaded.
+		</p>
+	}
+	@case ('loaded') {
+		<div class="cards" data-testid="forms-cards">
+			@for (form of activeApp.forms(); track form.name) {
+				<a class="card" [routerLink]="['/app/forms', form.name]" data-testid="form-card">
+					<mat-icon class="card__icon">dynamic_form</mat-icon>
+					<span class="card__title">{{ form.pluralTitle }}</span>
+					<span class="card__hint">{{ form.singularTitle }} · {{ fieldCount(form) }} fields</span>
+				</a>
+			}
+		</div>
+	}
+}

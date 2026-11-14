@@ -10,6 +10,11 @@ export class MetadataModel {
 		this.fixUpRelationships();
 	}
 
+	/** All entity types (forms) of the application, in the order the server sent them. */
+	getEntityTypes(): readonly EntityTypeMetadata[] {
+		return this.entityTypes;
+	}
+
 	getEntityTypeByName(entityTypeName: string): EntityTypeMetadata | undefined {
 		return this.entityTypes.find(x => x.name === entityTypeName);
 	}
@@ -24,8 +29,8 @@ export class MetadataModel {
 			}
 			const t = entityTypes[entityTypeName];
 			const entityTypeMetadata = new EntityTypeMetadataImplementation(t.name, t.singularTitle, t.pluralTitle,
-				t.typeGeneralUsageCategoryId, t.code, t.displayName);
-			entityTypeMetadata.setProperties(t, allDefaultFacets, result);
+				t.entityGeneralUsageCategoryId, t.code, t.displayName);
+			entityTypeMetadata.setProperties(t, allDefaultFacets);
 			result.push(entityTypeMetadata);
 		}
 		return result;

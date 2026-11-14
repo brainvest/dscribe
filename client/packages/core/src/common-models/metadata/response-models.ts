@@ -44,6 +44,6 @@ export type EntityTypeResponse = {
 	primaryKey: string;
 	singularTitle: string;
 	pluralTitle: string;
-	typeGeneralUsageCategoryId: number;
+	entityGeneralUsageCategoryId: number;
 	properties: {[propertyName: string]: PropertyResponse};
 };

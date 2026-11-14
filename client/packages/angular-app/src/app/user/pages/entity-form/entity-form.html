@@ -1,0 +1,56 @@
+<a matButton routerLink="/app/forms" class="back">
+	<mat-icon>arrow_back</mat-icon>
+	Forms
+</a>
+
+@if (entityType(); as type) {
+	<header class="hero">
+		<h1 data-testid="form-title">{{ type.singularTitle }}</h1>
+		<p>{{ fields().length }} fields</p>
+	</header>
+
+	<form class="card" [formGroup]="form()" data-testid="entity-form">
+		<div class="fields">
+			@for (field of fields(); track field.name) {
+				@switch (field.kind) {
+					@case ('checkbox') {
+						<mat-checkbox class="field--wide" [formControlName]="field.name" [attr.data-testid]="'field-' + field.name">
+							{{ field.title }}
+						</mat-checkbox>
+					}
+					@default {
+						<mat-form-field appearance="outline" [attr.data-testid]="'field-' + field.name" [attr.data-kind]="field.kind">
+							<mat-label>{{ field.title }}</mat-label>
+							<input
+								matInput
+								[formControlName]="field.name"
+								[type]="field.kind === 'number' || field.kind === 'reference' ? 'number' : field.kind === 'date' ? 'date' : 'text'"
+								[required]="field.required"
+							/>
+							@if (field.kind === 'reference') {
+								<mat-hint>Id of the related {{ field.referenceTitle }}</mat-hint>
+							}
+						</mat-form-field>
+					}
+				}
+			}
+		</div>
+	</form>
+} @else {
+	@switch (metadataState()) {
+		@case ('loaded') {
+			<p class="status status--error" role="alert" data-testid="form-not-found">
+				There is no form called “{{ entityTypeName() }}” in this application.
+			</p>
+		}
+		@case ('error') {
+			<p class="status status--error" role="alert">The forms could not be loaded.</p>
+		}
+		@case ('not_loaded') {
+			<p class="status" data-testid="form-no-app">Pick an application to open this form.</p>
+		}
+		@default {
+			<p class="status">Loading…</p>
+		}
+	}
+}

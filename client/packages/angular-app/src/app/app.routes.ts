@@ -48,6 +48,14 @@ export const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'collection' },
       {
+        path: 'forms',
+        loadComponent: () => import('./user/pages/forms-index/forms-index').then((m) => m.FormsIndex),
+      },
+      {
+        path: 'forms/:entityTypeName',
+        loadComponent: () => import('./user/pages/entity-form/entity-form').then((m) => m.EntityForm),
+      },
+      {
         path: 'collection',
         loadComponent: () => import('./user/pages/catalog/catalog').then((m) => m.Catalog),
       },

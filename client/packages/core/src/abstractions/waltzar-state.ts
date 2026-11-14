@@ -8,7 +8,8 @@ import type {AuthenticationState} from './authentication-state';
 export interface WaltzarState {
 	readonly availableAppInstances$: Observable<LazyRemoteData<AppInstanceInformation[]>>;
 	readonly activeAppInstance$: Observable<AppInstanceInformation | null>;
-	readonly metadataPackage$: Observable<MetadataModel | null>;
+	/** The metadata of the active app instance; loading again every time the active app instance changes. */
+	readonly metadataPackage$: Observable<LazyRemoteData<MetadataModel>>;
 	readonly config: WaltzarConfig;
 	readonly authState: AuthenticationState;
 	switchActiveAppInstance(app: AppInstanceInformation): void;

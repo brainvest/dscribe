@@ -11,6 +11,7 @@ export type AppInstanceInformation = {
 	readonly name: string;
 	readonly title: string;
 	readonly useUnreleasedMetadata: boolean;
-	readonly icon: string;
+	/** Not sent by the server (yet); the client falls back to a generic icon. */
+	readonly icon?: string;
 	readonly description?: string;
 };

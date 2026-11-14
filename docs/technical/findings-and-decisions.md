@@ -1,0 +1,77 @@
+# Findings and decisions
+
+## 1. Metadata endpoints returned `{}` for every entity type (fixed)
+
+**Symptom.** `GET /api/Metadata/GetComplete` returned the 8 entity names of Caroline, each with an empty object.
+
+**Cause.** The commit "Client working to show a list of application instances" removed `AddNewtonsoftJson(...)` from
+`Host/Startup.cs`. `IEntityTypeMetadataModel` is an empty marker interface and `MetadataModel` uses Newtonsoft
+attributes and runtime-type serialization (`PropertyFacet<T>` behind an abstract base, etc.). System.Text.Json
+serializes by declared type, so the data was dropped.
+
+**Fix.** `services.AddControllers().AddNewtonsoftJson(...)` with a `DefaultContractResolver` using
+`CamelCaseNamingStrategy { ProcessDictionaryKeys = false }`: property names are camelCase (what the new client's
+response models expect) while dictionary keys such as `RawMaterial` keep their casing (they are looked up by name).
+
+**Alternative considered.** Polymorphic System.Text.Json (`[JsonDerivedType]`) on the interfaces and facets. More
+invasive and the code base is written against Newtonsoft (`HeavyOrmObjectGraphHandler`, `EntityHelper`, LobTools).
+
+## 2. Ported client models disagreed with the camelCase API (fixed)
+
+- `EntityTypeMetadataImplementation.setProperties` read `t.Properties` / `defaultFacets.Defaults` (PascalCase, from the
+  old client); the API sends `properties` / `defaults`.
+- The server sends `entityGeneralUsageCategoryId`; the client read `typeGeneralUsageCategoryId`.
+- Every entity type was added to the result twice (`setProperties` and `extractEntityTypeMetadata` both pushed); this
+  surfaced as Angular warning NG0955 and 16 cards instead of 8.
+
+## 3. Nothing fetched metadata after choosing an application (implemented)
+
+`switchActiveAppInstance` only stored the choice. It now loads `GET api/metadata/getComplete` with the `AppInstance`
+header; the state is `LazyRemoteData<MetadataModel>` (loading / loaded / error). A request counter drops a slow response
+that belongs to an earlier choice.
+
+## 4. Host build fails on a NuGet advisory (worked around, not fixed)
+
+`Microsoft.AspNetCore.WebUtilities 2.3.12` (transitive) now has a known advisory (GHSA-6527-9fp8-r4x6); the repo treats
+warnings as errors, so `dotnet build` fails with NU1902. The e2e setup passes `-p:NuGetAudit=false`. A proper fix is to
+update or pin the transitive package.
+
+## 5. Host configuration paths are Linux-only on this machine
+
+`GlobalConfiguration.ImplementationsDirectory` / `TempDirectory` in `Host/appsettings.Development.json` point at
+`/home/ali/...`. The e2e setup overrides them with environment variables (`GlobalConfiguration__...`) instead of
+editing the checked-in file.
+
+## 6. The business assembly for Demo4Caroline is not loaded (open)
+
+The Host logs `The directory ...\Demo4Caroline was not found` / `Business assembly not loaded`: the compiled
+business assembly of an app instance is expected in `ImplementationsDirectory/<instance name>`. Metadata and forms do
+not need it; reading and writing entity **data** (`EntityController`) probably does. The release/code-generation flow
+(`ReleaseMetadataController`) was not run because it may modify the shared database.
+
+## 7. Authentication in the tests (decision)
+
+The Auth database is shared and remote and holds one real user. Writing a test user was not acceptable, so the suite
+uses `client/e2e/support/fake-auth-server.mjs`, a ~100-line test-only server on port 5001 that implements the same
+`/auth/*` contract plus OIDC discovery and JWKS. The real Host validates its tokens (issuer `http://localhost:5001`) and
+the token carries the `Admin` role, which the Metadata database's allow-all permission row matches. It must never be used
+outside tests (public credentials, ephemeral key).
+
+## 8. Smaller notes
+
+- The icon buttons for Account and Notifications had only a tooltip; `aria-label`s were added.
+- `AppInstanceInformation.icon` is not sent by the server; it is now optional and the UI falls back to `apps`.
+- The page title in the end-user top bar still says "My collection" (sample content); the catalog/collection pages,
+  the admin products pages and the ribbon are sample data from the UI template, not backed by the API.
+- `client/dist/` and `server/Infrastructure/SampleAuthServer/keys/*.json` were untracked before this session and were
+  left alone.
+- There are no server tests in the repository (`server/Tests/*` are empty).
+
+## Assumptions made
+
+- "All forms in metadata for Caroline" means one form per entity type of app instance 1 (8 of them), listed from the
+  live metadata, each rendered from its own property definitions.
+- An insert form shows the properties not hidden by the metadata's `HideInInsert` facet; required follows `!isNullable`.
+- Foreign keys are plain numeric inputs for now (no lookup), because lookups need entity data (see 6).
+- Coding conventions followed: `.editorconfig` (tabs, single quotes in TypeScript, 120 columns, file-scoped namespaces,
+  usings inside the namespace for C#), Angular standalone components with signals and the new control flow.

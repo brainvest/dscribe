@@ -1,0 +1,65 @@
+@use '@angular/material' as mat;
+
+:host {
+	display: block;
+	max-width: 720px;
+	margin: 0 auto;
+
+	@include mat.form-field-overrides(
+		(
+			outlined-container-shape: 12px,
+		)
+	);
+}
+
+.back {
+	margin: 0 0 12px -8px;
+	color: var(--mat-sys-on-surface-variant);
+}
+
+.hero {
+	margin: 0 0 20px;
+
+	h1 {
+		margin: 0 0 4px;
+		font: var(--mat-sys-headline-small);
+		font-weight: 600;
+	}
+
+	p {
+		margin: 0;
+		color: var(--mat-sys-on-surface-variant);
+	}
+}
+
+.card {
+	background: var(--app-chrome-bg);
+	border-radius: var(--app-radius);
+	border: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant) 60%, transparent);
+	box-shadow: 0 2px 10px rgb(0 0 0 / 8%);
+	padding: 24px;
+}
+
+.fields {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 8px 20px;
+}
+
+.field--wide {
+	grid-column: 1 / -1;
+}
+
+.status {
+	color: var(--mat-sys-on-surface-variant);
+
+	&--error {
+		color: var(--mat-sys-error);
+	}
+}
+
+@media (max-width: 600px) {
+	.fields {
+		grid-template-columns: 1fr;
+	}
+}
