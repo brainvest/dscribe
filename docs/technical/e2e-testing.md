@@ -17,7 +17,7 @@ pnpm e2e:report                            # HTML report (client/e2e/report)
 | Server | Port | Command |
 | --- | --- | --- |
 | Test auth server | 5001 | `node e2e/support/fake-auth-server.mjs` |
-| Host (real, against the configured Metadata DB) | 5000 | `dotnet run --project ../server/Host/Host.csproj -p:NuGetAudit=false` |
+| Host (real, against the configured Metadata DB) | 5000 | `dotnet run --project ../server/Host/Host.csproj` |
 | Angular client (Vite, proxies `/auth` to 5001 and `/api` to 5000) | 4200 | `pnpm start` |
 
 The Host's implementations directory is `client/e2e/.implementations` (git-ignored). The global setup

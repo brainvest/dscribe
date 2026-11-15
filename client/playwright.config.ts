@@ -38,8 +38,8 @@ export default defineConfig({
 			timeout: 30_000,
 		},
 		{
-			// Builds on demand; NuGetAudit is off because an advisory on a transitive package fails the build.
-			command: 'dotnet run --project ../server/Host/Host.csproj -p:NuGetAudit=false',
+			// Builds on demand.
+			command: 'dotnet run --project ../server/Host/Host.csproj',
 			url: `${HOST_URL}/api/appManagement/getAppInstancesInfoForHome`,
 			reuseExistingServer: !isCi,
 			timeout: 240_000,

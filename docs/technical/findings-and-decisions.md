@@ -30,11 +30,16 @@ invasive and the code base is written against Newtonsoft (`HeavyOrmObjectGraphHa
 header; the state is `LazyRemoteData<MetadataModel>` (loading / loaded / error). A request counter drops a slow response
 that belongs to an earlier choice.
 
-## 4. Host build fails on a NuGet advisory (worked around, not fixed)
+## 4. Build and restore failed on a NuGet advisory (fixed)
 
-`Microsoft.AspNetCore.WebUtilities 2.3.12` (transitive) now has a known advisory (GHSA-6527-9fp8-r4x6); the repo treats
-warnings as errors, so `dotnet build` fails with NU1902. The e2e setup passes `-p:NuGetAudit=false`. A proper fix is to
-update or pin the transitive package.
+`Microsoft.AspNetCore.WebUtilities` (transitive through the legacy `Microsoft.AspNetCore.Http 2.x` and
+`SaasKit.Multitenancy`) has a known advisory (GHSA-6527-9fp8-r4x6); the repo treats warnings as errors, so restore failed
+with NU1902 (also in VS Code's C# Dev Kit: "Failed to restore NuGet packages for the solution").
+
+**Fix.** `Directory.Packages.props` now has `Microsoft.AspNetCore.Http 2.3.14` and `Microsoft.AspNetCore.WebUtilities
+2.3.14`, and the two projects that reference `Http` (`Runtime`, `EfCore.BusinessDataAccess`) also reference
+`WebUtilities` directly, so the patched version wins over the transitive 2.3.13. The whole solution builds with 0
+warnings, and the e2e setup no longer passes `-p:NuGetAudit=false`.
 
 ## 5. Host configuration paths are Linux-only on this machine
 
@@ -58,8 +63,14 @@ Verified for Caroline (app instance 1): generation succeeds on .NET 10 (Roslyn),
 **Fix.** `ImplementationFactory` caches one container per app instance forever, including one created while the assembly
 did not exist yet, so a Host restart was needed after generating. `GenerateCode` now calls the new
 `ImplementationFactory.Evict(appInstanceId)` after a successful generation, so the next request builds a fresh container
-with the new assembly. Limitation: regenerating a *changed* assembly in a process that already loaded one with the same
-name probably still needs a restart (`Assembly.LoadFrom` returns the first loaded assembly of that identity); not tested.
+with the new assembly.
+
+**Second fix (found by the e2e suite).** The first version of this fix broke when the Host had *already* loaded an
+assembly: regenerating produced another `Demo4Caroline`, and the default load context refuses a second assembly with the
+same name (`FileLoadException: Assembly with same name is already loaded`), leaving a container without a business
+assembly (`KeyNotFoundException: MeasurementUnit` in `BusinessReflector`). `BusinessAssemblyBridge.LoadAssemblyFromPath`
+now loads every generated DLL into its own `AssemblyLoadContext` (not collectible, because EF Core caches models by
+type), so regenerating works without a Host restart. Old versions stay in memory until the process ends.
 
 The e2e suite generates the assembly in its global setup (see [e2e-testing.md](e2e-testing.md)). `MigrateDatabase` is never
 called: it can change the business database.
