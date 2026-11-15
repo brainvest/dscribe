@@ -4,9 +4,10 @@ Rough priority order; to be completed.
 
 1. **Confirm the real auth path.** Run the suite once against the real `SampleAuthServer` with an existing Admin user
    (see [e2e-testing.md](e2e-testing.md)). Decide whether a dedicated e2e user in a non-shared Auth database is wanted.
-2. **Business assembly for app instances.** Make `ImplementationsDirectory` configurable per developer machine (the checked-in
-   value is a Linux path) and run the release flow for `Demo4Caroline`, so entity data endpoints work.
-3. **Entity data in the client.** List (grid) with paging/sort/filter, create, edit, delete per entity type; foreign key
+2. **Per-machine configuration.** `ImplementationsDirectory` / `TempDirectory` in `Host/appsettings.Development.json` are Linux paths;
+   developers must override them (environment variables or user secrets). Check that regenerating a changed assembly works
+   without a Host restart.
+3. **Entity data in the client.** The API works (see finding 6). List (grid) with paging/sort/filter, create, edit, delete per entity type; foreign key
    lookups; navigation lists. The core already contains the filter/sort/group request models from the old client.
 4. **Replace sample content.** The admin products pages, the ribbon, the end-user collection/catalog pages, the drawer's
    sample items, "My collection" in the top bar and the "Company" label are template content.

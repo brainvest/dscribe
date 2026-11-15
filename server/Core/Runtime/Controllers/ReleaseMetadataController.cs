@@ -109,6 +109,8 @@ public class ReleaseMetadataController(
 				result.Errors.Add("Could not copy source code to: " + copyFileName + "Reson: " + ex.GetFullMessage());
 			}
 		}
+		// Instances created before this point have no business assembly; the next request should see the new one.
+		ImplementationFactory.Evict(_implementationContainer.InstanceInfo.AppInstanceId);
 		result.Success = true;
 		return result;
 	}

@@ -1,10 +1,12 @@
-import os from 'node:os';
+import path from 'node:path';
 import {defineConfig, devices} from '@playwright/test';
 
 const CLIENT_URL = 'http://localhost:4200';
 const HOST_URL = 'http://localhost:5000';
 const AUTH_URL = 'http://localhost:5001';
 const isCi = !!process.env['CI'];
+// Generated business assemblies (source.cs + <instance>.dll) and the Host's temp copies of them; git-ignored.
+const IMPLEMENTATIONS_DIR = path.resolve(__dirname, 'e2e/.implementations');
 
 /**
  * End-to-end suite: the real Angular client and the real Host (against the Metadata database configured in
@@ -13,6 +15,7 @@ const isCi = !!process.env['CI'];
  */
 export default defineConfig({
 	testDir: './e2e',
+	globalSetup: './e2e/support/global-setup.ts',
 	outputDir: './e2e/test-results',
 	fullyParallel: false,
 	workers: 1,
@@ -44,8 +47,8 @@ export default defineConfig({
 				ASPNETCORE_ENVIRONMENT: 'Development',
 				ASPNETCORE_URLS: HOST_URL,
 				// The checked-in settings point at a Linux home directory.
-				GlobalConfiguration__ImplementationsDirectory: os.tmpdir(),
-				GlobalConfiguration__TempDirectory: os.tmpdir(),
+				GlobalConfiguration__ImplementationsDirectory: IMPLEMENTATIONS_DIR,
+				GlobalConfiguration__TempDirectory: IMPLEMENTATIONS_DIR,
 			},
 		},
 		{

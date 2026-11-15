@@ -42,12 +42,27 @@ update or pin the transitive package.
 `/home/ali/...`. The e2e setup overrides them with environment variables (`GlobalConfiguration__...`) instead of
 editing the checked-in file.
 
-## 6. The business assembly for Demo4Caroline is not loaded (open)
+## 6. The business assembly is generated from the metadata (verified, one fix)
 
-The Host logs `The directory ...\Demo4Caroline was not found` / `Business assembly not loaded`: the compiled
-business assembly of an app instance is expected in `ImplementationsDirectory/<instance name>`. Metadata and forms do
-not need it; reading and writing entity **data** (`EntityController`) probably does. The release/code-generation flow
-(`ReleaseMetadataController`) was not run because it may modify the shared database.
+Correction of an earlier note: the business assembly is **not** compiled by hand. `POST api/ReleaseMetadata/GenerateCode`
+(header `AppInstance`, role with `ManageMetadata`) generates `source.cs` and `<instance>.dll` into
+`GlobalConfiguration.ImplementationsDirectory/<instance name>/` from the metadata; it only reads the Metadata database.
+`BusinessAssemblyBridge` loads that DLL when an application's container is first created. The Host log line
+`The directory ...\Demo4Caroline was not found` / `Business assembly not loaded` therefore only meant "not generated yet on
+this machine" (the configured directory is a Linux path from the original developer's machine).
+
+Verified for Caroline (app instance 1): generation succeeds on .NET 10 (Roslyn), the DLL loads, and
+`POST api/Entity/GetByFilter` / `CountByFilter` return rows from `CarolineMain` that match the database
+(`MeasurementUnit` -> `[{"code":1,"id":1,"name":"Kilograms"}]`; the other seven tables were empty when checked).
+
+**Fix.** `ImplementationFactory` caches one container per app instance forever, including one created while the assembly
+did not exist yet, so a Host restart was needed after generating. `GenerateCode` now calls the new
+`ImplementationFactory.Evict(appInstanceId)` after a successful generation, so the next request builds a fresh container
+with the new assembly. Limitation: regenerating a *changed* assembly in a process that already loaded one with the same
+name probably still needs a restart (`Assembly.LoadFrom` returns the first loaded assembly of that identity); not tested.
+
+The e2e suite generates the assembly in its global setup (see [e2e-testing.md](e2e-testing.md)). `MigrateDatabase` is never
+called: it can change the business database.
 
 ## 7. Authentication in the tests (decision)
 

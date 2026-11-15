@@ -38,6 +38,7 @@ ActiveApp (signals) ──▶ forms() ──▶ drawer links + /app/forms cards
 | `POST /auth/login`, `/auth/refresh`, `/auth/logout` | cookie | `SampleAuthServer`, proxied by Vite |
 | `POST api/appManagement/getAppInstancesInfoForHome` | none | list of application instances |
 | `GET api/metadata/getComplete` | Bearer + `AppInstance` | `{propertyDefaults, entityTypes}`; JSON is camelCase for property names, dictionary keys keep their casing |
+| `POST api/entity/getByFilter`, `countByFilter` | Bearer + `AppInstance` | rows of an entity type (camelCase); needs the generated business assembly; not used by the client yet |
 
 The Host selects the tenant (application instance) from the `AppInstance` header and authorizes through the
 `Permissions` / `Roles` tables of the Metadata database, matching the `role` claim of the token.

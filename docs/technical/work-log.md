@@ -30,18 +30,20 @@ Done by Claude:
 3. Found that the client did not yet show any metadata-driven form, and that the backend serialized metadata as `{}`
    (see [findings-and-decisions.md](findings-and-decisions.md)).
 4. Backend: restored Newtonsoft.Json serialization in `server/Host/Startup.cs` (camelCase property names, dictionary
-   keys untouched).
+   keys untouched). Ran `GenerateCode` for Caroline to produce its business assembly and confirmed the entity endpoints return
+   data from `CarolineMain`; added `ImplementationFactory.Evict` so a freshly generated assembly is used without a restart.
 5. Client core (`@waltzar/core`): added the `AppInstance` request header and a GET helper, loading of the metadata when
    the active application changes, fixed the camelCase mismatches and the duplicated entity types in the ported models.
 6. Client UI: `ActiveApp` service, a Forms index page, a metadata-driven entity form page, the application's forms in
    the drawer, `aria-label`s on the account and notification buttons.
-7. Added the Playwright suite (11 tests) with a test-only auth server, and ran it against the real Host and the real
-   Metadata database: 11 passed. Production build and workspace typecheck pass.
+7. Added the Playwright suite (14 tests) with a test-only auth server, and ran it against the real Host and the real
+   Metadata and Caroline databases: 14 passed. Production build and workspace typecheck pass.
 8. Wrote this documentation.
 
 Not done / deliberately not done:
 
-- No write was made to the shared DigitalOcean databases. An attempt to insert a test user was blocked by the
+- No write was made to the shared DigitalOcean databases (`GenerateCode` only reads them and writes files locally;
+  `MigrateDatabase` was never called). An attempt to insert a test user was blocked by the
   environment's permission system and was not worked around; the suite uses a fake auth server instead.
 - The real `SampleAuthServer` login path was not exercised end to end (no known credentials).
 - Nothing was committed; all changes are in the working tree of `verify-client-playwright`.

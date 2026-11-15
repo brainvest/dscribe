@@ -20,6 +20,10 @@ pnpm e2e:report                            # HTML report (client/e2e/report)
 | Host (real, against the configured Metadata DB) | 5000 | `dotnet run --project ../server/Host/Host.csproj -p:NuGetAudit=false` |
 | Angular client (Vite, proxies `/auth` to 5001 and `/api` to 5000) | 4200 | `pnpm start` |
 
+The Host's implementations directory is `client/e2e/.implementations` (git-ignored). The global setup
+(`e2e/support/global-setup.ts`) calls `POST /api/ReleaseMetadata/GenerateCode` for Caroline before the tests, which generates the
+business assembly from the metadata.
+
 The Host needs network access to the database configured in `server/Host/appsettings.Development.json`. The first
 request for an application is slow (the Host loads its metadata), hence the generous timeouts.
 
@@ -43,6 +47,11 @@ Credentials of the test auth server: `e2e-admin` / `e2e-password` (override with
 - a form opens from the drawer
 - a deep link without a picked application asks for one
 
+`entity-data.spec.ts` (API level, guards the backend the future grids rely on)
+- every entity type of Caroline can be listed and counted through the generated business assembly (`CarolineMain`)
+- rows use the metadata's property names in camelCase
+- requests without a token get 401
+
 Screenshots: `client/e2e/screenshots/` (`caroline-forms-index.png`, `form-<EntityName>.png`), ignored by git. Playwright
 also attaches a screenshot to every test in the HTML report, and keeps traces of failures.
 
@@ -56,6 +65,6 @@ also attaches a screenshot to every test in the HTML report, and keeps traces of
 
 ## To add
 
-- Entity data (list / create / edit) once the business assembly of an instance is available to the Host.
+- Entity data in the UI (list / create / edit); the API side is already covered.
 - The admin console pages once they are backed by the API.
 - A CI job (needs a database reachable from the runner).

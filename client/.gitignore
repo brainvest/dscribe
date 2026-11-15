@@ -2,3 +2,4 @@ node_modules/
 e2e/test-results/
 e2e/report/
 e2e/screenshots/
+e2e/.implementations/
