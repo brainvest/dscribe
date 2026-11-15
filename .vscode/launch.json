@@ -48,6 +48,48 @@
 			"type": "coreclr",
 			"request": "attach",
 			"processId": "${command:pickProcess}"
+		},
+		// The four entries below are parts of the "LaunchAll+TestUI" compound.
+		{
+			// Same as "Host", with the settings the e2e suite expects (see client/playwright.config.ts).
+			"name": "Host (e2e)",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build-host",
+			"program": "${workspaceFolder}/server/Host/bin/Debug/net10.0/Brainvest.Dscribe.Host.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}/server/Host",
+			"stopAtEntry": false,
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development",
+				"ASPNETCORE_URLS": "http://localhost:5000",
+				// The checked-in settings point at a Linux home directory.
+				"GlobalConfiguration__ImplementationsDirectory": "${workspaceFolder}/client/e2e/.implementations",
+				"GlobalConfiguration__TempDirectory": "${workspaceFolder}/client/e2e/.implementations"
+			}
+		},
+		{
+			// Test-only auth server on :5001 (login e2e-admin / e2e-password), not the real SampleAuthServer.
+			"name": "Auth (fake)",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "node e2e/support/fake-auth-server.mjs",
+			"cwd": "${workspaceFolder}/client"
+		},
+		{
+			"name": "Client",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "pnpm start",
+			"cwd": "${workspaceFolder}/client"
+		},
+		{
+			"name": "Test UI",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "pnpm e2e:ui",
+			"cwd": "${workspaceFolder}/client",
+			"preLaunchTask": "wait-for-servers"
 		}
 	],
 	"compounds": [
@@ -57,6 +99,17 @@
 				"Host",
 				"Auth"
 			]
+		},
+		{
+			// Backend + fake auth + frontend, then the Playwright UI once all three are up.
+			"name": "LaunchAll+TestUI",
+			"configurations": [
+				"Host (e2e)",
+				"Auth (fake)",
+				"Client",
+				"Test UI"
+			],
+			"stopAll": true
 		}
 	]
 }

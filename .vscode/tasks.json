@@ -80,79 +80,13 @@
 			"problemMatcher": "$msCompile"
 		},
 		{
-			// Test auth server on :5001 (stands in for SampleAuthServer; login e2e-admin / e2e-password).
-			"label": "run-auth-fake",
+			// Used by the "LaunchAll+TestUI" launch configuration: waits until the auth server, the Host and the
+			// client accept connections, so the Playwright UI reuses them instead of starting its own.
+			"label": "wait-for-servers",
 			"type": "shell",
-			"command": "node e2e/support/fake-auth-server.mjs",
+			"command": "node e2e/support/wait-for-servers.mjs",
 			"options": {"cwd": "${workspaceFolder}/client"},
-			"isBackground": true,
-			"presentation": {"group": "launch-all", "panel": "dedicated"},
-			"problemMatcher": {
-				"owner": "launch-all",
-				"pattern": {"regexp": "^__no_problems__$"},
-				"background": {
-					"activeOnStart": true,
-					"beginsPattern": "^__never__$",
-					"endsPattern": "Fake auth server listening"
-				}
-			}
-		},
-		{
-			// Host API on :5000 with the generated business assemblies kept inside client/e2e/.implementations.
-			"label": "run-host",
-			"type": "shell",
-			"command": "dotnet run --project server/Host/Host.csproj",
-			"options": {
-				"cwd": "${workspaceFolder}",
-				"env": {
-					"ASPNETCORE_ENVIRONMENT": "Development",
-					"ASPNETCORE_URLS": "http://localhost:5000",
-					// Host logs at Warning by default; this makes it print "Now listening on", which the task waits for.
-					"Logging__LogLevel__Microsoft.Hosting.Lifetime": "Information",
-					"GlobalConfiguration__ImplementationsDirectory": "${workspaceFolder}/client/e2e/.implementations",
-					"GlobalConfiguration__TempDirectory": "${workspaceFolder}/client/e2e/.implementations"
-				}
-			},
-			"isBackground": true,
-			"presentation": {"group": "launch-all", "panel": "dedicated"},
-			"problemMatcher": {
-				"owner": "launch-all",
-				"pattern": {"regexp": "^__no_problems__$"},
-				"background": {
-					"activeOnStart": true,
-					"beginsPattern": "^__never__$",
-					"endsPattern": "Now listening on"
-				}
-			}
-		},
-		{
-			// Angular client (Vite) on :4200.
-			"label": "run-client",
-			"type": "shell",
-			"command": "pnpm start",
-			"options": {"cwd": "${workspaceFolder}/client"},
-			"isBackground": true,
-			"presentation": {"group": "launch-all", "panel": "dedicated"},
-			"problemMatcher": {
-				"owner": "launch-all",
-				"pattern": {"regexp": "^__no_problems__$"},
-				"background": {
-					"activeOnStart": true,
-					"beginsPattern": "^__never__$",
-					"endsPattern": "Local:"
-				}
-			}
-		},
-		{
-			// Starts the auth server, the Host and the client, waits until all three are ready, then opens the
-			// Playwright UI. Playwright reuses the running servers; closing the UI leaves them running.
-			"label": "LaunchAll+TestUI",
-			"type": "shell",
-			"command": "pnpm e2e:ui",
-			"options": {"cwd": "${workspaceFolder}/client"},
-			"dependsOn": ["run-auth-fake", "run-host", "run-client"],
-			"dependsOrder": "parallel",
-			"presentation": {"group": "launch-all", "panel": "dedicated"},
+			"presentation": {"reveal": "silent"},
 			"problemMatcher": []
 		}
 	]
