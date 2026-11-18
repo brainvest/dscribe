@@ -78,6 +78,16 @@
 				"/consoleloggerparameters:NoSummary"
 			],
 			"problemMatcher": "$msCompile"
+		},
+		{
+			// Used by the "LaunchAll+TestUI" launch configuration: waits until the auth server, the Host and the
+			// client accept connections, so the Playwright UI reuses them instead of starting its own.
+			"label": "wait-for-servers",
+			"type": "shell",
+			"command": "node e2e/support/wait-for-servers.mjs",
+			"options": {"cwd": "${workspaceFolder}/client"},
+			"presentation": {"reveal": "silent"},
+			"problemMatcher": []
 		}
 	]
 }

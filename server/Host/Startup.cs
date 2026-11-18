@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 
 public class Startup(IConfiguration configuration)
 {
@@ -23,7 +24,17 @@ public class Startup(IConfiguration configuration)
 		RuntimeStartup.ConfigureServices(services, configuration);
 		services.RegisterEfCore();
 
-		services.AddControllers();
+		// The metadata models are serialized by their runtime types (interfaces like IEntityTypeMetadataModel are
+		// empty markers), which System.Text.Json does not do. Property names are camelCase for the client, but
+		// dictionary keys (entity type and property names) must keep their exact casing.
+		services.AddControllers()
+			.AddNewtonsoftJson(options =>
+			{
+				options.SerializerSettings.ContractResolver = new DefaultContractResolver
+				{
+					NamingStrategy = new CamelCaseNamingStrategy { ProcessDictionaryKeys = false }
+				};
+			});
 
 		var authAuthority = configuration["AuthAuthority"];
 		if (string.IsNullOrWhiteSpace(authAuthority))

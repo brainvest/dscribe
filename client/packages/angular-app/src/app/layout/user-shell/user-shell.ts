@@ -10,14 +10,14 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {Auth} from '../../core/auth/auth';
 import {DrawerItem, USER_DRAWER} from '../../core/navigation';
+import {ActiveApp} from '../../core/active-app';
 import {Theme} from '../../core/theme';
 import {WALTZAR_STATE} from '../../app.config';
-import {WaltzarState} from '@waltzar/core';
+import {AppInstanceInformation, WaltzarState} from '@waltzar/core';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {AppInstanceInformation} from '../../../../../core/src/abstractions/app-instance-information';
 
 const PIN_STORAGE_KEY = 'ui-template.user-nav-pinned';
 
@@ -44,6 +44,8 @@ const PIN_STORAGE_KEY = 'ui-template.user-nav-pinned';
 })
 export class UserShell {
 	private readonly snackBar = inject(MatSnackBar);
+	private readonly router = inject(Router);
+	protected readonly activeApp = inject(ActiveApp);
 	protected readonly theme = inject(Theme);
 	protected readonly auth = inject(Auth);
 	protected readonly sections = USER_DRAWER;
@@ -80,6 +82,8 @@ export class UserShell {
 			return;
 		}
 		this.waltzarState.switchActiveAppInstance(app);
+		// The new application's forms are the natural next thing to look at.
+		this.router.navigateByUrl('/app/forms');
 		// this.snackBar.open(`Switched to ${done.name}`, 'OK', { duration: 2500 });
 	}
 

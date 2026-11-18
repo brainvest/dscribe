@@ -5,6 +5,7 @@ using System.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using Brainvest.Dscribe.Abstractions;
 using Microsoft.Extensions.Logging;
 
@@ -101,7 +102,11 @@ public sealed class BusinessAssemblyBridge : IDisposable
 		}
 		try
 		{
-			return Assembly.LoadFrom(targetFilePath);
+			// Each load gets its own context: regenerating the assembly produces another assembly with the same name,
+			// which the default context refuses to load a second time. Shared dependencies still resolve from the
+			// default context. Not collectible, because EF Core caches models by type.
+			var context = new AssemblyLoadContext(_instanceName + modificationDate.ToString("yyyyMMddHHmmss"));
+			return context.LoadFromAssemblyPath(targetFilePath);
 		}
 		catch (Exception ex)
 		{

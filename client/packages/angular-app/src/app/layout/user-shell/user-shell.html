@@ -6,10 +6,10 @@
 				<ng-template [remoteContent]="availableAppInstances()" let-appInstances>
 					@if (appInstances.length > 1) {
 					<button type="button" class="drawer__brand drawer__brand--switch" aria-label="Switch application"
-						[matMenuTriggerFor]="appMenu"> <!-- [disabled]="apps.switching()" -->
-						<mat-icon class="drawer__logo">{{ activeAppInstance()?.icon }}</mat-icon>
+						data-testid="app-switcher" [matMenuTriggerFor]="appMenu"> <!-- [disabled]="apps.switching()" -->
+						<mat-icon class="drawer__logo">{{ activeAppInstance()?.icon ?? 'apps' }}</mat-icon>
 						<span class="drawer__app">
-							<span class="drawer__app-name">{{ activeAppInstance()?.name }}</span>
+							<span class="drawer__app-name" data-testid="active-app-name">{{ activeAppInstance()?.name ?? 'Select application' }}</span>
 							<span class="drawer__app-hint">Company</span>
 						</span>
 						<!-- @if (apps.switching()) {
@@ -20,8 +20,9 @@
 					</button>
 					<mat-menu #appMenu="matMenu" class="app-switcher-menu">
 						@for (app of appInstances; track app.id) {
-						<button mat-menu-item [class.is-current]="app.id === activeAppInstance()?.id" (click)="onSwitch(app)">
-							<mat-icon>{{ app.icon }}</mat-icon>
+						<button mat-menu-item [class.is-current]="app.id === activeAppInstance()?.id" (click)="onSwitch(app)"
+							data-testid="app-option">
+							<mat-icon>{{ app.icon ?? 'apps' }}</mat-icon>
 							<span class="app-option">
 								<span>{{ app.name }}</span>
 								@if (app.description) {
@@ -71,6 +72,19 @@
 		</mat-nav-list>
 		}
 
+		@if (activeApp.forms().length) {
+		<div class="drawer__section">Application forms</div>
+		<mat-nav-list class="drawer__list" data-testid="drawer-forms">
+			@for (form of activeApp.forms(); track form.name) {
+			<a mat-list-item [routerLink]="['/app/forms', form.name]" routerLinkActive="is-active" (click)="onNavigate()"
+				data-testid="drawer-form-link">
+				<mat-icon matListItemIcon>description</mat-icon>
+				<span matListItemTitle>{{ form.pluralTitle }}</span>
+			</a>
+			}
+		</mat-nav-list>
+		}
+
 		<div class="spacer"></div>
 		@if (auth.role() === 'admin') {
 		<a mat-list-item class="drawer__switch" routerLink="/admin" (click)="onNavigate()">
@@ -90,11 +104,11 @@
 			<button matIconButton [matTooltip]="theme.toggleLabel()" (click)="theme.toggleMode()">
 				<mat-icon>{{ theme.modeIcon() }}</mat-icon>
 			</button>
-			<button matIconButton matTooltip="Notifications"
+			<button matIconButton aria-label="Notifications" matTooltip="Notifications"
 				(click)="onPlaceholder({ label: 'Notifications', icon: 'notifications' })">
 				<mat-icon matBadge="3" matBadgeSize="small" matBadgeColor="warn">notifications</mat-icon>
 			</button>
-			<button matIconButton matTooltip="Account" [matMenuTriggerFor]="accountMenu">
+			<button matIconButton aria-label="Account" matTooltip="Account" [matMenuTriggerFor]="accountMenu">
 				<mat-icon>account_circle</mat-icon>
 			</button>
 			<mat-menu #accountMenu="matMenu" xPosition="before">

@@ -36,6 +36,15 @@ public class ImplementationFactory
 		return await task.Value;
 	}
 
+	/// <summary>
+	/// Forgets the container of an app instance, so the next request builds a new one. Needed after the business
+	/// assembly has been generated: a container created before that has cached "no business assembly".
+	/// </summary>
+	public static void Evict(int appInstanceId)
+	{
+		_implementations.TryRemove(appInstanceId, out _);
+	}
+
 	public static int? GetAppInstanceIdFromHeader(HttpContext httpContext, ImplementationResolverOptions options)
 	{
 		if (!httpContext.Request.Headers.TryGetValue("AppInstance", out var appInstanceHeaders) || appInstanceHeaders.Count == 0)

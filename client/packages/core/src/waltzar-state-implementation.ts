@@ -3,7 +3,8 @@ import type {AppInstanceInformation} from './abstractions/app-instance-informati
 import {BehaviorSubject, type Observable} from 'rxjs';
 import {lazyRemoteNotLoaded, type LazyRemoteData} from './abstractions/lazy-remote-data';
 import {MetadataModel} from './client-models/metadata-model';
-import {postJson} from './helpers/http';
+import type {CompleteMetadataModel} from './common-models/metadata/complete-metadata-model';
+import {getJson, postJson} from './helpers/http';
 import {WaltzarState} from './abstractions/waltzar-state';
 import {AuthenticationState} from './abstractions/authentication-state';
 import {ContractConstants} from './helpers/contract-constants';
@@ -12,7 +13,8 @@ import {nextState} from './helpers/lazy-remote-data-state-machine';
 export class WaltzarStateImplementation implements WaltzarState {
 	private _appInstances$ = new BehaviorSubject<LazyRemoteData<AppInstanceInformation[]>>(lazyRemoteNotLoaded);
 	private _appInstance$ = new BehaviorSubject<AppInstanceInformation | null>(null);
-	private _metadataPackage$ = new BehaviorSubject<MetadataModel | null>(null);
+	private _metadataPackage$ = new BehaviorSubject<LazyRemoteData<MetadataModel>>(lazyRemoteNotLoaded);
+	private _metadataRequestCounter = 0;
 	private _config: WaltzarConfig;
 	private _authState: AuthenticationState;
 
@@ -46,5 +48,22 @@ export class WaltzarStateImplementation implements WaltzarState {
 
 	switchActiveAppInstance(app: AppInstanceInformation): void {
 		this._appInstance$.next(app);
+		this.fetchMetadata(app);
+	}
+
+	private fetchMetadata(app: AppInstanceInformation) {
+		// Only the response to the latest switch may reach the subject; an earlier, slower one is dropped.
+		const requestNumber = ++this._metadataRequestCounter;
+		nextState({
+			fetcher: async () => new MetadataModel(await getJson<CompleteMetadataModel>({
+				url: ContractConstants.getCompleteMetadata,
+				state: this,
+				appInstanceId: app.id,
+			})),
+		}).subscribe(value => {
+			if (requestNumber === this._metadataRequestCounter) {
+				this._metadataPackage$.next(value);
+			}
+		});
 	}
 }

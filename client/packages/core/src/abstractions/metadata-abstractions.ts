@@ -1,5 +1,6 @@
 import {FacetContainer} from "./facets";
 import {FieldError} from "../contract-models/result";
+import {ManageEntityModes} from "../client-models/manage-entity-modes";
 
 export interface DigestEntityType {
 	name: string;
@@ -15,6 +16,7 @@ export interface EntityTypeMetadata extends DigestEntityType {
 	readonly singularName?: string;
 	readonly pluralName?: string;
 	getPropertiesForFilter(): PropertyMetadata[];
+	getPropertiesForManage(mode: ManageEntityModes): PropertyMetadata[];
 	getPrimaryKey(): PropertyMetadata | undefined;
 }
 

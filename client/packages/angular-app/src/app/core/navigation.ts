@@ -139,6 +139,7 @@ export const USER_DRAWER: DrawerSection[] = [
   {
     label: 'Discover',
     items: [
+      { label: 'Forms', icon: 'dynamic_form', link: '/app/forms' },
       { label: 'My collection', icon: 'auto_awesome', link: '/app/collection' },
       { label: 'Highlights', icon: 'star', badge: '3' },
       { label: 'Recently viewed', icon: 'history' },

@@ -21,23 +21,23 @@ export class EntityTypeMetadataImplementation implements EntityTypeMetadata {
 		this.propertyNames = [];
 	}
 
-	setProperties(t: any, allDefaultFacets: {[key: string]: any;}, result: EntityTypeMetadata[]) {
-		for (const propertyName in t.Properties) {
-			if (t.Properties.hasOwnProperty(propertyName)) {
-				const oldProperty: PropertyResponse = t.Properties[propertyName];
+	setProperties(t: any, allDefaultFacets: {[key: string]: any;}) {
+		for (const propertyName in t.properties) {
+			if (t.properties.hasOwnProperty(propertyName)) {
+				const oldProperty: PropertyResponse = t.properties[propertyName];
 				const defaultFacets = allDefaultFacets[oldProperty.generalUsage];
 				const newProperty = new PropertyMetadataImplementation();
 				newProperty.facetValues = {};
 
 				if (defaultFacets) {
-					for (const dfName in defaultFacets.Defaults) {
-						if (defaultFacets.Defaults.hasOwnProperty(dfName)) {
+					for (const dfName in defaultFacets.defaults) {
+						if (defaultFacets.defaults.hasOwnProperty(dfName)) {
 							if (oldProperty.localFacets && oldProperty.localFacets[dfName]) {
 								newProperty.facetValues[dfName] =
 									oldProperty.localFacets[dfName].value;
 								delete oldProperty.localFacets[dfName];
 							} else {
-								newProperty.facetValues[dfName] = defaultFacets.Defaults[dfName].value;
+								newProperty.facetValues[dfName] = defaultFacets.defaults[dfName].value;
 							}
 						}
 					}
@@ -63,7 +63,6 @@ export class EntityTypeMetadataImplementation implements EntityTypeMetadata {
 				this.propertyNames.push(propertyName);
 			}
 		}
-		result.push(this);
 	}
 
 	private static convertBehaviors(behaviors: PropertyBehaviorResponse[]): PropertyBehavior[] | undefined {
